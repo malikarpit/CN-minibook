@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<!-- ⚡ Arpit | CN MiniBook 2026 -->
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="Arpit">
+<meta name="description" content="Chapter 1: Network Fundamentals — CN MiniBook. Definitions, goals, components, protocols, standards, encapsulation, terminology.">
+<title>Ch 1 — Network Fundamentals | CN MiniBook 🌐 Arpit</title>
+<link rel="manifest" href="../manifest.json">
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/animations.css">
+<link rel="stylesheet" href="../assets/css/timer.css">
+<link rel="stylesheet" href="../assets/css/chapters.css">
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<!-- HEADER -->
+<header id="main-header">
+  <div class="header-left">
+    <button id="sidebar-toggle" class="icon-btn" title="Toggle Sidebar (S)">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </button>
+    <div class="brand-logo">
+      <div class="brand-icon">🌐</div>
+      <div class="brand-text"><span class="main">CN MiniBook</span><span class="sub">Computer Networks</span></div>
+    </div>
+  </div>
+  <span class="header-chapter-title"></span>
+  <div class="header-right">
+    <button id="search-btn" class="icon-btn" title="Search (Ctrl+K)">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.35-4.35"></path></svg>
+    </button>
+    <button id="tts-toggle" class="icon-btn" title="Read Aloud">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"></path></svg>
+    </button>
+    <button id="print-btn" title="Print / Save as PDF (Ctrl+P)" aria-label="Print"><svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="flex-shrink:0"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg><span class="print-label">PDF</span></button>
+    <button id="reading-mode-btn" class="icon-btn" title="Reading Mode (F)" aria-pressed="false" aria-label="Toggle reading mode">📖</button>
+    <button id="theme-toggle" class="icon-btn" title="Toggle Theme (T)"></button>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<div id="sidebar-overlay"></div>
+<aside id="sidebar">
+  <nav class="sidebar-nav">
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Navigation</div>
+      <a href="../index.html" class="sidebar-link"><span class="link-icon">🏠</span>Home</a>
+      <a href="../progress.html" class="sidebar-link"><span class="link-icon">📊</span>Dashboard</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Chapter 1 — Sections</div>
+      <a href="#s-definition" class="sidebar-link active"><span class="link-icon">📌</span>1.1 What is a Computer Network? <span class="uni-syllabus-badge">🎓 Uni: Overview & Importance</span></a>
+      <a href="#s-components" class="sidebar-link"><span class="link-icon">🔩</span>1.2 Basic Network Components <span class="uni-syllabus-badge">🎓 Uni: 5 Components</span></a>
+      <a href="#s-criteria" class="sidebar-link"><span class="link-icon">📊</span>1.3 Network Criteria</a>
+      <a href="#s-protocols" class="sidebar-link"><span class="link-icon">📜</span>1.4 Protocols and Standards</a>
+      <a href="#s-encapsulation" class="sidebar-link"><span class="link-icon">📦</span>1.5 Encapsulation & Decapsulation</a>
+      <a href="#s-terminology" class="sidebar-link"><span class="link-icon">📖</span>1.6 Networking Terminology</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">All Chapters</div>
+      <a href="ch01-fundamentals.html" class="sidebar-link" style="color:var(--accent-light)"><span class="link-icon">📡</span>Ch 1 — Fundamentals</a>
+      <a href="ch02-types-topologies.html" class="sidebar-link"><span class="link-icon">🔗</span>Ch 2 — Types &amp; Topologies</a>
+      <a href="ch03-models-addressing.html" class="sidebar-link"><span class="link-icon">📦</span>Ch 3 — Models &amp; Addressing</a>
+      <a href="ch04-devices-sdn.html" class="sidebar-link"><span class="link-icon">🔌</span>Ch 4 — Devices &amp; SDN</a>
+      <a href="ch05-physical-fundamentals.html" class="sidebar-link"><span class="link-icon">📶</span>Ch 5 — Physical Fundamentals</a>
+      <a href="ch06-media-signaling.html" class="sidebar-link"><span class="link-icon">🔌</span>Ch 6 — Media &amp; Line Coding</a>
+      <a href="ch07-modulation-switching.html" class="sidebar-link"><span class="link-icon">📻</span>Ch 7 — Modulation &amp; Switching</a>
+      <a href="ch08-dll-fundamentals.html" class="sidebar-link"><span class="link-icon">🔧</span>Ch 8 — DLL Fundamentals</a>
+      <a href="ch09-protocols-sliding.html" class="sidebar-link"><span class="link-icon">🔄</span>Ch 9 — Protocols &amp; Sliding Window</a>
+      <a href="ch10-mac-ethernet.html" class="sidebar-link"><span class="link-icon">🌐</span>Ch 10 — MAC &amp; Ethernet</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Exams</div>
+      <a href="../exams/mock-exam.html" class="sidebar-link"><span class="link-icon">📝</span>100 MCQ Mock Exam</a>
+      <a href="../exams/unit-quiz.html" class="sidebar-link"><span class="link-icon">📋</span>Chapter Quizzes</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Bookmarks</div>
+      <div id="bookmarks-list"></div>
+    </div>
+  </nav>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">My Notes</div>
+      <div id="notes-sidebar-list"></div>
+    </div>
+  <div class="sidebar-footer">
+    <div class="sidebar-brand-mark"><div class="mark">🌐</div><span>Arpit · CN MiniBook 2026</span></div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main id="main-content">
+<div class="content-inner">
+
+  <!-- CHAPTER HERO -->
+  <div class="chapter-hero">
+    <div class="chapter-breadcrumb">
+      <a href="../index.html">Home</a><span>›</span><span>Part I — Introduction</span><span>›</span><span style="color:var(--tx-primary)">Chapter 1</span>
+    </div>
+    <div class="chapter-num">📡 Chapter 1 · Part I</div>
+    <h1 class="chapter-title">Computer Network Fundamentals</h1>
+    <div class="chapter-meta">
+      <span class="chapter-meta-item" style="background:var(--uni-bg-hd); border-color:var(--uni-b-hd); color:var(--uni-text); font-weight:700;">🎓 Uni Syllabus: Overview & Importance</span>
+      <span class="chapter-meta-item">📖 ~35 min read</span>
+      <span class="chapter-meta-item">🎯 6 Sections</span>
+      <span class="chapter-meta-item">📝 Group A</span>
+      <span class="chapter-meta-item">⚡ Exam Weight: Medium</span>
+    </div>
+  </div>
+
+  <!-- UNIVERSITY SYLLABUS CALLOUT -->
+  <div class="uni-syllabus-callout">
+    <div class="uni-callout-title">🎓 Official University Syllabus Focus</div>
+    <div><strong>Introduction to Computer Networks:</strong> Overview of computer networks and their importance, communication components, criteria, protocols, standards, and encapsulation.</div>
+  </div>
+
+  <!-- TABLE OF CONTENTS -->
+  <div class="toc-card reveal">
+    <h3>📋 Table of Contents</h3>
+    <div class="toc-list">
+      <a href="#s-definition" class="toc-item"><span class="toc-num">1.1</span>What is a Computer Network?</a>
+      <a href="#s-components" class="toc-item"><span class="toc-num">1.2</span>Basic Network Components</a>
+      <a href="#s-criteria" class="toc-item"><span class="toc-num">1.3</span>Network Criteria</a>
+      <a href="#s-protocols" class="toc-item"><span class="toc-num">1.4</span>Protocols and Standards</a>
+      <a href="#s-encapsulation" class="toc-item"><span class="toc-num">1.5</span>Encapsulation & Decapsulation</a>
+      <a href="#s-terminology" class="toc-item"><span class="toc-num">1.6</span>Networking Terminology</a>
+    </div>
+  </div>
+
+  <!-- LEARNING OBJECTIVES -->
+  <div class="callout info" style="margin-bottom:var(--sp-6);border-left:4px solid var(--accent-border)">
+    <span class="callout-icon">🎯</span>
+    <div><strong>After studying this chapter you will be able to:</strong>
+      <ul style="margin:6px 0 0;padding-left:18px">
+        <li>Define a computer network and explain why networks are important</li>
+        <li>Identify the five basic components of data communication</li>
+        <li>Distinguish between performance, reliability, and security as network criteria</li>
+        <li>Explain what a protocol is and differentiate between de jure and de facto standards</li>
+        <li>Trace the encapsulation and decapsulation process through the protocol stack</li>
+        <li>Define and distinguish key networking terms: bandwidth, throughput, latency, jitter, RTT</li>
+      </ul>
+    </div>
+  </div>
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 1.1 — WHAT IS A COMPUTER NETWORK? -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-definition" data-search-section="What is a computer network definition importance goals resource sharing communication reliability scalability performance cost">
+  <div class="section-heading">
+    <h2 class="prose">1.1 What is a Computer Network?
+      <button class="bookmark-btn" data-id="s-definition" data-label="1.1 What is a Computer Network?" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+
+  <div class="prose">
+
+    <div class="def-box">
+      <div class="def-term">Computer Network — Definition</div>
+      A <strong>computer network</strong> is a collection of two or more interconnected computing devices (computers, printers, servers, smartphones, IoT sensors, etc.) that can exchange data and share resources through communication links and established protocols.
+    </div>
+
+    <p>Think of a computer network like a postal system. Just as the postal system connects houses (devices) through roads (links) using agreed-upon rules (addresses, stamps, ZIP codes — i.e., protocols), a computer network connects computing devices through communication media using networking protocols.</p>
+
+    <h3>Why Are Computer Networks Important?</h3>
+
+    <p>Before networks existed, every computer was a standalone island. If you wanted to share a file, you physically carried it on a floppy disk. Networks transformed computing by enabling:</p>
+
+    <div class="mode-uni">
+      <div class="mode-badge uni">🎓 University</div>
+
+      <h4>Goals of Computer Networking</h4>
+
+      <table class="data-table reveal">
+        <thead>
+          <tr><th>Goal</th><th>What It Means</th><th>Real-World Example</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Resource Sharing</strong></td>
+            <td>Hardware, software, and data can be shared across the network, reducing duplication and cost</td>
+            <td>100 employees sharing 5 network printers instead of each having one; shared database servers</td>
+          </tr>
+          <tr>
+            <td><strong>Communication</strong></td>
+            <td>Enables people and programs to exchange information instantly regardless of physical distance</td>
+            <td>Email, video conferencing, instant messaging, VoIP calls</td>
+          </tr>
+          <tr>
+            <td><strong>Reliability</strong></td>
+            <td>Critical data and services can be replicated across multiple machines; if one fails, another takes over</td>
+            <td>Cloud storage (Google Drive stores your data on multiple servers); RAID; failover clusters</td>
+          </tr>
+          <tr>
+            <td><strong>Scalability</strong></td>
+            <td>Networks can grow incrementally — add new devices without redesigning the entire system</td>
+            <td>Adding a new employee's laptop to an existing office network; scaling cloud servers on demand</td>
+          </tr>
+          <tr>
+            <td><strong>Performance</strong></td>
+            <td>Distributing workload across multiple machines improves speed and response time</td>
+            <td>Load balancing across web servers; distributed computing (MapReduce, SETI@home)</td>
+          </tr>
+          <tr>
+            <td><strong>Cost Reduction</strong></td>
+            <td>Sharing expensive resources (printers, storage, internet connection) reduces per-user cost</td>
+            <td>One high-speed internet connection shared by an entire office via a router + switch</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout tip">
+      <span class="callout-icon">💡</span>
+      <div><strong>MCQ Memory Trick:</strong> Remember the goals as <strong>"R-C-R-S-P-C"</strong> → Resource sharing, Communication, Reliability, Scalability, Performance, Cost. If an MCQ says "Which is NOT a goal of networking?" — any option that doesn't fit these six categories is your answer.</div>
+    </div>
+
+    <h3>A Brief Historical Context</h3>
+
+    <p>The idea of connecting computers began in the late 1960s with <strong>ARPANET</strong> (1969), funded by the U.S. Department of Defense's ARPA. ARPANET connected four university computers and demonstrated that packet-switched networking was viable. This evolved into the Internet we use today.</p>
+
+    <p>Key milestones:</p>
+    <ul>
+      <li><strong>1969</strong> — ARPANET: first packet-switched network (4 nodes)</li>
+      <li><strong>1974</strong> — Vint Cerf & Bob Kahn propose TCP/IP</li>
+      <li><strong>1983</strong> — ARPANET switches to TCP/IP (birth of the modern Internet)</li>
+      <li><strong>1991</strong> — World Wide Web invented by Tim Berners-Lee at CERN</li>
+      <li><strong>Today</strong> — Billions of devices connected via the Internet</li>
+    </ul>
+
+    <div class="callout danger">
+      <span class="callout-icon">⚠️</span>
+      <div><strong>Common MCQ Trap:</strong> "ARPANET used circuit switching." — <strong>FALSE</strong>. ARPANET was the first major <em>packet-switched</em> network. Circuit switching was used by the telephone system (PSTN). Don't confuse the two.</div>
+    </div>
+
+  </div>
+</section>
+<hr class="section-hr">
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 1.2 — BASIC NETWORK COMPONENTS -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-components" data-search-section="network components sender receiver message medium protocol data communication model five components">
+  <div class="section-heading">
+    <h2 class="prose">1.2 Basic Network Components
+      <button class="bookmark-btn" data-id="s-components" data-label="1.2 Basic Network Components" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+
+  <div class="prose">
+
+    <p>Every act of data communication involves <strong>five fundamental components</strong>. These are sometimes called the <em>Five Components of Data Communication</em> (Forouzan).</p>
+
+    <div class="def-box">
+      <div class="def-term">The Five Components of Data Communication</div>
+      <ol>
+        <li><strong>Sender (Source)</strong> — The device that generates and sends the data (e.g., a computer, phone, IoT sensor)</li>
+        <li><strong>Receiver (Destination)</strong> — The device that receives the data (e.g., a server, printer, another computer)</li>
+        <li><strong>Message</strong> — The data being communicated (e.g., a text file, video stream, email, web page)</li>
+        <li><strong>Transmission Medium</strong> — The physical path through which the message travels (e.g., copper wire, fiber optic cable, wireless radio waves)</li>
+        <li><strong>Protocol</strong> — The set of rules governing the communication (e.g., HTTP, TCP/IP, Ethernet)</li>
+      </ol>
+    </div>
+
+    <h3>Data Communication Model Diagram</h3>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">Data Communication Model</span></div>
+      <pre><code>
+  ┌──────────┐                                    ┌──────────┐
+  │          │         Transmission Medium         │          │
+  │  SENDER  │ ═══════════════════════════════════ │ RECEIVER │
+  │ (Source) │  ← guided (cable) or unguided →     │  (Dest)  │
+  │          │         (wireless, satellite)       │          │
+  └──────────┘                                    └──────────┘
+       │                                                │
+       │  Sends MESSAGE                   Receives MESSAGE
+       │  using PROTOCOL                  using PROTOCOL
+       │                                                │
+       └── Both sender and receiver must agree on ──────┘
+           the SAME protocol for communication
+           to succeed.
+      </code></pre>
+    </div>
+
+    <p><strong>Analogy:</strong> Imagine two people talking on the phone:</p>
+    <ul>
+      <li><strong>Sender</strong> = Person A (speaking)</li>
+      <li><strong>Receiver</strong> = Person B (listening)</li>
+      <li><strong>Message</strong> = The conversation content</li>
+      <li><strong>Medium</strong> = The telephone network (wires, cell towers)</li>
+      <li><strong>Protocol</strong> = Speaking the same language (English, Hindi), taking turns, saying "hello" first</li>
+    </ul>
+
+    <div class="callout tip">
+      <span class="callout-icon">💡</span>
+      <div><strong>Key Insight:</strong> Without a <em>protocol</em>, the sender and receiver cannot understand each other — even if the medium works perfectly. Protocols define the <strong>format</strong>, <strong>order</strong>, and <strong>actions taken</strong> during communication. We will study protocols in great detail throughout this book.</div>
+    </div>
+
+    <h3>Data Flow Directions</h3>
+
+    <p>Communication between two devices can happen in three modes:</p>
+
+    <table class="data-table reveal">
+      <thead>
+        <tr><th>Mode</th><th>Direction</th><th>Description</th><th>Example</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Simplex</strong></td>
+          <td>A → B (one way only)</td>
+          <td>Only one device can send; the other can only receive. Unidirectional.</td>
+          <td>Keyboard → Computer; TV broadcast</td>
+        </tr>
+        <tr>
+          <td><strong>Half-Duplex</strong></td>
+          <td>A ⇄ B (alternating)</td>
+          <td>Both devices can send and receive, but <em>not at the same time</em>. They take turns.</td>
+          <td>Walkie-talkie ("Over!")</td>
+        </tr>
+        <tr>
+          <td><strong>Full-Duplex</strong></td>
+          <td>A ⇆ B (simultaneous)</td>
+          <td>Both devices can send and receive <em>simultaneously</em>.</td>
+          <td>Telephone call; modern Ethernet</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout danger">
+      <span class="callout-icon">⚠️</span>
+      <div><strong>MCQ Trap:</strong> "Ethernet uses half-duplex communication." — This was true for old <em>hub-based</em> Ethernet (shared medium, CSMA/CD). Modern <em>switch-based</em> Ethernet operates in <strong>full-duplex</strong>. The answer depends on the context given in the question.</div>
+    </div>
+
+  </div>
+</section>
+<hr class="section-hr">
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 1.3 — NETWORK CRITERIA -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-criteria" data-search-section="network criteria performance reliability security throughput latency delay transit time response time">
+  <div class="section-heading">
+    <h2 class="prose">1.3 Network Criteria
+      <button class="bookmark-btn" data-id="s-criteria" data-label="1.3 Network Criteria" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+
+  <div class="prose">
+
+    <p>A network must meet certain criteria to be considered effective. Forouzan identifies three primary criteria:</p>
+
+    <h3>1. Performance</h3>
+
+    <p>Performance is measured by several metrics:</p>
+
+    <table class="data-table reveal">
+      <thead>
+        <tr><th>Metric</th><th>Definition</th><th>Unit</th><th>Desired</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Throughput</strong></td>
+          <td>The actual rate at which data is successfully delivered over the network</td>
+          <td>bps, Kbps, Mbps, Gbps</td>
+          <td>Higher is better</td>
+        </tr>
+        <tr>
+          <td><strong>Latency (Delay)</strong></td>
+          <td>Total time for a message to travel from sender to receiver</td>
+          <td>ms, seconds</td>
+          <td>Lower is better</td>
+        </tr>
+        <tr>
+          <td><strong>Jitter</strong></td>
+          <td>Variation in delay between successive packets</td>
+          <td>ms</td>
+          <td>Lower is better</td>
+        </tr>
+        <tr>
+          <td><strong>Bandwidth</strong></td>
+          <td>Maximum capacity of the link (theoretical upper limit)</td>
+          <td>bps, Mbps, Gbps</td>
+          <td>Higher is better</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>Performance depends on: number of users, type of transmission medium, hardware capabilities, and software efficiency.</p>
+
+    <div class="callout tip">
+      <span class="callout-icon">💡</span>
+      <div><strong>Bandwidth vs Throughput:</strong> Think of bandwidth as the width of a highway (maximum cars it <em>could</em> carry), and throughput as the actual number of cars currently passing through. Throughput ≤ Bandwidth always. Factors like congestion, errors, and protocol overhead reduce throughput below bandwidth.</div>
+    </div>
+
+    <h3>2. Reliability</h3>
+
+    <p>Reliability measures how dependable the network is:</p>
+    <ul>
+      <li><strong>Frequency of failure</strong> — How often does the network go down?</li>
+      <li><strong>Recovery time</strong> — How quickly does it recover after failure?</li>
+      <li><strong>Robustness</strong> — Can it handle catastrophic events (link failure, device crash)?</li>
+    </ul>
+
+    <p>Reliability is improved through <strong>redundancy</strong> (backup links, duplicate servers), <strong>fault tolerance</strong> (automatic failover), and <strong>error detection/correction</strong> mechanisms (which we will study in detail in the Data Link Layer chapters).</p>
+
+    <h3>3. Security</h3>
+
+    <p>Network security encompasses three core goals (the <strong>CIA Triad</strong>):</p>
+
+    <div class="def-box">
+      <div class="def-term">CIA Triad of Network Security</div>
+      <ul>
+        <li><strong>Confidentiality</strong> — Only authorized parties can access the data (achieved via encryption)</li>
+        <li><strong>Integrity</strong> — Data is not altered during transmission (achieved via checksums, hash functions)</li>
+        <li><strong>Availability</strong> — The network and its services are accessible when needed (achieved via redundancy, DDoS protection)</li>
+      </ul>
+    </div>
+
+    <p>Additionally, security involves:</p>
+    <ul>
+      <li><strong>Authentication</strong> — Verifying the identity of communicating parties</li>
+      <li><strong>Non-repudiation</strong> — Ensuring that a sender cannot deny having sent a message</li>
+      <li><strong>Access Control</strong> — Restricting who can use what resources</li>
+    </ul>
+
+    <div class="callout danger">
+      <span class="callout-icon">⚠️</span>
+      <div><strong>MCQ Trap:</strong> Don't confuse "network criteria" with "goals of networking." Goals (from 1.1) describe <em>why</em> we build networks. Criteria describe <em>how we evaluate</em> whether a network is good. An MCQ might mix these up.</div>
+    </div>
+
+  </div>
+</section>
+<hr class="section-hr">
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 1.4 — PROTOCOLS AND STANDARDS -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-protocols" data-search-section="protocol standards de jure de facto ISO IEEE ITU IETF RFC protocol stack rules syntax semantics timing">
+  <div class="section-heading">
+    <h2 class="prose">1.4 Protocols and Standards
+      <button class="bookmark-btn" data-id="s-protocols" data-label="1.4 Protocols and Standards" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+
+  <div class="prose">
+
+    <h3>What is a Protocol?</h3>
+
+    <div class="def-box">
+      <div class="def-term">Protocol — Formal Definition</div>
+      A <strong>protocol</strong> is a set of rules that governs data communication. It defines the <strong>format</strong>, <strong>order of messages</strong> sent and received, and the <strong>actions taken</strong> upon message transmission and receipt.
+    </div>
+
+    <p><strong>Human Analogy:</strong> When you meet someone, you follow a protocol:</p>
+    <ol>
+      <li>You say "Hello" (→ connection request)</li>
+      <li>They say "Hello" back (→ connection accepted / ACK)</li>
+      <li>You have a conversation (→ data transfer)</li>
+      <li>You say "Goodbye" (→ connection termination)</li>
+    </ol>
+    <p>If someone speaks a language you don't understand, communication fails — just like if two computers use incompatible protocols.</p>
+
+    <h4>Three Key Elements of a Protocol</h4>
+
+    <table class="data-table reveal">
+      <thead>
+        <tr><th>Element</th><th>What It Defines</th><th>Example</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Syntax</strong></td>
+          <td>The <em>structure or format</em> of the data — how data is arranged in fields, headers, bit patterns</td>
+          <td>An IP packet header has source IP in bytes 12–15 and destination IP in bytes 16–19</td>
+        </tr>
+        <tr>
+          <td><strong>Semantics</strong></td>
+          <td>The <em>meaning</em> of each field and what action to take based on it</td>
+          <td>If the TTL field reaches 0, discard the packet and send ICMP error</td>
+        </tr>
+        <tr>
+          <td><strong>Timing</strong></td>
+          <td>The <em>speed</em> at which data is sent and the <em>order</em> of communication (when to send, how long to wait)</td>
+          <td>A sender waits 200ms for an ACK before retransmitting; data rate of 100 Mbps</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout tip">
+      <span class="callout-icon">💡</span>
+      <div><strong>MCQ Memory Trick:</strong> Protocol = <strong>S-S-T</strong> (Syntax, Semantics, Timing). If an MCQ asks "Which is NOT an element of a protocol?" — anything other than these three is the answer.</div>
+    </div>
+
+    <h3>What Are Standards?</h3>
+
+    <p>Standards are <strong>agreed-upon rules</strong> that ensure interoperability between products from different manufacturers. Without standards, a Cisco router might not communicate with a Juniper switch.</p>
+
+    <h4>Types of Standards</h4>
+
+    <table class="data-table reveal">
+      <thead>
+        <tr><th>Type</th><th>Definition</th><th>How Created</th><th>Example</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>De Jure</strong> (by law)</td>
+          <td>Official standards created by recognized organizations through a formal process</td>
+          <td>Committees, public review, voting</td>
+          <td>OSI model (ISO), IEEE 802.3 Ethernet, ITU-T V.34 modem</td>
+        </tr>
+        <tr>
+          <td><strong>De Facto</strong> (by fact/practice)</td>
+          <td>Standards that became dominant through market adoption, not through formal approval</td>
+          <td>Market dominance, widespread use</td>
+          <td>TCP/IP (initially not formal, became universal), HTTP, Microsoft Windows API</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4>Major Standards Organizations</h4>
+
+    <table class="data-table reveal">
+      <thead>
+        <tr><th>Organization</th><th>Full Name</th><th>Scope</th><th>Key Standards</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>ISO</strong></td>
+          <td>International Organization for Standardization</td>
+          <td>Global, multi-industry</td>
+          <td>OSI reference model, ISO 8802</td>
+        </tr>
+        <tr>
+          <td><strong>IEEE</strong></td>
+          <td>Institute of Electrical and Electronics Engineers</td>
+          <td>Electrical/networking standards</td>
+          <td>802.3 (Ethernet), 802.11 (Wi-Fi), 802.15 (Bluetooth)</td>
+        </tr>
+        <tr>
+          <td><strong>ITU-T</strong></td>
+          <td>International Telecommunication Union — Telecom Sector</td>
+          <td>Telecommunications</td>
+          <td>V-series (modems), H.264 (video), X.25</td>
+        </tr>
+        <tr>
+          <td><strong>IETF</strong></td>
+          <td>Internet Engineering Task Force</td>
+          <td>Internet protocols</td>
+          <td>TCP (RFC 793), IP (RFC 791), HTTP (RFC 2616), DNS</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout info">
+      <span class="callout-icon">📌</span>
+      <div><strong>RFC (Request for Comments):</strong> IETF publishes Internet standards as numbered RFC documents. Despite the humble name, RFCs are the definitive specifications for Internet protocols. For example, TCP is defined in RFC 793, IP in RFC 791.</div>
+    </div>
+
+    <div class="callout danger">
+      <span class="callout-icon">⚠️</span>
+      <div><strong>MCQ Trap:</strong> "TCP/IP is a de jure standard." — This is <strong>debatable</strong>. TCP/IP started as a de facto standard (widely adopted without formal ISO approval). Today, IETF publishes its specifications as RFCs (which are formal standards in the Internet world). Many exams still categorize TCP/IP as <em>de facto</em>. Read the question context carefully.</div>
+    </div>
+
+  </div>
+</section>
+<hr class="section-hr">
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 1.5 — ENCAPSULATION & DECAPSULATION -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-encapsulation" data-search-section="encapsulation decapsulation PDU protocol data unit header trailer data segment packet frame bits layering">
+  <div class="section-heading">
+    <h2 class="prose">1.5 Encapsulation & Decapsulation
+      <button class="bookmark-btn" data-id="s-encapsulation" data-label="1.5 Encapsulation & Decapsulation" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+
+  <div class="prose">
+
+    <p>As data moves down the protocol stack at the sender, each layer adds its own control information (header and sometimes trailer) to the data received from the layer above. This process is called <strong>encapsulation</strong>. At the receiver, the reverse process — <strong>decapsulation</strong> — strips off headers/trailers as data moves up.</p>
+
+    <div class="def-box">
+      <div class="def-term">Encapsulation</div>
+      The process of wrapping data with protocol information (headers/trailers) at each layer of the protocol stack before transmission. Each layer treats the data from the layer above as its <strong>payload</strong> and adds its own header.
+    </div>
+
+    <div class="def-box">
+      <div class="def-term">Decapsulation</div>
+      The reverse process at the receiver: each layer removes its corresponding header/trailer and passes the remaining payload up to the next layer.
+    </div>
+
+    <h3>Protocol Data Units (PDUs) at Each Layer</h3>
+
+    <p>The data unit at each layer has a specific name:</p>
+
+    <table class="data-table reveal">
+      <thead>
+        <tr><th>Layer</th><th>PDU Name</th><th>What's Added</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Application / Presentation / Session</strong></td><td><strong>Data (Message)</strong></td><td>Application-specific formatting</td></tr>
+        <tr><td><strong>Transport</strong></td><td><strong>Segment</strong> (TCP) / <strong>Datagram</strong> (UDP)</td><td>Transport header (port numbers, sequence numbers)</td></tr>
+        <tr><td><strong>Network</strong></td><td><strong>Packet</strong></td><td>Network header (source/destination IP addresses)</td></tr>
+        <tr><td><strong>Data Link</strong></td><td><strong>Frame</strong></td><td>DLL header (MAC addresses) + <strong>Trailer</strong> (FCS/CRC)</td></tr>
+        <tr><td><strong>Physical</strong></td><td><strong>Bits</strong></td><td>Converts frame to electrical/optical/radio signals</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Encapsulation Flow Diagram</h3>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">Encapsulation at Sender (Top → Bottom)</span></div>
+      <pre><code>
+  Application Layer:    ┌────────────────────────────┐
+                        │        DATA (Message)       │
+                        └────────────────────────────┘
+                                    ↓ encapsulate
+  Transport Layer:      ┌────┬───────────────────────┐
+                        │ TH │       DATA              │
+                        └────┴───────────────────────┘
+                        └──── Segment ───────────────┘
+                                    ↓ encapsulate
+  Network Layer:        ┌────┬────┬──────────────────┐
+                        │ NH │ TH │      DATA          │
+                        └────┴────┴──────────────────┘
+                        └──── Packet ────────────────┘
+                                    ↓ encapsulate
+  Data Link Layer:      ┌─────┬────┬────┬──────┬─────┐
+                        │ DLH │ NH │ TH │ DATA │ DLT │
+                        └─────┴────┴────┴──────┴─────┘
+                        └──── Frame ─────────────────┘
+                                    ↓ convert
+  Physical Layer:       1 0 1 1 0 1 0 0 1 1 0 1 ...
+                        └──── Bits (signals) ────────┘
+
+  Key: TH = Transport Header, NH = Network Header
+       DLH = Data Link Header, DLT = Data Link Trailer
+      </code></pre>
+    </div>
+
+    <p><strong>Analogy:</strong> Encapsulation is like putting a letter in nested envelopes:</p>
+    <ol>
+      <li>You write a letter (data)</li>
+      <li>Put it in a small envelope labeled "From: Port 443, To: Port 80" (transport header)</li>
+      <li>Put that in a larger envelope labeled "From: 192.168.1.5, To: 8.8.8.8" (network header)</li>
+      <li>Put that in a package labeled "From: AA:BB:CC:DD:EE:FF, To: 11:22:33:44:55:66" with a seal (data link header + trailer)</li>
+      <li>The delivery truck carries the physical package (physical layer)</li>
+    </ol>
+
+    <p>At each hop along the way, only the outermost envelope is opened and replaced (the Data Link frame changes at every router), while the inner envelopes remain sealed until the final destination.</p>
+
+    <div class="callout danger">
+      <span class="callout-icon">⚠️</span>
+      <div><strong>Critical MCQ Concept:</strong> Only the <strong>Data Link Layer adds both a header AND a trailer</strong> (the trailer contains the FCS/CRC for error detection). All other layers add only headers. If an MCQ asks "Which layer adds a trailer?" → Data Link Layer.</div>
+    </div>
+
+    <div class="callout tip">
+      <span class="callout-icon">💡</span>
+      <div><strong>How to Remember PDU Names:</strong> <strong>"Don't Seem People Fear Bits"</strong> → Data, Segment, Packet, Frame, Bits (top to bottom).</div>
+    </div>
+
+  </div>
+</section>
+<hr class="section-hr">
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 1.6 — NETWORKING TERMINOLOGY -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-terminology" data-search-section="networking terminology node host link packet frame segment datagram bandwidth throughput latency jitter RTT round trip time hop delay propagation transmission queuing processing">
+  <div class="section-heading">
+    <h2 class="prose">1.6 Networking Terminology
+      <button class="bookmark-btn" data-id="s-terminology" data-label="1.6 Networking Terminology" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+
+  <div class="prose">
+
+    <p>This section defines the essential vocabulary you'll encounter throughout the entire course. Understanding these terms precisely is critical for MCQs that test subtle differences between similar-sounding concepts.</p>
+
+    <h3>Network Elements</h3>
+
+    <div class="def-box">
+      <div class="def-term">Node</div>
+      Any device connected to the network that can send, receive, or forward data. Includes computers, routers, switches, printers, and servers.
+    </div>
+
+    <div class="def-box">
+      <div class="def-term">Host</div>
+      A node that is a <strong>source or destination</strong> of data — typically a computer, server, or smartphone. Unlike a router (which forwards data for others), a host generates or consumes data. <strong>Every host is a node, but not every node is a host</strong> (a router is a node but not a host in the traditional sense).
+    </div>
+
+    <div class="def-box">
+      <div class="def-term">Link (Communication Link)</div>
+      The physical or logical communication path between two nodes. Can be <strong>point-to-point</strong> (dedicated connection between exactly two devices) or <strong>multipoint/shared</strong> (multiple devices share the same link).
+    </div>
+
+    <h3>Data Units</h3>
+
+    <table class="data-table reveal">
+      <thead>
+        <tr><th>Term</th><th>Layer</th><th>Definition</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Packet</strong></td>
+          <td>Network (Layer 3)</td>
+          <td>A unit of data at the network layer. Contains a network header (with IP addresses) and the payload (transport segment). Sometimes used generically for any chunk of data.</td>
+        </tr>
+        <tr>
+          <td><strong>Frame</strong></td>
+          <td>Data Link (Layer 2)</td>
+          <td>A unit of data at the data link layer. Contains a DLL header (MAC addresses), the payload (network packet), and a trailer (FCS).</td>
+        </tr>
+        <tr>
+          <td><strong>Segment</strong></td>
+          <td>Transport (Layer 4)</td>
+          <td>A unit of data at the transport layer when using TCP. Contains a TCP header (with port numbers, sequence numbers) and application data.</td>
+        </tr>
+        <tr>
+          <td><strong>Datagram</strong></td>
+          <td>Transport (L4) / Network (L3)</td>
+          <td>Can refer to a UDP segment at Layer 4, or a network-layer packet in connectionless (datagram) networks. Context-dependent!</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout danger">
+      <span class="callout-icon">⚠️</span>
+      <div><strong>MCQ Trap:</strong> "Datagram" is used at <em>two different layers</em> depending on context:
+        <ul style="margin:4px 0 0;padding-left:18px">
+          <li>At the <strong>Transport layer</strong>: a UDP data unit is called a datagram (or user datagram)</li>
+          <li>At the <strong>Network layer</strong>: in a connectionless network, packets are called datagrams</li>
+        </ul>
+        If the MCQ doesn't specify the layer, look for context clues like "UDP" (transport) or "IP" (network).
+      </div>
+    </div>
+
+    <h3>Performance Metrics — Deep Dive</h3>
+
+    <div class="def-box">
+      <div class="def-term">Bandwidth</div>
+      The <strong>maximum rate</strong> at which data can be transferred over a network link, measured in <strong>bits per second (bps)</strong>. Think of it as the "width of the pipe." A 100 Mbps Ethernet link has a bandwidth of 100 million bits per second. <br><br>
+      <strong>Note:</strong> In analog communication, bandwidth means the range of frequencies (in Hz). In digital networking, it typically means data rate capacity (in bps). MCQs may test this distinction.
+    </div>
+
+    <div class="def-box">
+      <div class="def-term">Throughput</div>
+      The <strong>actual rate</strong> of successful data delivery over the network, measured in bps. Always ≤ bandwidth due to congestion, protocol overhead, errors, and sharing. If a 100 Mbps link is congested and only delivering 60 Mbps to users, the throughput is 60 Mbps.
+    </div>
+
+    <div class="def-box">
+      <div class="def-term">Latency (Delay)</div>
+      The total time taken for a data unit to travel from source to destination. Latency has four components:
+    </div>
+
+    <div class="formula-box">
+      <div class="formula-label">Total Latency Formula</div>
+      <strong>Latency = Propagation Delay + Transmission Delay + Queuing Delay + Processing Delay</strong>
+    </div>
+
+    <table class="data-table reveal">
+      <thead>
+        <tr><th>Component</th><th>Definition</th><th>Formula</th><th>Depends On</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Propagation Delay</strong></td>
+          <td>Time for a signal (bit) to travel from sender to receiver through the medium</td>
+          <td>d<sub>prop</sub> = Distance / Propagation Speed</td>
+          <td>Distance, medium type (speed of light in fiber ≈ 2×10⁸ m/s)</td>
+        </tr>
+        <tr>
+          <td><strong>Transmission Delay</strong></td>
+          <td>Time to push all bits of a packet onto the link</td>
+          <td>d<sub>trans</sub> = Packet Size / Bandwidth</td>
+          <td>Packet size, link bandwidth</td>
+        </tr>
+        <tr>
+          <td><strong>Queuing Delay</strong></td>
+          <td>Time spent waiting in router/switch queues before processing</td>
+          <td>Variable (depends on congestion)</td>
+          <td>Network traffic, queue length</td>
+        </tr>
+        <tr>
+          <td><strong>Processing Delay</strong></td>
+          <td>Time for a router/switch to examine the packet header and decide where to forward it</td>
+          <td>Typically very small (microseconds)</td>
+          <td>Router CPU speed, lookup table size</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="mode-gate">
+      <div class="mode-badge gate">⚡ Competitive Exam</div>
+      <h4>Worked Example: Latency Calculation</h4>
+      <p><strong>Problem:</strong> A 1,500-byte packet is sent over a 10 Mbps link. The distance between sender and receiver is 2,000 km. The propagation speed is 2 × 10⁸ m/s. Assume queuing and processing delays are negligible. Calculate the total latency.</p>
+
+      <p><strong>Solution:</strong></p>
+      <ul>
+        <li>Transmission delay = Packet size / Bandwidth = (1500 × 8 bits) / (10 × 10⁶ bps) = 12,000 / 10,000,000 = <strong>1.2 ms</strong></li>
+        <li>Propagation delay = Distance / Speed = (2,000 × 10³ m) / (2 × 10⁸ m/s) = 2,000,000 / 200,000,000 = <strong>10 ms</strong></li>
+        <li>Total latency = 1.2 + 10 = <strong>11.2 ms</strong></li>
+      </ul>
+
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div><strong>Notice:</strong> For long-distance, low-bandwidth links, propagation delay dominates. For short-distance, high-bandwidth links, transmission delay may dominate. MCQs often test which component is more significant in a given scenario.</div>
+      </div>
+    </div>
+
+    <div class="def-box">
+      <div class="def-term">Jitter</div>
+      The <strong>variation in delay</strong> between successive packets. If Packet 1 takes 20ms and Packet 2 takes 45ms and Packet 3 takes 18ms, the jitter is the variation: 25ms, 27ms. High jitter is especially problematic for real-time applications (VoIP, video streaming) because packets arrive at irregular intervals, causing choppy audio/video.
+    </div>
+
+    <div class="def-box">
+      <div class="def-term">RTT (Round-Trip Time)</div>
+      The time for a signal to travel from sender to receiver <strong>and back</strong>. RTT = 2 × one-way propagation delay (approximately, ignoring processing). RTT is used in many protocol calculations, especially for Stop-and-Wait, TCP congestion control, and timeout values.
+    </div>
+
+    <div class="def-box">
+      <div class="def-term">Hop</div>
+      A <strong>hop</strong> is one segment of the path between source and destination. When a packet passes through a router, it completes one hop. If a packet traverses 5 routers between source and destination, the path has 5 hops.
+    </div>
+
+    <h3>Quick Comparison: Bandwidth vs Throughput vs Latency</h3>
+
+    <table class="data-table reveal">
+      <thead>
+        <tr><th>Aspect</th><th>Bandwidth</th><th>Throughput</th><th>Latency</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>What it measures</strong></td>
+          <td>Maximum capacity</td>
+          <td>Actual delivery rate</td>
+          <td>Time delay</td>
+        </tr>
+        <tr>
+          <td><strong>Unit</strong></td>
+          <td>bps</td>
+          <td>bps</td>
+          <td>seconds (ms)</td>
+        </tr>
+        <tr>
+          <td><strong>Analogy</strong></td>
+          <td>Width of highway</td>
+          <td>Cars actually passing</td>
+          <td>Travel time from A to B</td>
+        </tr>
+        <tr>
+          <td><strong>Relationship</strong></td>
+          <td>Upper limit</td>
+          <td>≤ Bandwidth</td>
+          <td>Independent of bandwidth</td>
+        </tr>
+        <tr>
+          <td><strong>Want it to be</strong></td>
+          <td>High</td>
+          <td>High</td>
+          <td>Low</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout danger">
+      <span class="callout-icon">⚠️</span>
+      <div><strong>Common Misconception:</strong> "Higher bandwidth means lower latency." — <strong>FALSE</strong>. A satellite link can have very high bandwidth (Gbps) but very high latency (500+ ms RTT due to distance). Bandwidth and latency are independent properties. A link can be high-bandwidth-high-latency, low-bandwidth-low-latency, or any combination.</div>
+    </div>
+
+    <h3>Section Recap</h3>
+
+    <div class="callout info">
+      <span class="callout-icon">📌</span>
+      <div><strong>Key takeaways from Chapter 1:</strong>
+        <ul style="margin:4px 0 0;padding-left:18px">
+          <li>A network connects devices to share resources and communicate via protocols</li>
+          <li>5 components: Sender, Receiver, Message, Medium, Protocol</li>
+          <li>3 data flow modes: Simplex, Half-duplex, Full-duplex</li>
+          <li>3 network criteria: Performance, Reliability, Security</li>
+          <li>Protocol elements: Syntax, Semantics, Timing</li>
+          <li>Standards: De Jure (formal) vs De Facto (market adoption)</li>
+          <li>Encapsulation adds headers top-down; decapsulation removes them bottom-up</li>
+          <li>PDUs: Data → Segment → Packet → Frame → Bits</li>
+          <li>Latency = Propagation + Transmission + Queuing + Processing</li>
+          <li>Bandwidth ≠ Throughput; Bandwidth ≠ inverse of Latency</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+<hr class="section-hr">
+
+
+  <!-- PREV/NEXT NAV -->
+  <div class="prev-next">
+    <a href="../index.html" class="nav-btn">← Home</a>
+    <a href="ch02-types-topologies.html" class="nav-btn primary">Next: Types & Topologies →</a>
+  </div>
+
+</div>
+</main>
+
+<!-- FLOATING MODE PANEL -->
+<div id="mode-panel">
+  <button class="mode-btn active" data-mode="all">📚 All</button>
+  <button class="mode-btn uni-btn" data-mode="uni">🎓 Uni</button>
+  <button class="mode-btn gate-btn" data-mode="gate">⚡ GATE</button>
+  <button class="mode-btn adv-btn" data-mode="advanced">🔬 Adv</button>
+</div>
+
+<!-- TTS FLOATING PANEL -->
+<div id="tts-panel">
+  <div class="tts-controls">
+    <button class="tts-btn" id="tts-play" title="Play/Pause">▶</button>
+    <button class="tts-btn" id="tts-stop" title="Stop">⏹</button>
+    <div class="tts-speed"><span>Speed</span><input type="range" id="tts-rate" min="0.5" max="2" step="0.1" value="1"><span id="tts-rate-label">1.0x</span></div>
+  </div>
+  <div class="tts-voice"><select id="tts-voice-select"><option>Loading voices…</option></select></div>
+</div>
+
+<!-- SEARCH MODAL -->
+<div id="search-modal">
+  <div class="search-box">
+    <div class="search-input-wrap"><span class="s-icon">🔍</span><input id="search-input" type="text" placeholder="Search chapters, topics, protocols…" autocomplete="off"></div>
+    <div id="search-results"></div>
+    <div class="search-hint"><span><kbd>↵</kbd> to navigate</span><span><kbd>Esc</kbd> to close</span><span><kbd>Ctrl+K</kbd> to open</span></div>
+  </div>
+</div>
+
+<!-- MOBILE NAV -->
+<nav id="mobile-nav">
+  <button class="mobile-nav-btn" onclick="SidebarManager?.toggle()"><span class="icon">☰</span>Menu</button>
+  <a href="../index.html" class="mobile-nav-btn"><span class="icon">🏠</span>Home</a>
+  <a href="ch01-fundamentals.html" class="mobile-nav-btn active"><span class="icon">📖</span>Chapters</a>
+  <a href="../exams/mock-exam.html" class="mobile-nav-btn"><span class="icon">📝</span>Exams</a>
+  <button class="mobile-nav-btn" onclick="SearchManager?.open()"><span class="icon">🔍</span>Search</button>
+</nav>
+
+<div id="toast-container"></div>
+<script src="../assets/js/state.js"></script>
+<script src="../assets/js/core.js"></script>
+<script src="../assets/js/modes.js"></script>
+<script src="../assets/js/tts.js"></script>
+<script src="../assets/js/timer-settings.js"></script>
+<script src="../assets/js/timer.js"></script>
+<script src="../assets/js/timer-analytics.js"></script>
+<script src="../assets/js/timer-notifications.js"></script>
+<script src="../assets/js/timer-ui.js"></script>
+<script src="../assets/js/print.js"></script>
+<script src="../assets/js/notes.js"></script>
+<script src="../assets/js/glossary.js"></script>
+</body>
+</html>

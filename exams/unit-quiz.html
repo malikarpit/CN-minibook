@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<!-- ⚡ Arpit | CN MiniBook 2026 -->
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="Arpit">
+<meta name="description" content="Custom Chapter-wise Quiz Builder — Computer Networks MiniBook. Practice focused questions by chapter, study group, and difficulty.">
+<title>Chapter Quizzes | CN MiniBook 🌐 Arpit</title>
+<link rel="manifest" href="../manifest.json">
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/animations.css">
+<link rel="stylesheet" href="../assets/css/timer.css">
+<link rel="stylesheet" href="../assets/css/chapters.css">
+<style>
+.builder-card {
+  background: var(--bg-card);
+  border: 1px solid var(--bd-default);
+  border-radius: var(--r-xl);
+  padding: 1.75rem;
+  margin-bottom: 2rem;
+}
+.group-presets {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  margin: 1.25rem 0;
+}
+.preset-btn {
+  background: var(--bg-elevated);
+  border: 1px solid var(--bd-default);
+  border-radius: var(--r-lg);
+  padding: 1rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all var(--t-fast);
+  color: var(--tx-primary);
+}
+.preset-btn:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.preset-btn.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+.preset-title {
+  font-weight: 700;
+  color: var(--accent-light);
+  margin-bottom: 0.25rem;
+}
+.preset-desc {
+  font-size: 0.8rem;
+  color: var(--tx-muted);
+}
+.chapter-checkboxes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+.ch-check-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--tx-secondary);
+  background: var(--bg-elevated);
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--r-md);
+  border: 1px solid var(--bd-default);
+  cursor: pointer;
+}
+.quiz-controls {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+.count-select {
+  padding: 0.5rem 1rem;
+  border-radius: var(--r-md);
+  background: var(--bg-elevated);
+  border: 1px solid var(--bd-default);
+  color: var(--tx-primary);
+  font-size: 0.9rem;
+}
+.quiz-active-area {
+  display: none;
+}
+.quiz-active-area.show {
+  display: block;
+}
+.question-card {
+  background: var(--bg-card);
+  border: 1px solid var(--bd-default);
+  border-radius: var(--r-lg);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.q-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.8rem;
+  color: var(--tx-muted);
+}
+.q-text {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--tx-primary);
+  margin-bottom: 1.25rem;
+  line-height: 1.5;
+}
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.option-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--r-md);
+  border: 1px solid var(--bd-default);
+  background: var(--bg-elevated);
+  cursor: pointer;
+  transition: all var(--t-fast);
+}
+.option-label:hover {
+  border-color: var(--accent-light);
+  background: var(--accent-soft);
+}
+.option-label.correct {
+  border-color: #10b981 !important;
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #10b981 !important;
+}
+.option-label.wrong {
+  border-color: #ef4444 !important;
+  background: rgba(239, 68, 68, 0.15) !important;
+  color: #ef4444 !important;
+}
+.q-solution {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  border-radius: var(--r-md);
+  padding: 1rem;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--tx-secondary);
+}
+.quiz-summary-card {
+  display: none;
+  background: var(--bg-card);
+  border: 2px solid var(--accent);
+  border-radius: var(--r-xl);
+  padding: 2rem;
+  text-align: center;
+  margin: 2rem 0;
+}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<!-- HEADER -->
+<header id="main-header">
+  <div class="header-left">
+    <button id="sidebar-toggle" class="icon-btn" title="Toggle Sidebar (S)">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </button>
+    <div class="brand-logo">
+      <div class="brand-icon">🌐</div>
+      <div class="brand-text"><span class="main">CN MiniBook</span><span class="sub">Computer Networks</span></div>
+    </div>
+  </div>
+  <span class="header-chapter-title">Chapter Quizzes</span>
+  <div class="header-right">
+    <button id="search-btn" class="icon-btn" title="Search (Ctrl+K)">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.35-4.35"></path></svg>
+    </button>
+    <button id="tts-toggle" class="icon-btn" title="Read Aloud">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"></path></svg>
+    </button>
+    <button id="print-btn" title="Print / Save as PDF (Ctrl+P)" aria-label="Print"><svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="flex-shrink:0"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg><span class="print-label">PDF</span></button>
+    <button id="reading-mode-btn" class="icon-btn" title="Reading Mode (F)" aria-pressed="false" aria-label="Toggle reading mode">📖</button>
+    <button id="theme-toggle" class="icon-btn" title="Toggle Theme (T)"></button>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<div id="sidebar-overlay"></div>
+<aside id="sidebar">
+  <nav class="sidebar-nav">
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Navigation</div>
+      <a href="../index.html" class="sidebar-link"><span class="link-icon">🏠</span>Home</a>
+      <a href="../progress.html" class="sidebar-link"><span class="link-icon">📊</span>Dashboard</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Exams</div>
+      <a href="mock-exam.html" class="sidebar-link"><span class="link-icon">📝</span>100 MCQ Mock Exam</a>
+      <a href="unit-quiz.html" class="sidebar-link active"><span class="link-icon">📋</span>Chapter Quizzes</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">All Chapters</div>
+      <a href="../chapters/ch01-fundamentals.html" class="sidebar-link"><span class="link-icon">📡</span>Ch 1 — Fundamentals</a>
+      <a href="../chapters/ch02-types-topologies.html" class="sidebar-link"><span class="link-icon">🔗</span>Ch 2 — Types &amp; Topologies</a>
+      <a href="../chapters/ch03-models-addressing.html" class="sidebar-link"><span class="link-icon">📦</span>Ch 3 — Models &amp; Addressing</a>
+      <a href="../chapters/ch04-devices-sdn.html" class="sidebar-link"><span class="link-icon">🔌</span>Ch 4 — Devices &amp; SDN</a>
+      <a href="../chapters/ch05-physical-fundamentals.html" class="sidebar-link"><span class="link-icon">📶</span>Ch 5 — Physical Fundamentals</a>
+      <a href="../chapters/ch06-media-signaling.html" class="sidebar-link"><span class="link-icon">🔌</span>Ch 6 — Media &amp; Line Coding</a>
+      <a href="../chapters/ch07-modulation-switching.html" class="sidebar-link"><span class="link-icon">📻</span>Ch 7 — Modulation &amp; Switching</a>
+      <a href="../chapters/ch08-dll-fundamentals.html" class="sidebar-link"><span class="link-icon">🔧</span>Ch 8 — DLL Fundamentals</a>
+      <a href="../chapters/ch09-protocols-sliding.html" class="sidebar-link"><span class="link-icon">🔄</span>Ch 9 — Protocols &amp; Sliding Window</a>
+      <a href="../chapters/ch10-mac-ethernet.html" class="sidebar-link"><span class="link-icon">🌐</span>Ch 10 — MAC &amp; Ethernet</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Bookmarks</div>
+      <div id="bookmarks-list"></div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">My Notes</div>
+      <div id="notes-sidebar-list"></div>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-brand-mark"><div class="mark">🌐</div><span>Arpit · CN MiniBook 2026</span></div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main id="main-content">
+<div class="content-inner">
+
+  <!-- CHAPTER HERO -->
+  <div class="chapter-hero">
+    <div class="chapter-breadcrumb">
+      <a href="../index.html">Home</a><span>›</span><span>Exams</span><span>›</span><span style="color:var(--tx-primary)">Chapter Quizzes</span>
+    </div>
+    <div class="chapter-num">📋 Custom Quiz Engine</div>
+    <h1 class="chapter-title">Chapter-wise Quiz Builder</h1>
+    <div class="chapter-meta">
+      <span>🎯 Targeted Practice</span>
+      <span>📚 10 Chapters</span>
+      <span>⚡ 6 Study Groups</span>
+      <span>📝 Instant Answers & Explanations</span>
+    </div>
+  </div>
+
+  <!-- BUILDER CARD -->
+  <div class="builder-card" id="builder-card">
+    <h3 style="color:var(--accent-light); margin-bottom:0.75rem;">1. Choose a Study Group Preset</h3>
+    <div class="group-presets">
+      <button class="preset-btn" onclick="applyPreset([1, 2, 3, 4, 5, 6, 7])" style="border-color:var(--uni-b-hd); background:var(--uni-bg-hd);">
+        <div class="preset-title" style="color:var(--uni-text);">🎓 Uni Unit I: Intro & Physical</div>
+        <div class="preset-desc">Ch 1 to 7 (Networks, Topologies, Models, Devices, Media, Signaling, Modulation)</div>
+      </button>
+      <button class="preset-btn" onclick="applyPreset([8, 9, 10])" style="border-color:var(--uni-b-hd); background:var(--uni-bg-hd);">
+        <div class="preset-title" style="color:var(--uni-text);">🎓 Uni Unit II: Data Link Layer</div>
+        <div class="preset-desc">Ch 8 to 10 (Framing, Error Control, Sliding Window ARQ, MAC & Ethernet)</div>
+      </button>
+      <button class="preset-btn" onclick="applyPreset([1, 2])">
+        <div class="preset-title">Group A: Foundations</div>
+        <div class="preset-desc">Ch 1 (Fundamentals) & Ch 2 (Types & Topologies)</div>
+      </button>
+      <button class="preset-btn" onclick="applyPreset([3, 4])">
+        <div class="preset-title">Group B: Architecture & Devices</div>
+        <div class="preset-desc">Ch 3 (OSI/TCP/IP) & Ch 4 (Devices & SDN)</div>
+      </button>
+      <button class="preset-btn" onclick="applyPreset([5, 6, 7])">
+        <div class="preset-title">Group C: Physical & Media</div>
+        <div class="preset-desc">Ch 5 (Nyquist/Shannon), Ch 6 (Media/Coding), Ch 7 (Modulation)</div>
+      </button>
+      <button class="preset-btn" onclick="applyPreset([8, 9, 10])">
+        <div class="preset-title">Group D: Data Link Suite</div>
+        <div class="preset-desc">Ch 8 (CRC/Hamming), Ch 9 (Sliding Window), Ch 10 (MAC/Ethernet)</div>
+      </button>
+    </div>
+
+    <h3 style="color:var(--accent-light); margin-top:1.5rem; margin-bottom:0.75rem;">2. Or Manually Select Chapters</h3>
+    <div class="chapter-checkboxes">
+      <label class="ch-check-label"><input type="checkbox" class="ch-box" value="1" checked> Ch 1: Fundamentals</label>
+      <label class="ch-check-label"><input type="checkbox" class="ch-box" value="2" checked> Ch 2: Topologies</label>
+      <label class="ch-check-label"><input type="checkbox" class="ch-box" value="3"> Ch 3: Models & Addr</label>
+      <label class="ch-check-label"><input type="checkbox" class="ch-box" value="4"> Ch 4: Devices & SDN</label>
+      <label class="ch-check-label"><input type="checkbox" class="ch-box" value="5"> Ch 5: Physical Fund.</label>
+      <label class="ch-check-label"><input type="checkbox" class="ch-box" value="6"> Ch 6: Media & Coding</label>
+      <label class="ch-check-label"><input type="checkbox" class="ch-box" value="7"> Ch 7: Modulation</label>
+      <label class="ch-check-label"><input type="checkbox" class="ch-box" value="8"> Ch 8: DLL & Errors</label>
+      <label class="ch-check-label"><input type="checkbox" class="ch-box" value="9"> Ch 9: Sliding Window</label>
+      <label class="ch-check-label"><input type="checkbox" class="ch-box" value="10"> Ch 10: MAC & Ethernet</label>
+    </div>
+
+    <div class="quiz-controls">
+      <div>
+        <label style="font-weight:600; color:var(--tx-secondary); margin-right:0.5rem;">Number of Questions:</label>
+        <select id="q-count-select" class="count-select">
+          <option value="10">10 Questions</option>
+          <option value="15">15 Questions</option>
+          <option value="20">20 Questions</option>
+          <option value="all">All Available</option>
+        </select>
+      </div>
+      <button class="nav-btn primary" onclick="startCustomQuiz()" style="cursor:pointer;">🚀 Generate Quiz</button>
+      <button class="nav-btn" onclick="selectAllChapters(true)" style="cursor:pointer;">Select All</button>
+      <button class="nav-btn" onclick="selectAllChapters(false)" style="cursor:pointer;">Clear All</button>
+    </div>
+  </div>
+
+  <!-- ACTIVE QUIZ AREA -->
+  <div class="quiz-active-area" id="quiz-active-area">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+      <h2 id="active-quiz-title" style="color:var(--accent-light);">Custom Quiz</h2>
+      <button class="nav-btn" onclick="exitQuiz()" style="cursor:pointer;">← Configure New Quiz</button>
+    </div>
+    <div id="quiz-questions-list"></div>
+  </div>
+
+  <!-- QUIZ SUMMARY -->
+  <div class="quiz-summary-card" id="quiz-summary-card">
+    <h2 style="color:var(--accent-light); margin-bottom:0.5rem;">🎉 Quiz Completed!</h2>
+    <p style="color:var(--tx-secondary); margin-bottom:1.5rem;" id="quiz-summary-text"></p>
+    <button class="nav-btn primary" onclick="exitQuiz()" style="cursor:pointer; display:inline-flex;">Create Another Quiz</button>
+  </div>
+
+  <!-- PREV/NEXT NAV -->
+  <div class="prev-next">
+    <a href="mock-exam.html" class="nav-btn">← 100 MCQ Mock Exam</a>
+    <a href="../index.html" class="nav-btn primary">🏠 Home</a>
+  </div>
+
+</div>
+</main>
+
+<!-- FLOATING MODE PANEL -->
+<div id="mode-panel">
+  <button class="mode-btn active" data-mode="all">📚 All</button>
+  <button class="mode-btn uni-btn" data-mode="uni">🎓 Uni</button>
+  <button class="mode-btn gate-btn" data-mode="gate">⚡ GATE</button>
+  <button class="mode-btn adv-btn" data-mode="advanced">🔬 Adv</button>
+</div>
+
+<!-- TTS FLOATING PANEL -->
+<div id="tts-panel">
+  <div class="tts-controls">
+    <button class="tts-btn" id="tts-play" title="Play/Pause">▶</button>
+    <button class="tts-btn" id="tts-stop" title="Stop">⏹</button>
+    <div class="tts-speed"><span>Speed</span><input type="range" id="tts-rate" min="0.5" max="2" step="0.1" value="1"><span id="tts-rate-label">1.0x</span></div>
+  </div>
+  <div class="tts-voice"><select id="tts-voice-select"><option>Loading voices…</option></select></div>
+</div>
+
+<!-- SEARCH MODAL -->
+<div id="search-modal">
+  <div class="search-box">
+    <div class="search-input-wrap"><span class="s-icon">🔍</span><input id="search-input" type="text" placeholder="Search chapters, topics, protocols…" autocomplete="off"></div>
+    <div id="search-results"></div>
+    <div class="search-hint"><span><kbd>↵</kbd> to navigate</span><span><kbd>Esc</kbd> to close</span><span><kbd>Ctrl+K</kbd> to open</span></div>
+  </div>
+</div>
+
+<!-- MOBILE NAV -->
+<nav id="mobile-nav">
+  <button class="mobile-nav-btn" onclick="SidebarManager?.toggle()"><span class="icon">☰</span>Menu</button>
+  <a href="../index.html" class="mobile-nav-btn"><span class="icon">🏠</span>Home</a>
+  <a href="../chapters/ch01-fundamentals.html" class="mobile-nav-btn"><span class="icon">📖</span>Chapters</a>
+  <a href="mock-exam.html" class="mobile-nav-btn"><span class="icon">📝</span>Exams</a>
+  <button class="mobile-nav-btn" onclick="SearchManager?.open()"><span class="icon">🔍</span>Search</button>
+</nav>
+
+<div id="toast-container"></div>
+<script src="../assets/js/state.js"></script>
+<script src="../assets/js/core.js"></script>
+<script src="../assets/js/modes.js"></script>
+<script src="../assets/js/tts.js"></script>
+<script src="../assets/js/timer-settings.js"></script>
+<script src="../assets/js/timer.js"></script>
+<script src="../assets/js/timer-analytics.js"></script>
+<script src="../assets/js/timer-notifications.js"></script>
+<script src="../assets/js/timer-ui.js"></script>
+<script src="../assets/js/print.js"></script>
+<script src="../assets/js/notes.js"></script>
+<script src="../assets/js/glossary.js"></script>
+<script src="../assets/js/quiz-data.js"></script>
+<script>
+function applyPreset(chapterList) {
+  document.querySelectorAll('.ch-box').forEach(box => {
+    box.checked = chapterList.includes(parseInt(box.value));
+  });
+  if (window.ToastManager) {
+    ToastManager.show(`Preset loaded: Chapters ${chapterList.join(', ')}`);
+  }
+}
+
+function selectAllChapters(status) {
+  document.querySelectorAll('.ch-box').forEach(box => box.checked = status);
+}
+
+function startCustomQuiz() {
+  const selectedChs = Array.from(document.querySelectorAll('.ch-box:checked')).map(b => parseInt(b.value));
+  if (selectedChs.length === 0) {
+    alert('Please select at least one chapter.');
+    return;
+  }
+
+  let pool = CN_QUIZ_DATA.filter(q => selectedChs.includes(q.chapter));
+  // Shuffle
+  pool.sort(() => Math.random() - 0.5);
+
+  const countVal = document.getElementById('q-count-select').value;
+  if (countVal !== 'all') {
+    pool = pool.slice(0, parseInt(countVal));
+  }
+
+  if (pool.length === 0) {
+    alert('No questions found matching criteria.');
+    return;
+  }
+
+  document.getElementById('builder-card').style.display = 'none';
+  document.getElementById('quiz-summary-card').style.display = 'none';
+  const activeArea = document.getElementById('quiz-active-area');
+  activeArea.classList.add('show');
+  document.getElementById('active-quiz-title').textContent = `Quiz: Chapters ${selectedChs.join(', ')} (${pool.length} Questions)`;
+
+  renderQuizList(pool);
+}
+
+function renderQuizList(questions) {
+  const list = document.getElementById('quiz-questions-list');
+  list.innerHTML = '';
+
+  questions.forEach((q, index) => {
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.id = `qz-card-${q.id}`;
+
+    const optsHtml = q.options.map((opt, idx) => `
+      <label class="option-label" id="qz-opt-${q.id}-${idx}" onclick="answerQuizQ(${q.id}, ${idx}, ${q.ans})">
+        <input type="radio" name="qz-${q.id}" value="${idx}">
+        <span><strong>${['A', 'B', 'C', 'D'][idx]}.</strong> ${opt}</span>
+      </label>
+    `).join('');
+
+    card.innerHTML = `
+      <div class="q-meta">
+        <span>Question ${index + 1} of ${questions.length} · ${q.unit || ('Ch ' + q.chapter)} (Ch ${q.chapter})</span>
+        ${q.uni ? `<span class="uni-syllabus-badge" title="Official University Syllabus Topic">🎓 ${q.topic || 'Uni Syllabus'}</span>` : ''}
+        <span class="diff-badge ${q.diff === 'Easy' ? 'diff-easy' : q.diff === 'Moderate' ? 'diff-mod' : 'diff-hard'}">${q.diff}</span>
+      </div>
+      <div class="q-text">${q.q}</div>
+      <div class="options-list">${optsHtml}</div>
+      <div class="q-solution" id="qz-sol-${q.id}" style="display:none;">
+        <strong>Explanation:</strong> ${q.exp}
+      </div>
+    `;
+    list.appendChild(card);
+  });
+}
+
+function answerQuizQ(qid, chosenIdx, correctIdx) {
+  // Disable options for this question
+  const inputs = document.querySelectorAll(`input[name="qz-${qid}"]`);
+  inputs.forEach(inp => inp.disabled = true);
+
+  const chosenLabel = document.getElementById(`qz-opt-${qid}-${chosenIdx}`);
+  const correctLabel = document.getElementById(`qz-opt-${qid}-${correctIdx}`);
+
+  if (chosenIdx === correctIdx) {
+    chosenLabel.classList.add('correct');
+  } else {
+    chosenLabel.classList.add('wrong');
+    correctLabel.classList.add('correct');
+  }
+
+  document.getElementById(`qz-sol-${qid}`).style.display = 'block';
+}
+
+function exitQuiz() {
+  document.getElementById('builder-card').style.display = 'block';
+  document.getElementById('quiz-active-area').classList.remove('show');
+  document.getElementById('quiz-summary-card').style.display = 'none';
+}
+</script>
+</body>
+</html>

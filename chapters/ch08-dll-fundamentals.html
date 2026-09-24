@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<!-- ⚡ Arpit | CN MiniBook 2026 -->
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="Arpit">
+<meta name="description" content="Chapter 8: DLL Fundamentals, Framing & Error Handling — CN MiniBook. Character count, byte stuffing, bit stuffing, CRC polynomial division, Hamming code, Checksum, 2D Parity.">
+<title>Ch 8 — DLL Fundamentals & Error Handling | CN MiniBook 🌐 Arpit</title>
+<link rel="manifest" href="../manifest.json">
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/animations.css">
+<link rel="stylesheet" href="../assets/css/timer.css">
+<link rel="stylesheet" href="../assets/css/chapters.css">
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<!-- HEADER -->
+<header id="main-header">
+  <div class="header-left">
+    <button id="sidebar-toggle" class="icon-btn" title="Toggle Sidebar (S)">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </button>
+    <div class="brand-logo">
+      <div class="brand-icon">🌐</div>
+      <div class="brand-text"><span class="main">CN MiniBook</span><span class="sub">Computer Networks</span></div>
+    </div>
+  </div>
+  <span class="header-chapter-title">Ch 8 — DLL Fundamentals & Errors</span>
+  <div class="header-right">
+    <button id="search-btn" class="icon-btn" title="Search (Ctrl+K)">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.35-4.35"></path></svg>
+    </button>
+    <button id="tts-toggle" class="icon-btn" title="Read Aloud">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"></path></svg>
+    </button>
+    <button id="print-btn" title="Print / Save as PDF (Ctrl+P)" aria-label="Print"><svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="flex-shrink:0"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg><span class="print-label">PDF</span></button>
+    <button id="reading-mode-btn" class="icon-btn" title="Reading Mode (F)" aria-pressed="false" aria-label="Toggle reading mode">📖</button>
+    <button id="theme-toggle" class="icon-btn" title="Toggle Theme (T)"></button>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<div id="sidebar-overlay"></div>
+<aside id="sidebar">
+  <nav class="sidebar-nav">
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Navigation</div>
+      <a href="../index.html" class="sidebar-link"><span class="link-icon">🏠</span>Home</a>
+      <a href="../progress.html" class="sidebar-link"><span class="link-icon">📊</span>Dashboard</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Chapter 8 — Sections</div>
+      <a href="#s-dll-role" class="sidebar-link active"><span class="link-icon">🎯</span>8.1 Role of Data Link Layer</a>
+      <a href="#s-dll-services" class="sidebar-link"><span class="link-icon">🤝</span>8.2 Services to Network Layer</a>
+      <a href="#s-dll-design" class="sidebar-link"><span class="link-icon">📐</span>8.3 Major Design Issues</a>
+      <a href="#s-framing-intro" class="sidebar-link"><span class="link-icon">📦</span>8.4 Why Framing?</a>
+      <a href="#s-char-count" class="sidebar-link"><span class="link-icon">🔢</span>8.5 Character Count</a>
+      <a href="#s-byte-stuffing" class="sidebar-link"><span class="link-icon">🔤</span>8.6 Byte Stuffing</a>
+      <a href="#s-bit-stuffing" class="sidebar-link"><span class="link-icon">0️⃣</span>8.7 Bit Stuffing</a>
+      <a href="#s-framing-compare" class="sidebar-link"><span class="link-icon">⚖️</span>8.8 Framing Comparison</a>
+      <a href="#s-error-types" class="sidebar-link"><span class="link-icon">💥</span>8.9 Types of Errors</a>
+      <a href="#s-detect-vs-correct" class="sidebar-link"><span class="link-icon">🛡️</span>8.10 Detect vs Correct</a>
+      <a href="#s-parity" class="sidebar-link"><span class="link-icon">1️⃣</span>8.11 Simple Parity</a>
+      <a href="#s-2d-parity" class="sidebar-link"><span class="link-icon">▦</span>8.12 Two-Dimensional Parity</a>
+      <a href="#s-checksum" class="sidebar-link"><span class="link-icon">➕</span>8.13 Internet Checksum</a>
+      <a href="#s-crc-theory" class="sidebar-link"><span class="link-icon">➗</span>8.14 CRC Theory & Polynomials</a>
+      <a href="#s-crc-step" class="sidebar-link"><span class="link-icon">📝</span>8.15 CRC Division Walkthrough</a>
+      <a href="#s-crc-verify" class="sidebar-link"><span class="link-icon">✅</span>8.16 CRC Receiver Verification</a>
+      <a href="#s-crc-mcq" class="sidebar-link"><span class="link-icon">⚠️</span>8.17 CRC Exam Traps</a>
+      <a href="#s-hamming-intro" class="sidebar-link"><span class="link-icon">📏</span>8.18 Hamming Distance</a>
+      <a href="#s-hamming-code" class="sidebar-link"><span class="link-icon">🔧</span>8.19 Hamming Code Construction</a>
+      <a href="#s-hamming-detect" class="sidebar-link"><span class="link-icon">🎯</span>8.20 Hamming Correction Walkthrough</a>
+      <a href="#s-error-compare" class="sidebar-link"><span class="link-icon">📊</span>8.21 Error Handling Comparison</a>
+      <a href="#s-summary-ch8" class="sidebar-link"><span class="link-icon">🏁</span>8.22 Summary & Exam Traps</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">All Chapters</div>
+      <a href="ch01-fundamentals.html" class="sidebar-link"><span class="link-icon">📡</span>Ch 1 — Fundamentals</a>
+      <a href="ch02-types-topologies.html" class="sidebar-link"><span class="link-icon">🔗</span>Ch 2 — Types &amp; Topologies</a>
+      <a href="ch03-models-addressing.html" class="sidebar-link"><span class="link-icon">📦</span>Ch 3 — Models &amp; Addressing</a>
+      <a href="ch04-devices-sdn.html" class="sidebar-link"><span class="link-icon">🔌</span>Ch 4 — Devices &amp; SDN</a>
+      <a href="ch05-physical-fundamentals.html" class="sidebar-link"><span class="link-icon">📶</span>Ch 5 — Physical Fundamentals</a>
+      <a href="ch06-media-signaling.html" class="sidebar-link"><span class="link-icon">🔌</span>Ch 6 — Media &amp; Line Coding</a>
+      <a href="ch07-modulation-switching.html" class="sidebar-link"><span class="link-icon">📻</span>Ch 7 — Modulation &amp; Switching</a>
+      <a href="ch08-dll-fundamentals.html" class="sidebar-link" style="color:var(--accent-light)"><span class="link-icon">🔧</span>Ch 8 — DLL Fundamentals</a>
+      <a href="ch09-protocols-sliding.html" class="sidebar-link"><span class="link-icon">🔄</span>Ch 9 — Protocols &amp; Sliding Window</a>
+      <a href="ch10-mac-ethernet.html" class="sidebar-link"><span class="link-icon">🌐</span>Ch 10 — MAC &amp; Ethernet</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Exams</div>
+      <a href="../exams/mock-exam.html" class="sidebar-link"><span class="link-icon">📝</span>100 MCQ Mock Exam</a>
+      <a href="../exams/unit-quiz.html" class="sidebar-link"><span class="link-icon">📋</span>Chapter Quizzes</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Bookmarks</div>
+      <div id="bookmarks-list"></div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">My Notes</div>
+      <div id="notes-sidebar-list"></div>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-brand-mark"><div class="mark">🌐</div><span>Arpit · CN MiniBook 2026</span></div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main id="main-content">
+<div class="content-inner">
+
+  <!-- CHAPTER HERO -->
+  <div class="chapter-hero">
+    <div class="chapter-breadcrumb">
+      <a href="../index.html">Home</a><span>›</span><span>Part III — Data Link Layer</span><span>›</span><span style="color:var(--tx-primary)">Chapter 8</span>
+    </div>
+    <div class="chapter-num">🔧 Chapter 8</div>
+    <h1 class="chapter-title">DLL Fundamentals, Framing & Error Handling</h1>
+    <div class="chapter-meta">
+      <span class="chapter-meta-item" style="background:var(--uni-bg-hd); border-color:var(--uni-b-hd); color:var(--uni-text); font-weight:700;">🎓 Uni Unit II: DLL Design & Error Control</span>
+      <span>⏱️ 65 min read</span>
+      <span>📚 22 Sections</span>
+      <span>🎓 Highest-Yield Exam Topic</span>
+      <span>⚡ Bit Stuffing, CRC Division & Hamming Code</span>
+    </div>
+  </div>
+
+  <!-- UNIVERSITY SYLLABUS CALLOUT -->
+  <div class="uni-syllabus-callout">
+    <div class="uni-callout-title">🎓 Official University Syllabus — UNIT II</div>
+    <div><strong>Data Link Layer:</strong> Design issues, framing techniques (byte/bit stuffing), error detection and correction (Parity, Checksum, CRC, Hamming Codes).</div>
+  </div>
+
+  <!-- TABLE OF CONTENTS -->
+  <div class="toc-card">
+    <div class="toc-title"><span>📑</span>Table of Contents</div>
+    <div class="toc-grid">
+      <a href="#s-dll-role" class="toc-item"><span class="toc-num">8.1</span>Role of Data Link Layer</a>
+      <a href="#s-dll-services" class="toc-item"><span class="toc-num">8.2</span>Services to Network Layer</a>
+      <a href="#s-dll-design" class="toc-item"><span class="toc-num">8.3</span>Major Design Issues</a>
+      <a href="#s-framing-intro" class="toc-item"><span class="toc-num">8.4</span>Why Framing?</a>
+      <a href="#s-char-count" class="toc-item"><span class="toc-num">8.5</span>Character Count Framing</a>
+      <a href="#s-byte-stuffing" class="toc-item"><span class="toc-num">8.6</span>Byte / Character Stuffing</a>
+      <a href="#s-bit-stuffing" class="toc-item"><span class="toc-num">8.7</span>Bit Stuffing (Flag 01111110)</a>
+      <a href="#s-framing-compare" class="toc-item"><span class="toc-num">8.8</span>Framing Comparison Table</a>
+      <a href="#s-error-types" class="toc-item"><span class="toc-num">8.9</span>Types of Transmission Errors</a>
+      <a href="#s-detect-vs-correct" class="toc-item"><span class="toc-num">8.10</span>Detection vs Correction</a>
+      <a href="#s-parity" class="toc-item"><span class="toc-num">8.11</span>Simple Parity Check</a>
+      <a href="#s-2d-parity" class="toc-item"><span class="toc-num">8.12</span>Two-Dimensional Parity</a>
+      <a href="#s-checksum" class="toc-item"><span class="toc-num">8.13</span>Internet Checksum</a>
+      <a href="#s-crc-theory" class="toc-item"><span class="toc-num">8.14</span>CRC Theory & Polynomials</a>
+      <a href="#s-crc-step" class="toc-item"><span class="toc-num">8.15</span>CRC Division Walkthrough</a>
+      <a href="#s-crc-verify" class="toc-item"><span class="toc-num">8.16</span>CRC Receiver Verification</a>
+      <a href="#s-crc-mcq" class="toc-item"><span class="toc-num">8.17</span>CRC High-Yield Traps</a>
+      <a href="#s-hamming-intro" class="toc-item"><span class="toc-num">8.18</span>Hamming Distance</a>
+      <a href="#s-hamming-code" class="toc-item"><span class="toc-num">8.19</span>Hamming Code Construction</a>
+      <a href="#s-hamming-detect" class="toc-item"><span class="toc-num">8.20</span>Hamming Correction Walkthrough</a>
+      <a href="#s-error-compare" class="toc-item"><span class="toc-num">8.21</span>Error Handling Comparison</a>
+      <a href="#s-summary-ch8" class="toc-item"><span class="toc-num">8.22</span>Summary & Exam Traps</a>
+    </div>
+  </div>
+
+  <!-- SECTION 8.1: ROLE OF DLL -->
+  <section id="s-dll-role" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 8.1</div>
+      <h2 class="section-title">Role and Position of the Data Link Layer (OSI Layer 2)</h2>
+    </div>
+
+    <p>The Physical Layer provides a raw, unorganized bit-pipe capable of moving electrical, optical, or radio pulses from one machine to another. However, physical communication channels are inherently error-prone: noise, attenuation, and interference cause bits to flip ($0 \to 1$ or $1 \to 0$). Furthermore, physical wires have no concept of where a message starts or ends, nor do they prevent a fast sender from drowning a slow receiver in unbuffered data.</p>
+
+    <div class="def-box">
+      <div class="def-term">Data Link Layer (Layer 2) Mission Statement</div>
+      <p class="def-body">The Data Link Layer transforms a raw, noisy, error-prone physical transmission facility into an <strong>apparently flawless, reliable communication link</strong> for the Network Layer above it. It is responsible for <strong>node-to-node (hop-by-hop)</strong> frame delivery across a single physical link connecting two directly adjacent machines.</p>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 8.2: SERVICES TO NETWORK LAYER -->
+  <section id="s-dll-services" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 8.2</div>
+      <h2 class="section-title">Services Provided to the Network Layer</h2>
+    </div>
+
+    <p>The Data Link Layer offers three distinct classes of service to Layer 3, tailored for different communication environments:</p>
+
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Service Class</th>
+            <th>Acknowledgments?</th>
+            <th>Connection Established?</th>
+            <th>Characteristics & Typical Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Unacknowledged Connectionless</strong></td>
+            <td>❌ No ACKs</td>
+            <td>❌ No Connection</td>
+            <td>Source sends independent frames without establishing a connection. The receiver does not acknowledge receipt. If a frame is lost or damaged by noise, no recovery attempt is made by DLL. <em>Usage:</em> Low-error wired LANs (Ethernet 802.3), real-time speech/video streaming where retransmissions arrive too late.</td>
+          </tr>
+          <tr>
+            <td><strong>2. Acknowledged Connectionless</strong></td>
+            <td>✅ Yes (ACKs)</td>
+            <td>❌ No Connection</td>
+            <td>No logical connection is established beforehand, but each individual frame is explicitly acknowledged by the receiver. If an ACK does not return within a timer interval, the frame is retransmitted. <em>Usage:</em> Highly unreliable wireless channels (Wi-Fi 802.11) where frame drop rates are high.</td>
+          </tr>
+          <tr>
+            <td><strong>3. Acknowledged Connection-Oriented</strong></td>
+            <td>✅ Yes (ACKs)</td>
+            <td>✅ Yes (3 Phases)</td>
+            <td>Guarantees that every frame transmitted is received exactly once, without loss, duplication, or re-ordering. Operates in 3 phases: 1. Connection setup, 2. Ordered data transfer, 3. Teardown. <em>Usage:</em> Legacy WAN links, satellite links, cellular radio data links.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 8.3: MAJOR DESIGN ISSUES -->
+  <section id="s-dll-design" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 8.3</div>
+      <h2 class="section-title">Major Design Issues in Data Link Layer <span class="uni-syllabus-badge">🎓 Uni Unit II: DLL Design Issues</span></h2>
+    </div>
+
+    <p>To provide reliable node-to-node delivery, the Data Link Layer must solve four fundamental engineering design challenges:</p>
+    <ol>
+      <li><strong>Framing:</strong> Breaking the continuous bit stream received from the physical hardware into discrete, identifiable data blocks called <strong>Frames</strong>, and inserting delimiters so the receiver knows where each frame begins and ends.</li>
+      <li><strong>Flow Control:</strong> Regulating the transmission rate to prevent a fast transmitter from overwhelming the limited memory buffer of a slow receiver.</li>
+      <li><strong>Error Control:</strong> Detecting damaged, inverted, duplicate, or missing frames and invoking retransmission mechanisms (ARQ) or error-correcting codes.</li>
+      <li><strong>Medium Access Control (MAC):</strong> In shared-medium broadcast networks (such as Wi-Fi or traditional bus Ethernet), arbitrating which machine has the right to transmit on the wire at any instant.</li>
+    </ol>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 8.4: WHY FRAMING -->
+  <section id="s-framing-intro" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 8.4</div>
+      <h2 class="section-title">Why Framing? (The Frame Delimiting Problem) <span class="uni-syllabus-badge">🎓 Uni Unit II: Framing</span></h2>
+    </div>
+
+    <p>The Physical Layer delivers data as an uninterrupted, continuous stream of electrical or optical pulses ($0\text{s}$ and $1\text{s}$). If a sender transmits three separate messages back-to-back, the receiver's physical layer simply outputs an undifferentiated 10,000-bit string:</p>
+    <pre style="background:var(--bg-elevated); padding:0.75rem; border-radius:8px; color:var(--accent-light);">...0110100101110101011001010111001001101110011001010111010001100011...</pre>
+    <p>How does the receiver know where Frame 1 ends and Frame 2 begins? If an error flips a single bit, how can the receiver verify the boundary? This requires <strong>Framing Protocols</strong>.</p>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 8.5: CHARACTER COUNT -->
+  <section id="s-char-count" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 8.5</div>
+      <h2 class="section-title">Framing Method 1: Character Count</h2>
+    </div>
+
+    <p>In this simple approach, the frame header contains a fixed-size integer field specifying the <strong>total number of characters (bytes) in the frame</strong>, including the count byte itself.</p>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 8.1: Normal Character Count Operation</div>
+      <pre>
+   Frame 1 (5 bytes)       Frame 2 (5 bytes)       Frame 3 (8 bytes)
+   +---+---+---+---+---+   +---+---+---+---+---+   +---+---+---+---+---+---+---+---+
+   | 5 | A | B | C | D |   | 5 | E | F | G | H |   | 8 | I | J | K | L | M | N | O |
+   +---+---+---+---+---+   +---+---+---+---+---+   +---+---+---+---+---+---+---+---+
+     ^                       ^                       ^
+   Count byte = 5          Count byte = 5          Count byte = 8
+      </pre>
+    </div>
+
+    <div class="callout danger">
+      <div class="callout-title">⚠️ The Fatal Flaw of Character Count: Catastrophic Desynchronization</div>
+      <p>If a transmission error corrupts the count byte of Frame 2 (e.g., flipping the $5$ to a $7$), the receiver expects Frame 2 to be 7 bytes long. It reads past the end of Frame 2 and interprets the character <code>J</code> as the count field of Frame 3! Even if checksums detect the error, the receiver <strong>has completely lost frame synchronization and cannot find the start of the next frame</strong>. For this reason, character count is virtually never used alone in modern networks.</p>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 8.6: BYTE STUFFING -->
+  <section id="s-byte-stuffing" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 8.6</div>
+      <h2 class="section-title">Framing Method 2: Byte / Character Stuffing</h2>
+    </div>
+
+    <p>To overcome the desynchronization vulnerability of character counting, modern framing protocols mark the start and end of every frame using a special reserved delimiter byte called a <strong>FLAG byte</strong> (e.g., ASCII `0x7E`).</p>
+
+    <div class="def-box">
+      <div class="def-term">The Framing Dilemma: Transparency</div>
+      <p class="def-body">What happens if the user's data payload (e.g., an executable binary file or a JPEG image) naturally contains the exact same byte pattern as the reserved <strong>FLAG</strong> byte? The receiver would prematurely mistake the data byte for the end of the frame, truncating the message!</p>
+    </div>
+
+    <h3>The Escape Byte (ESC) Mechanism</h3>
+    <p>To achieve complete <strong>data transparency</strong>, the sender's DLL searches the payload before transmission. Whenever it encounters a byte matching <code>FLAG</code> or <code>ESC</code>, it inserts ("stuffs") an <strong>Escape byte (ESC)</strong> immediately in front of it.</p>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 8.2: Byte Stuffing and Unstuffing Rules</div>
+      <pre>
+   Rule 1: If data contains FLAG:  Sender transmits -> [ ESC ] [ FLAG ]
+   Rule 2: If data contains ESC:   Sender transmits -> [ ESC ] [ ESC ]
+
+   ORIGINAL DATA PAYLOAD:
+   [ A ] [ B ] [ FLAG ] [ C ] [ ESC ] [ D ]
+
+   AFTER SENDER BYTE STUFFING (Transmitted Frame):
+   [ FLAG ] [ A ] [ B ] [ ESC ] [ FLAG ] [ C ] [ ESC ] [ ESC ] [ D ] [ FLAG ]
+     ^^^^                 ^^^^                 ^^^^                  ^^^^
+     Header Delimiter     Stuffed Byte         Stuffed Byte          Trailer Delimiter
+
+   RECEIVER UNSTUFFING:
+   Whenever the receiver sees an [ ESC ] byte, it strips the ESC and treats the
+   immediately following byte as pure data! The original payload is restored perfectly!
+      </pre>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 8.7: BIT STUFFING -->
+  <section id="s-bit-stuffing" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 8.7</div>
+      <h2 class="section-title">Framing Method 3: Bit Stuffing (The 01111110 Flag)</h2>
+    </div>
+
+    <p>While byte stuffing works for character-oriented protocols, modern high-speed networks are <strong>bit-oriented</strong> (data consists of arbitrary arbitrary-length bit streams, not fixed 8-bit bytes). The universal standard for bit-oriented framing (used in HDLC, SDLC, and PPP) is <strong>Bit Stuffing</strong>.</p>
+
+    <div class="def-box">
+      <div class="def-term">Bit Stuffing Standard Rule (High-Yield GATE Concept)</div>
+      <p class="def-body">
+        • <strong>Frame Delimiter:</strong> Every frame begins and ends with the exact 8-bit pattern: <code>01111110</code> (six consecutive $1\text{s}$ flanked by zeros).<br>
+        • <strong>Sender Rule:</strong> Whenever the sender's data link layer detects <strong>five consecutive $1\text{s}$</strong> in the data stream, it <strong>automatically stuffs a $0$ bit</strong> immediately following the fifth $1$, regardless of whether the next bit is a $0$ or a $1$!<br>
+        • <strong>Receiver Rule:</strong> Whenever the receiver sees five consecutive $1\text{s}$ followed by a $0$ bit, it <strong>automatically discards (destuffs) the $0$ bit</strong>, restoring the original data bit stream perfectly.
+      </p>
+    </div>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 8.3: Bit Stuffing Step-by-Step Walkthrough</div>
+      <pre>
+   ORIGINAL DATA STREAM:
+   0 1 1 0 1 1 1 1 1 1 0 1 1 1 1 1 0 0 1 1 0
+                     ^             ^
+             (Six 1s here)   (Five 1s here)
+
+   AFTER BIT STUFFING (Transmitted on wire):
+   [01111110] 0 1 1 0 1 1 1 1 1 (0) 1 0 1 1 1 1 1 (0) 0 0 1 1 0 [01111110]
+     FLAG                       ^                 ^                 FLAG
+                          Stuffed 0          Stuffed 0
+      </pre>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title">💡 How Does the Receiver Distinguish Data from Flag?</div>
+      <p>When the receiver encounters five consecutive $1\text{s}$ on the wire, it inspects the 6th and 7th bits:<br>
+      • If 6th bit is <strong>0</strong>: It was a stuffed bit! Discard the 0 and continue reading data.<br>
+      • If 6th bit is <strong>1</strong> and 7th bit is <strong>0</strong> (Pattern <code>1111110</code>): It has found a legitimate <strong>FLAG delimiter</strong>!<br>
+      • If 6th bit is <strong>1</strong> and 7th bit is <strong>1</strong> (Pattern <code>1111111</code>): This indicates a transmission error or line abort signal!</p>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 8.8: FRAMING COMPARISON -->
+  <section id="s-framing-compare" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 8.8</div>
+      <h2 class="section-title">Master Framing Techniques Comparison</h2>
+    </div>
+
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Framing Method</th>
+            <th>Delimiter Used</th>
+            <th>Overhead</th>
+            <th>Error Resilience</th>
+            <th>Primary Application</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Character Count</strong></td>
+            <td>Length byte in header</td>
+            <td>Low (1 or 2 bytes)</td>
+            <td><strong>Terrible</strong> (Count error causes catastrophic desync).</td>
+            <td>Rarely used alone.</td>
+          </tr>
+          <tr>
+            <td><strong>Byte Stuffing</strong></td>
+            <td>Reserved FLAG byte (`0x7E`) + ESC byte</td>
+            <td>Variable (Increases if payload contains many flags/ESCs).</td>
+            <td>Excellent (Resynchronizes at next FLAG).</td>
+            <td>PPP (Point-to-Point Protocol), BISYNC.</td>
+          </tr>
+          <tr>
+            <td><strong>Bit Stuffing</strong></td>
+            <td>Bit pattern `01111110`</td>
+            <td>Very low (Only 1 bit added per five consecutive 1s).</td>
+            <td><strong>Optimal</strong> (Fast hardware implementation).</td>
+            <td>HDLC, SDLC, USB, modern Layer 2 links.</td>
+          </tr>
+          <tr>
+            <td><strong>Coding Violations</strong></td>
+            <td>Invalid line signal states (e.g., High-High in Manchester)</td>
+            <td><strong>Zero bit overhead!</strong></td>
+            <td>Excellent (Physical delimiter).</td>
+            <td>IEEE 802.3 Ethernet, IEEE 802.5 Token Ring.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 8.9: ERROR TYPES -->
+  <section id="s-error-types" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 8.9</div>
+      <h2 class="section-title">Types of Transmission Errors</h2>
+    </div>
+
+    <p>An electromagnetic error occurs when a transmitted bit is inverted during transit ($0 \to 1$ or $1 \to 0$). Errors are classified into two broad categories:</p>
+
+    <div class="def-box">
+      <div class="def-term">Single-Bit Errors vs Burst Errors</div>
+      <p class="def-body">
+        • <strong>Single-Bit Error:</strong> Only 1 solitary bit in a given data unit (byte or packet) is corrupted, while all surrounding bits remain pristine. Rare in high-speed networks because noise durations typically exceed single-bit time intervals.<br>
+        • <strong>Burst Error:</strong> Two or more corrupt bits exist within the data unit, separated by some span of bits.<br>
+        • <strong>Burst Error Length:</strong> Measured from the <strong>first corrupted bit to the last corrupted bit</strong> inclusive, even if some intermediate bits within the span arrived uncorrupted!
+      </p>
+    </div>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 8.4: Burst Error Length Example</div>
+      <pre>
+   Sent bits:      0  1  0  0  0  1  0  0  1  1  0  1
+   Received bits:  0 [0] 0  1  0 [0] 0  0  1  1  0  1
+                      ^           ^
+                    First       Last
+                    Error       Error
+   👉 Burst length = from bit position 2 to bit position 6 = 5 bits long!
+      </pre>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 8.10: DETECT VS CORRECT -->
+  <section id="s-detect-vs-correct" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 8.10</div>
+      <h2 class="section-title">Error Detection vs Error Correction (The Redundancy Trade-Off) <span class="uni-syllabus-badge">🎓 Uni Unit II: Error Detection & Correction</span></h2>
+    </div>
+
+    <p>All error handling mechanisms rely on <strong>Redundancy</strong>: transmitting extra check bits along with the data bits so that the receiver can verify message integrity.</p>
+
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Strategy</th>
+            <th>Mechanism</th>
+            <th>Overhead & Bits Needed</th>
+            <th>When is it Preferred?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Error Detection + Retransmission (ARQ)</strong></td>
+            <td>Receiver detects errors using check bits (e.g., CRC). If an error is detected, the frame is discarded and the sender retransmits it.</td>
+            <td><strong>Very low overhead.</strong> Requires only a few check bits (e.g., 32 bits for CRC-32 on a 1500-byte frame).</td>
+            <td>Low-latency, reliable channels where retransmissions are fast and inexpensive (terrestrial wired LANs, modern fiber).</td>
+          </tr>
+          <tr>
+            <td><strong>Forward Error Correction (FEC)</strong></td>
+            <td>The check bits carry sufficient mathematical information for the receiver to deduce both that an error occurred AND exactly which bit position was flipped, correcting it locally without retransmission.</td>
+            <td><strong>High overhead.</strong> Requires substantial redundant parity bits (e.g., Hamming code, Reed-Solomon).</td>
+            <td>Channels where retransmission is impossible or prohibitively expensive: deep-space probes (Voyager), real-time broadcast TV, undersea cables, and noisy satellite links.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 8.11: PARITY -->
+  <section id="s-parity" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 8.11</div>
+      <h2 class="section-title">Error Detection 1: Simple Parity Check</h2>
+    </div>
+
+    <p>The simplest error detection scheme appends a single <strong>Parity Bit</strong> to a block of data bits to make the total count of $1\text{s}$ either even or odd.</p>
+
+    <div class="def-box">
+      <div class="def-term">Even Parity vs Odd Parity</div>
+      <p class="def-body">
+        • <strong>Even Parity:</strong> Parity bit is set such that the total number of $1\text{s}$ in the codeword (data + parity) is <strong>EVEN</strong>.<br>
+        • <strong>Odd Parity:</strong> Parity bit is set such that the total number of $1\text{s}$ in the codeword is <strong>ODD</strong>.
+      </p>
+    </div>
+
+    <div class="callout danger">
+      <div class="callout-title">⚠️ Blind Spot of Simple Parity</div>
+      <p>Simple parity can detect <strong>any odd number of bit errors ($1, 3, 5, \dots$)</strong> with 100% certainty. However, if an <strong>even number of bits flip ($2, 4, 6, \dots$)</strong>, the total parity count remains unchanged, and the error goes completely undetected! Since impulse noise typically flips pairs or bursts of adjacent bits, simple parity is inadequate for reliable network links.</p>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 8.12: 2D PARITY -->
+  <section id="s-2d-parity" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 8.12</div>
+      <h2 class="section-title">Error Detection 2: Two-Dimensional (2D) Parity</h2>
+    </div>
+
+    <p>In <strong>Two-Dimensional Parity (Longitudinal and Vertical Redundancy Check)</strong>, data bytes are arranged in a 2D matrix grid. A parity bit is computed for each row (horizontal), and an entire parity byte is computed for each column (vertical).</p>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 8.5: Two-Dimensional Parity Matrix</div>
+      <pre>
+                        Bit 1  Bit 2  Bit 3  Bit 4   Row Parity (Even)
+        Byte 1:           1      0      1      1    ->    [ 1 ]
+        Byte 2:           0      1      1      0    ->    [ 0 ]
+        Byte 3:           1      1      0      1    ->    [ 1 ]
+        Byte 4:           0      0      1      1    ->    [ 0 ]
+                        -------------------------
+        Col Parity:     [ 0 ]  [ 0 ]  [ 1 ]  [ 1 ]        [ 0 ]
+      </pre>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title">💡 Single-Bit Error Correction with 2D Parity</div>
+      <p>If a single bit flips (e.g., Byte 2, Bit 3 flips from $1$ to $0$), <strong>both Row 2 parity and Column 3 parity will fail</strong>. The receiver identifies the exact intersection (Row 2, Column 3) as the corrupt bit, flips it back, and corrects the error!</p>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 8.13: CHECKSUM -->
+  <section id="s-checksum" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 8.13</div>
+      <h2 class="section-title">Error Detection 3: The Internet Checksum Algorithm</h2>
+    </div>
+
+    <p>Used widely in TCP, UDP, and IPv4, the <strong>Internet Checksum</strong> is based on 16-bit <strong>One's Complement Arithmetic</strong>.</p>
+
+    <div class="def-box">
+      <div class="def-term">Internet Checksum Procedure (High-Yield GATE Algorithm)</div>
+      <p class="def-body">
+        <strong>Sender Algorithm:</strong><br>
+        1. Treat the data unit as a sequence of 16-bit integers.<br>
+        2. Sum all 16-bit integers using one's complement arithmetic (any carry out from the most significant bit is wrapped around and added to the least significant bit).<br>
+        3. Take the <strong>one's complement (bitwise NOT)</strong> of the final sum. This inverted result is the <strong>Checksum</strong>, placed in the header.<br><br>
+        <strong>Receiver Verification:</strong><br>
+        1. Sum all incoming 16-bit words (including the received checksum) using one's complement addition.<br>
+        2. If the resulting sum contains <strong>all $1\text{s}$</strong> (i.e., `0xFFFF`), the packet is accepted as undamaged! If even a single $0$ appears, an error has occurred.
+      </p>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 8.14: CRC THEORY -->
+  <section id="s-crc-theory" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 8.14</div>
+      <h2 class="section-title">Error Detection 4: Cyclic Redundancy Check (CRC) — Theory & Polynomials <span class="uni-syllabus-badge">🎓 Uni Unit II: CRC Detection</span></h2>
+    </div>
+
+    <p>The <strong>Cyclic Redundancy Check (CRC)</strong> is by far the most powerful, widely used error-detecting code in modern networks (Ethernet, Wi-Fi, ATM, cellular, SATA). It is based on <strong>polynomial modulo-2 binary division</strong>.</p>
+
+    <div class="def-box">
+      <div class="def-term">Generator Polynomial Representation</div>
+      <p class="def-body">
+        A binary bit sequence can be represented as an algebraic polynomial with coefficients in GF(2):<br>
+        Example: Binary bit string <code>1 0 1 1 0 1</code> corresponds to:<br>
+        $$G(x) = 1\cdot x^5 + 0\cdot x^4 + 1\cdot x^3 + 1\cdot x^2 + 0\cdot x^1 + 1\cdot x^0 = x^5 + x^3 + x^2 + 1$$
+        • <strong>Degree of Polynomial ($r$):</strong> The highest exponent in the polynomial (here, $r = 5$).<br>
+        • <strong>Number of bits in Generator:</strong> Always equals <strong>$r + 1$ bits</strong> (here, 6 bits).<br>
+        • <strong>Number of CRC check bits appended:</strong> Always exactly equals the <strong>degree $r$</strong>!
+      </p>
+    </div>
+
+    <h3>Standard CRC Polynomials in Production</h3>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Standard</th>
+            <th>Degree ($r$)</th>
+            <th>Polynomial $G(x)$</th>
+            <th>Industry Application</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>CRC-8</strong></td>
+            <td>8</td>
+            <td>$x^8 + x^2 + x + 1$</td>
+            <td>ATM header error control (HEC), sensor networks.</td>
+          </tr>
+          <tr>
+            <td><strong>CRC-16-CCITT</strong></td>
+            <td>16</td>
+            <td>$x^{16} + x^{12} + x^5 + 1$</td>
+            <td>HDLC, X.25, Bluetooth, USB.</td>
+          </tr>
+          <tr>
+            <td><strong>CRC-32 (IEEE 802)</strong></td>
+            <td>32</td>
+            <td>$x^{32} + x^{26} + x^{23} + \dots + x^2 + x + 1$</td>
+            <td><strong>Standard Ethernet (802.3) Frame Check Sequence (FCS)</strong>, Wi-Fi, ZIP compression, PNG files.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 8.15: CRC STEP WALKTHROUGH -->
+  <section id="s-crc-step" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 8.15</div>
+      <h2 class="section-title">CRC Step-by-Step XOR Division Walkthrough (Sender Side)</h2>
+    </div>
+
+    <p>Modulo-2 division uses simple <strong>XOR logic</strong> instead of standard arithmetic subtraction (no borrows, no carries):<br>
+    $0 \oplus 0 = 0,\ 0 \oplus 1 = 1,\ 1 \oplus 0 = 1,\ 1 \oplus 1 = 0$.</p>
+
+    <div class="callout tip">
+      <div class="callout-title">📝 Complete Worked CRC Problem 8.1</div>
+      <p><strong>Problem:</strong> Given Data bit stream $M = 100100$ and Generator Polynomial $G(x) = x^3 + x^2 + 1$.<br>
+      Find the CRC codeword transmitted on the channel.</p>
+
+      <p><strong>Step 1: Convert $G(x)$ to binary and find degree $r$:</strong><br>
+      $G(x) = 1\cdot x^3 + 1\cdot x^2 + 0\cdot x^1 + 1\cdot x^0 \implies \mathbf{1101}$<br>
+      The degree of $G(x)$ is $r = 3$.</p>
+
+      <p><strong>Step 2: Append $r = 3$ zeros to the data:</strong><br>
+      Augmented data = $100100\mathbf{000}$ (total 9 bits).</p>
+
+      <p><strong>Step 3: Perform Modulo-2 XOR Division:</strong></p>
+      <div class="diagram-box">
+        <pre>
+             111101  (Quotient - discarded)
+        -------------
+  1101 | 100100000
+         1101
+         ----
+          1000
+          1101
+          ----
+           1010
+           1101
+           ----
+            1110
+            1101
+            ----
+             0110
+             0000  (Leading bit is 0, so divisor is 0000)
+             ----
+              1100
+              1101
+              ----
+              0001 -> REMAINDER = 001 (3 bits, matching degree r=3!)
+        </pre>
+      </div>
+
+      <p><strong>Step 4: Replace the 3 appended zeros with the 3-bit remainder:</strong><br>
+      Transmitted Frame (Codeword) = $\mathbf{100100001}$.</p>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 8.16: CRC RECEIVER VERIFY -->
+  <section id="s-crc-verify" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 8.16</div>
+      <h2 class="section-title">CRC Receiver Verification Process</h2>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title">📝 Verification of Transmitted Frame 100100001</div>
+      <p>The receiver divides the entire received frame by the exact same generator $G = 1101$:</p>
+      <div class="diagram-box">
+        <pre>
+             111101
+        -------------
+  1101 | 100100001
+         1101
+         ----
+          1000
+          1101
+          ----
+           1010
+           1101
+           ----
+            1110
+            1101
+            ----
+             0110
+             0000
+             ----
+              1101
+              1101
+              ----
+              0000 -> REMAINDER = 000!
+        </pre>
+      </div>
+      <p>✅ <strong>Remainder is EXACTLY ZERO!</strong> The receiver accepts the frame as error-free and strips the trailing 3 bits to retrieve the original data: <code>100100</code>.</p>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 8.17: CRC MCQ TRAPS -->
+  <section id="s-crc-mcq" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 8.17</div>
+      <h2 class="section-title">High-Yield CRC Exam Traps (GATE / Finals)</h2>
+    </div>
+
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Trap Parameter</th>
+            <th>The Common Student Error</th>
+            <th>The Unshakable Rule</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Number of Zeros Appended</strong></td>
+            <td>Appending zeros equal to the number of bits in the divisor.</td>
+            <td><strong>Append exactly $r$ zeros</strong>, where $r$ is the degree of $G(x)$ (which is 1 less than the bit length of divisor).</td>
+          </tr>
+          <tr>
+            <td><strong>Remainder Length</strong></td>
+            <td>Leaving a remainder with fewer than $r$ bits.</td>
+            <td>The remainder <strong>must always be padded with leading zeros to exactly $r$ bits</strong> (e.g., if $r=3$ and division yields 1, remainder is <code>001</code>).</td>
+          </tr>
+          <tr>
+            <td><strong>Divisor on Leading Zero</strong></td>
+            <td>Dividing by $G(x)$ when the leading bit of the working dividend is $0$.</td>
+            <td>Whenever the leading bit is $0$, the divisor row <strong>MUST be all zeros (e.g., 0000)</strong>!</td>
+          </tr>
+          <tr>
+            <td><strong>Detection Guarantee</strong></td>
+            <td>Assuming CRC can detect all errors of any length.</td>
+            <td>CRC-32 detects: 1. All single-bit errors, 2. All double-bit errors, 3. All odd numbers of inverted bits (if $G(x)$ has factor $(x+1)$), 4. All burst errors of length $\le r$. Burst errors of length $> r+1$ have an undetected probability of $2^{-r}$ ($\approx 1 \text{ in } 4.3 \text{ billion}$).</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 8.18: HAMMING DISTANCE -->
+  <section id="s-hamming-intro" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 8.18</div>
+      <h2 class="section-title">Error Correction: Hamming Distance Fundamentals <span class="uni-syllabus-badge">🎓 Uni Unit II: Hamming Correction</span></h2>
+    </div>
+
+    <div class="def-box">
+      <div class="def-term">Hamming Distance $d(x, y)$</div>
+      <p class="def-body">The number of bit positions in which two binary codewords of equal length differ from one another. It is calculated by taking the <strong>XOR of the two codewords and counting the number of $1\text{s}$</strong>.<br>
+      Example: $x = 10101$, $y = 11100 \implies x \oplus y = 01001 \implies d(x, y) = 2$.</p>
+    </div>
+
+    <div class="formula-box">
+      <div class="formula-title">The Fundamental Hamming Distance Theorems (GATE)</div>
+      <div class="formula-math">d_{\min} \ge d + 1 \quad \text{(To DETECT up to } d \text{ bit errors)}</div>
+      <div class="formula-math">d_{\min} \ge 2t + 1 \quad \text{(To CORRECT up to } t \text{ bit errors)}</div>
+      <div class="formula-vars">
+        • To detect 2 bit errors: $d_{\min} \ge 2 + 1 = 3$.<br>
+        • To correct 1 bit error: $d_{\min} \ge 2(1) + 1 = 3$.<br>
+        • To correct 2 bit errors: $d_{\min} \ge 2(2) + 1 = 5$.
+      </div>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 8.19: HAMMING CODE CONSTRUCTION -->
+  <section id="s-hamming-code" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 8.19</div>
+      <h2 class="section-title">Hamming Code Construction ($2^r \ge m + r + 1$)</h2>
+    </div>
+
+    <p>Richard Hamming invented the first practical Forward Error Correcting (FEC) code capable of automatically detecting and correcting any single-bit error.</p>
+
+    <div class="formula-box">
+      <div class="formula-title">Hamming Redundancy Inequality</div>
+      <div class="formula-math">2^r \ge m + r + 1</div>
+      <div class="formula-vars">
+        • $m$ = Number of original data bits<br>
+        • $r$ = Number of redundant parity bits required<br>
+        • Total codeword length $n = m + r$
+      </div>
+    </div>
+
+    <h3>Bit Positioning Rules in Hamming Code</h3>
+    <ul>
+      <li><strong>Parity Bit Positions:</strong> All bit positions that are powers of 2 ($1, 2, 4, 8, 16, \dots$) are reserved strictly for <strong>Parity Bits ($P_1, P_2, P_4, P_8$)</strong>.</li>
+      <li><strong>Data Bit Positions:</strong> All remaining bit positions ($3, 5, 6, 7, 9, 10, \dots$) hold the original <strong>Data Bits ($D_3, D_5, D_6, D_7, \dots$)</strong>.</li>
+    </ul>
+
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Bit Position</th>
+            <th>Role</th>
+            <th>Binary Representation</th>
+            <th>Parity Bits Covering This Position</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1</strong></td>
+            <td>$P_1$</td>
+            <td>001</td>
+            <td>$P_1$</td>
+          </tr>
+          <tr>
+            <td><strong>2</strong></td>
+            <td>$P_2$</td>
+            <td>010</td>
+            <td>$P_2$</td>
+          </tr>
+          <tr>
+            <td><strong>3</strong></td>
+            <td>$D_3$</td>
+            <td>011</td>
+            <td>$P_1, P_2$ (since $1+2=3$)</td>
+          </tr>
+          <tr>
+            <td><strong>4</strong></td>
+            <td>$P_4$</td>
+            <td>100</td>
+            <td>$P_4$</td>
+          </tr>
+          <tr>
+            <td><strong>5</strong></td>
+            <td>$D_5$</td>
+            <td>101</td>
+            <td>$P_1, P_4$ (since $1+4=5$)</td>
+          </tr>
+          <tr>
+            <td><strong>6</strong></td>
+            <td>$D_6$</td>
+            <td>110</td>
+            <td>$P_2, P_4$ (since $2+4=6$)</td>
+          </tr>
+          <tr>
+            <td><strong>7</strong></td>
+            <td>$D_7$</td>
+            <td>111</td>
+            <td>$P_1, P_2, P_4$ (since $1+2+4=7$)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 8.20: HAMMING CORRECTION WALKTHROUGH -->
+  <section id="s-hamming-detect" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 8.20</div>
+      <h2 class="section-title">Hamming Code Error Detection & Correction Walkthrough</h2>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title">📝 Worked Problem 8.2 (7-Bit Hamming Code)</div>
+      <p><strong>Encode Data:</strong> $M = 1011$ (4 data bits: $D_7=1, D_6=0, D_5=1, D_3=1$) using Even Parity.</p>
+      
+      <p><strong>1. Calculate Parity Bits:</strong><br>
+      • $P_1$ covers bits with least-significant binary bit 1 (positions 1, 3, 5, 7):<br>
+      &nbsp;&nbsp;$P_1 \oplus D_3 \oplus D_5 \oplus D_7 = 0 \implies P_1 \oplus 1 \oplus 1 \oplus 1 = 0 \implies P_1 \oplus 1 = 0 \implies \mathbf{P_1 = 1}$.<br>
+      • $P_2$ covers bits with middle binary bit 1 (positions 2, 3, 6, 7):<br>
+      &nbsp;&nbsp;$P_2 \oplus D_3 \oplus D_6 \oplus D_7 = 0 \implies P_2 \oplus 1 \oplus 0 \oplus 1 = 0 \implies P_2 \oplus 0 = 0 \implies \mathbf{P_2 = 0}$.<br>
+      • $P_4$ covers bits with most-significant binary bit 1 (positions 4, 5, 6, 7):<br>
+      &nbsp;&nbsp;$P_4 \oplus D_5 \oplus D_6 \oplus D_7 = 0 \implies P_4 \oplus 1 \oplus 0 \oplus 1 = 0 \implies P_4 \oplus 0 = 0 \implies \mathbf{P_4 = 0}$.<br><br>
+      👉 Transmitted Codeword = $[D_7, D_6, D_5, P_4, D_3, P_2, P_1] = \mathbf{1010101}$.</p>
+
+      <p><strong>2. Error Injection & Receiver Correction:</strong><br>
+      Suppose transmission noise flips bit at position 5 ($D_5$ flips from $1 \to 0$):<br>
+      Received Codeword = $10\mathbf{0}0101$.<br>
+      The receiver computes the <strong>Syndrome ($S_4 S_2 S_1$)</strong>:<br>
+      • $S_1 = b_1 \oplus b_3 \oplus b_5 \oplus b_7 = 1 \oplus 1 \oplus 0 \oplus 1 = \mathbf{1}$<br>
+      • $S_2 = b_2 \oplus b_3 \oplus b_6 \oplus b_7 = 0 \oplus 1 \oplus 0 \oplus 1 = \mathbf{0}$<br>
+      • $S_4 = b_4 \oplus b_5 \oplus b_6 \oplus b_7 = 0 \oplus 0 \oplus 0 \oplus 1 = \mathbf{1}$<br>
+      Syndrome binary = $S_4 S_2 S_1 = 101_2 = \mathbf{5}$!<br>
+      The syndrome explicitly points to <strong>Bit Position 5</strong> as the culprit! The receiver inverts bit 5 ($0 \to 1$), restoring the data flawlessly.</p>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 8.21: ERROR HANDLING COMPARISON -->
+  <section id="s-error-compare" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 8.21</div>
+      <h2 class="section-title">Master Error Handling Comparison Table</h2>
+    </div>
+
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>Type</th>
+            <th>Overhead</th>
+            <th>Single-Bit Detection</th>
+            <th>Burst Detection</th>
+            <th>Error Correction?</th>
+            <th>Typical Industry Standard</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Simple Parity</strong></td>
+            <td>Detection</td>
+            <td>1 bit / byte</td>
+            <td>100%</td>
+            <td>50% (Fails on even bursts)</td>
+            <td>❌ No</td>
+            <td>Asynchronous RS-232 serial.</td>
+          </tr>
+          <tr>
+            <td><strong>2D Parity</strong></td>
+            <td>Detection + Correction</td>
+            <td>Rows + Cols</td>
+            <td>100%</td>
+            <td>High (Most bursts $\le$ row size)</td>
+            <td>✅ 1 bit only</td>
+            <td>Magnetic tape storage.</td>
+          </tr>
+          <tr>
+            <td><strong>Internet Checksum</strong></td>
+            <td>Detection</td>
+            <td>16 bits / packet</td>
+            <td>100%</td>
+            <td>Moderate (Can be fooled by compensating errors)</td>
+            <td>❌ No</td>
+            <td>TCP, UDP, IPv4 headers.</td>
+          </tr>
+          <tr>
+            <td><strong>CRC-32</strong></td>
+            <td>Detection</td>
+            <td>32 bits / frame</td>
+            <td><strong>100%</strong></td>
+            <td><strong>100% for bursts $\le 32$ bits</strong></td>
+            <td>❌ No (Triggers ARQ)</td>
+            <td><strong>Ethernet (IEEE 802.3), Wi-Fi, SATA</strong>.</td>
+          </tr>
+          <tr>
+            <td><strong>Hamming Code</strong></td>
+            <td>Correction (FEC)</td>
+            <td>$\log_2(n)$ bits</td>
+            <td>100%</td>
+            <td>Poor (Designed for single bits)</td>
+            <td>✅ <strong>Yes (Single-bit)</strong></td>
+            <td>ECC Computer Memory (RAM).</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 8.22: SUMMARY & EXAM TRAPS -->
+  <section id="s-summary-ch8" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 8.22</div>
+      <h2 class="section-title">Chapter Summary & High-Yield Exam Traps</h2>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title">⚡ High-Yield Rapid Review Points</div>
+      <ul>
+        <li><strong>Framing:</strong> Breaks raw physical bit stream into discrete frames. Techniques: Character count (prone to desync), Byte stuffing (ESC byte), Bit stuffing (`01111110`, stuff 0 after five consecutive 1s).</li>
+        <li><strong>Error Detection vs Correction:</strong> Detection + ARQ has lower overhead; FEC corrects without retransmission but requires high redundant bits.</li>
+        <li><strong>CRC Formula:</strong> Modulo-2 XOR division. Degree of $G(x)$ is $r$. Append $r$ zeros. Divide by $G(x)$. Remainder (length $r$) is transmitted CRC. Receiver remainder must equal $0$.</li>
+        <li><strong>Hamming Distance:</strong> $d_{\min} \ge d + 1$ to detect $d$ errors. $d_{\min} \ge 2t + 1$ to correct $t$ errors.</li>
+        <li><strong>Hamming Code:</strong> Parity bits placed at positions $2^k$ ($1, 2, 4, 8, \dots$). Formula: $2^r \ge m + r + 1$. Syndrome gives exact corrupt bit position.</li>
+      </ul>
+    </div>
+
+    <!-- CHAPTER PROGRESS CHECK -->
+    <div class="def-box" style="margin-top:2rem; border-color:var(--accent);">
+      <div class="def-term">🎯 End of Chapter Self-Check</div>
+      <p class="def-body">
+        Verify your mastery before moving to Sliding Window Protocols:<br>
+        1. Stuff the bit sequence <code>011111111110</code> using standard HDLC bit stuffing.<br>
+        2. Perform CRC division for data <code>1101011011</code> using generator $G(x) = x^4 + x + 1$.<br>
+        3. For 8 data bits ($m=8$), how many parity bits $r$ are required by Hamming's formula?<br>
+        4. State the minimum Hamming distance required to correct 2-bit transmission errors.<br>
+        5. Explain why character count framing suffers from catastrophic desynchronization upon a single bit flip.
+      </p>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- PREV/NEXT NAV -->
+  <div class="prev-next">
+    <a href="ch07-modulation-switching.html" class="nav-btn">← Ch 7: Modulation & Switching</a>
+    <a href="ch09-protocols-sliding.html" class="nav-btn primary">Next: Protocols & Sliding Window →</a>
+  </div>
+
+</div>
+</main>
+
+<!-- FLOATING MODE PANEL -->
+<div id="mode-panel">
+  <button class="mode-btn active" data-mode="all">📚 All</button>
+  <button class="mode-btn uni-btn" data-mode="uni">🎓 Uni</button>
+  <button class="mode-btn gate-btn" data-mode="gate">⚡ GATE</button>
+  <button class="mode-btn adv-btn" data-mode="advanced">🔬 Adv</button>
+</div>
+
+<!-- TTS FLOATING PANEL -->
+<div id="tts-panel">
+  <div class="tts-controls">
+    <button class="tts-btn" id="tts-play" title="Play/Pause">▶</button>
+    <button class="tts-btn" id="tts-stop" title="Stop">⏹</button>
+    <div class="tts-speed"><span>Speed</span><input type="range" id="tts-rate" min="0.5" max="2" step="0.1" value="1"><span id="tts-rate-label">1.0x</span></div>
+  </div>
+  <div class="tts-voice"><select id="tts-voice-select"><option>Loading voices…</option></select></div>
+</div>
+
+<!-- SEARCH MODAL -->
+<div id="search-modal">
+  <div class="search-box">
+    <div class="search-input-wrap"><span class="s-icon">🔍</span><input id="search-input" type="text" placeholder="Search chapters, topics, protocols…" autocomplete="off"></div>
+    <div id="search-results"></div>
+    <div class="search-hint"><span><kbd>↵</kbd> to navigate</span><span><kbd>Esc</kbd> to close</span><span><kbd>Ctrl+K</kbd> to open</span></div>
+  </div>
+</div>
+
+<!-- MOBILE NAV -->
+<nav id="mobile-nav">
+  <button class="mobile-nav-btn" onclick="SidebarManager?.toggle()"><span class="icon">☰</span>Menu</button>
+  <a href="../index.html" class="mobile-nav-btn"><span class="icon">🏠</span>Home</a>
+  <a href="ch08-dll-fundamentals.html" class="mobile-nav-btn active"><span class="icon">📖</span>Chapters</a>
+  <a href="../exams/mock-exam.html" class="mobile-nav-btn"><span class="icon">📝</span>Exams</a>
+  <button class="mobile-nav-btn" onclick="SearchManager?.open()"><span class="icon">🔍</span>Search</button>
+</nav>
+
+<div id="toast-container"></div>
+<script src="../assets/js/state.js"></script>
+<script src="../assets/js/core.js"></script>
+<script src="../assets/js/modes.js"></script>
+<script src="../assets/js/tts.js"></script>
+<script src="../assets/js/timer-settings.js"></script>
+<script src="../assets/js/timer.js"></script>
+<script src="../assets/js/timer-analytics.js"></script>
+<script src="../assets/js/timer-notifications.js"></script>
+<script src="../assets/js/timer-ui.js"></script>
+<script src="../assets/js/print.js"></script>
+<script src="../assets/js/notes.js"></script>
+<script src="../assets/js/glossary.js"></script>
+</body>
+</html>

@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<!-- ⚡ Arpit | CN MiniBook 2026 | University of Delhi -->
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="Arpit"><meta name="description" content="Computer Networks MiniBook - B.Tech CSE, University of Delhi. Covers Introduction, Physical Layer & Data Link Layer with interactive tools.">
+<meta name="application-name" content="CN MiniBook">
+<meta name="theme-color" content="#0891b2">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CN MiniBook">
+<meta name="mobile-web-app-capable" content="yes">
+<title>CN MiniBook 🌐 | Arpit | DU B.Tech CSE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="manifest" href="./manifest.json">
+<link rel="stylesheet" href="assets/css/main.css">
+<link rel="stylesheet" href="assets/css/components.css">
+<link rel="stylesheet" href="assets/css/animations.css">
+<link rel="stylesheet" href="assets/css/timer.css">
+<style>
+/* Landing page specific */
+.hero { position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center; text-align:center; overflow:hidden; background:var(--bg-base); }
+.hero-bg { position:absolute;inset:0; background:radial-gradient(ellipse 80% 60% at 50% 0%, rgba(8,145,178,0.25) 0%, transparent 70%); pointer-events:none; }
+.hero-content { position:relative; z-index:1; max-width:780px; padding:0 24px; }
+.hero-badge { display:inline-flex;align-items:center;gap:8px; background:var(--accent-soft);border:1px solid var(--accent-border);border-radius:99px; padding:6px 16px; font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-light);margin-bottom:28px; }
+.hero-title { font-size:clamp(2.5rem,7vw,5rem);font-weight:900;letter-spacing:-.04em;line-height:1.05; background:linear-gradient(135deg,#fff 0%,var(--accent-glow) 50%,var(--accent-light) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:16px; }
+.hero-sub { font-size:1.1rem;color:var(--tx-secondary);line-height:1.65;margin-bottom:36px;max-width:560px;margin-left:auto;margin-right:auto; }
+.hero-btns { display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:48px; }
+.btn-primary { background:var(--accent);color:#fff;padding:12px 28px;border-radius:99px;font-weight:700;font-size:.95rem;transition:all .25s;box-shadow:0 4px 20px rgba(8,145,178,.45); }
+.btn-primary:hover { background:var(--accent-light);transform:translateY(-2px);box-shadow:0 8px 28px rgba(8,145,178,.6);color:#fff; }
+.btn-secondary { background:var(--accent-soft);color:var(--accent-light);padding:12px 28px;border-radius:99px;font-weight:600;font-size:.95rem;border:1px solid var(--accent-border);transition:all .25s; }
+.btn-secondary:hover { background:var(--accent-border);transform:translateY(-2px); }
+.stats-row { display:flex;gap:32px;justify-content:center;flex-wrap:wrap;margin-bottom:16px; }
+.stat { text-align:center; }
+.stat-num { font-size:1.75rem;font-weight:800;color:var(--accent-light);font-family:var(--font-mono); }
+.stat-label { font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--tx-muted);margin-top:2px; }
+/* Unit grid */
+.units-section { padding:80px 24px; background:var(--bg-surface); }
+.units-section h2 { text-align:center;font-size:2rem;font-weight:800;letter-spacing:-.03em;margin-bottom:8px;color:var(--tx-primary); }
+.units-section .section-sub { text-align:center;color:var(--tx-muted);font-size:.9rem;margin-bottom:48px; }
+.units-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;max-width:1100px;margin:0 auto; }
+.part-divider { grid-column:1/-1;display:flex;align-items:center;gap:16px;margin:12px 0 4px; }
+.part-divider::before,.part-divider::after { content:'';flex:1;height:1px;background:var(--bd-default); }
+.part-label { font-size:.8rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-light);white-space:nowrap; }
+/* Groups section */
+.groups-section { padding:70px 24px; background:var(--bg-base); }
+.groups-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;max-width:1000px;margin:32px auto 0; }
+.group-card { background:var(--bg-card);border:1px solid var(--bd-default);border-radius:var(--r-xl);padding:20px;transition:all .25s; }
+.group-card:hover { border-color:var(--accent-border);box-shadow:var(--sh-glow);transform:translateY(-3px); }
+.group-letter { font-size:1.6rem;font-weight:900;color:var(--accent-light);font-family:var(--font-mono);margin-bottom:6px; }
+.group-title { font-weight:700;font-size:.95rem;margin-bottom:6px;color:var(--tx-primary); }
+.group-desc { font-size:.8rem;color:var(--tx-muted);line-height:1.55; }
+/* Feature strip */
+.features-section { padding:70px 24px; background:var(--bg-surface); }
+.features-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;max-width:1000px;margin:40px auto 0; }
+.feature-item { background:var(--bg-card);border:1px solid var(--bd-default);border-radius:var(--r-xl);padding:24px;text-align:center;transition:all .25s; }
+.feature-item:hover { border-color:var(--accent-border);box-shadow:var(--sh-glow);transform:translateY(-3px); }
+.feature-icon { font-size:2rem;margin-bottom:10px; }
+.feature-title { font-weight:700;font-size:.95rem;margin-bottom:6px;color:var(--tx-primary); }
+.feature-desc  { font-size:.8rem;color:var(--tx-muted);line-height:1.55; }
+/* Keyboard shortcuts panel */
+.shortcuts-section { padding:60px 24px;background:var(--bg-base); }
+.shortcuts-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;max-width:800px;margin:32px auto 0; }
+.shortcut-item { display:flex;align-items:center;gap:10px;background:var(--bg-card);border:1px solid var(--bd-default);border-radius:var(--r-md);padding:10px 14px; }
+.shortcut-item kbd { background:var(--bg-elevated);border:1px solid var(--bd-strong);border-radius:4px;padding:2px 8px;font-family:var(--font-mono);font-size:.75rem;color:var(--accent-light);white-space:nowrap; }
+.shortcut-item span { font-size:.8rem;color:var(--tx-secondary); }
+footer { padding:32px 24px;text-align:center;border-top:1px solid var(--bd-subtle);color:var(--tx-muted);font-size:.8rem; }
+.footer-brand { color:var(--accent-light);font-weight:700; }
+
+/* ─── Undo timer.css globals that would break the site layout ──────────── */
+body {
+  display:block !important;
+  padding:0 !important;
+  min-height:unset !important;
+  background-color:var(--bg-base) !important;
+  font-family:var(--font-sans, inherit) !important;
+}
+:root {
+  --accent:#0891b2;
+  --accent-light:#06b6d4;
+  --accent-soft:rgba(8,145,178,.12);
+  --accent-border:rgba(8,145,178,.3);
+  --accent-glow:rgba(8,145,178,.5);
+}
+body[data-phase="work"],
+body[data-phase="short_break"],
+body[data-phase="long_break"] { background-image:none !important; }
+
+/* ─── Scope all timer design tokens to the widget + its modals ─────────── */
+#pomodoro,
+#pomo-distraction-modal,
+#pomo-settings-modal,
+#pomo-analytics-modal,
+#pomo-toasts {
+  --accent:       #e8412a;
+  --accent-dim:   rgba(232,65,42,.18);
+  --accent-glow:  rgba(232,65,42,.35);
+  --bg:           #0c0c0e;
+  --surface:      #141416;
+  --surface-2:    #1c1c21;
+  --surface-3:    #242429;
+  --border:       rgba(255,255,255,.07);
+  --border-hover: rgba(255,255,255,.14);
+  --text:         #f0eff4;
+  --text-muted:   #77758a;
+  --text-dim:     #4a4860;
+  --green:        #10b981;
+  --green-dim:    rgba(16,185,129,.18);
+  --teal:         #38bdf8;
+  --teal-dim:     rgba(56,189,248,.18);
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body:    'DM Sans', sans-serif;
+  --font-mono:    'DM Mono', monospace;
+  --radius-sm:    8px;
+  --radius-md:    12px;
+  --radius-lg:    20px;
+  --radius-xl:    28px;
+  --ease:         cubic-bezier(0.4,0,0.2,1);
+  --dur:          0.2s;
+}
+
+#pomodoro {
+  width: 272px !important;
+  min-width: 272px !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  overflow: visible !important;
+}
+#pomo-card { width: 100%; }
+#pomo-app  { display: contents; }
+</style>
+</head>
+<body>
+<!-- ⚡ Arpit -->
+<div id="progress-bar"></div>
+
+<!-- HEADER -->
+<header id="main-header">
+  <div class="header-left">
+    <button id="sidebar-toggle" class="icon-btn" title="Toggle Sidebar (S)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div class="brand-logo">
+      <div class="brand-icon">🌐</div>
+      <div class="brand-text"><span class="main">CN MiniBook</span><span class="sub">Computer Networks</span></div>
+    </div>
+  </div>
+  <span class="header-chapter-title"></span>
+  <div class="header-right">
+    <button id="search-btn" class="icon-btn" title="Search (Ctrl+K)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    </button>
+    <button id="tts-toggle" class="icon-btn" title="Read Aloud">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"/></svg>
+    </button>
+    <button id="print-btn" title="Print / Save as PDF (Ctrl+P)" aria-label="Print"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="flex-shrink:0"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg><span class="print-label">PDF</span></button>
+    <button id="reading-mode-btn" class="icon-btn" title="Reading Mode (F)" aria-pressed="false" aria-label="Toggle reading mode">📖</button>
+    <button id="theme-toggle" class="icon-btn" title="Toggle Theme (T)"></button>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<div id="sidebar-overlay"></div>
+<aside id="sidebar">
+  <nav class="sidebar-nav">
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Navigation</div>
+      <a href="index.html" class="sidebar-link active"><span class="link-icon">🏠</span>Home</a>
+      <a href="./progress.html" class="sidebar-link"><span class="link-icon">📊</span>Dashboard</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Part I — Introduction</div>
+      <a href="chapters/ch01-fundamentals.html" class="sidebar-link"><span class="link-icon">📡</span>Ch 1 — Fundamentals</a>
+      <a href="chapters/ch02-types-topologies.html" class="sidebar-link"><span class="link-icon">🔗</span>Ch 2 — Types & Topologies</a>
+      <a href="chapters/ch03-models-addressing.html" class="sidebar-link"><span class="link-icon">📦</span>Ch 3 — Models & Addressing</a>
+      <a href="chapters/ch04-devices-sdn.html" class="sidebar-link"><span class="link-icon">🔌</span>Ch 4 — Devices & SDN</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Part II — Physical Layer</div>
+      <a href="chapters/ch05-physical-fundamentals.html" class="sidebar-link"><span class="link-icon">📶</span>Ch 5 — Physical Fundamentals</a>
+      <a href="chapters/ch06-media-signaling.html" class="sidebar-link"><span class="link-icon">🔌</span>Ch 6 — Media & Line Coding</a>
+      <a href="chapters/ch07-modulation-switching.html" class="sidebar-link"><span class="link-icon">📻</span>Ch 7 — Modulation & Switching</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Part III — Data Link Layer</div>
+      <a href="chapters/ch08-dll-fundamentals.html" class="sidebar-link"><span class="link-icon">🔧</span>Ch 8 — DLL Fundamentals</a>
+      <a href="chapters/ch09-protocols-sliding.html" class="sidebar-link"><span class="link-icon">🔄</span>Ch 9 — Protocols & Sliding Window</a>
+      <a href="chapters/ch10-mac-ethernet.html" class="sidebar-link"><span class="link-icon">🌐</span>Ch 10 — MAC & Ethernet</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Exams</div>
+      <a href="exams/mock-exam.html" class="sidebar-link"><span class="link-icon">📝</span>100 MCQ Mock Exam</a>
+      <a href="exams/unit-quiz.html" class="sidebar-link"><span class="link-icon">📋</span>Chapter Quizzes</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Progress</div>
+      <div id="bookmarks-list"></div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Mode</div>
+      <div id="mode-indicator" style="padding:8px 12px;font-size:.8rem;font-weight:700;color:var(--accent-light)">📚 All</div>
+    </div>
+  </nav>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">My Notes</div>
+      <div id="notes-sidebar-list"></div>
+    </div>
+  <div class="sidebar-footer">
+    <div class="sidebar-brand-mark"><div class="mark">🌐</div><span>Arpit · CN MiniBook 2026</span></div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main id="main-content">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content anim-slide-up">
+      <div class="hero-badge">🎓 University of Delhi &nbsp;·&nbsp; B.Tech CSE &nbsp;·&nbsp; Computer Networks</div>
+      <h1 class="hero-title">Computer Networks</h1>
+      <p class="hero-sub">A comprehensive interactive textbook covering Introduction to Networks, Physical Layer, and Data Link Layer. Built for deep learning and MCQ exam preparation.</p>
+      <div class="hero-btns">
+        <a href="chapters/ch01-fundamentals.html" class="btn-primary">Start Learning →</a>
+        <a href="exams/mock-exam.html" class="btn-secondary">📝 100 MCQ Exam</a>
+      </div>
+      <div class="stats-row">
+        <div class="stat"><div class="stat-num">10</div><div class="stat-label">Chapters</div></div>
+        <div class="stat"><div class="stat-num">3</div><div class="stat-label">Parts</div></div>
+        <div class="stat"><div class="stat-num">100</div><div class="stat-label">MCQ Questions</div></div>
+        <div class="stat"><div class="stat-num">6</div><div class="stat-label">Study Groups</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OFFICIAL UNIVERSITY SYLLABUS DIRECT NAVIGATOR -->
+  <section class="syllabus-navigator-section" style="max-width:1100px; margin:2.5rem auto 1rem; padding:0 var(--sp-4);">
+    <div style="background:linear-gradient(135deg, rgba(249,115,22,0.12) 0%, rgba(8,145,178,0.06) 100%); border:1px solid var(--uni-b-hd); border-radius:var(--r-xl); padding:1.75rem 2rem; box-shadow:0 4px 24px rgba(0,0,0,0.25);">
+      <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem; border-bottom:1px solid rgba(249,115,22,0.25); padding-bottom:1rem;">
+        <div>
+          <div style="display:flex; align-items:center; gap:0.5rem;">
+            <span style="font-size:1.5rem;">🎓</span>
+            <h2 style="font-size:var(--text-xl); font-weight:800; color:var(--tx-primary); margin:0;">Official University Syllabus Matrix</h2>
+          </div>
+          <p style="color:var(--tx-muted); margin-top:0.35rem; font-size:var(--text-xs);">Direct syllabus mapping for Unit I (Intro & Physical Layer) and Unit II (Data Link Layer).</p>
+        </div>
+        <a href="exams/mock-exam.html" class="btn-primary" style="background:var(--uni-c); border-color:var(--uni-b-hd); font-size:var(--text-xs); padding:0.4rem 1rem;">Practice 100 Uni MCQs →</a>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:1.25rem;">
+        <!-- UNIT I -->
+        <div style="background:var(--bg-card); border:1px solid var(--bd-default); border-radius:var(--r-lg); padding:1.25rem;">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.75rem;">
+            <span style="font-weight:800; color:var(--uni-text); font-size:var(--text-xs); text-transform:uppercase; letter-spacing:0.05em;">Unit I: Introduction & Physical Layer</span>
+            <span class="uni-syllabus-badge">Ch 1 – 7</span>
+          </div>
+          <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.6rem; font-size:var(--text-xs);">
+            <li><a href="chapters/ch01-fundamentals.html" style="color:var(--tx-secondary); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--accent-light);">•</span> <span><strong>Overview & Importance:</strong> Definition, 5 components, criteria, standards</span> <span style="margin-left:auto; color:var(--accent-light); font-weight:600;">Ch 1 →</span></a></li>
+            <li><a href="chapters/ch02-types-topologies.html" style="color:var(--tx-secondary); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--accent-light);">•</span> <span><strong>Topologies & Types:</strong> PAN, LAN, MAN, WAN, 6 topologies</span> <span style="margin-left:auto; color:var(--accent-light); font-weight:600;">Ch 2 →</span></a></li>
+            <li><a href="chapters/ch03-models-addressing.html" style="color:var(--tx-secondary); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--accent-light);">•</span> <span><strong>OSI & TCP/IP Reference Models:</strong> 7 layers, comparison, addressing</span> <span style="margin-left:auto; color:var(--accent-light); font-weight:600;">Ch 3 →</span></a></li>
+            <li><a href="chapters/ch04-devices-sdn.html" style="color:var(--tx-secondary); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--accent-light);">•</span> <span><strong>Network Devices & Intro to SDN:</strong> Hubs, switches, routers, SDN 3 tiers</span> <span style="margin-left:auto; color:var(--accent-light); font-weight:600;">Ch 4 →</span></a></li>
+            <li><a href="chapters/ch05-physical-fundamentals.html" style="color:var(--tx-secondary); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--accent-light);">•</span> <span><strong>Physical Layer Fundamentals:</strong> Analog/digital, impairments, Nyquist/Shannon</span> <span style="margin-left:auto; color:var(--accent-light); font-weight:600;">Ch 5 →</span></a></li>
+            <li><a href="chapters/ch06-media-signaling.html" style="color:var(--tx-secondary); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--accent-light);">•</span> <span><strong>Transmission Media & Signaling:</strong> Guided/unguided media, line coding</span> <span style="margin-left:auto; color:var(--accent-light); font-weight:600;">Ch 6 →</span></a></li>
+            <li><a href="chapters/ch07-modulation-switching.html" style="color:var(--tx-secondary); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--accent-light);">•</span> <span><strong>Modulation & Switching:</strong> ASK/FSK/PSK/QAM, circuit/packet switching</span> <span style="margin-left:auto; color:var(--accent-light); font-weight:600;">Ch 7 →</span></a></li>
+          </ul>
+        </div>
+
+        <!-- UNIT II -->
+        <div style="background:var(--bg-card); border:1px solid var(--bd-default); border-radius:var(--r-lg); padding:1.25rem;">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.75rem;">
+            <span style="font-weight:800; color:var(--uni-text); font-size:var(--text-xs); text-transform:uppercase; letter-spacing:0.05em;">Unit II: Data Link Layer</span>
+            <span class="uni-syllabus-badge">Ch 8 – 10</span>
+          </div>
+          <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.6rem; font-size:var(--text-xs);">
+            <li><a href="chapters/ch08-dll-fundamentals.html" style="color:var(--tx-secondary); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--accent-light);">•</span> <span><strong>DLL Design Issues & Framing:</strong> Character count, byte/bit stuffing</span> <span style="margin-left:auto; color:var(--accent-light); font-weight:600;">Ch 8 →</span></a></li>
+            <li><a href="chapters/ch08-dll-fundamentals.html#s-error-detection" style="color:var(--tx-secondary); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--accent-light);">•</span> <span><strong>Error Detection & Correction:</strong> Parity, Checksum, CRC, Hamming</span> <span style="margin-left:auto; color:var(--accent-light); font-weight:600;">Ch 8 →</span></a></li>
+            <li><a href="chapters/ch09-protocols-sliding.html" style="color:var(--tx-secondary); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--accent-light);">•</span> <span><strong>Elementary Protocols:</strong> Stop-and-Wait ARQ, flow & error control</span> <span style="margin-left:auto; color:var(--accent-light); font-weight:600;">Ch 9 →</span></a></li>
+            <li><a href="chapters/ch09-protocols-sliding.html#s-sliding-window" style="color:var(--tx-secondary); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--accent-light);">•</span> <span><strong>Sliding Window Protocols:</strong> Go-Back-N, Selective Repeat, efficiency</span> <span style="margin-left:auto; color:var(--accent-light); font-weight:600;">Ch 9 →</span></a></li>
+            <li><a href="chapters/ch10-mac-ethernet.html" style="color:var(--tx-secondary); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--accent-light);">•</span> <span><strong>MAC Protocols:</strong> ALOHA, CSMA, CSMA/CD, CSMA/CA, RTS/CTS, Ethernet</span> <span style="margin-left:auto; color:var(--accent-light); font-weight:600;">Ch 10 →</span></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- UNITS GRID -->
+  <section class="units-section">
+    <h2>📚 Course Chapters</h2>
+    <p class="section-sub">Click any chapter to dive in. 10 in-depth chapters across 3 parts.</p>
+    <div class="units-grid stagger-children">
+
+      <!-- PART I -->
+      <div class="part-divider"><span class="part-label">Part I — Introduction to Computer Networks</span></div>
+
+      <a href="chapters/ch01-fundamentals.html" class="unit-card" style="--unit-color:rgba(8,145,178,.12)">
+        <div class="unit-num">Chapter 1</div>
+        <div class="unit-icon">📡</div>
+        <div class="unit-title">Network Fundamentals</div>
+        <div class="unit-desc">Definitions, goals, network components, protocols, standards, encapsulation/decapsulation, and essential networking terminology.</div>
+        <div class="unit-tags"><span class="unit-tag">Protocols</span><span class="unit-tag">Encapsulation</span><span class="unit-tag">Terminology</span></div>
+      </a>
+
+      <a href="chapters/ch02-types-topologies.html" class="unit-card" style="--unit-color:rgba(8,145,178,.12)">
+        <div class="unit-num">Chapter 2</div>
+        <div class="unit-icon">🔗</div>
+        <div class="unit-title">Types of Networks & Topologies</div>
+        <div class="unit-desc">PAN, LAN, MAN, WAN, Internet/Intranet, Client-Server vs P2P. Bus, Star, Ring, Mesh, Tree, Hybrid topologies with full comparisons.</div>
+        <div class="unit-tags"><span class="unit-tag">LAN/WAN</span><span class="unit-tag">Star</span><span class="unit-tag">Mesh</span><span class="unit-tag">Ring</span></div>
+      </a>
+
+      <a href="chapters/ch03-models-addressing.html" class="unit-card" style="--unit-color:rgba(8,145,178,.12)">
+        <div class="unit-num">Chapter 3</div>
+        <div class="unit-icon">📦</div>
+        <div class="unit-title">Network Models & Addressing</div>
+        <div class="unit-desc">OSI 7-layer model, TCP/IP model, layer comparison, encapsulation flow. MAC, IP, and port addressing with relationship diagrams.</div>
+        <div class="unit-tags"><span class="unit-tag">OSI</span><span class="unit-tag">TCP/IP</span><span class="unit-tag">MAC Address</span><span class="unit-tag">IP Address</span></div>
+      </a>
+
+      <a href="chapters/ch04-devices-sdn.html" class="unit-card" style="--unit-color:rgba(8,145,178,.12)">
+        <div class="unit-num">Chapter 4</div>
+        <div class="unit-icon">🔌</div>
+        <div class="unit-title">Network Devices & SDN</div>
+        <div class="unit-desc">Repeater, Hub, Bridge, Switch, Router, Gateway, Modem, AP, Firewall. Software-Defined Networking architecture, OpenFlow.</div>
+        <div class="unit-tags"><span class="unit-tag">Switch</span><span class="unit-tag">Router</span><span class="unit-tag">SDN</span><span class="unit-tag">OpenFlow</span></div>
+      </a>
+
+      <!-- PART II -->
+      <div class="part-divider"><span class="part-label">Part II — Physical Layer</span></div>
+
+      <a href="chapters/ch05-physical-fundamentals.html" class="unit-card" style="--unit-color:rgba(245,158,11,.1)">
+        <div class="unit-num">Chapter 5</div>
+        <div class="unit-icon">📶</div>
+        <div class="unit-title">Physical Layer Fundamentals</div>
+        <div class="unit-desc">Data vs signals, sine wave properties, bit rate vs baud rate, attenuation, distortion, noise, SNR, Nyquist theorem, Shannon capacity.</div>
+        <div class="unit-tags"><span class="unit-tag">Nyquist</span><span class="unit-tag">Shannon</span><span class="unit-tag">SNR</span><span class="unit-tag">Baud Rate</span></div>
+      </a>
+
+      <a href="chapters/ch06-media-signaling.html" class="unit-card" style="--unit-color:rgba(245,158,11,.1)">
+        <div class="unit-num">Chapter 6</div>
+        <div class="unit-icon">🔌</div>
+        <div class="unit-title">Transmission Media & Line Coding</div>
+        <div class="unit-desc">Twisted pair, coaxial, fiber optic, radio, microwave, satellite. NRZ, NRZI, Manchester, Differential Manchester with waveform diagrams.</div>
+        <div class="unit-tags"><span class="unit-tag">Fiber</span><span class="unit-tag">UTP</span><span class="unit-tag">Manchester</span><span class="unit-tag">NRZ</span></div>
+      </a>
+
+      <a href="chapters/ch07-modulation-switching.html" class="unit-card" style="--unit-color:rgba(245,158,11,.1)">
+        <div class="unit-num">Chapter 7</div>
+        <div class="unit-icon">📻</div>
+        <div class="unit-title">Modulation, Multiplexing & Switching</div>
+        <div class="unit-desc">ASK, FSK, PSK, QPSK, QAM with waveforms. FDM, TDM, WDM multiplexing. Circuit, packet (datagram/VC), and message switching.</div>
+        <div class="unit-tags"><span class="unit-tag">QAM</span><span class="unit-tag">FDM/TDM</span><span class="unit-tag">Circuit</span><span class="unit-tag">Packet</span></div>
+      </a>
+
+      <!-- PART III -->
+      <div class="part-divider"><span class="part-label">Part III — Data Link Layer ⭐</span></div>
+
+      <a href="chapters/ch08-dll-fundamentals.html" class="unit-card" style="--unit-color:rgba(239,68,68,.1)">
+        <div class="unit-num">Chapter 8</div>
+        <div class="unit-icon">🔧</div>
+        <div class="unit-title">DLL: Framing & Error Handling</div>
+        <div class="unit-desc">DLL design issues, byte/bit stuffing, parity, checksum, CRC (step-by-step), Hamming code, error detection vs correction with worked examples.</div>
+        <div class="unit-tags"><span class="unit-tag">CRC</span><span class="unit-tag">Hamming</span><span class="unit-tag">Bit Stuffing</span><span class="unit-tag">Parity</span></div>
+      </a>
+
+      <a href="chapters/ch09-protocols-sliding.html" class="unit-card" style="--unit-color:rgba(239,68,68,.1)">
+        <div class="unit-num">Chapter 9</div>
+        <div class="unit-icon">🔄</div>
+        <div class="unit-title">Protocols & Sliding Window</div>
+        <div class="unit-desc">Stop-and-Wait ARQ, Go-Back-N, Selective Repeat with sequence diagrams, window constraints, throughput analysis, and worked scenarios.</div>
+        <div class="unit-tags"><span class="unit-tag">ARQ</span><span class="unit-tag">Go-Back-N</span><span class="unit-tag">Selective Repeat</span></div>
+      </a>
+
+      <a href="chapters/ch10-mac-ethernet.html" class="unit-card" style="--unit-color:rgba(239,68,68,.1)">
+        <div class="unit-num">Chapter 10</div>
+        <div class="unit-icon">🌐</div>
+        <div class="unit-title">MAC Protocols & Ethernet</div>
+        <div class="unit-desc">Pure/Slotted ALOHA, CSMA/CD, CSMA/CA, hidden terminal, polling, token passing, FDMA/TDMA/CDMA, Ethernet frame, MAC table.</div>
+        <div class="unit-tags"><span class="unit-tag">CSMA/CD</span><span class="unit-tag">ALOHA</span><span class="unit-tag">Ethernet</span><span class="unit-tag">CDMA</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- STUDY GROUPS -->
+  <section class="groups-section">
+    <h2 style="text-align:center;font-size:2rem;font-weight:800;letter-spacing:-.03em;color:var(--tx-primary)">🎯 Study Groups</h2>
+    <p style="text-align:center;color:var(--tx-muted);font-size:.9rem;margin-top:8px">Study any combination of groups and take targeted quizzes</p>
+    <div class="groups-grid stagger-children">
+      <div class="group-card">
+        <div class="group-letter">A</div>
+        <div class="group-title">Intro Basics</div>
+        <div class="group-desc">Chapters 1–2: Fundamentals, types of networks, all topologies with diagrams and comparisons.</div>
+      </div>
+      <div class="group-card">
+        <div class="group-letter">B</div>
+        <div class="group-title">Models & Devices</div>
+        <div class="group-desc">Chapters 3–4: OSI, TCP/IP, addressing, network devices, collision/broadcast domains, SDN.</div>
+      </div>
+      <div class="group-card">
+        <div class="group-letter">C</div>
+        <div class="group-title">Physical Signals</div>
+        <div class="group-desc">Chapters 5–6: Signals, impairments, Nyquist/Shannon, transmission media, line coding.</div>
+      </div>
+      <div class="group-card">
+        <div class="group-letter">D</div>
+        <div class="group-title">Modulation & Switching</div>
+        <div class="group-desc">Chapter 7: ASK/FSK/PSK/QAM, FDM/TDM/WDM multiplexing, circuit/packet/message switching.</div>
+      </div>
+      <div class="group-card">
+        <div class="group-letter">E</div>
+        <div class="group-title">DLL Core</div>
+        <div class="group-desc">Chapters 8–9: Framing, error detection/correction, CRC, Hamming, ARQ, sliding window protocols.</div>
+      </div>
+      <div class="group-card">
+        <div class="group-letter">F</div>
+        <div class="group-title">MAC & Ethernet</div>
+        <div class="group-desc">Chapter 10: ALOHA, CSMA variants, controlled access, channelization, Ethernet frame, MAC table.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features-section">
+    <h2 style="text-align:center;font-size:2rem;font-weight:800;letter-spacing:-.03em;color:var(--tx-primary)">🛠️ Built-in Tools</h2>
+    <p style="text-align:center;color:var(--tx-muted);font-size:.9rem;margin-top:8px">Everything you need — no external sites required</p>
+    <div class="features-grid stagger-children">
+      <div class="feature-item"><div class="feature-icon">🔊</div><div class="feature-title">Text-to-Speech</div><div class="feature-desc">Listen to any section with voice selection, speed control, and paragraph highlighting.</div></div>
+      <div class="feature-item"><div class="feature-icon">🔍</div><div class="feature-title">Instant Search</div><div class="feature-desc">Ctrl+K to search across all chapters with highlighted results and instant navigation.</div></div>
+      <div class="feature-item"><div class="feature-icon">📝</div><div class="feature-title">100 MCQ Exam</div><div class="feature-desc">Full mock exam with answer key, detailed solutions, and per-chapter quiz builder.</div></div>
+      <div class="feature-item"><div class="feature-icon">🔖</div><div class="feature-title">Bookmarks & Notes</div><div class="feature-desc">Bookmark sections and add notes — all saved locally in your browser.</div></div>
+      <div class="feature-item"><div class="feature-icon">⏰</div><div class="feature-title">Pomodoro Timer</div><div class="feature-desc">Full 25/5/15 timer with SVG ring, session streaks, daily goals, and analytics dashboard.</div></div>
+      <div class="feature-item"><div class="feature-icon">📴</div><div class="feature-title">Works Offline</div><div class="feature-desc">Install as a PWA app. All chapters and exams cached for complete offline access.</div></div>
+      <div class="feature-item"><div class="feature-icon">🎨</div><div class="feature-title">Dark & Light Mode</div><div class="feature-desc">Toggle between dark and light themes with a single keypress (T).</div></div>
+      <div class="feature-item"><div class="feature-icon">📄</div><div class="feature-title">PDF Export</div><div class="feature-desc">Print any chapter as a beautifully formatted PDF with Ctrl+P.</div></div>
+    </div>
+  </section>
+
+  <!-- KEYBOARD SHORTCUTS -->
+  <section class="shortcuts-section">
+    <h2 style="text-align:center;font-size:1.5rem;font-weight:800;color:var(--tx-primary)">⌨️ Keyboard Shortcuts</h2>
+    <div class="shortcuts-grid">
+      <div class="shortcut-item"><kbd>Ctrl+K</kbd><span>Open Search</span></div>
+      <div class="shortcut-item"><kbd>T</kbd><span>Toggle Theme</span></div>
+      <div class="shortcut-item"><kbd>S</kbd><span>Toggle Sidebar</span></div>
+      <div class="shortcut-item"><kbd>Esc</kbd><span>Close Modal</span></div>
+      <div class="shortcut-item"><kbd>Ctrl+Shift+R</kbd><span>Read Aloud</span></div>
+      <div class="shortcut-item"><kbd>Space</kbd><span>Timer Start/Pause</span></div>
+      <div class="shortcut-item"><kbd>R</kbd><span>Timer Reset</span></div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Built by <span class="footer-brand">🌐 Arpit</span> &nbsp;·&nbsp; University of Delhi B.Tech CSE &nbsp;·&nbsp; 2026</p>
+    <p style="margin-top:6px">Computer Networks &nbsp;·&nbsp; Based on Forouzan, Tanenbaum &amp; class notes</p>
+  </footer>
+</main>
+
+<!-- FLOATING MODE PANEL -->
+<div id="mode-panel">
+  <button class="mode-btn active" data-mode="all">📚 All</button>
+  <button class="mode-btn uni-btn" data-mode="uni">🎓 Uni</button>
+  <button class="mode-btn gate-btn" data-mode="gate">⚡ GATE</button>
+  <button class="mode-btn adv-btn" data-mode="advanced">🔬 Adv</button>
+</div>
+
+<!-- TTS FLOATING PANEL -->
+<div id="tts-panel">
+  <div class="tts-controls">
+    <button class="tts-btn" id="tts-play" title="Play/Pause">▶</button>
+    <button class="tts-btn" id="tts-stop" title="Stop">⏹</button>
+    <div class="tts-speed">
+      <span>Speed</span>
+      <input type="range" id="tts-rate" min="0.5" max="2" step="0.1" value="1">
+      <span id="tts-rate-label">1.0x</span>
+    </div>
+  </div>
+  <div class="tts-voice">
+    <select id="tts-voice-select"><option>Loading voices…</option></select>
+  </div>
+</div>
+
+<!-- POMODORO TIMER -->
+<div id="pomodoro">
+  <div id="pomo-card">
+    <div id="pomo-header">
+      <div id="pomo-label" role="status" aria-live="polite">⏰ FOCUS · #1</div>
+      <div id="pomo-header-actions">
+        <button class="hdr-btn" id="pomo-btn-stats" title="Analytics" aria-label="Open analytics">📊</button>
+        <button class="hdr-btn" id="pomo-btn-settings" title="Settings" aria-label="Open settings">⚙️</button>
+      </div>
+    </div>
+    <div id="pomo-ring-wrap" role="img" aria-label="Timer countdown ring">
+      <svg id="pomo-ring" viewBox="0 0 200 200" aria-hidden="true">
+        <circle class="ring-track" cx="100" cy="100" r="88"/>
+        <circle id="ring-progress" cx="100" cy="100" r="88"/>
+      </svg>
+      <div id="pomo-time-wrap">
+        <div id="pomo-time" role="timer" aria-atomic="true">25:00</div>
+        <span id="pomo-time-live" aria-live="polite" aria-atomic="true"></span>
+      </div>
+    </div>
+    <div id="pomo-sessions" aria-label="Session progress toward long break">
+      <div class="session-dot" id="dot-0" role="presentation"></div>
+      <div class="session-dot" id="dot-1" role="presentation"></div>
+      <div class="session-dot" id="dot-2" role="presentation"></div>
+      <div class="session-dot" id="dot-3" role="presentation"></div>
+    </div>
+    <div id="pomo-controls">
+      <button class="btn-icon" id="pomo-reset" title="Reset (R)" aria-label="Reset timer">↺</button>
+      <button id="pomo-start" aria-label="Start timer">▶ Start</button>
+      <button class="btn-icon" id="pomo-skip" title="Skip phase (S)" aria-label="Skip phase">⏭</button>
+    </div>
+    <div id="pomo-goal-wrap">
+      <div id="pomo-goal-label">
+        <span id="pomo-goal-text">0 / 8 sessions</span>
+        <span id="pomo-streak">🔥 0</span>
+      </div>
+      <div id="pomo-goal-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <div id="pomo-goal-fill"></div>
+      </div>
+    </div>
+    <div id="pomo-hints" aria-hidden="true">
+      <kbd>Space</kbd> start/pause &nbsp; <kbd>R</kbd> reset &nbsp; <kbd>S</kbd> skip
+    </div>
+  </div>
+</div>
+
+<div id="pomo-toasts" aria-live="assertive" aria-atomic="true" role="status"></div>
+
+<!-- Distraction modal -->
+<div id="pomo-distraction-modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="distraction-title">
+  <div class="modal-box">
+    <div class="distraction-icon">🎯</div>
+    <h2 class="distraction-title" id="distraction-title">Ready to focus?</h2>
+    <p class="distraction-body">Set your intention before starting. A few seconds of prep leads to a better session.</p>
+    <div class="distraction-checklist">
+      <label><input type="checkbox"> Close distracting tabs</label>
+      <label><input type="checkbox"> Silence your phone</label>
+      <label><input type="checkbox"> Get water / snacks ready</label>
+      <label><input type="checkbox"> Know what you're working on</label>
+    </div>
+    <div class="modal-row">
+      <button class="btn-ghost" id="distraction-skip">Skip</button>
+      <button class="btn-primary" id="distraction-ok">I'm Ready →</button>
+    </div>
+  </div>
+</div>
+
+<!-- Settings modal -->
+<div id="pomo-settings-modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="settings-title">
+  <div class="modal-box modal-wide">
+    <div class="modal-header">
+      <h2 id="settings-title">Timer Settings</h2>
+      <button class="modal-close" id="settings-close" aria-label="Close settings">✕</button>
+    </div>
+    <div class="settings-scroll">
+      <div class="settings-section">
+        <h3>Timer Durations</h3>
+        <div class="setting-row"><label for="set-work">Work — <span id="val-work">25</span>m</label><input type="range" id="set-work" min="5" max="60" step="5" value="25"></div>
+        <div class="setting-row"><label for="set-short">Short Break — <span id="val-short">5</span>m</label><input type="range" id="set-short" min="1" max="30" step="1" value="5"></div>
+        <div class="setting-row"><label for="set-long">Long Break — <span id="val-long">15</span>m</label><input type="range" id="set-long" min="5" max="60" step="5" value="15"></div>
+        <div class="setting-row"><label for="set-sessions-long">Sessions before long break — <span id="val-sessions-long">4</span></label><input type="range" id="set-sessions-long" min="2" max="8" step="1" value="4"></div>
+      </div>
+      <div class="settings-section">
+        <h3>Behaviour</h3>
+        <div class="setting-row"><label for="set-autostart">Auto-start next phase</label><label class="toggle"><input type="checkbox" id="set-autostart"><span class="toggle-knob"></span></label></div>
+        <div class="setting-row"><label for="set-distraction">Show focus prompt on start</label><label class="toggle"><input type="checkbox" id="set-distraction" checked><span class="toggle-knob"></span></label></div>
+        <div class="setting-row"><label for="set-goal">Daily session goal — <span id="val-goal">8</span></label><input type="range" id="set-goal" min="1" max="20" step="1" value="8"></div>
+      </div>
+      <div class="settings-section">
+        <h3>Sound</h3>
+        <div class="setting-row"><label for="set-volume">Volume — <span id="val-volume">60</span>%</label><input type="range" id="set-volume" min="0" max="1" step="0.05" value="0.6"></div>
+        <div class="sound-options" role="group" aria-label="Alert sound">
+          <button class="sound-opt active" data-sound="bell" aria-pressed="true">🔔 Bell</button>
+          <button class="sound-opt" data-sound="chime" aria-pressed="false">🎵 Chime</button>
+          <button class="sound-opt" data-sound="digital" aria-pressed="false">📟 Digital</button>
+        </div>
+      </div>
+      <div class="settings-section">
+        <h3>Notifications</h3>
+        <button id="set-notif" class="btn-ghost btn-block">🔔 Enable Browser Notifications</button>
+      </div>
+      <div class="settings-section">
+        <h3>Danger Zone</h3>
+        <button id="set-reset-defaults" class="btn-ghost btn-block btn-danger">↩ Reset All Settings to Defaults</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Analytics modal -->
+<div id="pomo-analytics-modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="analytics-title">
+  <div class="modal-box modal-wide">
+    <div class="modal-header">
+      <h2 id="analytics-title">Your Focus Stats</h2>
+      <button class="modal-close" id="analytics-close" aria-label="Close analytics">✕</button>
+    </div>
+    <div class="analytics-scroll">
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-value" id="stat-today">0</div><div class="stat-label">Sessions Today</div></div>
+        <div class="stat-card"><div class="stat-value" id="stat-focus">0m</div><div class="stat-label">Focus Time Today</div></div>
+        <div class="stat-card"><div class="stat-value" id="stat-total">0</div><div class="stat-label">All-time Sessions</div></div>
+        <div class="stat-card stat-card-goal" style="grid-column:span 3">
+          <div class="stat-goal-ring-wrap">
+            <svg viewBox="0 0 64 64" width="64" height="64">
+              <circle class="stat-goal-ring-bg" cx="32" cy="32" r="28"/>
+              <circle id="stat-goal-ring" cx="32" cy="32" r="28"/>
+            </svg>
+            <div id="stat-goal-pct">0%</div>
+          </div>
+          <div class="stat-goal-info">
+            <div class="stat-value" id="stat-streak">0</div>
+            <div class="stat-label">Day streak 🔥<br><span style="color:var(--text-muted)">Best: <span id="stat-best">0</span></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="week-section">
+        <h3>This Week</h3>
+        <div id="week-chart" class="week-chart" aria-label="Sessions per day this week"></div>
+      </div>
+      <div class="analytics-actions">
+        <button id="export-csv" class="btn-ghost">⬇ Export CSV</button>
+        <button id="export-json" class="btn-ghost">⬇ Export JSON</button>
+        <button id="clear-history" class="btn-ghost btn-danger">🗑 Clear History</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SEARCH MODAL -->
+<div id="search-modal">
+  <div class="search-box">
+    <div class="search-input-wrap">
+      <span class="s-icon">🔍</span>
+      <input id="search-input" type="text" placeholder="Search chapters, topics, protocols…" autocomplete="off">
+    </div>
+    <div id="search-results"></div>
+    <div class="search-hint">
+      <span><kbd>↵</kbd> to navigate</span>
+      <span><kbd>Esc</kbd> to close</span>
+      <span><kbd>Ctrl+K</kbd> to open</span>
+    </div>
+  </div>
+</div>
+
+<!-- MOBILE NAV -->
+<nav id="mobile-nav">
+  <button class="mobile-nav-btn" onclick="SidebarManager?.toggle()"><span class="icon">☰</span>Menu</button>
+  <a href="index.html" class="mobile-nav-btn active"><span class="icon">🏠</span>Home</a>
+  <a href="chapters/ch01-fundamentals.html" class="mobile-nav-btn"><span class="icon">📖</span>Chapters</a>
+  <a href="exams/mock-exam.html" class="mobile-nav-btn"><span class="icon">📝</span>Exams</a>
+  <button class="mobile-nav-btn" onclick="SearchManager?.open()"><span class="icon">🔍</span>Search</button>
+</nav>
+
+<div id="toast-container"></div>
+<script src="assets/js/state.js"></script>
+<script src="assets/js/core.js"></script>
+<script src="assets/js/modes.js"></script>
+<script src="assets/js/tts.js"></script>
+<script src="assets/js/timer-settings.js"></script>
+<script src="assets/js/timer.js"></script>
+<script src="assets/js/timer-analytics.js"></script>
+<script src="assets/js/timer-notifications.js"></script>
+<script src="assets/js/timer-ui.js"></script>
+<script src="./assets/js/print.js"></script>
+<script src="./assets/js/notes.js"></script>
+<script src="./assets/js/glossary.js"></script>
+</body>
+</html>

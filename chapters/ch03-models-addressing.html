@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<!-- ⚡ Arpit | CN MiniBook 2026 -->
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="Arpit">
+<meta name="description" content="Chapter 3: Network Models & Addressing — CN MiniBook. OSI 7-Layer Reference Model, TCP/IP Protocol Suite, Encapsulation, MAC/IP/Port Addressing, Layer functions.">
+<title>Ch 3 — Network Models & Addressing | CN MiniBook 🌐 Arpit</title>
+<link rel="manifest" href="../manifest.json">
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/animations.css">
+<link rel="stylesheet" href="../assets/css/timer.css">
+<link rel="stylesheet" href="../assets/css/chapters.css">
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<!-- HEADER -->
+<header id="main-header">
+  <div class="header-left">
+    <button id="sidebar-toggle" class="icon-btn" title="Toggle Sidebar (S)">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </button>
+    <div class="brand-logo">
+      <div class="brand-icon">🌐</div>
+      <div class="brand-text"><span class="main">CN MiniBook</span><span class="sub">Computer Networks</span></div>
+    </div>
+  </div>
+  <span class="header-chapter-title">Ch 3 — Network Models & Addressing</span>
+  <div class="header-right">
+    <button id="search-btn" class="icon-btn" title="Search (Ctrl+K)">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.35-4.35"></path></svg>
+    </button>
+    <button id="tts-toggle" class="icon-btn" title="Read Aloud">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"></path></svg>
+    </button>
+    <button id="print-btn" title="Print / Save as PDF (Ctrl+P)" aria-label="Print"><svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="flex-shrink:0"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg><span class="print-label">PDF</span></button>
+    <button id="reading-mode-btn" class="icon-btn" title="Reading Mode (F)" aria-pressed="false" aria-label="Toggle reading mode">📖</button>
+    <button id="theme-toggle" class="icon-btn" title="Toggle Theme (T)"></button>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<div id="sidebar-overlay"></div>
+<aside id="sidebar">
+  <nav class="sidebar-nav">
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Navigation</div>
+      <a href="../index.html" class="sidebar-link"><span class="link-icon">🏠</span>Home</a>
+      <a href="../progress.html" class="sidebar-link"><span class="link-icon">📊</span>Dashboard</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Chapter 3 — Sections</div>
+      <a href="#s-layering" class="sidebar-link active"><span class="link-icon">🍰</span>3.1 Why Layered Architecture?</a>
+      <a href="#s-terminology-layers" class="sidebar-link"><span class="link-icon">📐</span>3.2 Services, Protocols & Interfaces</a>
+      <a href="#s-osi-overview" class="sidebar-link"><span class="link-icon">🏛️</span>3.3 OSI 7-Layer Model Overview</a>
+      <a href="#s-osi-physical" class="sidebar-link"><span class="link-icon">⚡</span>3.4 Layer 1: Physical Layer</a>
+      <a href="#s-osi-datalink" class="sidebar-link"><span class="link-icon">🔗</span>3.5 Layer 2: Data Link Layer</a>
+      <a href="#s-osi-network" class="sidebar-link"><span class="link-icon">🗺️</span>3.6 Layer 3: Network Layer</a>
+      <a href="#s-osi-transport" class="sidebar-link"><span class="link-icon">🚚</span>3.7 Layer 4: Transport Layer</a>
+      <a href="#s-osi-session" class="sidebar-link"><span class="link-icon">🤝</span>3.8 Layer 5: Session Layer</a>
+      <a href="#s-osi-presentation" class="sidebar-link"><span class="link-icon">🎭</span>3.9 Layer 6: Presentation Layer</a>
+      <a href="#s-osi-application" class="sidebar-link"><span class="link-icon">💻</span>3.10 Layer 7: Application Layer</a>
+      <a href="#s-encap-detail" class="sidebar-link"><span class="link-icon">📦</span>3.11 Encapsulation & Decapsulation</a>
+      <a href="#s-tcpip" class="sidebar-link"><span class="link-icon">🌐</span>3.12 TCP/IP Protocol Suite</a>
+      <a href="#s-osi-vs-tcpip" class="sidebar-link"><span class="link-icon">⚖️</span>3.13 OSI vs TCP/IP Comparison</a>
+      <a href="#s-addressing" class="sidebar-link"><span class="link-icon">🏷️</span>3.14 Types of Addressing</a>
+      <a href="#s-summary-ch3" class="sidebar-link"><span class="link-icon">🎯</span>3.15 Summary & Exam Traps</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">All Chapters</div>
+      <a href="ch01-fundamentals.html" class="sidebar-link"><span class="link-icon">📡</span>Ch 1 — Fundamentals</a>
+      <a href="ch02-types-topologies.html" class="sidebar-link"><span class="link-icon">🔗</span>Ch 2 — Types &amp; Topologies</a>
+      <a href="ch03-models-addressing.html" class="sidebar-link" style="color:var(--accent-light)"><span class="link-icon">📦</span>Ch 3 — Models &amp; Addressing</a>
+      <a href="ch04-devices-sdn.html" class="sidebar-link"><span class="link-icon">🔌</span>Ch 4 — Devices &amp; SDN</a>
+      <a href="ch05-physical-fundamentals.html" class="sidebar-link"><span class="link-icon">📶</span>Ch 5 — Physical Fundamentals</a>
+      <a href="ch06-media-signaling.html" class="sidebar-link"><span class="link-icon">🔌</span>Ch 6 — Media &amp; Line Coding</a>
+      <a href="ch07-modulation-switching.html" class="sidebar-link"><span class="link-icon">📻</span>Ch 7 — Modulation &amp; Switching</a>
+      <a href="ch08-dll-fundamentals.html" class="sidebar-link"><span class="link-icon">🔧</span>Ch 8 — DLL Fundamentals</a>
+      <a href="ch09-protocols-sliding.html" class="sidebar-link"><span class="link-icon">🔄</span>Ch 9 — Protocols &amp; Sliding Window</a>
+      <a href="ch10-mac-ethernet.html" class="sidebar-link"><span class="link-icon">🌐</span>Ch 10 — MAC &amp; Ethernet</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Exams</div>
+      <a href="../exams/mock-exam.html" class="sidebar-link"><span class="link-icon">📝</span>100 MCQ Mock Exam</a>
+      <a href="../exams/unit-quiz.html" class="sidebar-link"><span class="link-icon">📋</span>Chapter Quizzes</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Bookmarks</div>
+      <div id="bookmarks-list"></div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">My Notes</div>
+      <div id="notes-sidebar-list"></div>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-brand-mark"><div class="mark">🌐</div><span>Arpit · CN MiniBook 2026</span></div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main id="main-content">
+<div class="content-inner">
+
+  <!-- CHAPTER HERO -->
+  <div class="chapter-hero">
+    <div class="chapter-breadcrumb">
+      <a href="../index.html">Home</a><span>›</span><span>Part I — Introduction</span><span>›</span><span style="color:var(--tx-primary)">Chapter 3</span>
+    </div>
+    <div class="chapter-num">📦 Chapter 3</div>
+    <h1 class="chapter-title">Network Models & Addressing</h1>
+    <div class="chapter-meta">
+      <span class="chapter-meta-item" style="background:var(--uni-bg-hd); border-color:var(--uni-b-hd); color:var(--uni-text); font-weight:700;">🎓 Uni Syllabus: Models & Addressing</span>
+      <span>⏱️ 55 min read</span>
+      <span>📚 15 Sections</span>
+      <span>🎓 Uni Exam + GATE Aligned</span>
+      <span>🏷️ OSI, TCP/IP, Addressing</span>
+    </div>
+  </div>
+
+  <!-- UNIVERSITY SYLLABUS CALLOUT -->
+  <div class="uni-syllabus-callout">
+    <div class="uni-callout-title">🎓 Official University Syllabus Focus</div>
+    <div><strong>Introduction to Computer Networks:</strong> Network models, OSI Reference Model, TCP/IP reference model, and Addressing hierarchy.</div>
+  </div>
+
+  <!-- TABLE OF CONTENTS -->
+  <div class="toc-card">
+    <div class="toc-title"><span>📑</span>Table of Contents</div>
+    <div class="toc-grid">
+      <a href="#s-layering" class="toc-item"><span class="toc-num">3.1</span>Why Layered Architecture?</a>
+      <a href="#s-terminology-layers" class="toc-item"><span class="toc-num">3.2</span>Services, Protocols & Interfaces</a>
+      <a href="#s-osi-overview" class="toc-item"><span class="toc-num">3.3</span>OSI 7-Layer Model Overview</a>
+      <a href="#s-osi-physical" class="toc-item"><span class="toc-num">3.4</span>Layer 1: Physical Layer</a>
+      <a href="#s-osi-datalink" class="toc-item"><span class="toc-num">3.5</span>Layer 2: Data Link Layer</a>
+      <a href="#s-osi-network" class="toc-item"><span class="toc-num">3.6</span>Layer 3: Network Layer</a>
+      <a href="#s-osi-transport" class="toc-item"><span class="toc-num">3.7</span>Layer 4: Transport Layer</a>
+      <a href="#s-osi-session" class="toc-item"><span class="toc-num">3.8</span>Layer 5: Session Layer</a>
+      <a href="#s-osi-presentation" class="toc-item"><span class="toc-num">3.9</span>Layer 6: Presentation Layer</a>
+      <a href="#s-osi-application" class="toc-item"><span class="toc-num">3.10</span>Layer 7: Application Layer</a>
+      <a href="#s-encap-detail" class="toc-item"><span class="toc-num">3.11</span>Encapsulation & Decapsulation</a>
+      <a href="#s-tcpip" class="toc-item"><span class="toc-num">3.12</span>TCP/IP Protocol Suite</a>
+      <a href="#s-osi-vs-tcpip" class="toc-item"><span class="toc-num">3.13</span>OSI vs TCP/IP Comparison</a>
+      <a href="#s-addressing" class="toc-item"><span class="toc-num">3.14</span>Types of Addressing</a>
+      <a href="#s-summary-ch3" class="toc-item"><span class="toc-num">3.15</span>Summary & Exam Traps</a>
+    </div>
+  </div>
+
+  <!-- SECTION 3.1: WHY LAYERED ARCHITECTURE? -->
+  <section id="s-layering" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 3.1</div>
+      <h2 class="section-title">Why Layered Architecture?</h2>
+    </div>
+
+    <p>Computer networking is an enormously complex task involving electrical signals, hardware transceivers, error detection, flow arbitration, congestion control, routing across billions of global devices, security, encryption, and application semantics. Trying to design a single, monolithic piece of software or hardware to accomplish all of this at once would result in an unmaintainable, brittle, and impossible system.</p>
+
+    <div class="def-box">
+      <div class="def-term">Layered Architecture (Layering)</div>
+      <p class="def-body">A design paradigm that partitions a complex networking system into a vertical hierarchy of modular, distinct levels (called <strong>layers</strong>), where each layer performs a specific, well-defined subset of functions and relies solely on the services of the layer immediately below it while providing higher-level services to the layer immediately above it.</p>
+    </div>
+
+    <h3>The Classic Postal System Analogy</h3>
+    <p>Consider sending an important business letter from New York to Tokyo. You do not build a cargo plane, pave a runway, or navigate the Pacific Ocean yourself. Instead, tasks are layered:</p>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 3.1: The Postal Service Layering Analogy</div>
+      <pre>
+  +-------------------------------------------------------------------+
+  | LAYER 3: Thought / Content (Sender writes letter in English)     |
+  |         ↕ [Letter put inside an envelope with address]           |
+  | LAYER 2: Postal Sorting & Routing (Local post office, zip code)   |
+  |         ↕ [Envelope loaded into bulk shipping sack]              |
+  | LAYER 1: Physical Transportation (Trucks, Cargo planes, Ships)   |
+  +-------------------------------------------------------------------+
+      </pre>
+    </div>
+
+    <p>Notice the power of this separation: if the airline upgrades from Boeing 747 cargo planes to supersonic aircraft (Layer 1), the local post office does not alter its sorting algorithm (Layer 2), nor does the sender need to rewrite their letter (Layer 3). Each layer is decoupled and isolated!</p>
+
+    <h3>Key Benefits of Layering</h3>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Benefit</th>
+            <th>Description & Mechanism</th>
+            <th>Real-World Network Impact</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Modularity & Abstraction</strong></td>
+            <td>Complex problems divided into smaller, self-contained, manageable modules. Implementation details hidden behind clean interfaces.</td>
+            <td>Engineers can design advanced web applications (HTTP) without needing to understand radio frequency line coding on 5G towers.</td>
+          </tr>
+          <tr>
+            <td><strong>Standardization & Interoperability</strong></td>
+            <td>Universal interface standards allow equipment and software from thousands of competing vendors to interact seamlessly.</td>
+            <td>An Apple MacBook on Wi-Fi communicates flawlessly with a Linux server hosted in AWS over fiber-optic backbone cables.</td>
+          </tr>
+          <tr>
+            <td><strong>Independent Evolution & Flexibility</strong></td>
+            <td>Modifying or replacing the internal technology of one layer does not break or require changes in any adjacent layers.</td>
+            <td>Upgrading from 1 Gbps copper Ethernet to 100 Gbps optical fiber requires only Layer 1/2 hardware upgrades; your web browser and operating system code remain identical.</td>
+          </tr>
+          <tr>
+            <td><strong>Simplified Debugging & Troubleshooting</strong></td>
+            <td>Faults can be systematically isolated layer by layer (e.g., "Is the link light on?" → "Can I ping the default gateway?" → "Can I resolve DNS?").</td>
+            <td>Network administrators follow methodical bottom-up or top-down troubleshooting trees to pinpoint failures quickly.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">⚠️ The Cost & Trade-offs of Layering (GATE Note)</div>
+      <p>Layering is not completely free; it incurs two key overheads:</p>
+      <ul>
+        <li><strong>Header/Protocol Overhead:</strong> Every single layer adds its own header (and trailer), consuming valuable bandwidth.</li>
+        <li><strong>Processing Overhead:</strong> At every boundary, data is copied, parsed, and checked, adding latency. Cross-layer optimizations are sometimes restricted by strict layer boundaries.</li>
+        <li><strong>Redundancy:</strong> Certain functionalities may be duplicated across layers (e.g., error detection occurs at both Layer 2 and Layer 4).</li>
+      </ul>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 3.2: SERVICES, PROTOCOLS & INTERFACES -->
+  <section id="s-terminology-layers" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 3.2</div>
+      <h2 class="section-title">Key Terminology: Service, Protocol, Interface & Primitives</h2>
+    </div>
+
+    <p>A frequent point of confusion in university exams and interviews is the exact formal distinction between a <strong>Service</strong>, a <strong>Protocol</strong>, and an <strong>Interface</strong>. ISO 7498 defines these with mathematical precision.</p>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 3.2: Relationship Between Protocol, Service, and Interface</div>
+      <pre>
+        HOST A                                           HOST B
+   +---------------+                               +---------------+
+   |    Layer N    | <====== PROTOCOL (Layer N) ===> |    Layer N    |  (Peer Entities)
+   +---------------+                               +---------------+
+           ↕ [INTERFACE (N/N-1)]                           ↕ [INTERFACE]
+   +---------------+                               +---------------+
+   |   Layer N-1   | <==== PROTOCOL (Layer N-1) ===> |   Layer N-1   |  (Provides Service to N)
+   +---------------+                               +---------------+
+      </pre>
+    </div>
+
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>Formal Definition</th>
+            <th>Direction of Interaction</th>
+            <th>Who Sees It?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Service</strong></td>
+            <td>The set of operations and capabilities that layer $N-1$ provides to the layer immediately above it ($Layer\ N$). Specifies <em>what</em> the layer does, not <em>how</em>.</td>
+            <td><strong>Vertical</strong> (Between adjacent layers on the <strong>same</strong> host)</td>
+            <td>Visible to Layer $N$ above it.</td>
+          </tr>
+          <tr>
+            <td><strong>Protocol</strong></td>
+            <td>A set of formal rules and conventions governing the format, order, and meaning of messages exchanged between <strong>peer entities</strong> at layer $N$. Specifies <em>how</em> the service is realized.</td>
+            <td><strong>Horizontal</strong> (Between peer layers on <strong>different</strong> hosts)</td>
+            <td>Hidden from Layer $N+1$; peer entities communicate logically.</td>
+          </tr>
+          <tr>
+            <td><strong>Interface (SAP)</strong></td>
+            <td>The well-defined software boundary and set of primitive functions through which layer $N$ requests services from layer $N-1$.</td>
+            <td><strong>Vertical boundary</strong> (The demarcation line between layer $N$ and $N-1$)</td>
+            <td>Shared between adjacent layers.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>SAP, SDU, PDU, and IDU Demystified</h3>
+    <p>In formal networking theory, the exchange of information across layer boundaries uses standardized data units:</p>
+
+    <div class="def-box">
+      <div class="def-term">1. Service Access Point (SAP)</div>
+      <p class="def-body">The conceptual physical or logical port/address at the boundary between Layer $N$ and Layer $N+1$ where Layer $N+1$ accesses the services of Layer $N$.<br>
+      • <strong>Physical SAP:</strong> Pin or connector interface.<br>
+      • <strong>Data Link SAP (LSAP/DSAP/SSAP):</strong> LLC address.<br>
+      • <strong>Network SAP (NSAP):</strong> IP Address.<br>
+      • <strong>Transport SAP (TSAP):</strong> Port Number (e.g., port 80 for HTTP, port 443 for HTTPS).</p>
+    </div>
+
+    <div class="def-box">
+      <div class="def-term">2. SDU vs PDU vs IDU</div>
+      <p class="def-body">
+        • <strong>SDU (Service Data Unit):</strong> The pure payload handed down from layer $N+1$ to layer $N$. Layer $N$ must deliver this unaltered to the peer layer $N+1$.<br>
+        • <strong>PCI (Protocol Control Information):</strong> The header and/or trailer added by layer $N$ to govern its peer-to-peer protocol.<br>
+        • <strong>PDU (Protocol Data Unit):</strong> The combination of SDU and PCI generated by layer $N$:<br>
+        <code style="color:var(--accent-light); font-weight:bold;">PDU = SDU + PCI (Header/Trailer)</code><br>
+        • <strong>ICI (Interface Control Information):</strong> Temporary control parameters passed across the interface to invoke the primitive.<br>
+        • <strong>IDU (Interface Data Unit):</strong> The total data passed across the SAP boundary: <code style="color:var(--accent-light);">IDU = SDU + ICI</code>.
+      </p>
+    </div>
+
+    <h3>Service Primitives</h3>
+    <p>A service between adjacent layers is formally requested and executed using 4 types of <strong>primitives</strong>:</p>
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 3.3: The Four Standard Service Primitives</div>
+      <pre>
+        CLIENT (Layer N)                            SERVER (Layer N)
+               |                                           |
+    1. REQUEST | === [Request primitive to Layer N-1] ==> |
+               |                                           | 2. INDICATION (Notified of incoming event)
+               |                                           |
+               |                                           | 3. RESPONSE (Processes & sends reply)
+   4. CONFIRM  | <==== [Response arrives at caller] ====== |
+               |                                           |
+      </pre>
+    </div>
+    <ul>
+      <li><strong>Request:</strong> Entity at Layer $N$ invokes Layer $N-1$ to initiate a service (e.g., establish a connection, send a packet).</li>
+      <li><strong>Indication:</strong> Layer $N-1$ informs entity at Layer $N$ that an event has occurred (e.g., connection requested, data arrived).</li>
+      <li><strong>Response:</strong> Entity at Layer $N$ responds to an Indication primitive.</li>
+      <li><strong>Confirm:</strong> Layer $N-1$ notifies the original requesting entity that its requested service has been successfully completed.</li>
+    </ul>
+
+    <h3>Connection-Oriented vs Connectionless Services</h3>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Parameter</th>
+            <th>Connection-Oriented Service</th>
+            <th>Connectionless Service</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Analogy</strong></td>
+            <td>Telephone call (dial → talk → hang up).</td>
+            <td>Postal letter (drop in mailbox; individual letters travel independently).</td>
+          </tr>
+          <tr>
+            <td><strong>Phases</strong></td>
+            <td>Three distinct phases: 1. Setup, 2. Data Transfer, 3. Teardown.</td>
+            <td>Single phase: Data transmission only. No setup or teardown.</td>
+          </tr>
+          <tr>
+            <td><strong>Path of Packets</strong></td>
+            <td>All packets follow the established virtual circuit/path in order.</td>
+            <td>Each packet (datagram) is routed independently; may take different paths.</td>
+          </tr>
+          <tr>
+            <td><strong>Ordering & Reliability</strong></td>
+            <td>Strict sequence guaranteed; retransmissions and acknowledgments common.</td>
+            <td>Packets may arrive out-of-order, duplicated, or get lost.</td>
+          </tr>
+          <tr>
+            <td><strong>Overhead & Speed</strong></td>
+            <td>Higher initial setup latency and protocol overhead.</td>
+            <td>Very low latency; zero setup delay; fast transmission.</td>
+          </tr>
+          <tr>
+            <td><strong>Examples</strong></td>
+            <td>TCP, ATM, X.25, Frame Relay.</td>
+            <td>UDP, IP, Ethernet, DNS queries.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 3.3: OSI REFERENCE MODEL OVERVIEW -->
+  <section id="s-osi-overview" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 3.3</div>
+      <h2 class="section-title">The OSI 7-Layer Reference Model Overview <span class="uni-syllabus-badge">🎓 Uni: OSI Reference Model</span></h2>
+    </div>
+
+    <p>In 1984, the <strong>International Organization for Standardization (ISO)</strong> released ISO standard 7498, establishing the <strong>Open Systems Interconnection (OSI)</strong> reference model. An "open system" is one that can communicate with any other system anywhere in the world, regardless of underlying hardware architecture, operating system, or manufacturer, provided both conform to OSI standards.</p>
+
+    <div class="callout tip">
+      <div class="callout-title">💡 Standard Mnemonics for the 7 Layers</div>
+      <p><strong>Top to Bottom (Layer 7 down to Layer 1):</strong><br>
+      • <strong>A</strong>ll <strong>P</strong>eople <strong>S</strong>eem <strong>T</strong>o <strong>N</strong>eed <strong>D</strong>ata <strong>P</strong>rocessing<br>
+      (Application, Presentation, Session, Transport, Network, Data Link, Physical)</p>
+      <p><strong>Bottom to Top (Layer 1 up to Layer 7):</strong><br>
+      • <strong>P</strong>lease <strong>D</strong>o <strong>N</strong>ot <strong>T</strong>hrow <strong>S</strong>ausage <strong>P</strong>izza <strong>A</strong>way</p>
+    </div>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 3.4: The Complete 7-Layer OSI Reference Architecture</div>
+      <pre>
+   +-------------------------------------------------------------------------+
+   |  Layer 7: APPLICATION  | User Interface, HTTP, DNS, SMTP, FTP, SSH     | [PDU: Data]
+   |  Layer 6: PRESENTATION | Translation, Encryption (TLS), Compression     | [PDU: Data]
+   |  Layer 5: SESSION      | Dialog Control, Checkpointing, Tokens          | [PDU: Data]
+   +-------------------------------------------------------------------------+
+   |  Layer 4: TRANSPORT    | End-to-End Delivery, Port Addr, Flow/Error Ctl | [PDU: Segment]
+   +-------------------------------------------------------------------------+
+   |  Layer 3: NETWORK      | Routing, Logical (IP) Addressing, Forwarding   | [PDU: Packet]
+   |  Layer 2: DATA LINK    | Hop-to-Hop, MAC Addressing, Framing, CRC Check | [PDU: Frame]
+   |  Layer 1: PHYSICAL     | Raw Bit Stream, Signals, Cables, Volts, Pins   | [PDU: Bits]
+   +-------------------------------------------------------------------------+
+      </pre>
+    </div>
+
+    <h3>Classification into Three Sub-groups</h3>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Group</th>
+            <th>Layers Included</th>
+            <th>Implementation Domain</th>
+            <th>Primary Functionality</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Upper / Software Layers (User Support)</strong></td>
+            <td>Layer 7 (Application)<br>Layer 6 (Presentation)<br>Layer 5 (Session)</td>
+            <td>Implemented in software within the operating system user-space and applications.</td>
+            <td>Deals with user interfaces, data formatting, encryption, session management, and application semantics. Completely unaware of network topology or physical transmission links.</td>
+          </tr>
+          <tr>
+            <td><strong>The Heart of OSI</strong></td>
+            <td>Layer 4 (Transport)</td>
+            <td>Implemented in OS kernel space (TCP/IP stack).</td>
+            <td>The vital bridge: takes raw unorganized network packets and transforms them into reliable, ordered, error-free process-to-process communication streams.</td>
+          </tr>
+          <tr>
+            <td><strong>Lower / Hardware Layers (Network Support)</strong></td>
+            <td>Layer 3 (Network)<br>Layer 2 (Data Link)<br>Layer 1 (Physical)</td>
+            <td>Implemented in OS kernel, device drivers, NIC hardware, and physical cables/switches.</td>
+            <td>Deals with physical transmission, electrical voltages, wire access arbitration, framing, and routing across hops.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-title">📌 Hop-to-Hop vs End-to-End Communication</div>
+      <p>Notice an essential architectural distinction:</p>
+      <ul>
+        <li><strong>Intermediate Nodes (Routers & Switches):</strong> When data travels across the Internet through 15 intermediate routers, those routers <strong>only implement Layers 1, 2, and 3</strong>! They inspect the IP header, swap the MAC header, and forward the packet. They never touch Layers 4, 5, 6, or 7.</li>
+        <li><strong>End Systems (Hosts):</strong> Layers 4 through 7 exist <strong>only at the end systems</strong> (the client and server). They provide true <strong>end-to-end</strong> communication across the entire journey.</li>
+      </ul>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 3.4: LAYER 1 PHYSICAL -->
+  <section id="s-osi-physical" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 3.4</div>
+      <h2 class="section-title">Layer 1: Physical Layer Deep Dive</h2>
+    </div>
+
+    <p>The Physical Layer is the lowest layer of the OSI model. Its sole mission is the transmission and reception of unstructured raw bit streams ($0	ext{s}$ and $1	ext{s}$) over a physical transmission medium. It converts digital binary digits into physical signals (voltages, light pulses, or radio waves) and vice-versa.</p>
+
+    <div class="def-box">
+      <div class="def-term">Physical Layer PDU: Bit / Symbol</div>
+      <p class="def-body">At Layer 1, data has no concept of meaning, packets, headers, or addresses. Data consists purely of individual bits: sequences of $1$ and $0$.</p>
+    </div>
+
+    <h3>The Four Standard Specifications of the Physical Layer</h3>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Specification</th>
+            <th>Focus Area</th>
+            <th>Practical Examples</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Mechanical</strong></td>
+            <td>Physical properties of the connector, cable, socket, and pin assignments (geometry, dimensions, contact pins).</td>
+            <td>RJ45 8-pin connector for Ethernet, DB-9 / DB-25 serial ports, USB-C geometry, SC/LC fiber connectors.</td>
+          </tr>
+          <tr>
+            <td><strong>2. Electrical</strong></td>
+            <td>Voltage levels, signal thresholds, transition speed, pulse duration, and impedance.</td>
+            <td>RS-232 (+3V to +15V for logical 0, -3V to -15V for logical 1), TTL logic (0V and 5V), optical light power levels in dBm.</td>
+          </tr>
+          <tr>
+            <td><strong>3. Functional</strong></td>
+            <td>Defines the meaning and purpose of each individual pin or circuit line (e.g., ground, transmit, receive, carrier detect).</td>
+            <td>Pin 1: Transmit Data (TXD), Pin 2: Receive Data (RXD), Pin 5: Signal Ground (GND) in standard serial interfaces.</td>
+          </tr>
+          <tr>
+            <td><strong>4. Procedural</strong></td>
+            <td>Specifies the mandatory sequence of events, handshaking signals, and timing rules for bit transmission.</td>
+            <td>"Before transmitting data on pin 2, pin 4 (RTS) must be asserted high, and pin 5 (CTS) must respond with a positive voltage."</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Key Responsibilities of Layer 1</h3>
+    <ul>
+      <li><strong>Representation of Bits:</strong> Translates bits into analog or digital signal formats (NRZ, NRZI, Manchester, Differential Manchester, 4B/5B, QAM).</li>
+      <li><strong>Data Rate (Transmission Rate):</strong> Dictates the duration of a single bit ($T_b$) and number of bits sent per second (bps, Mbps, Gbps).</li>
+      <li><strong>Bit Synchronization:</strong> Synchronizes the receiver clock with the sender clock using clock signals or self-clocking line codes to prevent drift.</li>
+      <li><strong>Line Configuration:</strong> Governs connection of devices to the medium (Point-to-Point vs Multipoint / Multidrop).</li>
+      <li><strong>Physical Topology:</strong> Physical cabling layout (Mesh, Star, Bus, Ring).</li>
+      <li><strong>Transmission Mode:</strong> Direction of signal propagation (Simplex, Half-Duplex, Full-Duplex).</li>
+    </ul>
+
+    <div class="callout danger">
+      <div class="callout-title">⚠️ Common GATE Trap: Physical Layer Does NOT Detect Bit Errors!</div>
+      <p>The Physical Layer is completely unaware of bit errors. If a voltage fluctuation turns a $1$ into a $0$, Layer 1 blindly delivers the corrupted $0$ to Layer 2. Bit error detection and framing are the strict responsibilities of <strong>Layer 2 (Data Link Layer)</strong>.</p>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 3.5: LAYER 2 DATA LINK -->
+  <section id="s-osi-datalink" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 3.5</div>
+      <h2 class="section-title">Layer 2: Data Link Layer (DLL) Deep Dive</h2>
+    </div>
+
+    <p>The Data Link Layer transforms a raw, error-prone transmission facility (Layer 1) into an apparently flawless, reliable link. It is responsible for <strong>node-to-node (hop-to-hop)</strong> frame delivery across a single physical link connecting two directly adjacent machines.</p>
+
+    <div class="def-box">
+      <div class="def-term">Data Link Layer PDU: Frame</div>
+      <p class="def-body">A discrete block of data composed of a header (containing source and destination physical MAC addresses and control fields), the packet payload from Layer 3, and a trailer (containing the Frame Check Sequence / CRC).</p>
+    </div>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 3.5: Structure of a Data Link Frame</div>
+      <pre>
+   +--------------+---------------+--------------+---------------+---------------+
+   | Frame Header | Source MAC    | Dest MAC     | Packet Data   | Frame Trailer |
+   | [Preamble]   | [48 bits/6 B] | [48 bits/6B] | [Network SDU] | [CRC/FCS]     |
+   +--------------+---------------+--------------+---------------+---------------+
+      </pre>
+    </div>
+
+    <h3>The Two Sublayers of DLL (IEEE 802 Model)</h3>
+    <p>In modern LAN technologies (IEEE 802 standards), the Data Link Layer is split into two distinct sublayers:</p>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Sublayer</th>
+            <th>Standard</th>
+            <th>Primary Function & Responsibilities</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>LLC (Logical Link Control)</strong></td>
+            <td>IEEE 802.2</td>
+            <td>Upper sublayer. Provides an interface to the Network Layer (IPv4/IPv6). Handles multiplexing (via DSAP/SSAP), link flow control, and optional hop-to-hop error recovery. Independent of underlying transmission technology!</td>
+          </tr>
+          <tr>
+            <td><strong>MAC (Medium Access Control)</strong></td>
+            <td>IEEE 802.3 (Ethernet)<br>IEEE 802.11 (Wi-Fi)<br>IEEE 802.15 (Bluetooth)</td>
+            <td>Lower sublayer. Interacts directly with physical hardware. Handles physical 48-bit MAC addressing, frame delimiters/padding, CRC error calculation, and multiple access protocol arbitration (CSMA/CD, CSMA/CA).</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Core Responsibilities of the Data Link Layer</h3>
+    <ol>
+      <li><strong>Framing:</strong> Divides the stream of bits received from Layer 1 into identifiable, discrete data frames using byte counting, byte stuffing, or bit stuffing (flag bytes `01111110`).</li>
+      <li><strong>Physical Addressing:</strong> Adds the 48-bit hardware MAC address of the sender and immediate next-hop receiver into the frame header.</li>
+      <li><strong>Flow Control:</strong> Prevents a fast sender from flooding and overwhelming a slow receiver with more frames than it can buffer and process (Stop-and-Wait, Go-Back-N, Selective Repeat).</li>
+      <li><strong>Error Control:</strong> Detects damaged, lost, or duplicate frames using the trailer's Frame Check Sequence (FCS) computed via Cyclic Redundancy Check (CRC). Requests retransmissions via ARQ.</li>
+      <li><strong>Access Control:</strong> When two or more devices share the same broadcast link or cable, determines which device has permission to transmit at any given instant.</li>
+    </ol>
+
+    <div class="callout tip">
+      <div class="callout-title">💡 Why is DLL Called "Hop-to-Hop" Delivery?</div>
+      <p>Consider a path from Host A → Router R1 → Router R2 → Host B. As the frame traverses each link, the Data Link Layer header is stripped off and completely regenerated with new MAC addresses at each hop:
+      <br>• Hop 1 (A to R1): Source MAC = A, Dest MAC = R1.
+      <br>• Hop 2 (R1 to R2): Source MAC = R1, Dest MAC = R2.
+      <br>• Hop 3 (R2 to B): Source MAC = R2, Dest MAC = B.
+      <br><strong>The MAC addresses change at every single hop!</strong></p>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 3.6: LAYER 3 NETWORK -->
+  <section id="s-osi-network" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 3.6</div>
+      <h2 class="section-title">Layer 3: Network Layer Deep Dive</h2>
+    </div>
+
+    <p>While the Data Link Layer oversees delivery between two directly adjacent nodes on the same link, the <strong>Network Layer</strong> is responsible for the <strong>source-to-destination (end-to-end host) delivery of packets</strong> across multiple heterogeneous networks (an internetwork).</p>
+
+    <div class="def-box">
+      <div class="def-term">Network Layer PDU: Packet (or Datagram)</div>
+      <p class="def-body">A unit of data comprising the Network Layer header (containing original source IP and final destination IP addresses, TTL, protocol flags) and the Transport Layer payload.</p>
+    </div>
+
+    <h3>Core Responsibilities of the Network Layer</h3>
+    <ul>
+      <li><strong>Logical Addressing:</strong> Implements a global, hierarchical addressing scheme (IPv4 32-bit addresses e.g., `192.168.1.1` or IPv6 128-bit addresses). Unlike flat MAC addresses, IP addresses distinguish the network ID from the host ID, enabling scalable worldwide routing.</li>
+      <li><strong>Routing:</strong> Determines the optimal and most efficient physical path for a packet to travel from the original sender to the destination across complex meshes of intermediate networks. Routing protocols include RIP, OSPF, and BGP.</li>
+      <li><strong>Packet Forwarding (Switching):</strong> Moves packets internally from an incoming router port to the correct outgoing port based on routing table lookups.</li>
+      <li><strong>Fragmentation and Reassembly:</strong> When an intermediate network cannot handle a large packet due to its small Maximum Transmission Unit (MTU), Layer 3 fragments the packet into smaller slices and reassembles them at the destination.</li>
+      <li><strong>Congestion Control:</strong> Detects and relieves router queue bottlenecks to prevent network packet drops and deadlocks.</li>
+    </ul>
+
+    <div class="callout info">
+      <div class="callout-title">📌 Hop-to-Hop vs Source-to-Destination (The Crucial Comparison)</div>
+      <div class="diagram-box">
+        <pre>
+   [ HOST A ] ======= (Hop 1) ======> [ ROUTER 1 ] ===== (Hop 2) =====> [ HOST B ]
+   IP: 10.0.0.1                       IP: 10.0.0.2                       IP: 192.168.1.50
+   MAC: AA:AA                         MAC: BB:BB                         MAC: CC:CC
+
+   Link 1 Frame:  [Dest MAC: BB:BB | Src MAC: AA:AA] [Dest IP: 192.168.1.50 | Src IP: 10.0.0.1 | DATA]
+   Link 2 Frame:  [Dest MAC: CC:CC | Src MAC: BB:BB] [Dest IP: 192.168.1.50 | Src IP: 10.0.0.1 | DATA]
+        </pre>
+      </div>
+      <p>Notice that across all hops: <strong>Source IP and Destination IP remain unchanged</strong> (Source-to-Destination), while <strong>Source MAC and Destination MAC change at every link</strong> (Hop-to-Hop)!</p>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 3.7: LAYER 4 TRANSPORT -->
+  <section id="s-osi-transport" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 3.7</div>
+      <h2 class="section-title">Layer 4: Transport Layer Deep Dive</h2>
+    </div>
+
+    <p>The Transport Layer is known as the <strong>"Heart of the OSI Model"</strong>. It provides <strong>process-to-process (end-to-end application)</strong> delivery of the entire message. A computer does not just run one program; it might run a web browser, a Zoom meeting, Spotify, and an email client simultaneously. The Network Layer delivers packets to the correct machine, but the Transport Layer delivers the data to the exact <strong>process/program</strong> running on that machine.</p>
+
+    <div class="def-box">
+      <div class="def-term">Transport Layer PDU: Segment (TCP) or Datagram (UDP)</div>
+      <p class="def-body">A unit of data comprising a Transport header (containing 16-bit Source and Destination Port numbers, Sequence and Acknowledgment numbers, Window size, and checksum) and the Application data.</p>
+    </div>
+
+    <h3>Core Responsibilities of the Transport Layer</h3>
+    <ol>
+      <li><strong>Port Addressing (Service Point Addressing):</strong> Uses 16-bit port numbers ($0$ to $65535$) to identify the specific communicating processes. Example: HTTP is port 80, HTTPS is port 443, DNS is port 53.</li>
+      <li><strong>Segmentation and Reassembly:</strong> Breaks large application messages into smaller, numbered chunks (segments) on the sending side, and reconstructs them in strict sequence at the receiving end, handling out-of-order packets.</li>
+      <li><strong>Connection Control:</strong> Can be either connectionless (UDP) or connection-oriented (TCP with 3-way handshaking: SYN → SYN-ACK → ACK).</li>
+      <li><strong>End-to-End Flow Control:</strong> Ensures the sending application does not overrun the receiving application's buffer. Unlike Layer 2 flow control (which is over a single physical wire), Layer 4 flow control operates across the entire global end-to-end path using dynamic sliding windows.</li>
+      <li><strong>End-to-End Error Control:</strong> Guarantees that the entire message arrives without missing segments, duplicate segments, or corrupted data via end-to-end checksums, acknowledgments, and retransmission timers.</li>
+    </ol>
+
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>TCP (Transmission Control Protocol)</th>
+            <th>UDP (User Datagram Protocol)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Connection Type</strong></td>
+            <td>Connection-Oriented (3-way handshake required).</td>
+            <td>Connectionless (fire-and-forget).</td>
+          </tr>
+          <tr>
+            <td><strong>Reliability</strong></td>
+            <td>Guaranteed delivery (ACKs, retransmissions on loss).</td>
+            <td>Best-effort delivery (no ACKs, packets may drop).</td>
+          </tr>
+          <tr>
+            <td><strong>Ordering</strong></td>
+            <td>Strict sequence guaranteed via Sequence Numbers.</td>
+            <td>No ordering; packets arrive in arbitrary order.</td>
+          </tr>
+          <tr>
+            <td><strong>Flow & Congestion Control</strong></td>
+            <td>Yes (Dynamic Sliding Window, slow start, AIMD).</td>
+            <td>None.</td>
+          </tr>
+          <tr>
+            <td><strong>Header Size</strong></td>
+            <td>20 to 60 bytes (substantial overhead).</td>
+            <td>8 bytes fixed (lightweight and fast).</td>
+          </tr>
+          <tr>
+            <td><strong>Typical Use Cases</strong></td>
+            <td>Web browsing (HTTP/HTTPS), File transfers (FTP), Email (SMTP), Remote shell (SSH).</td>
+            <td>Real-time voice/video (VoIP), live gaming, DNS lookups, video streaming, DHCP.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 3.8: LAYER 5 SESSION -->
+  <section id="s-osi-session" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 3.8</div>
+      <h2 class="section-title">Layer 5: Session Layer Deep Dive</h2>
+    </div>
+
+    <p>The Session Layer is the network dialog controller. It establishes, maintains, synchronizes, and terminates interactions between communicating applications. In modern TCP/IP networks, Session Layer functions are usually folded directly into the Application layer or handled by software libraries.</p>
+
+    <div class="def-box">
+      <div class="def-term">Session Layer PDU: Data</div>
+      <p class="def-body">Application data with session synchronization headers, dialog tokens, and state parameters.</p>
+    </div>
+
+    <h3>Core Responsibilities of the Session Layer</h3>
+    <ul>
+      <li><strong>Dialog Control:</strong> Allows two systems to enter into a dialog. It determines whether communication occurs in half-duplex (taking turns) or full-duplex (simultaneous) mode.</li>
+      <li><strong>Token Management:</strong> Prevents both sides from attempting the same critical operation at the same time. The side holding the software token has permission to execute the action (e.g., initiating data transfer).</li>
+      <li><strong>Synchronization and Checkpointing:</strong> Inserts synchronization checkpoints into long data streams. If a failure occurs midway through transmitting a huge 500 MB file, transmission resumes from the last confirmed checkpoint (e.g., at 400 MB) rather than restarting from 0 MB!</li>
+      <li><strong>Session Recovery & Graceful Teardown:</strong> Ensures all transactions are properly committed or rolled back before ending the session.</li>
+    </ul>
+
+    <div class="callout tip">
+      <div class="callout-title">💡 Concrete Example of Session Layer in Action</div>
+      <p>Imagine downloading a 2 GB operating system ISO image. If your Wi-Fi disconnects at 1.8 GB, a modern download manager using checkpoints does not force you to restart from byte 0. It queries the server for the last verified checkpoint and downloads only the remaining 200 MB. That recovery logic is classic Layer 5 behavior!</p>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 3.9: LAYER 6 PRESENTATION -->
+  <section id="s-osi-presentation" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 3.9</div>
+      <h2 class="section-title">Layer 6: Presentation Layer Deep Dive</h2>
+    </div>
+
+    <p>The Presentation Layer is concerned with the <strong>syntax and semantics</strong> of the information exchanged between two systems. Different computers use different internal data representations (for example, IBM mainframes use EBCDIC character encoding, while PCs use ASCII or UTF-8; some architectures are Big-Endian, others are Little-Endian). The Presentation Layer acts as a universal translator, ensuring that sender and receiver understand one another.</p>
+
+    <div class="def-box">
+      <div class="def-term">The Three "T-E-C" Pillars of Layer 6</div>
+      <p class="def-body">Memory Trick: Remember <strong>T-E-C</strong> for Presentation Layer:<br>
+      1. <strong>Translation</strong> (Encoding & Character code conversion)<br>
+      2. <strong>Encryption</strong> (Confidentiality & Decryption)<br>
+      3. <strong>Compression</strong> (Bit reduction & Decompression)</p>
+    </div>
+
+    <h3>The Three Core Functions of Layer 6</h3>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Function</th>
+            <th>Mechanism</th>
+            <th>Examples</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Translation</strong></td>
+            <td>Converts sender-dependent data format into a common, interoperable abstract syntax (such as ASN.1) on the wire, and converts it into the receiver-dependent format at destination.</td>
+            <td>EBCDIC ↔ ASCII conversion; Little-Endian to Big-Endian network byte order translation; JSON/XML serializing.</td>
+          </tr>
+          <tr>
+            <td><strong>2. Encryption / Decryption</strong></td>
+            <td>Transforms sensitive plain text into unreadable ciphertext at sender to protect privacy, and reverses ciphertext back into plaintext at authorized receiver.</td>
+            <td>Historically SSL/TLS cryptography and session cipher negotiation.</td>
+          </tr>
+          <tr>
+            <td><strong>3. Compression / Decompression</strong></td>
+            <td>Reduces the total number of bits needed to represent data, saving transmission bandwidth and speeding up downloads.</td>
+            <td>Lossless text compression (ZIP, Gzip, Deflate) and lossy multimedia formats (JPEG, MP3, MPEG-4).</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 3.10: LAYER 7 APPLICATION -->
+  <section id="s-osi-application" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 3.10</div>
+      <h2 class="section-title">Layer 7: Application Layer Deep Dive</h2>
+    </div>
+
+    <p>The Application Layer is the top layer of the OSI model. It serves as the direct window through which network applications access communication services. It provides network services directly to end-user software.</p>
+
+    <div class="callout danger">
+      <div class="callout-title">⚠️ The #1 University Exam Mistake Regarding Layer 7</div>
+      <p><strong>The Application Layer is NOT the application software itself!</strong><br>
+      Google Chrome, Microsoft Word, Mozilla Firefox, and Discord are <em>applications</em>, but they are NOT Layer 7 protocols. Layer 7 consists of the <strong>underlying communication protocols</strong> that those applications invoke to exchange data over the network (such as HTTP, DNS, SMTP, FTP, SSH).</p>
+    </div>
+
+    <h3>Key Services Provided by the Application Layer</h3>
+    <ul>
+      <li><strong>Network Virtual Terminal (NVT):</strong> A software version of a physical terminal allowing a user to log into a remote host across the network transparently (e.g., Telnet, SSH).</li>
+      <li><strong>File Transfer, Access, and Management (FTAM):</strong> Allows users to retrieve, create, delete, and manipulate files stored on a remote computer (e.g., FTP, SFTP).</li>
+      <li><strong>Mail Services:</strong> Provides the basis for email forwarding, store-and-forward routing, and retrieval (e.g., SMTP for sending, POP3 and IMAP for receiving).</li>
+      <li><strong>Directory Services:</strong> Provides distributed database access for global information about network objects and names (e.g., DNS mapping domain names to IP addresses, LDAP).</li>
+      <li><strong>Web Resource Access:</strong> Delivering hypertext and media resources across the World Wide Web (HTTP, HTTPS).</li>
+    </ul>
+
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Protocol</th>
+            <th>Full Name</th>
+            <th>Default Port</th>
+            <th>Primary Function</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>HTTP / HTTPS</strong></td>
+            <td>Hypertext Transfer Protocol (Secure)</td>
+            <td>80 (HTTP) / 443 (HTTPS)</td>
+            <td>Web document transfer (HTML, CSS, JSON, media).</td>
+          </tr>
+          <tr>
+            <td><strong>DNS</strong></td>
+            <td>Domain Name System</td>
+            <td>53 (UDP / TCP)</td>
+            <td>Translates human names (`google.com`) to IP addresses.</td>
+          </tr>
+          <tr>
+            <td><strong>DHCP</strong></td>
+            <td>Dynamic Host Configuration Protocol</td>
+            <td>67 (Server) / 68 (Client)</td>
+            <td>Dynamically assigns IP addresses and network parameters to bootup clients.</td>
+          </tr>
+          <tr>
+            <td><strong>SMTP / IMAP</strong></td>
+            <td>Simple Mail Transfer / Internet Message Access</td>
+            <td>25 (SMTP) / 143 (IMAP) / 993 (IMAPS)</td>
+            <td>Sending and managing email messages.</td>
+          </tr>
+          <tr>
+            <td><strong>SSH</strong></td>
+            <td>Secure Shell</td>
+            <td>22</td>
+            <td>Encrypted remote terminal access and command execution.</td>
+          </tr>
+          <tr>
+            <td><strong>FTP</strong></td>
+            <td>File Transfer Protocol</td>
+            <td>20 (Data) / 21 (Control)</td>
+            <td>Bulk file upload and download.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 3.11: ENCAPSULATION & DECAPSULATION -->
+  <section id="s-encap-detail" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 3.11</div>
+      <h2 class="section-title">Encapsulation, Decapsulation & Peer Communication</h2>
+    </div>
+
+    <p>Data transmission through a layered network architecture follows a strict, elegant process called <strong>Encapsulation</strong> at the sender, and <strong>Decapsulation</strong> at the receiver.</p>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 3.6: Complete Encapsulation & Decapsulation Walkthrough</div>
+      <pre>
+   SENDER (Host A)                                             RECEIVER (Host B)
+  +--------------------+                                      +--------------------+
+  | Application Data   |                                      | Application Data   |
+  +--------------------+                                      +--------------------+
+           ↓                                                           ↑
+  +----+---------------+                                      +----+---------------+
+  | H7 | Data          |                                      | H7 | Data          |
+  +----+---------------+                                      +----+---------------+
+           ↓                                                           ↑
+  +----+----+---------------+                                 +----+----+---------------+
+  | H6 | H7 | Data          |                                 | H6 | H7 | Data          |
+  +----+----+---------------+                                 +----+----+---------------+
+           ↓                                                           ↑
+  +----+----+----+---------------+                            +----+----+----+---------------+
+  | H5 | H6 | H7 | Data          |                            | H5 | H6 | H7 | Data          |
+  +----+----+----+---------------+                            +----+----+----+---------------+
+           ↓                                                           ↑
+  +----+-------------------------+                            +----+-------------------------+
+  | H4 | Transport Segment       |                            | H4 | Transport Segment       |
+  +----+-------------------------+                            +----+-------------------------+
+           ↓                                                           ↑
+  +----+----+--------------------+                            +----+----+--------------------+
+  | H3 | H4 | Network Packet     |                            | H3 | H4 | Network Packet     |
+  +----+----+--------------------+                            +----+----+--------------------+
+           ↓                                                           ↑
+  +----+----+----+---------------+----+                       +----+----+----+---------------+----+
+  | H2 | H3 | H4 | Data Link Frame| T2 |                       | H2 | H3 | H4 | Data Link Frame| T2 |
+  +----+----+----+---------------+----+                       +----+----+----+---------------+----+
+           ↓                                                           ↑
+  [ 0 1 1 0 1 0 0 1 0 1 1 1 0 0 1 0 ] === PHYSICAL MEDIUM ==> [ 0 1 1 0 1 0 0 1 0 1 1 1 0 0 1 0 ]
+      </pre>
+    </div>
+
+    <h3>Step-by-Step Encapsulation Process (Top-Down at Sender)</h3>
+    <ol>
+      <li><strong>Application Layer:</strong> User creates message data.</li>
+      <li><strong>Presentation Layer:</strong> May encrypt or compress data, appending Header $H_6$.</li>
+      <li><strong>Session Layer:</strong> Adds session checkpoint information, appending Header $H_5$.</li>
+      <li><strong>Transport Layer:</strong> Divides data into segments, appends Header $H_4$ containing Source Port, Destination Port, and Sequence Number. PDU = <strong>Segment</strong>.</li>
+      <li><strong>Network Layer:</strong> Wraps segment with Header $H_3$ containing Source IP and Destination IP addresses. PDU = <strong>Packet</strong>.</li>
+      <li><strong>Data Link Layer:</strong> Wraps packet with Header $H_2$ (Source MAC, Destination MAC) AND appends Trailer $T_2$ containing CRC/FCS checksum. PDU = <strong>Frame</strong>. (Notice DLL is the <em>only</em> layer that adds both a header and a trailer!).</li>
+      <li><strong>Physical Layer:</strong> Encodes the frame bytes into an electrical/optical bit stream and pushes it onto the wire.</li>
+    </ol>
+
+    <div class="def-box">
+      <div class="def-term">Summary of Layer Protocol Data Units (PDUs)</div>
+      <p class="def-body">
+        • Layer 7, 6, 5: <strong>Data / Message</strong><br>
+        • Layer 4 (Transport): <strong>Segment</strong> (TCP) or <strong>Datagram</strong> (UDP)<br>
+        • Layer 3 (Network): <strong>Packet</strong> (or Network Datagram)<br>
+        • Layer 2 (Data Link): <strong>Frame</strong><br>
+        • Layer 1 (Physical): <strong>Bits</strong>
+      </p>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 3.12: TCP/IP PROTOCOL SUITE -->
+  <section id="s-tcpip" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 3.12</div>
+      <h2 class="section-title">The TCP/IP Reference Model & Protocol Suite <span class="uni-syllabus-badge">🎓 Uni: TCP/IP Reference Model</span></h2>
+    </div>
+
+    <p>While the OSI model was developed by international committees as a theoretical conceptual framework, the <strong>TCP/IP Protocol Suite</strong> (also known as the Internet Protocol Suite) was developed by DARPA (Defense Advanced Research Projects Agency) for ARPANET in the 1970s. It is the practical, commercial architecture that powers the global Internet today.</p>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 3.7: TCP/IP 4-Layer vs 5-Layer Architectural Stack</div>
+      <pre>
+   4-LAYER DoD MODEL                  5-LAYER MODERN MODEL            KEY PROTOCOLS
+  +-----------------------+          +-----------------------+      +-------------------------------+
+  |      APPLICATION      |          |      APPLICATION      | <==> | HTTP, HTTPS, DNS, SMTP, SSH   |
+  +-----------------------+          +-----------------------+      +-------------------------------+
+  |  HOST-TO-HOST (TRANS) |          |       TRANSPORT       | <==> | TCP (Reliable), UDP (Fast)    |
+  +-----------------------+          +-----------------------+      +-------------------------------+
+  |       INTERNET        |          |    INTERNET (NET)     | <==> | IP (v4/v6), ICMP, ARP, IGMP   |
+  +-----------------------+          +-----------------------+      +-------------------------------+
+  |                       |          |       DATA LINK       | <==> | Ethernet, Wi-Fi, PPP, MAC     |
+  |    NETWORK ACCESS     |          +-----------------------+      +-------------------------------+
+  |   (Host-to-Network)   |          |       PHYSICAL        | <==> | Copper 1000Base-T, Fiber, Radio|
+  +-----------------------+          +-----------------------+      +-------------------------------+
+      </pre>
+    </div>
+
+    <h3>Detailed Breakdown of the TCP/IP Layers</h3>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Layer</th>
+            <th>Corresponding OSI Layers</th>
+            <th>Primary Function & Characteristics</th>
+            <th>Prominent Protocols</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Application Layer</strong></td>
+            <td>OSI 7 (Application)<br>OSI 6 (Presentation)<br>OSI 5 (Session)</td>
+            <td>Combines all session, presentation, and application functions into a single layer. Standardizes application-level interactions directly on top of the transport layer.</td>
+            <td>HTTP, HTTPS, FTP, DNS, DHCP, Telnet, SSH, SMTP, POP3, SNMP.</td>
+          </tr>
+          <tr>
+            <td><strong>Transport Layer</strong></td>
+            <td>OSI 4 (Transport)</td>
+            <td>Provides end-to-end communication services. Offers two primary protocols: connection-oriented reliable TCP, and connectionless lightweight UDP.</td>
+            <td>TCP, UDP, SCTP, RTP.</td>
+          </tr>
+          <tr>
+            <td><strong>Internet Layer</strong></td>
+            <td>OSI 3 (Network)</td>
+            <td>The backbone of the Internet. Injects packets into the network and routes them independently to their destination. Unreliable and connectionless (best-effort).</td>
+            <td>IP (IPv4, IPv6), ICMP (ping, error reporting), ARP (IP to MAC mapping), IGMP (multicasting).</td>
+          </tr>
+          <tr>
+            <td><strong>Network Access Layer (Link Layer)</strong></td>
+            <td>OSI 2 (Data Link)<br>OSI 1 (Physical)</td>
+            <td>Defines how data must be physically transmitted through the network using hardware devices and transmission media. Accepts IP datagrams and frames them onto the local network medium.</td>
+            <td>Ethernet (IEEE 802.3), Wi-Fi (802.11), PPP, Frame Relay, DSL.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>The Key Helper Protocols of the Internet Layer</h3>
+    <ul>
+      <li><strong>IP (Internet Protocol):</strong> Connectionless, unreliable, best-effort packet delivery. It handles logical addressing, packet formatting, and fragmentation. If a packet gets dropped or corrupted, IP makes no attempt to recover it.</li>
+      <li><strong>ICMP (Internet Control Message Protocol):</strong> Companion error-reporting protocol for IP. When a router cannot route a packet (e.g., Destination Host Unreachable, Time to Live / TTL expired), ICMP generates an error report back to the sender. Tools like <code>ping</code> and <code>traceroute</code> rely entirely on ICMP.</li>
+      <li><strong>ARP (Address Resolution Protocol):</strong> Resolves a known 32-bit Logical IP address to a physical 48-bit MAC address on the local network link.</li>
+      <li><strong>RARP (Reverse Address Resolution Protocol):</strong> Obsolete protocol used by diskless workstations at bootup to discover their IP address from their known MAC address (superseded by BOOTP and DHCP).</li>
+    </ul>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 3.13: OSI VS TCP/IP COMPARISON -->
+  <section id="s-osi-vs-tcpip" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 3.13</div>
+      <h2 class="section-title">Grand Comparison: OSI Reference Model vs TCP/IP Suite</h2>
+    </div>
+
+    <p>A classic university exam essay question and technical interview staple is the thorough comparison between the OSI and TCP/IP models. While they share the fundamental philosophy of layering, they differ drastically in design philosophy, history, and real-world adoption.</p>
+
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Comparison Parameter</th>
+            <th>OSI Reference Model</th>
+            <th>TCP/IP Protocol Suite</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Full Name & Origin</strong></td>
+            <td>Open Systems Interconnection, developed by ISO (1984).</td>
+            <td>Transmission Control Protocol / Internet Protocol, developed by DoD/DARPA (1970s).</td>
+          </tr>
+          <tr>
+            <td><strong>Number of Layers</strong></td>
+            <td><strong>7 Layers</strong> (App, Pres, Sess, Trans, Net, DLL, Phys).</td>
+            <td><strong>4 Layers</strong> (or 5 in modern educational models).</td>
+          </tr>
+          <tr>
+            <td><strong>Approach & Philosophy</strong></td>
+            <td><strong>Theoretical & Conceptual:</strong> Built before the protocols were invented; top-down committee approach.</td>
+            <td><strong>Practical & Implementation-driven:</strong> Built after the protocols were already working; "Rough consensus and running code".</td>
+          </tr>
+          <tr>
+            <td><strong>Service / Protocol Distinction</strong></td>
+            <td>Strict, clear distinction between Services, Interfaces, and Protocols.</td>
+            <td>Did not clearly separate concepts initially; protocols came first.</td>
+          </tr>
+          <tr>
+            <td><strong>Session & Presentation</strong></td>
+            <td>Has distinct, separate Session and Presentation layers.</td>
+            <td>No separate Session or Presentation layers; handled by Application layer.</td>
+          </tr>
+          <tr>
+            <td><strong>Network Layer Mode</strong></td>
+            <td>Supports <strong>both</strong> connectionless and connection-oriented services.</td>
+            <td>Supports <strong>only connectionless</strong> service (IP).</td>
+          </tr>
+          <tr>
+            <td><strong>Transport Layer Mode</strong></td>
+            <td>Supports <strong>only connection-oriented</strong> service in initial design.</td>
+            <td>Supports <strong>both</strong> connection-oriented (TCP) and connectionless (UDP).</td>
+          </tr>
+          <tr>
+            <td><strong>Protocol Dependence</strong></td>
+            <td>Protocol-independent general reference model.</td>
+            <td>Protocol-dependent architecture built around IP and TCP.</td>
+          </tr>
+          <tr>
+            <td><strong>Commercial Success</strong></td>
+            <td>Commercial failure; rarely implemented in its pure form.</td>
+            <td>Total commercial triumph; powers 100% of the worldwide Internet.</td>
+          </tr>
+          <tr>
+            <td><strong>Usage Today</strong></td>
+            <td>The universal <strong>pedagogical and reference standard</strong> for teaching and terminology.</td>
+            <td>The universal <strong>implementation standard</strong> for real networks.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">⚠️ Why Did OSI Fail in Practice? ("The Two Elephants" by Tanenbaum)</div>
+      <p>Renowned computer scientist Andrew S. Tanenbaum famously explained the failure of OSI using the <strong>"Apocalypse of the Two Elephants"</strong>:</p>
+      <ul>
+        <li><strong>Bad Timing:</strong> When the OSI standards were finally published after years of committee debates, TCP/IP was already widely deployed across universities and US government agencies. Vendors could not afford to wait for OSI.</li>
+        <li><strong>Bad Technology:</strong> The OSI model is unnecessarily complex. Session and Presentation layers are rarely needed in most applications, while Data Link and Network layers are overcrowded with functions.</li>
+        <li><strong>Bad Implementation:</strong> Early OSI implementations were notorious for being slow, buggy, memory-hungry, and clumsy compared to the lean, tuned TCP/IP code in BSD UNIX.</li>
+        <li><strong>Bad Politics:</strong> OSI was perceived as bureaucratic European government bureaucracy, whereas TCP/IP was backed by working code, UNIX enthusiasm, and the US Department of Defense.</li>
+      </ul>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 3.14: TYPES OF ADDRESSING -->
+  <section id="s-addressing" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 3.14</div>
+      <h2 class="section-title">Types of Addressing in Computer Networks <span class="uni-syllabus-badge">🎓 Uni: Addressing Hierarchy</span></h2>
+    </div>
+
+    <p>To deliver data successfully from an application running on one device to an application running on another device across the globe, networks utilize four distinct levels of addressing across different layers of the model.</p>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 3.8: The Four Levels of Network Addressing</div>
+      <pre>
+  +-------------------------------------------------------------------------------+
+  | APPLICATION LAYER | Application / Specific Address: URL (e.g. www.google.com) |
+  +-------------------------------------------------------------------------------+
+                                      ↓ [DNS Translation]
+  +-------------------------------------------------------------------------------+
+  | TRANSPORT LAYER   | Port Address: 16 bits (e.g. Port 80, Port 443, Port 53)  |
+  +-------------------------------------------------------------------------------+
+                                      ↓
+  +-------------------------------------------------------------------------------+
+  | NETWORK LAYER     | Logical Address: IP Address (e.g. 142.250.190.46, IPv6)   |
+  +-------------------------------------------------------------------------------+
+                                      ↓ [ARP Resolution]
+  +-------------------------------------------------------------------------------+
+  | DATA LINK LAYER   | Physical Address: MAC Address (e.g. 00:1A:2B:3C:4D:5E)    |
+  +-------------------------------------------------------------------------------+
+      </pre>
+    </div>
+
+    <h3>Detailed Comparison of the Four Address Types</h3>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Address Level</th>
+            <th>Layer</th>
+            <th>Size & Format</th>
+            <th>Scope of Identification</th>
+            <th>Does it Change in Transit?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Physical (MAC) Address</strong></td>
+            <td>Data Link (Layer 2)</td>
+            <td><strong>48 bits</strong> (6 bytes). Written as 12 hex digits separated by colons or hyphens:<br><code>00:1A:2B:3C:4D:5E</code></td>
+            <td>Identifies the physical Network Interface Card (NIC) on the local link. First 24 bits = Organizationally Unique Identifier (OUI vendor code); last 24 bits = device serial number.</td>
+            <td><strong>YES!</strong> Stripped and replaced at every single router hop.</td>
+          </tr>
+          <tr>
+            <td><strong>2. Logical (IP) Address</strong></td>
+            <td>Network (Layer 3)</td>
+            <td><strong>IPv4: 32 bits</strong> (4 bytes in dotted-decimal, e.g. <code>192.168.1.1</code>).<br><strong>IPv6: 128 bits</strong> (16 bytes in colon-hex).</td>
+            <td>Identifies a host/interface globally across the entire Internet. Hierarchical format (Network ID + Host ID) enables routing.</td>
+            <td><strong>NO!</strong> Remains constant from original source to final destination (barring NAT).</td>
+          </tr>
+          <tr>
+            <td><strong>3. Port Address</strong></td>
+            <td>Transport (Layer 4)</td>
+            <td><strong>16 bits</strong> ($0$ to $65535$). Written as an integer:<br><code>:80</code>, <code>:443</code>, <code>:8080</code></td>
+            <td>Identifies a specific software process or service running on the host.<br>• <strong>Well-known:</strong> 0–1023<br>• <strong>Registered:</strong> 1024–49151<br>• <strong>Dynamic/Ephemeral:</strong> 49152–65535</td>
+            <td><strong>NO!</strong> Preserved end-to-end between communicating application sockets.</td>
+          </tr>
+          <tr>
+            <td><strong>4. Application-Specific Address</strong></td>
+            <td>Application (Layer 7)</td>
+            <td>User-friendly text strings:<br>URLs, URIs, Email addresses (<code>alice@example.com</code>).</td>
+            <td>Identifies specific resources, web pages, or human mailboxes.</td>
+            <td>Resolved by application protocols (DNS, Mail agents) into lower-layer addresses.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="def-box">
+      <div class="def-term">What is a Socket Address?</div>
+      <p class="def-body">The combination of an <strong>IP Address</strong> (which uniquely identifies the host computer on the global network) and a <strong>Port Number</strong> (which uniquely identifies the application process inside that computer).<br>
+      <code style="color:var(--accent-light); font-weight:bold;">Socket Address = IP Address + Port Number (e.g., 192.168.1.100:8080)</code><br>
+      A network connection is uniquely defined worldwide by a 5-tuple: <code>(Source IP, Source Port, Destination IP, Destination Port, Transport Protocol)</code>.</p>
+    </div>
+
+    <h3>Complete End-to-End Packet Trace Across Routers</h3>
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 3.9: Walkthrough of Address Changes Across Two Routers</div>
+      <pre>
+   [ CLIENT A ]                     [ ROUTER R1 ]                     [ ROUTER R2 ]                     [ SERVER B ]
+   IP: 10.0.0.5                     Port 1: 10.0.0.1                  Port 1: 20.0.0.1                  IP: 30.0.0.8
+   MAC: M_A                         MAC: M_R1_1                       MAC: M_R2_1                       MAC: M_B
+   Port: 52410                      Port 2: 20.0.0.2                  Port 2: 30.0.0.1                  Port: 80
+                                    MAC: M_R1_2                       MAC: M_R2_2
+
+   1. Client A sends Frame to R1:
+      [ Src MAC: M_A    | Dest MAC: M_R1_1 ] [ Src IP: 10.0.0.5 | Dest IP: 30.0.0.8 ] [ Src Port: 52410 | Dest Port: 80 ] [ DATA ]
+   
+   2. Router R1 strips L2 header, looks up IP routing table, encapsulates into Link 2 Frame:
+      [ Src MAC: M_R1_2 | Dest MAC: M_R2_1 ] [ Src IP: 10.0.0.5 | Dest IP: 30.0.0.8 ] [ Src Port: 52410 | Dest Port: 80 ] [ DATA ]
+
+   3. Router R2 strips L2 header, encapsulates into Link 3 Frame to final destination:
+      [ Src MAC: M_R2_2 | Dest MAC: M_B    ] [ Src IP: 10.0.0.5 | Dest IP: 30.0.0.8 ] [ Src Port: 52410 | Dest Port: 80 ] [ DATA ]
+      </pre>
+    </div>
+    <p>Notice the universal networking rule: <strong>MAC addresses change at every single hop; IP addresses and Port numbers stay constant end-to-end!</strong></p>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 3.15: SUMMARY & EXAM TRAPS -->
+  <section id="s-summary-ch3" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 3.15</div>
+      <h2 class="section-title">Chapter Summary & High-Yield Exam Traps</h2>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title">⚡ High-Yield Rapid Review Points</div>
+      <ul>
+        <li><strong>OSI 7 Layers (Top to Bottom):</strong> Application, Presentation, Session, Transport, Network, Data Link, Physical.</li>
+        <li><strong>PDUs:</strong> App/Pres/Sess = Data; Transport = Segment; Network = Packet; Data Link = Frame; Physical = Bits.</li>
+        <li><strong>Layer Responsibilities at a Glance:</strong>
+          <br>• L1 (Physical): Bit transmission, voltages, connector pins, data rate, bit sync.
+          <br>• L2 (Data Link): Framing, physical MAC addressing, hop-to-hop flow & error control, CRC trailer.
+          <br>• L3 (Network): Logical IP addressing, routing, forwarding, fragmentation, source-to-dest packet delivery.
+          <br>• L4 (Transport): Process-to-process delivery, port addressing (16-bit), segmentation, TCP/UDP.
+          <br>• L5 (Session): Dialog control (half/full duplex), token management, checkpoints/recovery.
+          <br>• L6 (Presentation): Translation (ASCII/EBCDIC), encryption, compression (T-E-C).
+          <br>• L7 (Application): Network services to user apps (HTTP, DNS, SMTP, FTP).
+        </li>
+        <li><strong>TCP/IP Model:</strong> 4 layers (Application, Transport, Internet, Network Access). Protocol-driven; powers the Internet.</li>
+        <li><strong>Address Sizes:</strong> MAC = 48 bits (6 bytes, flat); IPv4 = 32 bits (4 bytes, hierarchical); IPv6 = 128 bits; Port = 16 bits ($0-65535$).</li>
+        <li><strong>Address Behavior:</strong> MAC changes hop-to-hop; IP and Port remain unchanged end-to-end.</li>
+      </ul>
+    </div>
+
+    <h3>Top 5 University Exam & GATE MCQ Traps</h3>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Trap #</th>
+            <th>The Common Misconception</th>
+            <th>The Absolute Technical Truth</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Trap 1</strong></td>
+            <td>"Web browser (Chrome) is an Application Layer protocol."</td>
+            <td><strong>False!</strong> Chrome is an application program. The Application Layer protocol is <strong>HTTP/HTTPS</strong>, which Chrome uses to communicate.</td>
+          </tr>
+          <tr>
+            <td><strong>Trap 2</strong></td>
+            <td>"Routers inspect and modify TCP/UDP port numbers."</td>
+            <td><strong>False!</strong> Traditional routers operate strictly at Layer 3 (Network Layer). They inspect only IP headers. Only NAT devices, firewalls, or L4 switches inspect port numbers.</td>
+          </tr>
+          <tr>
+            <td><strong>Trap 3</strong></td>
+            <td>"The Physical Layer detects transmission bit errors."</td>
+            <td><strong>False!</strong> Physical layer transmits raw bits without error checks. Error detection happens at <strong>Layer 2 (Data Link)</strong> using CRC in the frame trailer.</td>
+          </tr>
+          <tr>
+            <td><strong>Trap 4</strong></td>
+            <td>"OSI model was built after TCP/IP protocols were standardized."</td>
+            <td><strong>False!</strong> TCP/IP protocols were working on ARPANET before OSI was finalized in 1984. OSI was a theoretical model created before its protocols were built.</td>
+          </tr>
+          <tr>
+            <td><strong>Trap 5</strong></td>
+            <td>"MAC addresses stay the same when a packet crosses a router."</td>
+            <td><strong>False!</strong> MAC addresses are local to a single link. Every router removes the incoming frame's MAC header and replaces it with a new MAC header for the next hop.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- CHAPTER PROGRESS CHECK -->
+    <div class="def-box" style="margin-top:2rem; border-color:var(--accent);">
+      <div class="def-term">🎯 Check Your Understanding</div>
+      <p class="def-body">
+        Can you answer these without looking at the notes?<br>
+        1. Name all 7 layers of OSI and state the PDU of each.<br>
+        2. Differentiate between a Service, a Protocol, and an Interface.<br>
+        3. Which layer is the only one that adds both a header and a trailer, and what does the trailer contain?<br>
+        4. Why is IP called an unreliable, connectionless protocol?<br>
+        5. Why did the OSI model fail commercially while TCP/IP succeeded?
+      </p>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- PREV/NEXT NAV -->
+  <div class="prev-next">
+    <a href="ch02-types-topologies.html" class="nav-btn">← Ch 2: Types & Topologies</a>
+    <a href="ch04-devices-sdn.html" class="nav-btn primary">Next: Devices & SDN →</a>
+  </div>
+
+</div>
+</main>
+
+<!-- FLOATING MODE PANEL -->
+<div id="mode-panel">
+  <button class="mode-btn active" data-mode="all">📚 All</button>
+  <button class="mode-btn uni-btn" data-mode="uni">🎓 Uni</button>
+  <button class="mode-btn gate-btn" data-mode="gate">⚡ GATE</button>
+  <button class="mode-btn adv-btn" data-mode="advanced">🔬 Adv</button>
+</div>
+
+<!-- TTS FLOATING PANEL -->
+<div id="tts-panel">
+  <div class="tts-controls">
+    <button class="tts-btn" id="tts-play" title="Play/Pause">▶</button>
+    <button class="tts-btn" id="tts-stop" title="Stop">⏹</button>
+    <div class="tts-speed"><span>Speed</span><input type="range" id="tts-rate" min="0.5" max="2" step="0.1" value="1"><span id="tts-rate-label">1.0x</span></div>
+  </div>
+  <div class="tts-voice"><select id="tts-voice-select"><option>Loading voices…</option></select></div>
+</div>
+
+<!-- SEARCH MODAL -->
+<div id="search-modal">
+  <div class="search-box">
+    <div class="search-input-wrap"><span class="s-icon">🔍</span><input id="search-input" type="text" placeholder="Search chapters, topics, protocols…" autocomplete="off"></div>
+    <div id="search-results"></div>
+    <div class="search-hint"><span><kbd>↵</kbd> to navigate</span><span><kbd>Esc</kbd> to close</span><span><kbd>Ctrl+K</kbd> to open</span></div>
+  </div>
+</div>
+
+<!-- MOBILE NAV -->
+<nav id="mobile-nav">
+  <button class="mobile-nav-btn" onclick="SidebarManager?.toggle()"><span class="icon">☰</span>Menu</button>
+  <a href="../index.html" class="mobile-nav-btn"><span class="icon">🏠</span>Home</a>
+  <a href="ch03-models-addressing.html" class="mobile-nav-btn active"><span class="icon">📖</span>Chapters</a>
+  <a href="../exams/mock-exam.html" class="mobile-nav-btn"><span class="icon">📝</span>Exams</a>
+  <button class="mobile-nav-btn" onclick="SearchManager?.open()"><span class="icon">🔍</span>Search</button>
+</nav>
+
+<div id="toast-container"></div>
+<script src="../assets/js/state.js"></script>
+<script src="../assets/js/core.js"></script>
+<script src="../assets/js/modes.js"></script>
+<script src="../assets/js/tts.js"></script>
+<script src="../assets/js/timer-settings.js"></script>
+<script src="../assets/js/timer.js"></script>
+<script src="../assets/js/timer-analytics.js"></script>
+<script src="../assets/js/timer-notifications.js"></script>
+<script src="../assets/js/timer-ui.js"></script>
+<script src="../assets/js/print.js"></script>
+<script src="../assets/js/notes.js"></script>
+<script src="../assets/js/glossary.js"></script>
+</body>
+</html>

@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<!-- ⚡ Arpit | CN MiniBook 2026 -->
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="Arpit">
+<meta name="description" content="Chapter 4: Network Devices & SDN — CN MiniBook. Repeaters, Hubs, Bridges, Switches, Routers, Gateways, Modems, Firewalls, Collision/Broadcast domains, SDN & OpenFlow.">
+<title>Ch 4 — Network Devices & SDN | CN MiniBook 🌐 Arpit</title>
+<link rel="manifest" href="../manifest.json">
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/animations.css">
+<link rel="stylesheet" href="../assets/css/timer.css">
+<link rel="stylesheet" href="../assets/css/chapters.css">
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<!-- HEADER -->
+<header id="main-header">
+  <div class="header-left">
+    <button id="sidebar-toggle" class="icon-btn" title="Toggle Sidebar (S)">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </button>
+    <div class="brand-logo">
+      <div class="brand-icon">🌐</div>
+      <div class="brand-text"><span class="main">CN MiniBook</span><span class="sub">Computer Networks</span></div>
+    </div>
+  </div>
+  <span class="header-chapter-title">Ch 4 — Network Devices & SDN</span>
+  <div class="header-right">
+    <button id="search-btn" class="icon-btn" title="Search (Ctrl+K)">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.35-4.35"></path></svg>
+    </button>
+    <button id="tts-toggle" class="icon-btn" title="Read Aloud">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"></path></svg>
+    </button>
+    <button id="print-btn" title="Print / Save as PDF (Ctrl+P)" aria-label="Print"><svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="flex-shrink:0"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg><span class="print-label">PDF</span></button>
+    <button id="reading-mode-btn" class="icon-btn" title="Reading Mode (F)" aria-pressed="false" aria-label="Toggle reading mode">📖</button>
+    <button id="theme-toggle" class="icon-btn" title="Toggle Theme (T)"></button>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<div id="sidebar-overlay"></div>
+<aside id="sidebar">
+  <nav class="sidebar-nav">
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Navigation</div>
+      <a href="../index.html" class="sidebar-link"><span class="link-icon">🏠</span>Home</a>
+      <a href="../progress.html" class="sidebar-link"><span class="link-icon">📊</span>Dashboard</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Chapter 4 — Sections</div>
+      <a href="#s-repeater" class="sidebar-link active"><span class="link-icon">🔄</span>4.1 Repeater</a>
+      <a href="#s-hub" class="sidebar-link"><span class="link-icon">🔘</span>4.2 Hub</a>
+      <a href="#s-bridge" class="sidebar-link"><span class="link-icon">🌉</span>4.3 Bridge</a>
+      <a href="#s-switch" class="sidebar-link"><span class="link-icon">🔀</span>4.4 Switch</a>
+      <a href="#s-router" class="sidebar-link"><span class="link-icon">🧭</span>4.5 Router</a>
+      <a href="#s-gateway" class="sidebar-link"><span class="link-icon">⛩️</span>4.6 Gateway</a>
+      <a href="#s-modem" class="sidebar-link"><span class="link-icon">📻</span>4.7 Modem</a>
+      <a href="#s-ap" class="sidebar-link"><span class="link-icon">📶</span>4.8 Access Point (AP)</a>
+      <a href="#s-firewall" class="sidebar-link"><span class="link-icon">🛡️</span>4.9 Firewall</a>
+      <a href="#s-device-compare" class="sidebar-link"><span class="link-icon">📊</span>4.10 Device Comparison</a>
+      <a href="#s-collision-broadcast" class="sidebar-link"><span class="link-icon">💥</span>4.11 Domains & Counting</a>
+      <a href="#s-sdn-intro" class="sidebar-link"><span class="link-icon">🧠</span>4.12 Intro to SDN</a>
+      <a href="#s-sdn-arch" class="sidebar-link"><span class="link-icon">🏛️</span>4.13 SDN & OpenFlow</a>
+      <a href="#s-summary-ch4" class="sidebar-link"><span class="link-icon">🎯</span>4.14 Summary & Traps</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">All Chapters</div>
+      <a href="ch01-fundamentals.html" class="sidebar-link"><span class="link-icon">📡</span>Ch 1 — Fundamentals</a>
+      <a href="ch02-types-topologies.html" class="sidebar-link"><span class="link-icon">🔗</span>Ch 2 — Types &amp; Topologies</a>
+      <a href="ch03-models-addressing.html" class="sidebar-link"><span class="link-icon">📦</span>Ch 3 — Models &amp; Addressing</a>
+      <a href="ch04-devices-sdn.html" class="sidebar-link" style="color:var(--accent-light)"><span class="link-icon">🔌</span>Ch 4 — Devices &amp; SDN</a>
+      <a href="ch05-physical-fundamentals.html" class="sidebar-link"><span class="link-icon">📶</span>Ch 5 — Physical Fundamentals</a>
+      <a href="ch06-media-signaling.html" class="sidebar-link"><span class="link-icon">🔌</span>Ch 6 — Media &amp; Line Coding</a>
+      <a href="ch07-modulation-switching.html" class="sidebar-link"><span class="link-icon">📻</span>Ch 7 — Modulation &amp; Switching</a>
+      <a href="ch08-dll-fundamentals.html" class="sidebar-link"><span class="link-icon">🔧</span>Ch 8 — DLL Fundamentals</a>
+      <a href="ch09-protocols-sliding.html" class="sidebar-link"><span class="link-icon">🔄</span>Ch 9 — Protocols &amp; Sliding Window</a>
+      <a href="ch10-mac-ethernet.html" class="sidebar-link"><span class="link-icon">🌐</span>Ch 10 — MAC &amp; Ethernet</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Exams</div>
+      <a href="../exams/mock-exam.html" class="sidebar-link"><span class="link-icon">📝</span>100 MCQ Mock Exam</a>
+      <a href="../exams/unit-quiz.html" class="sidebar-link"><span class="link-icon">📋</span>Chapter Quizzes</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Bookmarks</div>
+      <div id="bookmarks-list"></div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">My Notes</div>
+      <div id="notes-sidebar-list"></div>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-brand-mark"><div class="mark">🌐</div><span>Arpit · CN MiniBook 2026</span></div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main id="main-content">
+<div class="content-inner">
+
+  <!-- CHAPTER HERO -->
+  <div class="chapter-hero">
+    <div class="chapter-breadcrumb">
+      <a href="../index.html">Home</a><span>›</span><span>Part I — Introduction</span><span>›</span><span style="color:var(--tx-primary)">Chapter 4</span>
+    </div>
+    <div class="chapter-num">🔌 Chapter 4</div>
+    <h1 class="chapter-title">Network Devices & SDN</h1>
+    <div class="chapter-meta">
+      <span class="chapter-meta-item" style="background:var(--uni-bg-hd); border-color:var(--uni-b-hd); color:var(--uni-text); font-weight:700;">🎓 Uni Syllabus: Devices & SDN</span>
+      <span>⏱️ 50 min read</span>
+      <span>📚 14 Sections</span>
+      <span>🎓 Complete Hardware Reference</span>
+      <span>⚡ Collision Domains, SDN & OpenFlow</span>
+    </div>
+  </div>
+
+  <!-- UNIVERSITY SYLLABUS CALLOUT -->
+  <div class="uni-syllabus-callout">
+    <div class="uni-callout-title">🎓 Official University Syllabus Focus</div>
+    <div><strong>Introduction to Computer Networks:</strong> Network Devices (Hubs, Switches, Routers, Gateways) and Introduction to software-defined networking (SDN).</div>
+  </div>
+
+  <!-- TABLE OF CONTENTS -->
+  <div class="toc-card">
+    <div class="toc-title"><span>📑</span>Table of Contents</div>
+    <div class="toc-grid">
+      <a href="#s-repeater" class="toc-item"><span class="toc-num">4.1</span>Repeater</a>
+      <a href="#s-hub" class="toc-item"><span class="toc-num">4.2</span>Hub (Multiport Repeater)</a>
+      <a href="#s-bridge" class="toc-item"><span class="toc-num">4.3</span>Bridge & Transparent Learning</a>
+      <a href="#s-switch" class="toc-item"><span class="toc-num">4.4</span>Switch & Switching Modes</a>
+      <a href="#s-router" class="toc-item"><span class="toc-num">4.5</span>Router & Routing Architecture</a>
+      <a href="#s-gateway" class="toc-item"><span class="toc-num">4.6</span>Gateway & Protocol Translators</a>
+      <a href="#s-modem" class="toc-item"><span class="toc-num">4.7</span>Modem (Modulation & Demodulation)</a>
+      <a href="#s-ap" class="toc-item"><span class="toc-num">4.8</span>Access Point (Wireless Bridge)</a>
+      <a href="#s-firewall" class="toc-item"><span class="toc-num">4.9</span>Firewall & Security Filtering</a>
+      <a href="#s-device-compare" class="toc-item"><span class="toc-num">4.10</span>Grand Device Comparison Table</a>
+      <a href="#s-collision-broadcast" class="toc-item"><span class="toc-num">4.11</span>Collision vs Broadcast Domains</a>
+      <a href="#s-sdn-intro" class="toc-item"><span class="toc-num">4.12</span>Intro to Software-Defined Networking</a>
+      <a href="#s-sdn-arch" class="toc-item"><span class="toc-num">4.13</span>SDN Architecture & OpenFlow</a>
+      <a href="#s-summary-ch4" class="toc-item"><span class="toc-num">4.14</span>Summary & High-Yield Traps</a>
+    </div>
+  </div>
+
+  <!-- SECTION 4.1: REPEATER -->
+  <section id="s-repeater" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 4.1</div>
+      <h2 class="section-title">Repeater (Layer 1 Device)</h2>
+    </div>
+
+    <p>As electrical or optical signals travel through a transmission cable, they experience resistance and energy dissipation, leading to <strong>attenuation</strong> (loss of signal strength) and waveform distortion. If a cable runs beyond its maximum physical specification (e.g., 100 meters for Cat5e copper twisted-pair), the signal becomes too weak and distorted for the receiving node to decode accurately. A <strong>Repeater</strong> solves this fundamental physical constraint.</p>
+
+    <div class="def-box">
+      <div class="def-term">Repeater (Regenerator)</div>
+      <p class="def-body">A 2-port electronic device operating strictly at <strong>Layer 1 (Physical Layer)</strong> that receives an incoming attenuated, noisy, or distorted signal, cleans and reshapes it, regenerates it to its original voltage amplitude and timing, and retransmits it onto the next segment of the cable, effectively extending the physical geographical reach of the network.</p>
+    </div>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 4.1: Amplifier vs Regenerator (Repeater)</div>
+      <pre>
+   INCOMING SIGNAL (Attenuated + Noisy):
+   ---\_/\_---\_/\_---
+
+   ANALOG AMPLIFIER:
+   Increases amplitude of EVERYTHING, including the noise!
+   ===/^\/^\===/^\/^\=== (Distortion is magnified)
+
+   DIGITAL REPEATER (REGENERATOR):
+   Samples signal, decides if bit is 0 or 1, and emits brand-new pristine square wave:
+   ---+-----+---+-----+---
+      |     |   |     |
+   ---+     +---+     +--- (Zero noise carried forward!)
+      </pre>
+    </div>
+
+    <div class="callout danger">
+      <div class="callout-title">⚠️ Repeater vs Amplifier: The Vital Difference</div>
+      <p>An <strong>Amplifier</strong> simply boosts the overall amplitude of the electrical signal—meaning it amplifies both the intended data signal <em>and</em> whatever background noise was accumulated along the wire. A <strong>Repeater</strong>, by contrast, is a <strong>regenerator</strong>: it decodes the binary bits ($1$ or $0$), discards the noise completely, and constructs a brand new, crisp, noise-free copy of the waveform from scratch.</p>
+    </div>
+
+    <h3>Characteristics and Limitations of Repeaters</h3>
+    <ul>
+      <li><strong>Layer of Operation:</strong> Layer 1 (Physical Layer) exclusively.</li>
+      <li><strong>No Address Awareness:</strong> Has no concept of MAC addresses, IP addresses, or packet boundaries. It processes individual electrical voltage levels/bits.</li>
+      <li><strong>No Filtering:</strong> Does not filter bad frames, collisions, or broadcast storms. If garbage or a collision signal enters Port 1, it is faithfully regenerated and blasted out of Port 2.</li>
+      <li><strong>Single Collision Domain:</strong> Devices on both sides of a repeater share the exact same collision domain.</li>
+      <li><strong>The 5-4-3 Rule (Legacy Ethernet 10Base-5/10Base-2):</strong> In classic shared coaxial bus networks, you could have at most <strong>5 segments</strong>, connected by <strong>4 repeaters</strong>, with only <strong>3 populated segments</strong> (segments with actual host computers attached) to prevent propagation delay from violating CSMA/CD collision detection timing.</li>
+    </ul>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 4.2: HUB -->
+  <section id="s-hub" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 4.2</div>
+      <h2 class="section-title">Hub (Multiport Repeater)</h2>
+    </div>
+
+    <p>A <strong>Hub</strong> is simply a <strong>multiport repeater</strong>. Instead of having just two ports to connect two cable segments, a hub typically features 4, 8, 16, or 24 ports, serving as the central connection point in a physical star topology.</p>
+
+    <div class="def-box">
+      <div class="def-term">Hub (Multiport Repeater)</div>
+      <p class="def-body">A non-intelligent Layer 1 hardware device with multiple ports. Whenever an electrical bit arrives at any one port, the hub automatically regenerates and <strong>broadcasts (floods) that bit out to every other connected port</strong>, regardless of who the intended recipient is.</p>
+    </div>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 4.2: Hub Operation — Blind Flooding to All Ports</div>
+      <pre>
+                      +-------------------+
+                      |      HUB (L1)     |
+                      +-------------------+
+                       /        |                              /         |                             Port 1    Port 2    Port 3
+                    /           |                          [ Host A ]   [ Host B ]   [ Host C ]
+             (Sends frame
+              intended for B)
+      
+    1. Host A transmits frame for Host B.
+    2. Hub blindly broadcasts the electrical signal to BOTH Host B AND Host C!
+    3. Host B accepts the frame; Host C inspects MAC, sees mismatch, drops frame.
+      </pre>
+    </div>
+
+    <h3>Types of Hubs</h3>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Hub Type</th>
+            <th>Power Required?</th>
+            <th>Functionality & Capabilities</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Passive Hub</strong></td>
+            <td>No external power needed.</td>
+            <td>Simply acts as a physical junction box. Connects wires directly without regenerating or cleaning signals. Relies entirely on the sender's signal strength. Maximum distance is cut in half.</td>
+          </tr>
+          <tr>
+            <td><strong>Active Hub</strong></td>
+            <td>Yes (AC electrical power).</td>
+            <td>Contains electronic circuitry that regenerates, cleans, and amplifies the signal before broadcasting it to all ports. True multiport repeater.</td>
+          </tr>
+          <tr>
+            <td><strong>Intelligent (Managed) Hub</strong></td>
+            <td>Yes (Microprocessor onboard).</td>
+            <td>Includes an onboard management processor that monitors port traffic, detects jabbering (malfunctioning) nodes, allows SNMP remote monitoring, and can shut down problematic ports administratively.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">⚠️ Massive Drawbacks of Hubs: Why They Are Obsolete</div>
+      <ul>
+        <li><strong>Shared Bandwidth:</strong> In a 100 Mbps 8-port hub, the 100 Mbps bandwidth is <em>shared</em> among all 8 ports. If all nodes transmit, each gets only a fraction of the capacity.</li>
+        <li><strong>Single Collision Domain:</strong> All ports belong to one giant collision domain. Only one device can transmit at a time. If Host A and Host C transmit simultaneously, a collision occurs!</li>
+        <li><strong>Half-Duplex Only:</strong> Nodes cannot transmit and receive simultaneously.</li>
+        <li><strong>Security Vulnerability:</strong> Any device running a network sniffer (like Wireshark) can capture all traffic on the entire hub.</li>
+      </ul>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 4.3: BRIDGE -->
+  <section id="s-bridge" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 4.3</div>
+      <h2 class="section-title">Bridge & Transparent Learning</h2>
+    </div>
+
+    <p>To eliminate the crippling collision problems of hubs and repeaters, networking engineers developed the <strong>Bridge</strong>. A bridge operates at <strong>Layer 2 (Data Link Layer)</strong>. It is smart enough to inspect the physical <strong>MAC addresses</strong> inside frames and make intelligent forwarding and filtering decisions.</p>
+
+    <div class="def-box">
+      <div class="def-term">Bridge (Layer 2 Device)</div>
+      <p class="def-body">A 2-port or low-density multi-port device that inspects incoming frames at the Data Link Layer, maintains a MAC address forwarding database (Content Addressable Memory / CAM table), and separates a single large collision domain into two or more independent, smaller collision domains.</p>
+    </div>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 4.3: Bridge Isolating Collision Domains</div>
+      <pre>
+   [ Segment 1: Collision Domain 1 ]          [ Segment 2: Collision Domain 2 ]
+     [ Host A ]       [ Host B ]                 [ Host C ]       [ Host D ]
+     (MAC: AA)        (MAC: BB)                  (MAC: CC)        (MAC: DD)
+          \              /                            \              /
+        --------------------                        --------------------
+                 |                                           |
+               Port 1                                      Port 2
+              +---------------------------------------------+
+              |              BRIDGE (Layer 2)               |
+              |   CAM Table: [AA -> Port 1] [CC -> Port 2]  |
+              +---------------------------------------------+
+
+   • If Host A sends to Host B: Bridge reads Dest MAC (BB), sees it is on Port 1,
+     and FILTERS (drops) the frame from crossing to Segment 2. Segment 2 remains silent!
+   • If Host A sends to Host C: Bridge FORWARDS frame through Port 2 to Segment 2.
+      </pre>
+    </div>
+
+    <h3>The Backward Learning Algorithm (Transparent Bridging)</h3>
+    <p>How does a bridge know which computer is attached to which port without manual configuration? It uses the elegant <strong>Backward Learning (Self-Learning)</strong> algorithm:</p>
+
+    <div class="def-box">
+      <div class="def-term">Transparent Bridge Learning Rules</div>
+      <p class="def-body">
+        When a frame arrives at Port $P$ with Source MAC $= S$ and Destination MAC $= D$:<br>
+        1. <strong>LEARN:</strong> Record the pair <code>(Source MAC S, Port P, Timestamp)</code> in the CAM table. If already present, refresh the aging timer.<br>
+        2. <strong>DECIDE:</strong> Look up Destination MAC $D$ in the CAM table:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;• <strong>If $D$ is found on Port $P$ (same port it came from):</strong> <strong>FILTER</strong> (drop the frame; the recipient is on the same segment and has already heard it).<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;• <strong>If $D$ is found on a DIFFERENT Port $Q$:</strong> <strong>FORWARD</strong> the frame out of Port $Q$ only.<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;• <strong>If $D$ is NOT found (unknown destination) OR is a Broadcast address (`FF:FF:FF:FF:FF:FF`):</strong> <strong>FLOOD</strong> the frame out to ALL ports except the arrival port $P$.
+      </p>
+    </div>
+
+    <h3>Bridge Types</h3>
+    <ul>
+      <li><strong>Transparent Bridge:</strong> The standard Ethernet bridge described above. Stations are completely unaware of its existence; it auto-learns and configures itself.</li>
+      <li><strong>Source Routing Bridge (Token Ring):</strong> Used in IBM Token Ring networks. The sending station determines the entire route through bridges and includes the hop-by-hop bridge routing path inside the frame header.</li>
+    </ul>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 4.4: SWITCH -->
+  <section id="s-switch" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 4.4</div>
+      <h2 class="section-title">Switch & Switching Modes</h2>
+    </div>
+
+    <p>A <strong>Switch</strong> is essentially a high-performance, high-density <strong>multiport bridge</strong>. While traditional bridges performed frame inspection and forwarding via software using a general-purpose CPU, a modern switch uses specialized hardware chips called <strong>ASICs (Application-Specific Integrated Circuits)</strong>, enabling simultaneous wire-speed switching across dozens or hundreds of ports.</p>
+
+    <div class="def-box">
+      <div class="def-term">Layer 2 Switch (Hardware-Based Bridge)</div>
+      <p class="def-body">A high-speed multi-port Layer 2 device where <strong>each individual port is its own dedicated collision domain</strong>. When operating in full-duplex mode with dedicated links to each host, <strong>collisions are 100% eliminated</strong> from the network!</p>
+    </div>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 4.4: Switch Architecture — Dedicated Collision Domains</div>
+      <pre>
+                      +-----------------------------+
+                      |       LAYER 2 SWITCH        |
+                      |   Internal Switching Fabric |
+                      +--[P1]----[P2]----[P3]----[P4]+
+                          |        |       |       |
+                       [Host A] [Host B] [Host C] [Host D]
+                          
+     Every port = 1 independent collision domain!
+     Host A can talk to Host B at full 1 Gbps, WHILE SIMULTANEOUSLY
+     Host C talks to Host D at full 1 Gbps through the internal fabric!
+      </pre>
+    </div>
+
+    <h3>The Three Frame Switching Modes</h3>
+    <p>Switches can process and forward frames using three distinct internal methods, offering different balances between latency and error detection:</p>
+
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Switching Method</th>
+            <th>When Forwarding Begins</th>
+            <th>Latency</th>
+            <th>Error Checking?</th>
+            <th>Forwards Corrupted Frames?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Store-and-Forward</strong></td>
+            <td>Waits until the <strong>entire frame</strong> (all bytes including the CRC trailer) is completely received and buffered.</td>
+            <td>Highest latency (proportional to frame length).</td>
+            <td><strong>Full CRC check.</strong> Discards any frame with errors, invalid length, or bad FCS.</td>
+            <td><strong>Never.</strong> Only pristine, error-free frames are forwarded. (Default in modern switches).</td>
+          </tr>
+          <tr>
+            <td><strong>2. Cut-Through (Fast-Forward)</strong></td>
+            <td>Immediately after reading the first <strong>6 bytes</strong> (the Destination MAC address).</td>
+            <td>Lowest possible latency (near instantaneous).</td>
+            <td><strong>Zero error checking.</strong> Forwarding begins before the CRC trailer has even arrived!</td>
+            <td><strong>Yes!</strong> Corrupted or collision-damaged runts are blindly forwarded onto other ports.</td>
+          </tr>
+          <tr>
+            <td><strong>3. Fragment-Free (Modified Cut-Through)</strong></td>
+            <td>Waits until the first <strong>64 bytes</strong> of the frame are received.</td>
+            <td>Intermediate latency.</td>
+            <td>Checks minimum Ethernet collision window (64 bytes). Filters out collision runts (&lt; 64 bytes).</td>
+            <td>Filters out collision fragments; may still forward checksum errors if corruption occurs after byte 64.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title">💡 Why 64 Bytes for Fragment-Free?</div>
+      <p>Under IEEE 802.3 Ethernet standards, any collision on the cable is guaranteed to occur within the first <strong>512 bits (64 bytes)</strong> of transmission (the slot time). Frames shorter than 64 bytes resulting from collisions are called <strong>runts</strong>. Fragment-Free buffers the first 64 bytes to guarantee that no collision runt ever gets forwarded through the switch!</p>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 4.5: ROUTER -->
+  <section id="s-router" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 4.5</div>
+      <h2 class="section-title">Router & Routing Architecture</h2>
+    </div>
+
+    <p>While hubs, bridges, and switches operate locally within a single broadcast domain (LAN), the <strong>Router</strong> is the foundational pillar of the global Internet. Operating at <strong>Layer 3 (Network Layer)</strong>, a router connects multiple distinct, heterogeneous logical networks together.</p>
+
+    <div class="def-box">
+      <div class="def-term">Router (Layer 3 Device)</div>
+      <p class="def-body">An intelligent networking device that inspects the <strong>Logical IP addresses</strong> in packet headers, maintains dynamic routing tables via routing protocols, and routes packets between distinct subnets, <strong>breaking both collision domains AND broadcast domains</strong>.</p>
+    </div>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 4.5: Router Connecting Two Heterogeneous Subnets</div>
+      <pre>
+   [ LAN 1: 192.168.1.0/24 ]                       [ LAN 2: 10.0.0.0/8 ]
+     (Broadcast Domain 1)                            (Broadcast Domain 2)
+   [Host A]       [Host B]                         [Server C]     [Server D]
+      \              /                                 \              /
+    +------------------+                             +------------------+
+    |  SWITCH 1 (L2)   |                             |  SWITCH 2 (L2)   |
+    +------------------+                             +------------------+
+             | (Port FastEth0/0: 192.168.1.1)                 | (Port FastEth0/1: 10.0.0.1)
+             +--------------------+   ROUTER (L3)   +---------+
+                                  |   Routing Table |
+                                  +-----------------+
+      </pre>
+    </div>
+
+    <h3>Core Responsibilities of a Router</h3>
+    <ol>
+      <li><strong>Separating Broadcast Domains:</strong> Routers <strong>do not forward Layer 2 or Layer 3 broadcast packets by default</strong>. If Host A sends a broadcast frame (`FF:FF:FF:FF:FF:FF`), Switch 1 floods it across LAN 1, but Router FastEth0/0 drops it! LAN 2 never sees the broadcast.</li>
+      <li><strong>Path Determination (Routing):</strong> Evaluates multiple paths across intermediate networks using algorithms (Dijkstra's SPF, Bellman-Ford) and routing protocols (OSPF, RIP, BGP) to select the optimal path based on metrics (hop count, bandwidth, delay).</li>
+      <li><strong>Packet Forwarding:</strong> Reads the destination IP, matches it against its routing table using Longest Prefix Match (LPM), rewrites the Layer 2 MAC frame header, and sends the packet out the designated outgoing interface.</li>
+      <li><strong>Protocol Conversion / Heterogeneous Interconnection:</strong> Can interconnect totally different physical and data-link technologies (e.g., receiving an Ethernet 802.3 frame, stripping the MAC header, and encapsulating the IP packet into a WAN PPP or HDLC frame).</li>
+    </ol>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 4.6: GATEWAY -->
+  <section id="s-gateway" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 4.6</div>
+      <h2 class="section-title">Gateway & Protocol Translators</h2>
+    </div>
+
+    <p>In classical computer networking theory, a <strong>Gateway</strong> (often called a Protocol Translator or Application Gateway) is the most sophisticated internetworking device. It operates at <strong>all layers (Layers 1 through 7)</strong> of the OSI model.</p>
+
+    <div class="def-box">
+      <div class="def-term">Gateway (Protocol Converter / L1–L7)</div>
+      <p class="def-body">A system capable of translating completely incompatible communication protocols, data formats, and architectural semantics across all layers of the OSI stack, allowing radically different networks (e.g., an IBM SNA mainframe network and an IP/TCP network) to communicate.</p>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">⚠️ Gateway: Formal Definition vs "Default Gateway"</div>
+      <p>Do not confuse the two uses of the word <em>Gateway</em>:</p>
+      <ul>
+        <li><strong>Formal OSI Gateway:</strong> A full protocol translator operating up to Layer 7 (e.g., an Email Gateway converting Microsoft Exchange MAPI messages to standard Internet SMTP, or a VoIP Gateway converting analog voice PSTN signals to SIP/RTP IP packets).</li>
+        <li><strong>Everyday "Default Gateway" in PC Settings:</strong> In modern IP configuration, "Default Gateway" is simply the local IP address of your <strong>Router</strong> (e.g., <code>192.168.1.1</code>), which hosts use as their exit door to reach remote subnets.</li>
+      </ul>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 4.7: MODEM -->
+  <section id="s-modem" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 4.7</div>
+      <h2 class="section-title">Modem (Modulator / Demodulator)</h2>
+    </div>
+
+    <p>Computers process and store information as <strong>digital discrete binary signals</strong> ($0	ext{s}$ and $1	ext{s}$). However, traditional telecommunication channels—such as legacy copper telephone local loops, cable TV coaxial systems, and wireless radio atmospheric links—were engineered to carry continuous <strong>analog waveforms</strong>. A <strong>Modem</strong> bridges this gap.</p>
+
+    <div class="def-box">
+      <div class="def-term">Modem (MOdulator - DEModulator)</div>
+      <p class="def-body">A hardware device that converts outgoing digital computer data into analog signals by modulating a carrier frequency (Modulation), and converts incoming analog signals back into discrete digital binary data (Demodulation).</p>
+    </div>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 4.6: Modulation and Demodulation Across an Analog Channel</div>
+      <pre>
+   [ COMPUTER A ]                  [ MODEM A ]                         [ MODEM B ]                  [ COMPUTER B ]
+   Digital Bits:                   MODULATION:                         DEMODULATION:                Digital Bits:
+   0 1 0 1 1 0                     Digital -> Analog                   Analog -> Digital            0 1 0 1 1 0
+   [==_==__==_] ===== (RS-232) ==> ~~~~~~~~~~~~~~ === (Analog Line) => ~~~~~~~~~~~~~~ ==> (RS-232) [==_==__==_]
+      </pre>
+    </div>
+
+    <h3>Modem Variations in Modern Networks</h3>
+    <ul>
+      <li><strong>Dial-Up Modem (PSTN):</strong> Modulated audio-frequency tones over the 4 kHz voice-band telephone network, topping out at 56 kbps (V.90/V.92 standard).</li>
+      <li><strong>DSL Modem (Digital Subscriber Line):</strong> Transmits high-frequency digital data over existing copper telephone wires without interfering with voice frequencies (ADSL, VDSL).</li>
+      <li><strong>Cable Modem:</strong> Uses coaxial television cable channels conforming to DOCSIS (Data Over Cable Service Interface Specification) standards.</li>
+      <li><strong>Optical Network Terminal (ONT / "Fiber Modem"):</strong> Converts incoming light pulses from fiber-optic GPON/EPON lines into standard electrical Ethernet frames.</li>
+    </ul>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 4.8: ACCESS POINT -->
+  <section id="s-ap" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 4.8</div>
+      <h2 class="section-title">Wireless Access Point (AP)</h2>
+    </div>
+
+    <p>A <strong>Wireless Access Point (WAP or AP)</strong> acts as a Layer 2 wireless bridge. It allows wireless devices (smartphones, laptops, IoT gadgets) conforming to IEEE 802.11 standards to connect seamlessly into a wired IEEE 802.3 Ethernet LAN infrastructure.</p>
+
+    <div class="def-box">
+      <div class="def-term">Access Point (Layer 2 Wireless Bridge)</div>
+      <p class="def-body">A device operating at <strong>Layer 2</strong> that converts IEEE 802.11 Wi-Fi radio frequency frames into IEEE 802.3 Ethernet wired frames, broadcasting a Service Set Identifier (SSID) and arbitrating wireless channel access via CSMA/CA.</p>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-title">📌 What is a "Home Wi-Fi Router"?</div>
+      <p>The plastic box from your ISP sitting in your living room is actually a <strong>multi-device combo unit</strong> integrating 4 distinct devices inside a single chassis:<br>
+      1. A <strong>Wireless Access Point</strong> (for Wi-Fi connectivity)<br>
+      2. A 4-port <strong>Layer 2 Switch</strong> (for wired Ethernet ports)<br>
+      3. A <strong>Layer 3 Router</strong> (with NAT and DHCP server for connecting LAN to WAN)<br>
+      4. A <strong>Modem / ONT</strong> (DSL/Cable/Fiber interface connecting to the street)</p>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 4.9: FIREWALL -->
+  <section id="s-firewall" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 4.9</div>
+      <h2 class="section-title">Firewall & Security Filtering</h2>
+    </div>
+
+    <p>A <strong>Firewall</strong> is a specialized security mechanism (hardware appliance or software program) that monitors, inspects, and filters incoming and outgoing network traffic based on an organization's predetermined security rules. It forms the primary protective perimeter between a trusted internal network and an untrusted external network (such as the public Internet).</p>
+
+    <h3>Generations of Firewalls</h3>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Firewall Type</th>
+            <th>OSI Layer</th>
+            <th>Inspection Mechanism</th>
+            <th>Pros & Cons</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Stateless Packet Filter</strong></td>
+            <td>Layer 3 & 4</td>
+            <td>Inspects each packet in isolation against static rules (Source IP, Dest IP, Source Port, Dest Port, Protocol).</td>
+            <td>Extremely fast, low CPU usage. But vulnerable to IP spoofing and cannot track connection states.</td>
+          </tr>
+          <tr>
+            <td><strong>Stateful Inspection (SPI)</strong></td>
+            <td>Layer 3, 4 (State Table)</td>
+            <td>Maintains a dynamic state table tracking active TCP connections (SYN, ESTABLISHED, FIN). Only permits inbound packets if they belong to an existing session initiated from inside.</td>
+            <td>Standard modern firewall. High security with good throughput. Prevents unsolicited inbound probes.</td>
+          </tr>
+          <tr>
+            <td><strong>Application Layer (Proxy)</strong></td>
+            <td>Layer 7</td>
+            <td>Acts as an intermediary; terminates connection, reconstructs and parses application payloads (HTTP headers, SQL commands, virus signatures).</td>
+            <td>Highest security inspection; can block specific URLs or malicious payloads. High CPU/latency overhead.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 4.10: GRAND DEVICE COMPARISON TABLE -->
+  <section id="s-device-compare" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 4.10</div>
+      <h2 class="section-title">Grand Network Device Comparison Table <span class="uni-syllabus-badge">🎓 Uni: Network Devices</span></h2>
+    </div>
+
+    <p>This master comparison table summarizes every major network hardware device across all critical exam criteria:</p>
+
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Device</th>
+            <th>OSI Layer</th>
+            <th>PDU Handled</th>
+            <th>Address Inspected</th>
+            <th>Separates Collision Domains?</th>
+            <th>Separates Broadcast Domains?</th>
+            <th>Hardware / Intelligence Level</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Repeater</strong></td>
+            <td>Layer 1 (Physical)</td>
+            <td>Bits</td>
+            <td>None</td>
+            <td>❌ No (Single domain)</td>
+            <td>❌ No (Single domain)</td>
+            <td>Dumb electronic regenerator</td>
+          </tr>
+          <tr>
+            <td><strong>Hub</strong></td>
+            <td>Layer 1 (Physical)</td>
+            <td>Bits</td>
+            <td>None</td>
+            <td>❌ No (All ports 1 domain)</td>
+            <td>❌ No (Single domain)</td>
+            <td>Multiport dumb broadcaster</td>
+          </tr>
+          <tr>
+            <td><strong>Bridge</strong></td>
+            <td>Layer 2 (Data Link)</td>
+            <td>Frames</td>
+            <td>48-bit MAC address</td>
+            <td>✅ <strong>Yes</strong> (Per port)</td>
+            <td>❌ No (Passes broadcasts)</td>
+            <td>Software-based frame forwarding</td>
+          </tr>
+          <tr>
+            <td><strong>Switch</strong></td>
+            <td>Layer 2 (Data Link)</td>
+            <td>Frames</td>
+            <td>48-bit MAC address</td>
+            <td>✅ <strong>Yes</strong> (Every port is 1 domain)</td>
+            <td>❌ No (Passes broadcasts)</td>
+            <td>Hardware ASIC wire-speed CAM table</td>
+          </tr>
+          <tr>
+            <td><strong>Router</strong></td>
+            <td>Layer 3 (Network)</td>
+            <td>Packets</td>
+            <td>32-bit / 128-bit IP address</td>
+            <td>✅ <strong>Yes</strong> (Per interface)</td>
+            <td>✅ <strong>Yes</strong> (Blocks broadcasts!)</td>
+            <td>Intelligent routing CPU/NPUs</td>
+          </tr>
+          <tr>
+            <td><strong>Gateway</strong></td>
+            <td>Layers 1 through 7</td>
+            <td>All PDUs</td>
+            <td>All addresses (IP, Port, App)</td>
+            <td>✅ Yes</td>
+            <td>✅ Yes</td>
+            <td>Full protocol translator</td>
+          </tr>
+          <tr>
+            <td><strong>Modem</strong></td>
+            <td>Layer 1 (Physical)</td>
+            <td>Analog / Digital</td>
+            <td>None</td>
+            <td>N/A (Point-to-point link)</td>
+            <td>N/A</td>
+            <td>Signal modulation hardware</td>
+          </tr>
+          <tr>
+            <td><strong>Access Point</strong></td>
+            <td>Layer 2 (Data Link)</td>
+            <td>Frames (802.11 / 802.3)</td>
+            <td>MAC address</td>
+            <td>❌ Shared radio channel (half-duplex)</td>
+            <td>❌ No</td>
+            <td>Wireless bridge transceiver</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 4.11: DOMAINS & COUNTING -->
+  <section id="s-collision-broadcast" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 4.11</div>
+      <h2 class="section-title">Collision Domains vs Broadcast Domains (With Calculations)</h2>
+    </div>
+
+    <p>Calculating the exact number of <strong>Collision Domains</strong> and <strong>Broadcast Domains</strong> in an arbitrary network diagram is one of the highest-frequency numerical questions in university exams, GATE, and Cisco CCNA certifications.</p>
+
+    <div class="def-box">
+      <div class="def-term">1. Collision Domain</div>
+      <p class="def-body">A physical network segment or set of shared links where simultaneous packet transmissions by two or more devices will collide with one another.<br>
+      • <strong>Rule 1:</strong> A <strong>Hub</strong> or <strong>Repeater</strong> does NOT divide collision domains. All ports on a hub belong to <strong>1 single collision domain</strong>.<br>
+      • <strong>Rule 2:</strong> A <strong>Bridge</strong>, <strong>Switch</strong>, or <strong>Router</strong> separates collision domains. <strong>Every single active port on a switch/router is 1 distinct collision domain.</strong></p>
+    </div>
+
+    <div class="def-box">
+      <div class="def-term">2. Broadcast Domain</div>
+      <p class="def-body">The logical boundary of a network within which any broadcast frame (`FF:FF:FF:FF:FF:FF` or IP `255.255.255.255`) transmitted by any node will be forwarded to and heard by all other nodes.<br>
+      • <strong>Rule 1:</strong> Hubs, Repeaters, Bridges, and standard Layer 2 Switches <strong>do NOT separate broadcast domains</strong>. They forward broadcasts to all ports.<br>
+      • <strong>Rule 2:</strong> <strong>Routers break broadcast domains.</strong> Each active interface of a router defines the boundary of <strong>1 distinct broadcast domain</strong> (unless VLANs are configured).</p>
+    </div>
+
+    <h3>Master Counting Rules Cheat Sheet</h3>
+    <div class="diagram-box">
+      <pre>
+   DEVICE             COLLISION DOMAINS CREATED           BROADCAST DOMAINS CREATED
+   ---------------------------------------------------------------------------------
+   Hub (N ports)      1 (All N ports share 1 domain)      1 (Shares same broadcast domain)
+   Bridge (2 ports)   2 (Each port is 1 domain)           1 (Broadcasts pass through)
+   Switch (N ports)   N (Each active port is 1 domain)    1 (Default: 1 broadcast domain)
+   Router (M ports)   M (Each active port is 1 domain)    M (Each port is a NEW broadcast domain!)
+      </pre>
+    </div>
+
+    <h3>Worked Example: Comprehensive Domain Counting Problem</h3>
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 4.7: Practice Network Topology for Domain Counting</div>
+      <pre>
+      [PC 1]   [PC 2]                 [PC 3]   [PC 4]
+        \       /                       \       /
+       +---------+                     +---------+
+       |  HUB 1  |                     |  HUB 2  |
+       +---------+                     +---------+
+            |                               |
+          Port 1                          Port 2
+         +---------------------------------------+
+         |             SWITCH 1 (L2)             |
+         +---------------------------------------+
+                            | Port 3
+                            |
+                     (Interface e0)
+                   +-----------------+
+                   |   ROUTER (L3)   |
+                   +-----------------+
+                     (Interface e1)
+                            |
+                            | Port 1
+         +---------------------------------------+
+         |             SWITCH 2 (L2)             |
+         +---------------------------------------+
+            |               |               |
+          Port 2          Port 3          Port 4
+            |               |               |
+         [PC 5]          [PC 6]          [PC 7]
+      </pre>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title">📝 Step-by-Step Solution</div>
+      <p><strong>1. Count Broadcast Domains:</strong><br>
+      Look at the Router. The router has 2 active interfaces: <code>e0</code> (left side) and <code>e1</code> (right side).<br>
+      Routers block broadcasts. Therefore, everything connected to interface <code>e0</code> forms Broadcast Domain 1, and everything connected to interface <code>e1</code> forms Broadcast Domain 2.<br>
+      👉 <strong>Total Broadcast Domains = 2</strong></p>
+
+      <p><strong>2. Count Collision Domains:</strong><br>
+      Let's count link by link:<br>
+      • <strong>Left Side (Switch 1 & Hubs):</strong><br>
+      &nbsp;&nbsp;- Port 1 of Switch 1 connects to Hub 1. Hub 1 and [PC 1, PC 2] form <strong>1 collision domain</strong>.<br>
+      &nbsp;&nbsp;- Port 2 of Switch 1 connects to Hub 2. Hub 2 and [PC 3, PC 4] form <strong>1 collision domain</strong>.<br>
+      &nbsp;&nbsp;- Port 3 of Switch 1 connects to Router e0: forms <strong>1 collision domain</strong>.<br>
+      &nbsp;&nbsp;(Subtotal left side = 3 collision domains).<br>
+      • <strong>Right Side (Switch 2 & PCs):</strong><br>
+      &nbsp;&nbsp;- Port 1 of Switch 2 connects to Router e1: <strong>1 collision domain</strong>.<br>
+      &nbsp;&nbsp;- Port 2 of Switch 2 connects to PC 5: <strong>1 collision domain</strong>.<br>
+      &nbsp;&nbsp;- Port 3 of Switch 2 connects to PC 6: <strong>1 collision domain</strong>.<br>
+      &nbsp;&nbsp;- Port 4 of Switch 2 connects to PC 7: <strong>1 collision domain</strong>.<br>
+      &nbsp;&nbsp;(Subtotal right side = 4 collision domains).<br>
+      👉 <strong>Total Collision Domains = 3 + 4 = 7 Collision Domains</strong></p>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 4.12: INTRO TO SDN -->
+  <section id="s-sdn-intro" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 4.12</div>
+      <h2 class="section-title">Introduction to Software-Defined Networking (SDN) <span class="uni-syllabus-badge">🎓 Uni: Introduction to SDN</span> <span class="uni-syllabus-badge">🎓 Uni Syllabus</span></h2>
+    </div>
+
+    <p>For four decades, computer networking followed a rigid, decentralized model: every router and switch purchased from vendors (such as Cisco, Juniper, or Arista) contained its own proprietary operating system and made its own independent forwarding and routing decisions.</p>
+
+    <h3>The Limitations of Traditional Networking</h3>
+    <ul>
+      <li><strong>Tightly Coupled Planes:</strong> In every traditional box, the decision-making brain (Control Plane) and the packet-forwarding hardware (Data Plane) are fused together inside the same physical chassis.</li>
+      <li><strong>Complex Distributed Configuration:</strong> Changing a network policy across an enterprise requires engineers to log into hundreds or thousands of routers individually via CLI (`ssh`) and manually configure them. One typo can take down an entire datacenter.</li>
+      <li><strong>Slow Innovation & Vendor Lock-in:</strong> New routing protocols take 5 to 10 years to be standardized by the IETF and implemented by hardware vendors in firmware.</li>
+    </ul>
+
+    <div class="def-box">
+      <div class="def-term">Software-Defined Networking (SDN) Paradigm</div>
+      <p class="def-body">An architectural framework that <strong>decouples the network control plane (decision making) from the underlying data plane (packet forwarding)</strong>, centralizing network intelligence and control in a software-based Controller that manages distributed physical/virtual forwarding switches via standardized open APIs.</p>
+    </div>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 4.8: Traditional Decentralized Routing vs SDN Centralized Control</div>
+      <pre>
+   TRADITIONAL NETWORKING:                            SOFTWARE-DEFINED NETWORKING (SDN):
+   (Control & Data fused in every box)                 (Centralized Brain, Dumb Fast Forwarders)
+
+      +-------------+     +-------------+                    +-----------------------------+
+      | CONTROL PL. |     | CONTROL PL. |                    |   SDN CONTROLLER (Brain)    |
+      |  (OSPF/BGP) |     |  (OSPF/BGP) |                    |  Global Network Map & Logic |
+      +-------------+     +-------------+                    +-----------------------------+
+             |                   |                                     ↕ (OpenFlow API)
+      +-------------+     +-------------+                    +---------+---------+---------+
+      | DATA PLANE  |<===>| DATA PLANE  |                    | Switch1 | Switch2 | Switch3 |
+      | (Forwarding)|     | (Forwarding)|                    | Forward | Forward | Forward |
+      +-------------+     +-------------+                    +---------+---------+---------+
+         Router A            Router B                          (Pure Data Plane Hardware)
+      </pre>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 4.13: SDN ARCHITECTURE & OPENFLOW -->
+  <section id="s-sdn-arch" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 4.13</div>
+      <h2 class="section-title">SDN Three-Tier Architecture & OpenFlow Protocol</h2>
+    </div>
+
+    <p>The standard SDN architecture defined by the <strong>Open Networking Foundation (ONF)</strong> is organized into three distinct hierarchical planes connected by open interfaces:</p>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 4.9: The Three-Tier SDN Architectural Model</div>
+      <pre>
+   +-----------------------------------------------------------------+
+   | 1. APPLICATION PLANE                                            |
+   |    Network Monitoring, Security/Firewall Apps, Traffic Eng, QoS |
+   +-----------------------------------------------------------------+
+                                ↕
+        NORTHBOUND APIs (RESTful APIs, Java/Python SDKs)
+                                ↕
+   +-----------------------------------------------------------------+
+   | 2. CONTROL PLANE (The Network Brain)                            |
+   |    SDN Controllers (ONOS, OpenDaylight, Floodlight, Ryu)         |
+   |    Maintains global network topology, calculates flow rules     |
+   +-----------------------------------------------------------------+
+                                ↕
+        SOUTHBOUND APIs (OpenFlow Protocol, NETCONF, P4)
+                                ↕
+   +-----------------------------------------------------------------+
+   | 3. DATA / INFRASTRUCTURE PLANE                                  |
+   |    White-box Switches, Virtual Switches (OVS), Routers          |
+   |    Pure fast packet forwarding based on Flow Tables             |
+   +-----------------------------------------------------------------+
+      </pre>
+    </div>
+
+    <h3>The Planes and Interfaces Explained</h3>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Tier / Interface</th>
+            <th>Location & Nature</th>
+            <th>Primary Function & Examples</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Application Plane</strong></td>
+            <td>Top Tier</td>
+            <td>Network applications that define policies (e.g., dynamic firewall rules, load balancers, energy managers, path optimizers). Communicates policy intent downward.</td>
+          </tr>
+          <tr>
+            <td><strong>Northbound API</strong></td>
+            <td>Upper Boundary</td>
+            <td>Interfaces between Applications and the Controller. Typically software REST APIs, JSON-RPC, or Python APIs. Not yet fully standardized by a single body.</td>
+          </tr>
+          <tr>
+            <td><strong>Control Plane (Controller)</strong></td>
+            <td>Middle Tier</td>
+            <td>The Network Operating System. Has a unified, real-time bird's-eye view of the entire global network topology. Converts high-level application policies into concrete low-level flow rules and pushes them to switches. Examples: <strong>OpenDaylight, ONOS, Ryu, Floodlight</strong>.</td>
+          </tr>
+          <tr>
+            <td><strong>Southbound API (OpenFlow)</strong></td>
+            <td>Lower Boundary</td>
+            <td>Standardized protocol through which the Controller communicates with physical or virtual switches. <strong>OpenFlow</strong> is the industry standard southbound protocol.</td>
+          </tr>
+          <tr>
+            <td><strong>Data Plane (Infrastructure)</strong></td>
+            <td>Bottom Tier</td>
+            <td>Collection of high-speed forwarding elements (hardware ASIC switches, Open vSwitch). Possesses no routing intelligence; simply matches incoming packet headers against flow tables and executes instructions.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Inside an OpenFlow Switch: The Flow Table</h3>
+    <p>In an OpenFlow-enabled switch, traditional separate MAC address tables, IP routing tables, and ACL lists are unified into a single generalized construct called a <strong>Flow Table</strong>. Each flow table entry consists of three mandatory components:</p>
+
+    <div class="def-box">
+      <div class="def-term">Structure of an OpenFlow Flow Entry</div>
+      <p class="def-body">
+        <code>[ MATCH FIELDS ]  |  [ COUNTERS ]  |  [ ACTIONS / INSTRUCTIONS ]</code><br><br>
+        • <strong>Match Fields:</strong> Inspects up to 12 distinct packet header fields across Layers 1, 2, 3, and 4 (Ingress Port, Source/Dest MAC, VLAN ID, Source/Dest IP, IP Protocol, Source/Dest TCP/UDP Port).<br>
+        • <strong>Counters:</strong> Tracks statistics for each flow (Received packets, Received bytes, Flow duration). Used for billing, QoS, and DDoS detection.<br>
+        • <strong>Actions:</strong> Dictates what the switch must do when a match occurs:<br>
+        &nbsp;&nbsp;- <code>FORWARD</code>: Send packet out a specified port (or flood out all ports).<br>
+        &nbsp;&nbsp;- <code>DROP</code>: Silently discard the packet (acting as a firewall).<br>
+        &nbsp;&nbsp;- <code>MODIFY FIELD</code>: Rewrite header fields (e.g., modifying IP/Port for NAT).<br>
+        &nbsp;&nbsp;- <code>SEND TO CONTROLLER</code> (Packet-In): Forwards unknown packets to the SDN Controller for decision making!
+      </p>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 4.14: SUMMARY & EXAM TRAPS -->
+  <section id="s-summary-ch4" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 4.14</div>
+      <h2 class="section-title">Chapter Summary & High-Yield Exam Traps</h2>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title">⚡ High-Yield Rapid Review Points</div>
+      <ul>
+        <li><strong>Repeater:</strong> Layer 1. Cleans and regenerates electrical/optical signals; extends maximum distance. Does NOT filter.</li>
+        <li><strong>Hub:</strong> Layer 1 multiport repeater. Blindly floods incoming bits out all other ports. Creates <strong>1 collision domain and 1 broadcast domain</strong>.</li>
+        <li><strong>Bridge:</strong> Layer 2 software device. Maintains CAM table; breaks network into multiple collision domains. Passes broadcasts.</li>
+        <li><strong>Switch:</strong> Layer 2 multiport bridge with ASIC hardware. <strong>Every port = 1 collision domain</strong>. Eliminates collisions in full duplex.</li>
+        <li><strong>Switching Modes:</strong> Store-and-Forward (checks full CRC), Cut-Through (reads first 6 bytes, fast), Fragment-Free (reads first 64 bytes to eliminate collision runts).</li>
+        <li><strong>Router:</strong> Layer 3 intelligent device. Breaks both collision domains AND broadcast domains. Forwards based on destination IP.</li>
+        <li><strong>Gateway:</strong> Layers 1–7 protocol converter. Connects incompatible network architectures.</li>
+        <li><strong>Modem:</strong> Modulator-Demodulator. Converts digital binary bits to analog carrier waveforms and vice-versa.</li>
+        <li><strong>Domain Rules:</strong>
+          <br>• Total Collision Domains = (Sum of all active switch ports + router ports connecting to switches/devices; hubs count as 1 for all their ports).
+          <br>• Total Broadcast Domains = Total active router interfaces.
+        </li>
+        <li><strong>SDN:</strong> Decouples Control Plane (Controller) from Data Plane (Switches). Northbound API connects to Apps; Southbound API (OpenFlow) connects to Switches.</li>
+      </ul>
+    </div>
+
+    <h3>Top 5 High-Yield Traps in Exams</h3>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Trap #</th>
+            <th>The Common Misconception</th>
+            <th>The Technical Reality</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Trap 1</strong></td>
+            <td>"Adding a switch breaks a broadcast domain into smaller pieces."</td>
+            <td><strong>False!</strong> Switches only separate <strong>collision domains</strong>. All ports on a standard switch belong to <strong>one single broadcast domain</strong>. Only routers (or VLANs) break broadcast domains.</td>
+          </tr>
+          <tr>
+            <td><strong>Trap 2</strong></td>
+            <td>"Cut-Through switching drops corrupted frames."</td>
+            <td><strong>False!</strong> Cut-Through forwards after reading just the first 6 bytes (destination MAC). The CRC checksum is at the <em>end</em> of the frame, so Cut-Through blindly forwards corrupted frames!</td>
+          </tr>
+          <tr>
+            <td><strong>Trap 3</strong></td>
+            <td>"Hubs and switches have the same performance in full-duplex mode."</td>
+            <td><strong>False!</strong> Hubs <strong>cannot operate in full-duplex</strong> at all because all ports share a single electrical broadcast bus. Only switches support full-duplex.</td>
+          </tr>
+          <tr>
+            <td><strong>Trap 4</strong></td>
+            <td>"OpenFlow is an SDN Controller."</td>
+            <td><strong>False!</strong> OpenFlow is a <strong>Southbound communication protocol / API</strong>. The Controller is software like ONOS, OpenDaylight, or Ryu that uses OpenFlow to talk to switches.</td>
+          </tr>
+          <tr>
+            <td><strong>Trap 5</strong></td>
+            <td>"A bridge learns port locations from the Destination MAC address."</td>
+            <td><strong>False!</strong> Bridges learn by inspecting the <strong>SOURCE MAC address</strong> of incoming frames. The destination MAC is used solely for the forwarding decision.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- CHAPTER PROGRESS CHECK -->
+    <div class="def-box" style="margin-top:2rem; border-color:var(--accent);">
+      <div class="def-term">🎯 End of Chapter Self-Check</div>
+      <p class="def-body">
+        Test your knowledge before moving to Part II:<br>
+        1. In a network with 2 routers, 3 switches, 2 hubs, and 20 PCs, explain how you would calculate total collision and broadcast domains.<br>
+        2. What is the fundamental difference between an analog amplifier and a digital repeater?<br>
+        3. Explain how transparent bridges build their MAC address table using the backward learning algorithm.<br>
+        4. Name the three switching modes and state why Fragment-Free buffers exactly 64 bytes.<br>
+        5. Explain the three tiers of SDN architecture and differentiate Northbound from Southbound APIs.
+      </p>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- PREV/NEXT NAV -->
+  <div class="prev-next">
+    <a href="ch03-models-addressing.html" class="nav-btn">← Ch 3: Models & Addressing</a>
+    <a href="ch05-physical-fundamentals.html" class="nav-btn primary">Next: Physical Layer Fundamentals →</a>
+  </div>
+
+</div>
+</main>
+
+<!-- FLOATING MODE PANEL -->
+<div id="mode-panel">
+  <button class="mode-btn active" data-mode="all">📚 All</button>
+  <button class="mode-btn uni-btn" data-mode="uni">🎓 Uni</button>
+  <button class="mode-btn gate-btn" data-mode="gate">⚡ GATE</button>
+  <button class="mode-btn adv-btn" data-mode="advanced">🔬 Adv</button>
+</div>
+
+<!-- TTS FLOATING PANEL -->
+<div id="tts-panel">
+  <div class="tts-controls">
+    <button class="tts-btn" id="tts-play" title="Play/Pause">▶</button>
+    <button class="tts-btn" id="tts-stop" title="Stop">⏹</button>
+    <div class="tts-speed"><span>Speed</span><input type="range" id="tts-rate" min="0.5" max="2" step="0.1" value="1"><span id="tts-rate-label">1.0x</span></div>
+  </div>
+  <div class="tts-voice"><select id="tts-voice-select"><option>Loading voices…</option></select></div>
+</div>
+
+<!-- SEARCH MODAL -->
+<div id="search-modal">
+  <div class="search-box">
+    <div class="search-input-wrap"><span class="s-icon">🔍</span><input id="search-input" type="text" placeholder="Search chapters, topics, protocols…" autocomplete="off"></div>
+    <div id="search-results"></div>
+    <div class="search-hint"><span><kbd>↵</kbd> to navigate</span><span><kbd>Esc</kbd> to close</span><span><kbd>Ctrl+K</kbd> to open</span></div>
+  </div>
+</div>
+
+<!-- MOBILE NAV -->
+<nav id="mobile-nav">
+  <button class="mobile-nav-btn" onclick="SidebarManager?.toggle()"><span class="icon">☰</span>Menu</button>
+  <a href="../index.html" class="mobile-nav-btn"><span class="icon">🏠</span>Home</a>
+  <a href="ch04-devices-sdn.html" class="mobile-nav-btn active"><span class="icon">📖</span>Chapters</a>
+  <a href="../exams/mock-exam.html" class="mobile-nav-btn"><span class="icon">📝</span>Exams</a>
+  <button class="mobile-nav-btn" onclick="SearchManager?.open()"><span class="icon">🔍</span>Search</button>
+</nav>
+
+<div id="toast-container"></div>
+<script src="../assets/js/state.js"></script>
+<script src="../assets/js/core.js"></script>
+<script src="../assets/js/modes.js"></script>
+<script src="../assets/js/tts.js"></script>
+<script src="../assets/js/timer-settings.js"></script>
+<script src="../assets/js/timer.js"></script>
+<script src="../assets/js/timer-analytics.js"></script>
+<script src="../assets/js/timer-notifications.js"></script>
+<script src="../assets/js/timer-ui.js"></script>
+<script src="../assets/js/print.js"></script>
+<script src="../assets/js/notes.js"></script>
+<script src="../assets/js/glossary.js"></script>
+</body>
+</html>

@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<!-- ⚡ Arpit | CN MiniBook 2026 -->
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="Arpit">
+<meta name="description" content="Chapter 9: Elementary Protocols & Sliding Window — CN MiniBook. Stop-and-Wait ARQ, Go-Back-N, Selective Repeat, Window Size Proofs, Utilization Formulas, Piggybacking.">
+<title>Ch 9 — Protocols & Sliding Window | CN MiniBook 🌐 Arpit</title>
+<link rel="manifest" href="../manifest.json">
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/animations.css">
+<link rel="stylesheet" href="../assets/css/timer.css">
+<link rel="stylesheet" href="../assets/css/chapters.css">
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<!-- HEADER -->
+<header id="main-header">
+  <div class="header-left">
+    <button id="sidebar-toggle" class="icon-btn" title="Toggle Sidebar (S)">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </button>
+    <div class="brand-logo">
+      <div class="brand-icon">🌐</div>
+      <div class="brand-text"><span class="main">CN MiniBook</span><span class="sub">Computer Networks</span></div>
+    </div>
+  </div>
+  <span class="header-chapter-title">Ch 9 — Protocols & Sliding Window</span>
+  <div class="header-right">
+    <button id="search-btn" class="icon-btn" title="Search (Ctrl+K)">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.35-4.35"></path></svg>
+    </button>
+    <button id="tts-toggle" class="icon-btn" title="Read Aloud">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"></path></svg>
+    </button>
+    <button id="print-btn" title="Print / Save as PDF (Ctrl+P)" aria-label="Print"><svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="flex-shrink:0"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg><span class="print-label">PDF</span></button>
+    <button id="reading-mode-btn" class="icon-btn" title="Reading Mode (F)" aria-pressed="false" aria-label="Toggle reading mode">📖</button>
+    <button id="theme-toggle" class="icon-btn" title="Toggle Theme (T)"></button>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<div id="sidebar-overlay"></div>
+<aside id="sidebar">
+  <nav class="sidebar-nav">
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Navigation</div>
+      <a href="../index.html" class="sidebar-link"><span class="link-icon">🏠</span>Home</a>
+      <a href="../progress.html" class="sidebar-link"><span class="link-icon">📊</span>Dashboard</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Chapter 9 — Sections</div>
+      <a href="#s-why-protocols" class="sidebar-link active"><span class="link-icon">📜</span>9.1 Why Protocols?</a>
+      <a href="#s-simplex-unrest" class="sidebar-link"><span class="link-icon">🕊️</span>9.2 Unrestricted Simplex</a>
+      <a href="#s-stop-wait-simple" class="sidebar-link"><span class="link-icon">✋</span>9.3 Simplex Stop-and-Wait</a>
+      <a href="#s-stop-wait-arq" class="sidebar-link"><span class="link-icon">🔄</span>9.4 Stop-and-Wait ARQ</a>
+      <a href="#s-sw-arq-detail" class="sidebar-link"><span class="link-icon">⏱️</span>9.5 Stop-and-Wait Scenarios</a>
+      <a href="#s-sw-problems" class="sidebar-link"><span class="link-icon">📉</span>9.6 Stop-and-Wait Efficiency</a>
+      <a href="#s-pipeline-intro" class="sidebar-link"><span class="link-icon">🚀</span>9.7 Pipelining Concept</a>
+      <a href="#s-sliding-window" class="sidebar-link"><span class="link-icon">🪟</span>9.8 Sliding Window Mechanism</a>
+      <a href="#s-gbn-working" class="sidebar-link"><span class="link-icon">🔙</span>9.9 Go-Back-N Working</a>
+      <a href="#s-gbn-scenarios" class="sidebar-link"><span class="link-icon">📊</span>9.10 Go-Back-N Scenarios</a>
+      <a href="#s-gbn-window" class="sidebar-link"><span class="link-icon">🔒</span>9.11 GBN Window Size (2^n - 1)</a>
+      <a href="#s-sr-working" class="sidebar-link"><span class="link-icon">🎯</span>9.12 Selective Repeat Working</a>
+      <a href="#s-sr-scenarios" class="sidebar-link"><span class="link-icon">📈</span>9.13 Selective Repeat Scenarios</a>
+      <a href="#s-sr-window" class="sidebar-link"><span class="link-icon">🔐</span>9.14 SR Window Size (2^(n-1))</a>
+      <a href="#s-protocol-compare" class="sidebar-link"><span class="link-icon">⚖️</span>9.15 Protocol Comparison</a>
+      <a href="#s-throughput" class="sidebar-link"><span class="link-icon">🧮</span>9.16 Utilization & Formulas</a>
+      <a href="#s-piggybacking" class="sidebar-link"><span class="link-icon">🐷</span>9.17 Piggybacking</a>
+      <a href="#s-summary-ch9" class="sidebar-link"><span class="link-icon">🏁</span>9.18 Summary & Exam Traps</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">All Chapters</div>
+      <a href="ch01-fundamentals.html" class="sidebar-link"><span class="link-icon">📡</span>Ch 1 — Fundamentals</a>
+      <a href="ch02-types-topologies.html" class="sidebar-link"><span class="link-icon">🔗</span>Ch 2 — Types &amp; Topologies</a>
+      <a href="ch03-models-addressing.html" class="sidebar-link"><span class="link-icon">📦</span>Ch 3 — Models &amp; Addressing</a>
+      <a href="ch04-devices-sdn.html" class="sidebar-link"><span class="link-icon">🔌</span>Ch 4 — Devices &amp; SDN</a>
+      <a href="ch05-physical-fundamentals.html" class="sidebar-link"><span class="link-icon">📶</span>Ch 5 — Physical Fundamentals</a>
+      <a href="ch06-media-signaling.html" class="sidebar-link"><span class="link-icon">🔌</span>Ch 6 — Media &amp; Line Coding</a>
+      <a href="ch07-modulation-switching.html" class="sidebar-link"><span class="link-icon">📻</span>Ch 7 — Modulation &amp; Switching</a>
+      <a href="ch08-dll-fundamentals.html" class="sidebar-link"><span class="link-icon">🔧</span>Ch 8 — DLL Fundamentals</a>
+      <a href="ch09-protocols-sliding.html" class="sidebar-link" style="color:var(--accent-light)"><span class="link-icon">🔄</span>Ch 9 — Protocols &amp; Sliding Window</a>
+      <a href="ch10-mac-ethernet.html" class="sidebar-link"><span class="link-icon">🌐</span>Ch 10 — MAC &amp; Ethernet</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Exams</div>
+      <a href="../exams/mock-exam.html" class="sidebar-link"><span class="link-icon">📝</span>100 MCQ Mock Exam</a>
+      <a href="../exams/unit-quiz.html" class="sidebar-link"><span class="link-icon">📋</span>Chapter Quizzes</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Bookmarks</div>
+      <div id="bookmarks-list"></div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">My Notes</div>
+      <div id="notes-sidebar-list"></div>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-brand-mark"><div class="mark">🌐</div><span>Arpit · CN MiniBook 2026</span></div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main id="main-content">
+<div class="content-inner">
+
+  <!-- CHAPTER HERO -->
+  <div class="chapter-hero">
+    <div class="chapter-breadcrumb">
+      <a href="../index.html">Home</a><span>›</span><span>Part III — Data Link Layer</span><span>›</span><span style="color:var(--tx-primary)">Chapter 9</span>
+    </div>
+    <div class="chapter-num">🔄 Chapter 9</div>
+    <h1 class="chapter-title">Elementary Protocols & Sliding Window</h1>
+    <div class="chapter-meta">
+      <span class="chapter-meta-item" style="background:var(--uni-bg-hd); border-color:var(--uni-b-hd); color:var(--uni-text); font-weight:700;">🎓 Uni Unit II: Elementary & Sliding Window Protocols</span>
+      <span>⏱️ 60 min read</span>
+      <span>📚 18 Sections</span>
+      <span>🎓 Rigorous Flow & Error Control</span>
+      <span>⚡ Stop-and-Wait, GBN, Selective Repeat & Proofs</span>
+    </div>
+  </div>
+
+  <!-- UNIVERSITY SYLLABUS CALLOUT -->
+  <div class="uni-syllabus-callout">
+    <div class="uni-callout-title">🎓 Official University Syllabus — UNIT II</div>
+    <div><strong>Data Link Layer:</strong> Elementary data link protocols (Stop-and-Wait) and Sliding window protocols (Go-Back-N, Selective Repeat).</div>
+  </div>
+
+  <!-- TABLE OF CONTENTS -->
+  <div class="toc-card">
+    <div class="toc-title"><span>📑</span>Table of Contents</div>
+    <div class="toc-grid">
+      <a href="#s-why-protocols" class="toc-item"><span class="toc-num">9.1</span>Why Protocols Are Required</a>
+      <a href="#s-simplex-unrest" class="toc-item"><span class="toc-num">9.2</span>Unrestricted Simplex Protocol</a>
+      <a href="#s-stop-wait-simple" class="toc-item"><span class="toc-num">9.3</span>Simplex Stop-and-Wait</a>
+      <a href="#s-stop-wait-arq" class="toc-item"><span class="toc-num">9.4</span>Stop-and-Wait ARQ</a>
+      <a href="#s-sw-arq-detail" class="toc-item"><span class="toc-num">9.5</span>Detailed Failure Scenarios</a>
+      <a href="#s-sw-problems" class="toc-item"><span class="toc-num">9.6</span>Efficiency & Pipe Underutilization</a>
+      <a href="#s-pipeline-intro" class="toc-item"><span class="toc-num">9.7</span>Pipelining Concept</a>
+      <a href="#s-sliding-window" class="toc-item"><span class="toc-num">9.8</span>Sliding Window Mechanism</a>
+      <a href="#s-gbn-working" class="toc-item"><span class="toc-num">9.9</span>Go-Back-N Working</a>
+      <a href="#s-gbn-scenarios" class="toc-item"><span class="toc-num">9.10</span>Go-Back-N Scenarios</a>
+      <a href="#s-gbn-window" class="toc-item"><span class="toc-num">9.11</span>GBN Window Size Proof (2^n - 1)</a>
+      <a href="#s-sr-working" class="toc-item"><span class="toc-num">9.12</span>Selective Repeat Working</a>
+      <a href="#s-sr-scenarios" class="toc-item"><span class="toc-num">9.13</span>Selective Repeat Scenarios</a>
+      <a href="#s-sr-window" class="toc-item"><span class="toc-num">9.14</span>SR Window Size Proof (2^(n-1))</a>
+      <a href="#s-protocol-compare" class="toc-item"><span class="toc-num">9.15</span>Grand Protocol Comparison</a>
+      <a href="#s-throughput" class="toc-item"><span class="toc-num">9.16</span>Efficiency & Formulas</a>
+      <a href="#s-piggybacking" class="toc-item"><span class="toc-num">9.17</span>Piggybacking</a>
+      <a href="#s-summary-ch9" class="toc-item"><span class="toc-num">9.18</span>Summary & Exam Traps</a>
+    </div>
+  </div>
+
+  <!-- SECTION 9.1: WHY PROTOCOLS -->
+  <section id="s-why-protocols" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 9.1</div>
+      <h2 class="section-title">Why Data Link Control Protocols Are Required</h2>
+    </div>
+
+    <p>In data communications, transmitting bits across physical links faces three inevitable physical realities:</p>
+    <ul>
+      <li><strong>Finite Receiver Memory:</strong> No receiving machine has infinite buffer capacity or infinite processing speed. If a sender transmits data faster than the receiver can process it, memory overflows and packets are silently dropped. (Requires <strong>Flow Control</strong>).</li>
+      <li><strong>Channel Noise & Loss:</strong> Packets can be corrupted by ambient electromagnetic noise or dropped entirely by intermediate equipment. (Requires <strong>Error Control & Retransmission</strong>).</li>
+      <li><strong>Propagation Delay:</strong> Signals take a non-zero time ($T_p = \text{Distance} / \text{Speed}$) to cross links. The longer the distance, the greater the delay between sending data and receiving feedback.</li>
+    </ul>
+
+    <div class="def-box">
+      <div class="def-term">Automatic Repeat reQuest (ARQ)</div>
+      <p class="def-body">A feedback-driven error-control strategy where the receiver automatically notifies the sender of successful reception using an <strong>Acknowledgment (ACK)</strong> frame, or of damaged frames using a <strong>Negative Acknowledgment (NAK)</strong>. If the sender does not receive an ACK before an internal <strong>retransmission timer</strong> expires, it automatically resends the frame.</p>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 9.2: UNRESTRICTED SIMPLEX -->
+  <section id="s-simplex-unrest" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 9.2</div>
+      <h2 class="section-title">Protocol 1: Unrestricted Simplex Protocol ("Utopia")</h2>
+    </div>
+
+    <p>To understand protocol design, computer scientists begin with the ideal theoretical baseline: the <strong>Unrestricted Simplex Protocol</strong>.</p>
+    <ul>
+      <li><strong>Unrealistic Assumptions:</strong> 1. Data travels in strictly one direction (simplex); 2. The physical channel is completely noiseless (zero bit errors, zero loss); 3. The receiver has an infinite processing speed and infinite memory buffers.</li>
+      <li><strong>Operation:</strong> The sender loops infinitely, fetching packets from its network layer, wrapping them into frames, and blasting them onto the wire as fast as possible. The receiver simply sits in an infinite loop accepting frames.</li>
+      <li><strong>Why Impractical:</strong> In reality, real receivers have finite buffers; a fast sender would instantly overflow the receiver's queue, dropping 99% of data.</li>
+    </ul>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 9.3: SIMPLEX STOP-AND-WAIT -->
+  <section id="s-stop-wait-simple" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 9.3</div>
+      <h2 class="section-title">Protocol 2: Simplex Stop-and-Wait Protocol <span class="uni-syllabus-badge">🎓 Uni Unit II: Elementary Protocols</span></h2>
+    </div>
+
+    <p>To prevent a fast sender from flooding a slow receiver (flow control), the <strong>Simplex Stop-and-Wait Protocol</strong> introduces a feedback loop.</p>
+
+    <div class="def-box">
+      <div class="def-term">Stop-and-Wait Flow Control Rule</div>
+      <p class="def-body">The sender transmits <strong>exactly one frame</strong> and then completely ceases transmission, entering a blocked wait state until it receives a positive <strong>Acknowledgment (ACK)</strong> frame back from the receiver. Only after receiving the ACK does the sender fetch the next packet and transmit the next frame.</p>
+    </div>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 9.1: Normal Stop-and-Wait Handshake</div>
+      <pre>
+       SENDER                                              RECEIVER
+         |                                                    |
+         | -------- Frame 0 --------------------------------> | (Processes frame)
+         |                                                    |
+         | <------- ACK ------------------------------------- |
+         |                                                    |
+         | -------- Frame 1 --------------------------------> | (Processes frame)
+         |                                                    |
+         | <------- ACK ------------------------------------- |
+         v                                                    v
+      </pre>
+    </div>
+    <p><em>Limitation:</em> This elementary protocol still assumes a noiseless channel. If a frame or ACK is lost in transit, both machines freeze in an infinite deadlock!</p>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 9.4: STOP-AND-WAIT ARQ -->
+  <section id="s-stop-wait-arq" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 9.4</div>
+      <h2 class="section-title">Protocol 3: Stop-and-Wait ARQ (Noisy Channels)</h2>
+    </div>
+
+    <p><strong>Stop-and-Wait ARQ</strong> solves both flow control and error control over noisy, unreliable channels by introducing three crucial mechanisms:</p>
+
+    <div class="def-box">
+      <div class="def-term">The Three Pillars of Stop-and-Wait ARQ</div>
+      <p class="def-body">
+        1. <strong>Retransmission Timer:</strong> The sender starts a countdown timer immediately upon transmitting a frame. If an ACK does not arrive before the timer expires (Timeout), the sender assumes the frame or ACK was lost and retransmits the frame.<br>
+        2. <strong>Sequence Numbers (0 and 1):</strong> Every data frame is tagged with a <strong>1-bit sequence number ($0$ or $1$)</strong>. This allows the receiver to detect and discard duplicate frames caused by retransmissions.<br>
+        3. <strong>Acknowledgment Numbers:</strong> The receiver sends an ACK specifying the sequence number of the <strong>next frame it expects to receive</strong> (e.g., ACK 1 means "I successfully received Frame 0, now send Frame 1").
+      </p>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 9.5: SW ARQ SCENARIOS -->
+  <section id="s-sw-arq-detail" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 9.5</div>
+      <h2 class="section-title">Stop-and-Wait ARQ Failure Scenarios Walkthrough</h2>
+    </div>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 9.2: Scenario A — Frame Lost in Transit</div>
+      <pre>
+       SENDER                                              RECEIVER
+         |                                                    |
+         | --- Frame 0 ------------------> [ LOST 💥 ]         | (Never receives frame)
+      [Timer]                                                 |
+         |                                                    |
+      [TIMEOUT!]                                              |
+         |                                                    |
+         | --- Frame 0 (Retransmit) ------------------------> | (Accepts Frame 0)
+         | <--- ACK 1 --------------------------------------- |
+         v                                                    v
+      </pre>
+    </div>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 9.3: Scenario B — ACK Lost (Duplicate Frame Handled)</div>
+      <pre>
+       SENDER                                              RECEIVER
+         |                                                    |
+         | --- Frame 0 -------------------------------------> | (Accepts Frame 0)
+      [Timer]                                                 |
+         | <--- ACK 1 ------------- [ LOST 💥 ]                | (Sends ACK 1)
+         |                                                    |
+      [TIMEOUT!]                                              |
+         |                                                    |
+         | --- Frame 0 (Retransmit) ------------------------> | (Sees duplicate Seq 0!
+         |                                                    |  DISCARDS duplicate,
+         | <--- ACK 1 (Resent) ------------------------------ |  resends ACK 1!)
+         |                                                    |
+         | --- Frame 1 -------------------------------------> | (Accepts Frame 1)
+         v                                                    v
+      </pre>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title">💡 Why 1-Bit Sequence Numbers Suffice for Stop-and-Wait</div>
+      <p>Because there is never more than 1 outstanding frame on the wire at any moment, the sender only needs to alternate between two values: <strong>0 and 1</strong>. The receiver expects 0, then 1, then 0, then 1. If it expects 1 and receives 0 again, it immediately knows the frame is a duplicate caused by a lost ACK!</p>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 9.6: SW EFFICIENCY -->
+  <section id="s-sw-problems" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 9.6</div>
+      <h2 class="section-title">The Problem with Stop-and-Wait: Massive Pipe Underutilization</h2>
+    </div>
+
+    <p>While Stop-and-Wait ARQ is simple and mathematically robust, it suffers from a devastating performance flaw: <strong>miserable link utilization on high-bandwidth or long-delay links</strong>.</p>
+
+    <div class="formula-box">
+      <div class="formula-title">Link Utilization (Efficiency) of Stop-and-Wait</div>
+      <div class="formula-math">\text{Total Cycle Time } T = T_t + 2T_p + T_{\text{proc}} + T_{\text{ack}} \approx T_t + 2T_p</div>
+      <div class="formula-math">\text{Efficiency } \eta = \frac{\text{Useful Transmission Time}}{\text{Total Cycle Time}} = \frac{T_t}{T_t + 2T_p} = \frac{1}{1 + 2a}</div>
+      <div class="formula-vars">
+        • $T_t = \frac{L}{B}$ = Transmission time (time to push all bits onto wire)<br>
+        • $T_p = \frac{d}{v}$ = Propagation time (time for 1 bit to travel across physical distance)<br>
+        • $a = \frac{T_p}{T_t}$ = Ratio of propagation delay to transmission time
+      </div>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title">📝 Worked Numerical 9.1: Satellite Link Disaster</div>
+      <p><strong>Problem:</strong> A 1 Mbps satellite link has a propagation delay of $T_p = 250\text{ ms}$. If frames are 1000 bits ($1\text{ kb}$), calculate the link efficiency of Stop-and-Wait.</p>
+      <p><strong>Solution:</strong><br>
+      • $T_t = \frac{1000\text{ bits}}{10^6\text{ bps}} = 1\text{ ms} = 0.001\text{ s}$<br>
+      • $T_p = 250\text{ ms} \implies 2T_p = 500\text{ ms}$<br>
+      • $\eta = \frac{T_t}{T_t + 2T_p} = \frac{1\text{ ms}}{1\text{ ms} + 500\text{ ms}} = \frac{1}{501} \approx \mathbf{0.00199} = \mathbf{0.2\%}!$<br>
+      👉 <strong>The sender sits completely idle 99.8% of the time!</strong> The satellite link achieves an effective throughput of just 2 kbps out of its 1 Mbps capacity!</p>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 9.7: PIPELINING -->
+  <section id="s-pipeline-intro" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 9.7</div>
+      <h2 class="section-title">The Pipelining Solution</h2>
+    </div>
+
+    <p>To achieve 100% link utilization on high-latency links, the sender must not stop and wait after transmitting 1 frame. Instead, it must <strong>keep the transmission pipe full</strong> by transmitting multiple consecutive frames back-to-back before pausing to wait for an acknowledgment. This strategy is called <strong>Pipelining</strong>.</p>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 9.4: Stop-and-Wait vs Pipelined Transmission</div>
+      <pre>
+   STOP-AND-WAIT (Inefficient):
+   Sender:   [ F0 ] ---------------------- WAIT ---------------------- [ F1 ]
+   Receiver:          [ ACK1 ] ----------------------
+
+   PIPELINED (100% Utilization):
+   Sender:   [ F0 ][ F1 ][ F2 ][ F3 ][ F4 ][ F5 ] ... (Pipe is full!)
+   Receiver:          [ACK1][ACK2][ACK3][ACK4] ...
+      </pre>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 9.8: SLIDING WINDOW MECHANISM -->
+  <section id="s-sliding-window" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 9.8</div>
+      <h2 class="section-title">The Sliding Window Mechanism <span class="uni-syllabus-badge">🎓 Uni Unit II: Sliding Window Protocols</span></h2>
+    </div>
+
+    <p>In a <strong>Sliding Window Protocol</strong>, both the sender and receiver maintain a conceptual "window" of acceptable sequence numbers:</p>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 9.5: Sender Sliding Window Boundaries</div>
+      <pre>
+   Frames acknowledged     Frames transmitted,         Frames that CAN be sent    Frames NOT yet
+   by receiver             waiting for ACKs (in flight) immediately                allowed to be sent
+   ====================== [--------------------------- --------------------------] ==================
+   ... 0   1   2   3   4 |   5       6       7       8       9      10      11   |  12  13  14  15 ...
+   ====================== [------------------------------------------------------] ==================
+                         ^                                                       ^
+                       Last ACK Received (LAR)                         Last Frame Sent (LFS)
+                       |<------------------- Sender Window Size Ws -------------->|
+      </pre>
+    </div>
+
+    <div class="def-box">
+      <div class="def-term">Window Sliding Rule</div>
+      <p class="def-body">When a new valid ACK arrives acknowledging Frame 5, the left boundary of the sender's window slides to the right (past Frame 5), opening up permission to transmit one new frame (Frame 12) at the right edge!</p>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 9.9: GBN WORKING -->
+  <section id="s-gbn-working" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 9.9</div>
+      <h2 class="section-title">Go-Back-N (GBN) ARQ Protocol Working <span class="uni-syllabus-badge">🎓 Uni Unit II: Go-Back-N ARQ</span></h2>
+    </div>
+
+    <p><strong>Go-Back-N (GBN)</strong> is the simpler of the two major pipelined sliding window protocols. It achieves high link utilization while keeping the receiver hardware extremely simple.</p>
+
+    <div class="def-box">
+      <div class="def-term">Fundamental Invariants of Go-Back-N</div>
+      <p class="def-body">
+        • <strong>Sender Window Size:</strong> $W_s = N$ ($N > 1$). The sender can have up to $N$ unacknowledged frames in flight simultaneously.<br>
+        • <strong>Receiver Window Size:</strong> $W_r = \mathbf{1}$. The receiver only ever accepts <strong>one specific expected in-order frame</strong> ($R_{\text{next}}$). It has zero buffer for out-of-order frames!<br>
+        • <strong>Cumulative Acknowledgment:</strong> $\text{ACK}(n)$ acknowledges that <strong>all frames up to sequence number $n-1$ have been received correctly</strong>.<br>
+        • <strong>Retransmission Rule:</strong> If Frame $k$ is lost or damaged, the sender must <strong>"Go Back N" frames and retransmit Frame $k$ AND ALL subsequent frames that were sent after it</strong>, even if they arrived undamaged!
+      </p>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 9.10: GBN SCENARIOS -->
+  <section id="s-gbn-scenarios" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 9.10</div>
+      <h2 class="section-title">Go-Back-N Worked Failure Scenario Walkthrough</h2>
+    </div>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 9.6: Frame 2 Lost in Go-Back-N ($W_s = 4$)</div>
+      <pre>
+       SENDER (Window: 0, 1, 2, 3)                         RECEIVER (Wr = 1, Expects 0)
+         |                                                    |
+         | --- Frame 0 -------------------------------------> | (Accepts 0, sends ACK 1)
+         | --- Frame 1 -------------------------------------> | (Accepts 1, sends ACK 2)
+         | --- Frame 2 -----------------> [ LOST 💥 ]         | (Frame 2 NEVER arrives!)
+         | --- Frame 3 -------------------------------------> | (Arrives, but Wr expects 2!
+         |                                                    |  DISCARDS Frame 3!
+         |                                                    |  Resends ACK 2)
+      [Timer for Frame 2 EXPIRES!]                            |
+         |                                                    |
+         | ================= "GO BACK N" =================== |
+         | Retransmits Frame 2 AND Frame 3:                   |
+         | --- Frame 2 (Retransmit) ------------------------> | (Accepts 2, sends ACK 3)
+         | --- Frame 3 (Retransmit) ------------------------> | (Accepts 3, sends ACK 4)
+         v                                                    v
+      </pre>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">⚠️ The Penalty of Go-Back-N</div>
+      <p>Notice that Frame 3 was received in perfect physical condition, but the receiver was forced to <strong>discard it</strong> because $W_r = 1$. The sender had to burn bandwidth retransmitting Frame 3! On links with high error rates, GBN wastes enormous bandwidth retransmitting duplicate frames.</p>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 9.11: GBN WINDOW PROOF -->
+  <section id="s-gbn-window" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 9.11</div>
+      <h2 class="section-title">Go-Back-N Window Size Proof: Why $W_s \le 2^n - 1$</h2>
+    </div>
+
+    <p>A perennial GATE and university examination question asks: If sequence numbers are represented by $n$ bits (yielding sequence space $0$ to $2^n - 1$), why is the maximum allowable sender window size in GBN <strong>$2^n - 1$ and NOT $2^n$</strong>?</p>
+
+    <div class="formula-box">
+      <div class="formula-title">GBN Window Size Rule</div>
+      <div class="formula-math">W_s \le 2^n - 1 \quad \text{and} \quad W_r = 1</div>
+    </div>
+
+    <div class="callout danger">
+      <div class="callout-title">⚠️ Proof by Counter-Example: What Disasters Occur if $W_s = 2^n$?</div>
+      <p>Let $n = 2$ bits $\implies$ Sequence numbers are $0, 1, 2, 3$ (total $2^2 = 4$).<br>
+      Suppose we illegally set $W_s = 2^n = 4$:</p>
+      <div class="diagram-box">
+        <pre>
+   1. Sender transmits all 4 frames in window: Frame 0, Frame 1, Frame 2, Frame 3.
+   2. Receiver successfully receives ALL 4 frames!
+      Its expected sequence number rolls over: 0, 1, 2, 3 -> wraps back to 0!
+      Receiver sends ACK 0 (meaning "I expect Frame 0 of the NEXT batch").
+   3. DISASTER: ALL ACKs are lost in transit due to a sudden cable glitch!
+   4. Sender's timer for Frame 0 expires. Sender retransmits the OLD Frame 0!
+   5. Receiver receives Frame 0. BUT the receiver is expecting Frame 0 of the NEW batch!
+   👉 The receiver CANNOT DISTINGUISH whether this Frame 0 is:
+      • A retransmission of the OLD Frame 0, OR
+      • The BRAND NEW Frame 0 from the next batch!
+        </pre>
+      </div>
+      <p>By restricting $W_s \le 2^n - 1$ (e.g., $W_s \le 3$), the maximum outstanding frames cannot wrap completely around the sequence space, eliminating ambiguity completely!</p>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 9.12: SELECTIVE REPEAT -->
+  <section id="s-sr-working" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 9.12</div>
+      <h2 class="section-title">Selective Repeat (SR) ARQ Protocol Working <span class="uni-syllabus-badge">🎓 Uni Unit II: Selective Repeat ARQ</span></h2>
+    </div>
+
+    <p>To eliminate the wasteful retransmissions of Go-Back-N, <strong>Selective Repeat (SR)</strong> introduces receiver buffering and selective retransmission.</p>
+
+    <div class="def-box">
+      <div class="def-term">Fundamental Invariants of Selective Repeat</div>
+      <p class="def-body">
+        • <strong>Receiver Window Size:</strong> $W_r > 1$ (Specifically, $W_r = W_s$). The receiver maintains memory buffers to accept and store <strong>out-of-order frames</strong> that fall within its window!<br>
+        • <strong>Selective Acknowledgment:</strong> Each frame is acknowledged individually using <strong>Selective ACKs (SACKs)</strong>.<br>
+        • <strong>Individual Timers:</strong> The sender maintains a separate, dedicated countdown timer for <em>each individual frame</em> in flight.<br>
+        • <strong>Selective Retransmission:</strong> On timeout for Frame $k$, the sender retransmits <strong>ONLY Frame $k$</strong>. Undamaged frames that arrived out-of-order are never retransmitted!
+      </p>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 9.13: SR SCENARIOS -->
+  <section id="s-sr-scenarios" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 9.13</div>
+      <h2 class="section-title">Selective Repeat Worked Failure Scenario Walkthrough</h2>
+    </div>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 9.7: Frame 2 Lost in Selective Repeat ($W_s = 4, W_r = 4$)</div>
+      <pre>
+       SENDER (Window: 0, 1, 2, 3)                         RECEIVER (Window: 0, 1, 2, 3)
+         |                                                    |
+         | --- Frame 0 -------------------------------------> | (Accepts 0, delivers to App, sends ACK 0)
+         | --- Frame 1 -------------------------------------> | (Accepts 1, delivers to App, sends ACK 1)
+         | --- Frame 2 -----------------> [ LOST 💥 ]         | (Frame 2 lost!)
+         | --- Frame 3 -------------------------------------> | (BUFFERS Frame 3! Does NOT discard!
+         |                                                    |  Sends ACK 3)
+      [Timer for Frame 2 EXPIRES!]                            |
+         |                                                    |
+         | --- Frame 2 (ONLY) ------------------------------> | (Accepts Frame 2!
+         |                                                    |  Reassembles [2, 3] in order,
+         | <--- ACK 2 --------------------------------------- |  delivers both to App!)
+         v                                                    v
+      </pre>
+    </div>
+    <p><em>Efficiency Gain:</em> Only Frame 2 crossed the wire twice. Frame 3 was buffered and preserved, saving link bandwidth.</p>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 9.14: SR WINDOW PROOF -->
+  <section id="s-sr-window" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 9.14</div>
+      <h2 class="section-title">Selective Repeat Window Size Proof: Why $W_s \le 2^{n-1}$</h2>
+    </div>
+
+    <div class="formula-box">
+      <div class="formula-title">Selective Repeat Window Size Inequality</div>
+      <div class="formula-math">W_s + W_r \le 2^n</div>
+      <div class="formula-math">\text{Since } W_s = W_r \implies 2W_s \le 2^n \implies W_s \le 2^{n-1}</div>
+    </div>
+
+    <div class="callout danger">
+      <div class="callout-title">⚠️ Proof: Why Setting $W_s > 2^{n-1}$ Causes Ambiguity</div>
+      <p>Let $n = 2$ bits $\implies$ Sequence numbers are $0, 1, 2, 3$ ($2^n = 4$).<br>
+      Suppose we illegally set $W_s = W_r = 3$ (which is $> 2^{2-1} = 2$):</p>
+      <div class="diagram-box">
+        <pre>
+   1. Sender window is [0, 1, 2]. Sender transmits Frames 0, 1, 2.
+   2. Receiver receives all three frames: 0, 1, 2.
+      Receiver window slides forward by 3: from [0, 1, 2] to [3, 0, 1]!
+      Receiver sends ACKs for 0, 1, 2.
+   3. DISASTER: All three ACKs are lost in transit!
+   4. Sender's timer for Frame 0 expires. Sender retransmits Frame 0.
+   5. Receiver receives Frame 0.
+      Look at the receiver's current window: [3, 0, 1].
+      Frame 0 is inside the receiver's window!
+   👉 The receiver mistakes the OLD retransmitted Frame 0 for the BRAND NEW Frame 0!
+        </pre>
+      </div>
+      <p>To prevent the receiver's advanced window from overlapping with the sender's old window, the window size <strong>must never exceed half the sequence space: $W_s \le 2^{n-1}$</strong>!</p>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 9.15: PROTOCOL COMPARISON -->
+  <section id="s-protocol-compare" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 9.15</div>
+      <h2 class="section-title">Grand Sliding Window Protocol Comparison Table</h2>
+    </div>
+
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Parameter</th>
+            <th>Stop-and-Wait ARQ</th>
+            <th>Go-Back-N (GBN) ARQ</th>
+            <th>Selective Repeat (SR) ARQ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Sender Window Size ($W_s$)</strong></td>
+            <td>$1$</td>
+            <td>$N$ (Maximum: $2^n - 1$)</td>
+            <td>$N$ (Maximum: $2^{n-1}$)</td>
+          </tr>
+          <tr>
+            <td><strong>Receiver Window Size ($W_r$)</strong></td>
+            <td>$1$</td>
+            <td>$1$</td>
+            <td>$N$ (Maximum: $2^{n-1}$)</td>
+          </tr>
+          <tr>
+            <td><strong>Out-of-Order Buffering?</strong></td>
+            <td>❌ No</td>
+            <td>❌ No (Discards)</td>
+            <td>✅ <strong>Yes (Buffers in receiver)</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Acknowledgment Type</strong></td>
+            <td>Individual (ACK 0 / ACK 1)</td>
+            <td><strong>Cumulative</strong> ($\text{ACK}(n)$)</td>
+            <td><strong>Individual / Selective</strong> (SACK)</td>
+          </tr>
+          <tr>
+            <td><strong>Retransmission Scope</strong></td>
+            <td>Only 1 frame</td>
+            <td>Retransmits <strong>$N$ frames</strong> from oldest</td>
+            <td>Retransmits <strong>ONLY damaged frame</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Sender Timers</strong></td>
+            <td>1 timer</td>
+            <td>1 timer (Oldest unACKed frame)</td>
+            <td><strong>Independent timer per frame</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Link Utilization ($\eta$)</strong></td>
+            <td>$\frac{1}{1 + 2a}$</td>
+            <td>$\frac{N}{1 + 2a}$ (Capped at 100%)</td>
+            <td>$\frac{N}{1 + 2a}$ (Capped at 100%)</td>
+          </tr>
+          <tr>
+            <td><strong>Hardware Complexity</strong></td>
+            <td>Minimal</td>
+            <td>Moderate (Sender buffer only)</td>
+            <td>High (Complex receiver sorting buffers)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 9.16: UTILIZATION FORMULAS -->
+  <section id="s-throughput" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 9.16</div>
+      <h2 class="section-title">Throughput and Efficiency Calculations (GATE Level)</h2>
+    </div>
+
+    <div class="formula-box">
+      <div class="formula-title">Optimal Window Size for 100% Link Utilization</div>
+      <div class="formula-math">\eta = \frac{N \times T_t}{T_t + 2T_p} = \frac{N}{1 + 2a} \quad \text{where } a = \frac{T_p}{T_t}</div>
+      <div class="formula-math">\text{For 100\% Utilization } (\eta = 1) \implies N \ge 1 + 2a</div>
+      <div class="formula-math">\text{Throughput} = \eta \times \text{Bandwidth (bps)}</div>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title">📝 Worked Numerical 9.2 (GATE Question on Optimal Window Size)</div>
+      <p><strong>Problem:</strong> A 100 Mbps link has a distance of $2000\text{ km}$ and signal speed $v = 2 \times 10^8\text{ m/s}$. Frame size is 2000 bytes. Find the minimum sequence number bits ($n$) required for Go-Back-N to achieve 100% link utilization.</p>
+
+      <p><strong>Step-by-Step Solution:</strong><br>
+      1. Calculate $T_p$:<br>
+      $T_p = \frac{d}{v} = \frac{2 \times 10^6\text{ m}}{2 \times 10^8\text{ m/s}} = 0.01\text{ s} = 10\text{ ms}$.<br><br>
+      2. Calculate $T_t$:<br>
+      Frame size $L = 2000 \times 8 = 16,000\text{ bits}$.<br>
+      $T_t = \frac{16,000\text{ bits}}{100 \times 10^6\text{ bps}} = 0.16\text{ ms} = 0.00016\text{ s}$.<br><br>
+      3. Calculate parameter $a$:<br>
+      $a = \frac{T_p}{T_t} = \frac{10\text{ ms}}{0.16\text{ ms}} = 62.5$.<br><br>
+      4. Calculate optimal window size $N$:<br>
+      $N \ge 1 + 2a = 1 + 2(62.5) = 1 + 125 = \mathbf{126\text{ frames}}$.<br><br>
+      5. Calculate sequence bits $n$ for GBN:<br>
+      $W_s \le 2^n - 1 \implies 2^n - 1 \ge 126 \implies 2^n \ge 127$<br>
+      Since $2^6 = 64$ and $2^7 = 128 \implies \mathbf{n = 7\text{ bits}}$!</p>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 9.17: PIGGYBACKING -->
+  <section id="s-piggybacking" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 9.17</div>
+      <h2 class="section-title">Piggybacking in Bidirectional Protocols</h2>
+    </div>
+
+    <p>In full-duplex communication, both stations transmit data simultaneously. If Station B sends a dedicated, standalone ACK frame for every data frame received from Station A, 50% of the channel's transmission capacity is wasted carrying small empty ACK headers.</p>
+
+    <div class="def-box">
+      <div class="def-term">Piggybacking</div>
+      <p class="def-body">The technique of temporarily delaying an outgoing acknowledgment and attaching (piggybacking) the ACK number into the header of the <strong>next outgoing data frame</strong> traveling in the reverse direction.</p>
+    </div>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 9.8: Piggybacked Frame Structure</div>
+      <pre>
+   +------------------+-------------------+--------------------+--------------+
+   | Frame Seq Number | ACK Number (Piggy)| Payload Data       | CRC Checksum |
+   | [e.g., Seq 3]    | [e.g., ACK 5]     | [User Application] | [FCS]        |
+   +------------------+-------------------+--------------------+--------------+
+      </pre>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">⚠️ The ACK Delay Timer</div>
+      <p>What if the receiver has no data to send in the reverse direction? To prevent the sender from timing out, the receiver starts an <strong>ACK Timer</strong> (e.g., 50 ms). If a reverse data packet is queued before the timer expires, the ACK is piggybacked; if the timer expires without reverse data, an independent, standalone ACK frame is sent immediately.</p>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- SECTION 9.18: SUMMARY & EXAM TRAPS -->
+  <section id="s-summary-ch9" class="content-section">
+    <div class="section-header">
+      <div class="section-tag">Section 9.18</div>
+      <h2 class="section-title">Chapter Summary & High-Yield Exam Traps</h2>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title">⚡ High-Yield Rapid Review Points</div>
+      <ul>
+        <li><strong>Stop-and-Wait ARQ:</strong> $W_s = 1, W_r = 1$. Sequence numbers 0 and 1. Low efficiency $\eta = 1/(1+2a)$.</li>
+        <li><strong>Parameter $a$:</strong> $a = T_p / T_t = (d/v) / (L/B)$.</li>
+        <li><strong>Go-Back-N:</strong> $W_s = 2^n - 1$, $W_r = 1$. Cumulative ACKs. Receiver discards out-of-order frames. Sender retransmits all $N$ frames on timeout.</li>
+        <li><strong>Selective Repeat:</strong> $W_s = 2^{n-1}$, $W_r = 2^{n-1}$. Independent timers. Individual ACKs. Receiver buffers out-of-order frames. Retransmits only lost frame.</li>
+        <li><strong>Window Size Proofs:</strong> GBN requires $W_s \le 2^n - 1$; SR requires $W_s + W_r \le 2^n \implies W_s \le 2^{n-1}$.</li>
+        <li><strong>100% Utilization Condition:</strong> $N \ge 1 + 2a$.</li>
+        <li><strong>Piggybacking:</strong> Attaching ACK numbers to reverse data frames to eliminate separate ACK frame overhead.</li>
+      </ul>
+    </div>
+
+    <!-- CHAPTER PROGRESS CHECK -->
+    <div class="def-box" style="margin-top:2rem; border-color:var(--accent);">
+      <div class="def-term">🎯 End of Chapter Self-Check</div>
+      <p class="def-body">
+        Verify your mastery before moving to MAC & Ethernet:<br>
+        1. Why is the maximum window size in GBN $2^n - 1$, but in Selective Repeat it is $2^{n-1}$?<br>
+        2. In a network where $T_t = 1\text{ ms}$ and $T_p = 49.5\text{ ms}$, calculate the efficiency of Stop-and-Wait and the minimum window size needed for 100% efficiency.<br>
+        3. Differentiate between Cumulative Acknowledgment and Selective Acknowledgment.<br>
+        4. In GBN with window size 4, if Frame 2 is lost while Frames 0, 1, 3, 4 are sent, describe the receiver's actions for Frame 3 and Frame 4.<br>
+        5. Explain the purpose of the ACK timer in piggybacking.
+      </p>
+    </div>
+  </section>
+  <hr class="section-hr">
+
+  <!-- PREV/NEXT NAV -->
+  <div class="prev-next">
+    <a href="ch08-dll-fundamentals.html" class="nav-btn">← Ch 8: DLL Fundamentals</a>
+    <a href="ch10-mac-ethernet.html" class="nav-btn primary">Next: MAC Protocols & Ethernet →</a>
+  </div>
+
+</div>
+</main>
+
+<!-- FLOATING MODE PANEL -->
+<div id="mode-panel">
+  <button class="mode-btn active" data-mode="all">📚 All</button>
+  <button class="mode-btn uni-btn" data-mode="uni">🎓 Uni</button>
+  <button class="mode-btn gate-btn" data-mode="gate">⚡ GATE</button>
+  <button class="mode-btn adv-btn" data-mode="advanced">🔬 Adv</button>
+</div>
+
+<!-- TTS FLOATING PANEL -->
+<div id="tts-panel">
+  <div class="tts-controls">
+    <button class="tts-btn" id="tts-play" title="Play/Pause">▶</button>
+    <button class="tts-btn" id="tts-stop" title="Stop">⏹</button>
+    <div class="tts-speed"><span>Speed</span><input type="range" id="tts-rate" min="0.5" max="2" step="0.1" value="1"><span id="tts-rate-label">1.0x</span></div>
+  </div>
+  <div class="tts-voice"><select id="tts-voice-select"><option>Loading voices…</option></select></div>
+</div>
+
+<!-- SEARCH MODAL -->
+<div id="search-modal">
+  <div class="search-box">
+    <div class="search-input-wrap"><span class="s-icon">🔍</span><input id="search-input" type="text" placeholder="Search chapters, topics, protocols…" autocomplete="off"></div>
+    <div id="search-results"></div>
+    <div class="search-hint"><span><kbd>↵</kbd> to navigate</span><span><kbd>Esc</kbd> to close</span><span><kbd>Ctrl+K</kbd> to open</span></div>
+  </div>
+</div>
+
+<!-- MOBILE NAV -->
+<nav id="mobile-nav">
+  <button class="mobile-nav-btn" onclick="SidebarManager?.toggle()"><span class="icon">☰</span>Menu</button>
+  <a href="../index.html" class="mobile-nav-btn"><span class="icon">🏠</span>Home</a>
+  <a href="ch09-protocols-sliding.html" class="mobile-nav-btn active"><span class="icon">📖</span>Chapters</a>
+  <a href="../exams/mock-exam.html" class="mobile-nav-btn"><span class="icon">📝</span>Exams</a>
+  <button class="mobile-nav-btn" onclick="SearchManager?.open()"><span class="icon">🔍</span>Search</button>
+</nav>
+
+<div id="toast-container"></div>
+<script src="../assets/js/state.js"></script>
+<script src="../assets/js/core.js"></script>
+<script src="../assets/js/modes.js"></script>
+<script src="../assets/js/tts.js"></script>
+<script src="../assets/js/timer-settings.js"></script>
+<script src="../assets/js/timer.js"></script>
+<script src="../assets/js/timer-analytics.js"></script>
+<script src="../assets/js/timer-notifications.js"></script>
+<script src="../assets/js/timer-ui.js"></script>
+<script src="../assets/js/print.js"></script>
+<script src="../assets/js/notes.js"></script>
+<script src="../assets/js/glossary.js"></script>
+</body>
+</html>

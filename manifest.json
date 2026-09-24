@@ -1,0 +1,94 @@
+{
+  "id": "./index.html",
+  "name": "CN MiniBook — Arpit",
+  "short_name": "CN MiniBook",
+  "description": "Computer Networks interactive study companion — DU B.Tech CSE. Covers Introduction, Physical Layer & Data Link Layer. Works offline.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone"],
+  "dir": "ltr",
+  "background_color": "#070710",
+  "theme_color": "#0891b2",
+  "orientation": "any",
+  "lang": "en",
+  "categories": ["education", "books"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='40' fill='%230891b2'/><text y='130' x='30' font-size='120' font-family='system-ui' fill='white'>🌐</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='100' fill='%230891b2'/><text y='360' x='60' font-size='340' font-family='system-ui' fill='white'>🌐</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Ch 1 — Network Fundamentals",
+      "url": "./chapters/ch01-fundamentals.html",
+      "description": "Definitions, components, protocols, terminology"
+    },
+    {
+      "name": "Ch 2 — Types & Topologies",
+      "url": "./chapters/ch02-types-topologies.html",
+      "description": "PAN, LAN, WAN, bus, star, ring, mesh"
+    },
+    {
+      "name": "Ch 3 — Models & Addressing",
+      "url": "./chapters/ch03-models-addressing.html",
+      "description": "OSI, TCP/IP, MAC, IP, port addressing"
+    },
+    {
+      "name": "Ch 4 — Devices & SDN",
+      "url": "./chapters/ch04-devices-sdn.html",
+      "description": "Hub, switch, router, gateway, SDN"
+    },
+    {
+      "name": "Ch 5 — Physical Fundamentals",
+      "url": "./chapters/ch05-physical-fundamentals.html",
+      "description": "Signals, Nyquist, Shannon, SNR"
+    },
+    {
+      "name": "Ch 6 — Media & Line Coding",
+      "url": "./chapters/ch06-media-signaling.html",
+      "description": "Twisted pair, fiber, NRZ, Manchester"
+    },
+    {
+      "name": "Ch 7 — Modulation & Switching",
+      "url": "./chapters/ch07-modulation-switching.html",
+      "description": "ASK, FSK, PSK, QAM, FDM, TDM, circuit/packet switching"
+    },
+    {
+      "name": "Ch 8 — DLL Fundamentals",
+      "url": "./chapters/ch08-dll-fundamentals.html",
+      "description": "Framing, CRC, Hamming, error detection"
+    },
+    {
+      "name": "Ch 9 — Protocols & Sliding Window",
+      "url": "./chapters/ch09-protocols-sliding.html",
+      "description": "Stop-and-Wait, Go-Back-N, Selective Repeat"
+    },
+    {
+      "name": "Ch 10 — MAC & Ethernet",
+      "url": "./chapters/ch10-mac-ethernet.html",
+      "description": "ALOHA, CSMA/CD, CSMA/CA, Ethernet"
+    },
+    {
+      "name": "100 MCQ Exam",
+      "url": "./exams/mock-exam.html",
+      "description": "Full mock exam with answer key"
+    },
+    {
+      "name": "Progress Dashboard",
+      "url": "./progress.html",
+      "description": "Study progress and stats"
+    }
+  ],
+  "screenshots": [],
+  "prefer_related_applications": false
+}

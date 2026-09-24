@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<!-- ⚡ Arpit | CN MiniBook 2026 -->
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="Arpit">
+<meta name="description" content="Chapter 2: Types of Networks & Topologies — CN MiniBook. PAN, LAN, MAN, WAN, Bus, Star, Ring, Mesh, Tree, Hybrid topologies.">
+<title>Ch 2 — Types & Topologies | CN MiniBook 🌐 Arpit</title>
+<link rel="manifest" href="../manifest.json">
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/animations.css">
+<link rel="stylesheet" href="../assets/css/timer.css">
+<link rel="stylesheet" href="../assets/css/chapters.css">
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<!-- HEADER -->
+<header id="main-header">
+  <div class="header-left">
+    <button id="sidebar-toggle" class="icon-btn" title="Toggle Sidebar (S)">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </button>
+    <div class="brand-logo">
+      <div class="brand-icon">🌐</div>
+      <div class="brand-text"><span class="main">CN MiniBook</span><span class="sub">Computer Networks</span></div>
+    </div>
+  </div>
+  <span class="header-chapter-title"></span>
+  <div class="header-right">
+    <button id="search-btn" class="icon-btn" title="Search (Ctrl+K)">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.35-4.35"></path></svg>
+    </button>
+    <button id="tts-toggle" class="icon-btn" title="Read Aloud">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"></path></svg>
+    </button>
+    <button id="print-btn" title="Print / Save as PDF (Ctrl+P)" aria-label="Print"><svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="flex-shrink:0"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg><span class="print-label">PDF</span></button>
+    <button id="reading-mode-btn" class="icon-btn" title="Reading Mode (F)" aria-pressed="false" aria-label="Toggle reading mode">📖</button>
+    <button id="theme-toggle" class="icon-btn" title="Toggle Theme (T)"></button>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<div id="sidebar-overlay"></div>
+<aside id="sidebar">
+  <nav class="sidebar-nav">
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Navigation</div>
+      <a href="../index.html" class="sidebar-link"><span class="link-icon">🏠</span>Home</a>
+      <a href="../progress.html" class="sidebar-link"><span class="link-icon">📊</span>Dashboard</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Chapter 2 — Sections</div>
+      <a href="#s-network-types" class="sidebar-link active"><span class="link-icon">📌</span>2.1 Types of Networks <span class="uni-syllabus-badge">🎓 Uni: Network Types</span></a>
+      <a href="#s-internet-intranet" class="sidebar-link"><span class="link-icon">🌍</span>2.2 Internet, Intranet, Extranet</a>
+      <a href="#s-client-server" class="sidebar-link"><span class="link-icon">🖥️</span>2.3 Client-Server vs P2P</a>
+      <a href="#s-topology-intro" class="sidebar-link"><span class="link-icon">🔀</span>2.4 Topologies — Overview</a>
+      <a href="#s-bus" class="sidebar-link"><span class="link-icon">━</span>2.5 Bus Topology</a>
+      <a href="#s-star" class="sidebar-link"><span class="link-icon">✦</span>2.6 Star Topology</a>
+      <a href="#s-ring" class="sidebar-link"><span class="link-icon">◯</span>2.7 Ring Topology</a>
+      <a href="#s-mesh" class="sidebar-link"><span class="link-icon">◇</span>2.8 Mesh Topology</a>
+      <a href="#s-tree" class="sidebar-link"><span class="link-icon">🌲</span>2.9 Tree Topology</a>
+      <a href="#s-hybrid" class="sidebar-link"><span class="link-icon">🔗</span>2.10 Hybrid & Point-to-Point</a>
+      <a href="#s-topology-compare" class="sidebar-link"><span class="link-icon">📊</span>2.11 Grand Comparison</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">All Chapters</div>
+      <a href="ch01-fundamentals.html" class="sidebar-link"><span class="link-icon">📡</span>Ch 1 — Fundamentals</a>
+      <a href="ch02-types-topologies.html" class="sidebar-link" style="color:var(--accent-light)"><span class="link-icon">🔗</span>Ch 2 — Types &amp; Topologies</a>
+      <a href="ch03-models-addressing.html" class="sidebar-link"><span class="link-icon">📦</span>Ch 3 — Models &amp; Addressing</a>
+      <a href="ch04-devices-sdn.html" class="sidebar-link"><span class="link-icon">🔌</span>Ch 4 — Devices &amp; SDN</a>
+      <a href="ch05-physical-fundamentals.html" class="sidebar-link"><span class="link-icon">📶</span>Ch 5 — Physical Fundamentals</a>
+      <a href="ch06-media-signaling.html" class="sidebar-link"><span class="link-icon">🔌</span>Ch 6 — Media &amp; Line Coding</a>
+      <a href="ch07-modulation-switching.html" class="sidebar-link"><span class="link-icon">📻</span>Ch 7 — Modulation &amp; Switching</a>
+      <a href="ch08-dll-fundamentals.html" class="sidebar-link"><span class="link-icon">🔧</span>Ch 8 — DLL Fundamentals</a>
+      <a href="ch09-protocols-sliding.html" class="sidebar-link"><span class="link-icon">🔄</span>Ch 9 — Protocols &amp; Sliding Window</a>
+      <a href="ch10-mac-ethernet.html" class="sidebar-link"><span class="link-icon">🌐</span>Ch 10 — MAC &amp; Ethernet</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Exams</div>
+      <a href="../exams/mock-exam.html" class="sidebar-link"><span class="link-icon">📝</span>100 MCQ Mock Exam</a>
+      <a href="../exams/unit-quiz.html" class="sidebar-link"><span class="link-icon">📋</span>Chapter Quizzes</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Bookmarks</div>
+      <div id="bookmarks-list"></div>
+    </div>
+  </nav>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">My Notes</div>
+      <div id="notes-sidebar-list"></div>
+    </div>
+  <div class="sidebar-footer">
+    <div class="sidebar-brand-mark"><div class="mark">🌐</div><span>Arpit · CN MiniBook 2026</span></div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main id="main-content">
+<div class="content-inner">
+
+  <!-- CHAPTER HERO -->
+  <div class="chapter-hero">
+    <div class="chapter-breadcrumb">
+      <a href="../index.html">Home</a><span>›</span><span>Part I — Introduction</span><span>›</span><span style="color:var(--tx-primary)">Chapter 2</span>
+    </div>
+    <div class="chapter-num">🔗 Chapter 2 · Part I</div>
+    <h1 class="chapter-title">Types of Networks & Topologies</h1>
+    <div class="chapter-meta">
+      <span class="chapter-meta-item" style="background:var(--uni-bg-hd); border-color:var(--uni-b-hd); color:var(--uni-text); font-weight:700;">🎓 Uni Syllabus: Topologies & Types</span>
+      <span class="chapter-meta-item">📖 ~45 min read</span>
+      <span class="chapter-meta-item">🎯 11 Sections</span>
+      <span class="chapter-meta-item">📝 Group A</span>
+      <span class="chapter-meta-item">⚡ Exam Weight: High</span>
+    </div>
+  </div>
+
+  <!-- UNIVERSITY SYLLABUS CALLOUT -->
+  <div class="uni-syllabus-callout">
+    <div class="uni-callout-title">🎓 Official University Syllabus Focus</div>
+    <div><strong>Introduction to Computer Networks:</strong> Network topologies (Bus, Star, Ring, Mesh, Tree, Hybrid) and network types (PAN, LAN, MAN, WAN, Internet, Intranet).</div>
+  </div>
+
+  <!-- TABLE OF CONTENTS -->
+  <div class="toc-card reveal">
+    <h3>📋 Table of Contents</h3>
+    <div class="toc-list">
+      <a href="#s-network-types" class="toc-item"><span class="toc-num">2.1</span>Types of Networks (PAN, LAN, MAN, WAN, WLAN)</a>
+      <a href="#s-internet-intranet" class="toc-item"><span class="toc-num">2.2</span>Internet, Intranet, Extranet</a>
+      <a href="#s-client-server" class="toc-item"><span class="toc-num">2.3</span>Client-Server vs Peer-to-Peer</a>
+      <a href="#s-topology-intro" class="toc-item"><span class="toc-num">2.4</span>Network Topologies — Overview</a>
+      <a href="#s-bus" class="toc-item"><span class="toc-num">2.5</span>Bus Topology</a>
+      <a href="#s-star" class="toc-item"><span class="toc-num">2.6</span>Star Topology</a>
+      <a href="#s-ring" class="toc-item"><span class="toc-num">2.7</span>Ring Topology</a>
+      <a href="#s-mesh" class="toc-item"><span class="toc-num">2.8</span>Mesh Topology</a>
+      <a href="#s-tree" class="toc-item"><span class="toc-num">2.9</span>Tree Topology</a>
+      <a href="#s-hybrid" class="toc-item"><span class="toc-num">2.10</span>Hybrid & Point-to-Point/Multipoint</a>
+      <a href="#s-topology-compare" class="toc-item"><span class="toc-num">2.11</span>Grand Topology Comparison</a>
+    </div>
+  </div>
+
+  <!-- LEARNING OBJECTIVES -->
+  <div class="callout info" style="margin-bottom:var(--sp-6);border-left:4px solid var(--accent-border)">
+    <span class="callout-icon">🎯</span>
+    <div><strong>After studying this chapter you will be able to:</strong>
+      <ul style="margin:6px 0 0;padding-left:18px">
+        <li>Classify networks by geographic scope: PAN, LAN, MAN, WAN, WLAN</li>
+        <li>Distinguish Internet, Intranet, and Extranet</li>
+        <li>Compare client-server and peer-to-peer architectures</li>
+        <li>Draw and explain each network topology (bus, star, ring, mesh, tree, hybrid)</li>
+        <li>Analyze failure behavior, cost, and scalability of each topology</li>
+        <li>Calculate the number of links required in a full mesh for n nodes</li>
+        <li>Select the appropriate topology for a given scenario</li>
+      </ul>
+    </div>
+  </div>
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 2.1 — TYPES OF NETWORKS -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-network-types" data-search-section="types of networks PAN LAN MAN WAN WLAN personal area local area metropolitan wide area wireless classification geographic scope range speed">
+  <div class="section-heading">
+    <h2 class="prose">2.1 Types of Networks
+      <button class="bookmark-btn" data-id="s-network-types" data-label="2.1 Types of Networks" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+
+  <div class="prose">
+
+    <p>Networks are classified primarily by their <strong>geographic scope</strong> — the physical area they cover. Each type serves different purposes and uses different technologies.</p>
+
+    <h3>PAN — Personal Area Network</h3>
+
+    <div class="def-box">
+      <div class="def-term">PAN (Personal Area Network)</div>
+      A network that connects devices within a very small range — typically around a single person (within ~10 meters). Used for personal device interconnection.
+    </div>
+
+    <ul>
+      <li><strong>Range:</strong> ~1–10 meters</li>
+      <li><strong>Speed:</strong> Low to moderate (1–3 Mbps typical for Bluetooth)</li>
+      <li><strong>Examples:</strong> Bluetooth headset ↔ phone, smartwatch ↔ phone, wireless keyboard ↔ laptop, USB connection between phone and PC</li>
+      <li><strong>Technologies:</strong> Bluetooth (IEEE 802.15.1), Zigbee (802.15.4), USB, NFC</li>
+      <li><strong>Ownership:</strong> Individual</li>
+    </ul>
+
+    <h3>LAN — Local Area Network</h3>
+
+    <div class="def-box">
+      <div class="def-term">LAN (Local Area Network)</div>
+      A network that connects devices within a limited geographic area — a single building, office, school campus, or home. LANs are the most common type of network.
+    </div>
+
+    <ul>
+      <li><strong>Range:</strong> ~10 meters to 1 km (single building or campus)</li>
+      <li><strong>Speed:</strong> High (100 Mbps to 10 Gbps and beyond)</li>
+      <li><strong>Examples:</strong> Office network, university computer lab, home Wi-Fi network</li>
+      <li><strong>Technologies:</strong> Ethernet (IEEE 802.3), Wi-Fi (802.11)</li>
+      <li><strong>Ownership:</strong> Usually private (owned by a single organization)</li>
+      <li><strong>Key characteristic:</strong> Low latency, high throughput, typically shared medium or switched</li>
+    </ul>
+
+    <h3>MAN — Metropolitan Area Network</h3>
+
+    <div class="def-box">
+      <div class="def-term">MAN (Metropolitan Area Network)</div>
+      A network spanning a city or large campus — larger than a LAN but smaller than a WAN. Connects multiple LANs within a city.
+    </div>
+
+    <ul>
+      <li><strong>Range:</strong> ~5–50 km (a city or metropolitan area)</li>
+      <li><strong>Speed:</strong> Moderate to high (10 Mbps to 1 Gbps)</li>
+      <li><strong>Examples:</strong> Cable TV network across a city, university with multiple campuses linked via fiber, city-wide public Wi-Fi</li>
+      <li><strong>Technologies:</strong> Fiber optics, WiMAX (IEEE 802.16), Metro Ethernet</li>
+      <li><strong>Ownership:</strong> Can be private or operated by service providers</li>
+    </ul>
+
+    <h3>WAN — Wide Area Network</h3>
+
+    <div class="def-box">
+      <div class="def-term">WAN (Wide Area Network)</div>
+      A network that spans large geographic areas — countries, continents, or the entire globe. WANs connect multiple LANs and MANs across vast distances.
+    </div>
+
+    <ul>
+      <li><strong>Range:</strong> Hundreds to thousands of km (country, continent, global)</li>
+      <li><strong>Speed:</strong> Variable (lower than LAN due to distance; can be high with fiber backbone)</li>
+      <li><strong>Examples:</strong> The Internet (the largest WAN), a multinational company's global network, BSNL's network connecting Indian cities</li>
+      <li><strong>Technologies:</strong> Leased lines, MPLS, satellite links, submarine fiber cables</li>
+      <li><strong>Ownership:</strong> Often operated by telecom companies (ISPs); enterprises lease connections</li>
+      <li><strong>Key characteristic:</strong> Higher latency than LAN, uses routers and public/leased infrastructure</li>
+    </ul>
+
+    <h3>WLAN — Wireless Local Area Network</h3>
+
+    <div class="def-box">
+      <div class="def-term">WLAN (Wireless LAN)</div>
+      A LAN that uses wireless communication (radio waves) instead of cables. Follows the IEEE 802.11 standard (commonly called Wi-Fi).
+    </div>
+
+    <ul>
+      <li><strong>Range:</strong> ~30–100 meters indoors (depends on walls, interference)</li>
+      <li><strong>Speed:</strong> Moderate to high (Wi-Fi 6: up to 9.6 Gbps theoretical)</li>
+      <li><strong>Examples:</strong> Home Wi-Fi, coffee shop hotspot, airport Wi-Fi</li>
+      <li><strong>Key distinction from LAN:</strong> Same scope, but uses radio instead of cables. A WLAN is a type of LAN.</li>
+    </ul>
+
+    <h3>Comparison Table</h3>
+
+    <table class="data-table reveal">
+      <thead>
+        <tr><th>Type</th><th>Range</th><th>Speed</th><th>Ownership</th><th>Example</th><th>Standard</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>PAN</strong></td><td>~1–10 m</td><td>Low–Moderate</td><td>Individual</td><td>Bluetooth headset</td><td>802.15</td></tr>
+        <tr><td><strong>LAN</strong></td><td>~10 m–1 km</td><td>High (Gbps)</td><td>Private org</td><td>Office Ethernet</td><td>802.3, 802.11</td></tr>
+        <tr><td><strong>MAN</strong></td><td>~5–50 km</td><td>Moderate–High</td><td>ISP / Private</td><td>City cable TV</td><td>802.16</td></tr>
+        <tr><td><strong>WAN</strong></td><td>Country+</td><td>Variable</td><td>ISP / Telecom</td><td>The Internet</td><td>Various</td></tr>
+        <tr><td><strong>WLAN</strong></td><td>~30–100 m</td><td>Moderate–High</td><td>Private</td><td>Home Wi-Fi</td><td>802.11</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout tip">
+      <span class="callout-icon">💡</span>
+      <div><strong>MCQ Memory Aid:</strong> Think of network types by <strong>range</strong>: PAN (person) → LAN (building) → MAN (city) → WAN (world). The acronyms spell <strong>P-L-M-W</strong> in order of increasing range.</div>
+    </div>
+
+    <div class="callout danger">
+      <span class="callout-icon">⚠️</span>
+      <div><strong>Common MCQ Trap:</strong> "The Internet is a LAN." — <strong>FALSE</strong>. The Internet is a WAN — in fact, it's the largest WAN on Earth. Also: "A WLAN is not a LAN." — <strong>FALSE</strong>. A WLAN <em>is</em> a type of LAN (just wireless). Don't confuse scope with medium.</div>
+    </div>
+
+  </div>
+</section>
+<hr class="section-hr">
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 2.2 — INTERNET, INTRANET, EXTRANET -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-internet-intranet" data-search-section="internet intranet extranet public private access scope VPN authorized users partners difference">
+  <div class="section-heading">
+    <h2 class="prose">2.2 Internet, Intranet, Extranet
+      <button class="bookmark-btn" data-id="s-internet-intranet" data-label="2.2 Internet, Intranet, Extranet" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+
+  <div class="prose">
+
+    <p>These three terms are frequently confused in MCQs. They differ primarily in <strong>who has access</strong>:</p>
+
+    <table class="data-table reveal">
+      <thead>
+        <tr><th>Feature</th><th>Internet</th><th>Intranet</th><th>Extranet</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Definition</strong></td><td>Global network of interconnected networks, accessible to everyone</td><td>Private network within an organization using Internet technology (TCP/IP, HTTP)</td><td>Controlled private network accessible to authorized external users (partners, vendors, clients)</td></tr>
+        <tr><td><strong>Access</strong></td><td>Public — anyone</td><td>Private — employees only</td><td>Semi-private — selected external parties</td></tr>
+        <tr><td><strong>Security</strong></td><td>Least secure (public)</td><td>Very secure (firewall-protected)</td><td>Secure (VPN, authentication)</td></tr>
+        <tr><td><strong>Scope</strong></td><td>Global</td><td>Within organization</td><td>Organization + trusted partners</td></tr>
+        <tr><td><strong>Example</strong></td><td>google.com, youtube.com</td><td>Company's internal HR portal, wiki</td><td>Supplier portal where vendors check inventory</td></tr>
+        <tr><td><strong>Technology</strong></td><td>TCP/IP, HTTP, DNS</td><td>Same as Internet but private</td><td>VPN, authentication + Internet tech</td></tr>
+      </tbody>
+    </table>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">Relationship Diagram (Nested Scopes)</span></div>
+      <pre><code>
+  ┌─────────────────────────────────────────────────────────────┐
+  │                      INTERNET (Public)                       │
+  │                                                              │
+  │   ┌─────────────────────────────────────────────┐            │
+  │   │            EXTRANET                          │            │
+  │   │    (Org + Authorized Partners)               │            │
+  │   │                                              │            │
+  │   │   ┌────────────────────────────────┐         │            │
+  │   │   │         INTRANET               │         │            │
+  │   │   │   (Internal Employees Only)    │         │            │
+  │   │   └────────────────────────────────┘         │            │
+  │   └─────────────────────────────────────────────┘            │
+  └─────────────────────────────────────────────────────────────┘
+      </code></pre>
+    </div>
+
+    <div class="callout tip">
+      <span class="callout-icon">💡</span>
+      <div><strong>How to remember:</strong>
+        <ul style="margin:4px 0 0;padding-left:18px">
+          <li><strong>Inter</strong>net = <strong>Inter</strong>connected networks (everyone)</li>
+          <li><strong>Intra</strong>net = <strong>Intra</strong> (within) one organization</li>
+          <li><strong>Extra</strong>net = <strong>Extra</strong> (extending) the intranet to outside partners</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+<hr class="section-hr">
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 2.3 — CLIENT-SERVER VS P2P -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-client-server" data-search-section="client server peer to peer P2P centralized distributed architecture comparison advantages disadvantages">
+  <div class="section-heading">
+    <h2 class="prose">2.3 Client-Server vs Peer-to-Peer
+      <button class="bookmark-btn" data-id="s-client-server" data-label="2.3 Client-Server vs P2P" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+
+  <div class="prose">
+
+    <h3>Client-Server Architecture</h3>
+
+    <div class="def-box">
+      <div class="def-term">Client-Server Model</div>
+      A network architecture where a dedicated <strong>server</strong> provides services (files, web pages, databases) and <strong>clients</strong> request and consume those services. The server is always-on; clients connect as needed.
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">Client-Server Architecture</span></div>
+      <pre><code>
+       ┌────────┐        Request         ┌──────────┐
+       │ Client │ ────────────────────▶  │          │
+       │   A    │                        │  SERVER  │
+       │        │ ◀────────────────────  │ (always  │
+       └────────┘        Response        │   on)    │
+                                         │          │
+       ┌────────┐        Request         │ stores   │
+       │ Client │ ────────────────────▶  │ data,    │
+       │   B    │                        │ serves   │
+       │        │ ◀────────────────────  │ requests │
+       └────────┘        Response        │          │
+                                         │          │
+       ┌────────┐        Request         │          │
+       │ Client │ ────────────────────▶  │          │
+       │   C    │                        │          │
+       │        │ ◀────────────────────  │          │
+       └────────┘        Response        └──────────┘
+      </code></pre>
+    </div>
+
+    <h3>Peer-to-Peer (P2P) Architecture</h3>
+
+    <div class="def-box">
+      <div class="def-term">Peer-to-Peer (P2P) Model</div>
+      A network architecture where every device (peer) has <strong>equal status</strong> — each can act as both client and server simultaneously. There is no dedicated central server. Resources are shared directly between peers.
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">Peer-to-Peer Architecture</span></div>
+      <pre><code>
+       ┌────────┐ ◀──────────────▶ ┌────────┐
+       │ Peer A │                   │ Peer B │
+       │(client │                   │(client │
+       │+server)│                   │+server)│
+       └────────┘                   └────────┘
+            ▲                           ▲
+            │                           │
+            ▼                           ▼
+       ┌────────┐ ◀──────────────▶ ┌────────┐
+       │ Peer C │                   │ Peer D │
+       │(client │                   │(client │
+       │+server)│                   │+server)│
+       └────────┘                   └────────┘
+      </code></pre>
+    </div>
+
+    <h3>Comparison Table</h3>
+
+    <table class="data-table reveal">
+      <thead>
+        <tr><th>Aspect</th><th>Client-Server</th><th>Peer-to-Peer</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Central server</strong></td><td>Yes (dedicated)</td><td>No (all equal)</td></tr>
+        <tr><td><strong>Cost</strong></td><td>Higher (server hardware)</td><td>Lower (no dedicated server)</td></tr>
+        <tr><td><strong>Scalability</strong></td><td>Limited by server capacity</td><td>Scales naturally (each peer adds resources)</td></tr>
+        <tr><td><strong>Security</strong></td><td>Centralized, easier to manage</td><td>Decentralized, harder to secure</td></tr>
+        <tr><td><strong>Reliability</strong></td><td>Server failure = total failure</td><td>No single point of failure</td></tr>
+        <tr><td><strong>Management</strong></td><td>Professional admin needed</td><td>Self-managed by peers</td></tr>
+        <tr><td><strong>Performance</strong></td><td>Server can be bottleneck</td><td>Load distributed across peers</td></tr>
+        <tr><td><strong>Data consistency</strong></td><td>Easy (centralized data)</td><td>Difficult (distributed data)</td></tr>
+        <tr><td><strong>Examples</strong></td><td>Web (HTTP), Email (SMTP), DNS</td><td>BitTorrent, Skype (older), Bitcoin</td></tr>
+        <tr><td><strong>Best for</strong></td><td>Large organizations, services</td><td>File sharing, small networks</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Centralized vs Distributed Networking</h3>
+
+    <p><strong>Centralized</strong> networking places all control and data at a central point (one server, one switch). It's simple to manage but creates a <strong>single point of failure</strong>. If the center goes down, everything stops.</p>
+
+    <p><strong>Distributed</strong> networking spreads control, data, and processing across multiple nodes. It's more resilient (no single point of failure) but more complex to manage. P2P is inherently distributed; client-server is centralized.</p>
+
+    <div class="callout danger">
+      <span class="callout-icon">⚠️</span>
+      <div><strong>MCQ Trap:</strong> "In P2P, there are no servers." — <strong>Misleading.</strong> In P2P, every peer can <em>act as</em> a server. There's no <em>dedicated</em> server, but the server <em>role</em> exists on every peer. Read the question carefully: "no dedicated server" is correct; "no server functionality" is incorrect.</div>
+    </div>
+
+  </div>
+</section>
+<hr class="section-hr">
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 2.4 — TOPOLOGY OVERVIEW -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-topology-intro" data-search-section="network topology physical logical arrangement connection pattern bus star ring mesh tree hybrid">
+  <div class="section-heading">
+    <h2 class="prose">2.4 Network Topologies — Overview <span class="uni-syllabus-badge">🎓 Uni: Topologies</span>
+      <button class="bookmark-btn" data-id="s-topology-intro" data-label="2.4 Topologies Overview" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+
+  <div class="prose">
+
+    <div class="def-box">
+      <div class="def-term">Network Topology</div>
+      The <strong>physical or logical arrangement</strong> of nodes and links in a network. It defines how devices are interconnected and how data flows between them.
+    </div>
+
+    <h3>Physical vs Logical Topology</h3>
+
+    <table class="data-table reveal">
+      <thead>
+        <tr><th>Type</th><th>What It Describes</th><th>Example</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Physical Topology</strong></td><td>The actual physical layout — how cables and devices are physically arranged</td><td>Cables running from each PC to a central switch in a star pattern</td></tr>
+        <tr><td><strong>Logical Topology</strong></td><td>How data actually flows through the network, regardless of physical layout</td><td>Token Ring: physically wired as a star (to a hub), but data flows logically in a ring</td></tr>
+      </tbody>
+    </table>
+
+    <p><strong>Key insight:</strong> A network can have different physical and logical topologies. For example, a Token Ring network may be physically wired as a star (all devices connect to a central hub/MAU), but logically the data travels in a ring pattern.</p>
+
+    <h3>Why Does Topology Matter?</h3>
+    <ul>
+      <li><strong>Cost</strong> — How much cabling and hardware is needed?</li>
+      <li><strong>Performance</strong> — How efficiently does data flow?</li>
+      <li><strong>Fault tolerance</strong> — What happens when a cable or device fails?</li>
+      <li><strong>Scalability</strong> — How easy is it to add new devices?</li>
+      <li><strong>Maintenance</strong> — How easy is it to identify and fix problems?</li>
+    </ul>
+
+    <p>We will now examine each topology in detail: Bus, Star, Ring, Mesh, Tree, Hybrid, and Point-to-Point/Multipoint.</p>
+
+  </div>
+</section>
+<hr class="section-hr">
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 2.5 — BUS TOPOLOGY -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-bus" data-search-section="bus topology backbone cable terminator broadcast shared medium collision single point of failure advantages disadvantages">
+  <div class="section-heading">
+    <h2 class="prose">2.5 Bus Topology
+      <button class="bookmark-btn" data-id="s-bus" data-label="2.5 Bus Topology" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+
+  <div class="prose">
+
+    <div class="def-box">
+      <div class="def-term">Bus Topology</div>
+      A network topology in which all devices are connected to a single central cable called the <strong>backbone</strong> (or bus). Data sent by any device travels along the entire bus in both directions, and every device receives the signal, but only the intended recipient processes it.
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">Bus Topology Diagram</span></div>
+      <pre><code>
+  Terminator                                           Terminator
+     ║                                                      ║
+     ╠══════╦══════╦══════╦══════╦══════╦══════╦════════════╣
+            ║      ║      ║      ║      ║      ║
+           [A]    [B]    [C]    [D]    [E]    [F]
+
+  ═══ = Backbone cable (shared bus)
+  [X] = Network devices (computers/nodes)
+  ║   = Drop cables / T-connectors
+      </code></pre>
+    </div>
+
+    <h4>How It Works</h4>
+    <ol>
+      <li>When device A wants to send data to device D, it places the data on the bus.</li>
+      <li>The signal travels in <strong>both directions</strong> along the bus.</li>
+      <li><strong>All devices</strong> on the bus receive the signal (broadcast).</li>
+      <li>Each device checks the destination address in the frame header.</li>
+      <li>Only device D (matching the destination address) accepts and processes the data.</li>
+      <li>All other devices ignore the data.</li>
+      <li><strong>Terminators</strong> at both ends absorb signals, preventing them from bouncing back (reflection).</li>
+    </ol>
+
+    <table class="data-table reveal">
+      <thead>
+        <tr><th>Advantages ✅</th><th>Disadvantages ❌</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Simple to install and extend</td><td>Backbone failure = entire network down</td></tr>
+        <tr><td>Less cabling than star or mesh</td><td>Difficult to troubleshoot (which part of bus failed?)</td></tr>
+        <tr><td>Low cost for small networks</td><td>Performance degrades as more devices are added (collisions increase)</td></tr>
+        <tr><td>Works well for temporary/small setups</td><td>Limited cable length and number of devices</td></tr>
+        <tr><td></td><td>Security is poor (all devices see all traffic)</td></tr>
+        <tr><td></td><td>If terminator is missing, signal reflection disrupts the network</td></tr>
+      </tbody>
+    </table>
+
+    <p><strong>Failure behavior:</strong> If the backbone cable is cut at any point, the network is split into two segments that cannot communicate — <strong>the entire network fails</strong>. If a single device fails, the rest of the network continues to work (unless the failure shorts the bus).</p>
+
+    <p><strong>Applications:</strong> Early Ethernet networks (10Base2, 10Base5), small temporary networks. Largely <strong>obsolete</strong> today — replaced by star topology with switches.</p>
+
+    <div class="callout danger">
+      <span class="callout-icon">⚠️</span>
+      <div><strong>MCQ Trap:</strong> "In bus topology, if one device fails, the whole network fails." — <strong>Not necessarily true</strong>. If a <em>device</em> fails, the network usually continues. If the <em>backbone cable</em> fails, then the network goes down. The single point of failure is the cable, not any individual device.</div>
+    </div>
+
+  </div>
+</section>
+<hr class="section-hr">
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 2.6 — STAR TOPOLOGY -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-star" data-search-section="star topology hub switch central device point to point link dedicated easy troubleshoot single point of failure advantages disadvantages">
+  <div class="section-heading">
+    <h2 class="prose">2.6 Star Topology
+      <button class="bookmark-btn" data-id="s-star" data-label="2.6 Star Topology" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+
+  <div class="prose">
+
+    <div class="def-box">
+      <div class="def-term">Star Topology</div>
+      A network topology where every device is connected to a <strong>central hub or switch</strong> via a dedicated point-to-point link. All communication passes through the central device.
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">Star Topology Diagram</span></div>
+      <pre><code>
+            [A]          [B]
+              \          /
+               \        /
+                \      /
+            ┌────────────┐
+            │   HUB /    │
+            │  SWITCH    │
+            └────────────┘
+                /      \
+               /        \
+              /          \
+            [C]          [D]
+                  |
+                 [E]
+      </code></pre>
+    </div>
+
+    <h4>How It Works</h4>
+    <ol>
+      <li>Each device has its own dedicated cable to the central hub/switch.</li>
+      <li>When device A sends data to device D, it goes to the central device first.</li>
+      <li>If using a <strong>hub</strong>: the hub broadcasts to all ports (like a bus internally).</li>
+      <li>If using a <strong>switch</strong>: the switch forwards only to device D's port (intelligent forwarding).</li>
+    </ol>
+
+    <table class="data-table reveal">
+      <thead>
+        <tr><th>Advantages ✅</th><th>Disadvantages ❌</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Easy to install, configure, and manage</td><td>Central device failure = entire network down</td></tr>
+        <tr><td>Easy to troubleshoot (isolate faulty cable/device)</td><td>More cabling required than bus</td></tr>
+        <tr><td>One device/cable failure doesn't affect others</td><td>Dependent on central device capacity</td></tr>
+        <tr><td>Easy to add/remove devices without disruption</td><td>Cost of central hub/switch</td></tr>
+        <tr><td>Good performance (especially with switches)</td><td>Limited by number of ports on central device</td></tr>
+      </tbody>
+    </table>
+
+    <p><strong>Failure behavior:</strong> If one link (cable) fails, only that device is disconnected. All other devices continue to function. However, if the <strong>central hub/switch fails</strong>, the entire network goes down — this is the single point of failure.</p>
+
+    <p><strong>Applications:</strong> Modern Ethernet LANs (most office/home networks today), virtually all switched networks. This is the <strong>most common topology in use today</strong>.</p>
+
+    <div class="callout tip">
+      <span class="callout-icon">💡</span>
+      <div><strong>Hub vs Switch in Star:</strong> A star with a <strong>hub</strong> is internally like a bus (all devices share bandwidth, collisions possible). A star with a <strong>switch</strong> gives each device dedicated bandwidth and eliminates collisions. The topology is the same (star), but the behavior is very different.</div>
+    </div>
+
+  </div>
+</section>
+<hr class="section-hr">
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 2.7 — RING TOPOLOGY -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-ring" data-search-section="ring topology unidirectional bidirectional dual ring token passing circular regenerate signal advantages disadvantages">
+  <div class="section-heading">
+    <h2 class="prose">2.7 Ring Topology
+      <button class="bookmark-btn" data-id="s-ring" data-label="2.7 Ring Topology" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+
+  <div class="prose">
+
+    <div class="def-box">
+      <div class="def-term">Ring Topology</div>
+      A network topology where each device is connected to exactly <strong>two neighboring devices</strong>, forming a closed circular path. Data travels around the ring in <strong>one direction</strong> (unidirectional) or both directions (dual ring).
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">Ring Topology Diagram (Unidirectional)</span></div>
+      <pre><code>
+              [A] ──────▶ [B]
+              ▲               │
+              │               ▼
+             [E]             [C]
+              ▲               │
+              │               ▼
+              [D] ◀────── [C]
+
+    Direction of data flow: A → B → C → D → E → A
+    (Each device regenerates and forwards the signal)
+      </code></pre>
+    </div>
+
+    <h4>How It Works</h4>
+    <ol>
+      <li>Data travels around the ring in one direction (unidirectional ring) or both (bidirectional/dual ring).</li>
+      <li>Each device acts as a <strong>repeater</strong>: it receives the signal, regenerates it, and passes it to the next device.</li>
+      <li>When device A sends data to device D, the data passes through B, then C, until it reaches D.</li>
+      <li>Device D copies the data, and the frame continues around the ring back to A.</li>
+      <li>The sender (A) removes the frame from the ring.</li>
+    </ol>
+
+    <h4>Token Passing (Token Ring Protocol — IEEE 802.5)</h4>
+
+    <p>A common protocol used with ring topology is <strong>Token Passing</strong>:</p>
+    <ul>
+      <li>A special small frame called a <strong>token</strong> circulates around the ring.</li>
+      <li>A device can only transmit data when it <strong>captures the token</strong>.</li>
+      <li>After transmitting, the device releases the token for the next device.</li>
+      <li>This prevents collisions (only one device transmits at a time).</li>
+    </ul>
+
+    <h4>Single Ring vs Dual Ring</h4>
+
+    <table class="data-table reveal">
+      <thead>
+        <tr><th>Feature</th><th>Single Ring</th><th>Dual Ring</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Data paths</strong></td><td>One (unidirectional)</td><td>Two (opposite directions)</td></tr>
+        <tr><td><strong>If a link fails</strong></td><td>Entire ring breaks</td><td>Ring wraps around — uses backup ring to bypass failure</td></tr>
+        <tr><td><strong>Cost</strong></td><td>Lower</td><td>Higher (double the cable)</td></tr>
+        <tr><td><strong>Example</strong></td><td>Basic Token Ring</td><td>FDDI (Fiber Distributed Data Interface)</td></tr>
+      </tbody>
+    </table>
+
+    <table class="data-table reveal">
+      <thead>
+        <tr><th>Advantages ✅</th><th>Disadvantages ❌</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Equal access (no collisions with token passing)</td><td>One device/link failure can break the ring (single ring)</td></tr>
+        <tr><td>Performs well under heavy load (deterministic)</td><td>Difficult to add/remove devices (must break ring)</td></tr>
+        <tr><td>No collision (with token passing)</td><td>Troubleshooting is difficult</td></tr>
+        <tr><td>Signal is regenerated at each node → longer distances</td><td>Data must pass through every intermediate node → latency</td></tr>
+        <tr><td>Predictable maximum delay</td><td>Slower than star for light traffic</td></tr>
+      </tbody>
+    </table>
+
+    <p><strong>Failure behavior:</strong> In a single ring, if any single link or device fails, the entire ring breaks. In a dual ring (like FDDI), the ring can "wrap" around the failure point, maintaining connectivity.</p>
+
+    <p><strong>Applications:</strong> Token Ring (IBM, mostly obsolete), FDDI (campus backbones, mostly obsolete), SONET/SDH (telecom rings, still used).</p>
+
+    <div class="callout danger">
+      <span class="callout-icon">⚠️</span>
+      <div><strong>MCQ Trap:</strong> "Ring topology <em>requires</em> token passing." — <strong>FALSE</strong>. Ring is a <em>topology</em> (physical arrangement). Token passing is a <em>protocol</em> (access control mechanism). A ring topology could theoretically use other access methods. However, in practice, token passing is strongly associated with ring topology. Read the question carefully.</div>
+    </div>
+
+  </div>
+</section>
+<hr class="section-hr">
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 2.8 — MESH TOPOLOGY -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-mesh" data-search-section="mesh topology full mesh partial mesh redundancy dedicated link fault tolerance n(n-1)/2 formula advantages disadvantages robust expensive">
+  <div class="section-heading">
+    <h2 class="prose">2.8 Mesh Topology
+      <button class="bookmark-btn" data-id="s-mesh" data-label="2.8 Mesh Topology" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+
+  <div class="prose">
+
+    <div class="def-box">
+      <div class="def-term">Mesh Topology</div>
+      A network topology where every device has a <strong>dedicated point-to-point link</strong> to every other device. In a <strong>full mesh</strong>, every pair of devices is directly connected. In a <strong>partial mesh</strong>, some devices are directly connected while others connect through intermediaries.
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">Full Mesh Topology (4 nodes)</span></div>
+      <pre><code>
+            [A] ─────────────── [B]
+            │ \               / │
+            │   \           /   │
+            │     \       /     │
+            │       \   /       │
+            │         X         │
+            │       /   \       │
+            │     /       \     │
+            │   /           \   │
+            │ /               \ │
+            [D] ─────────────── [C]
+
+    Every device is connected to every other device.
+    4 nodes → 6 links (full mesh)
+      </code></pre>
+    </div>
+
+    <h4>Formula: Number of Links in a Full Mesh</h4>
+
+    <div class="formula-box">
+      <div class="formula-label">Full Mesh Link Count</div>
+      <strong>Links = n(n − 1) / 2</strong><br>
+      where n = number of nodes<br><br>
+      Also: each node needs <strong>(n − 1) I/O ports</strong>
+    </div>
+
+    <div class="mode-gate">
+      <div class="mode-badge gate">⚡ Competitive Exam</div>
+      <h4>Worked Examples</h4>
+      <table class="data-table">
+        <thead>
+          <tr><th>Nodes (n)</th><th>Links = n(n-1)/2</th><th>Ports per node = n-1</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>4</td><td>4×3/2 = <strong>6</strong></td><td>3</td></tr>
+          <tr><td>5</td><td>5×4/2 = <strong>10</strong></td><td>4</td></tr>
+          <tr><td>10</td><td>10×9/2 = <strong>45</strong></td><td>9</td></tr>
+          <tr><td>20</td><td>20×19/2 = <strong>190</strong></td><td>19</td></tr>
+          <tr><td>100</td><td>100×99/2 = <strong>4,950</strong></td><td>99</td></tr>
+        </tbody>
+      </table>
+      <p>Notice how the number of links grows <strong>quadratically</strong> — this is why full mesh is impractical for large networks.</p>
+    </div>
+
+    <h4>Full Mesh vs Partial Mesh</h4>
+
+    <table class="data-table reveal">
+      <thead>
+        <tr><th>Feature</th><th>Full Mesh</th><th>Partial Mesh</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Connections</strong></td><td>Every device connected to every other</td><td>Some direct connections, some through intermediate nodes</td></tr>
+        <tr><td><strong>Redundancy</strong></td><td>Maximum</td><td>Moderate</td></tr>
+        <tr><td><strong>Cost</strong></td><td>Very high</td><td>Moderate</td></tr>
+        <tr><td><strong>Use case</strong></td><td>Critical backbone routers</td><td>Most real-world networks</td></tr>
+      </tbody>
+    </table>
+
+    <table class="data-table reveal">
+      <thead>
+        <tr><th>Advantages ✅</th><th>Disadvantages ❌</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Maximum fault tolerance (multiple paths available)</td><td>Extremely expensive (lots of cables and ports)</td></tr>
+        <tr><td>No single point of failure</td><td>Complex installation and maintenance</td></tr>
+        <tr><td>High performance (dedicated links, no sharing)</td><td>Impractical for large numbers of nodes</td></tr>
+        <tr><td>Privacy (dedicated links → no eavesdropping on shared medium)</td><td>Quadratic growth in links: n(n-1)/2</td></tr>
+        <tr><td>Easy fault identification</td><td>Each device needs (n-1) ports</td></tr>
+      </tbody>
+    </table>
+
+    <p><strong>Failure behavior:</strong> Excellent. If one link fails, data can be rerouted through alternate paths. Multiple links would have to fail simultaneously to disconnect a device. This is the <strong>most fault-tolerant</strong> topology.</p>
+
+    <p><strong>Applications:</strong> Internet backbone (core routers), WAN connections between major cities, military networks where reliability is critical. The Internet's core is essentially a partial mesh.</p>
+
+    <div class="callout danger">
+      <span class="callout-icon">⚠️</span>
+      <div><strong>MCQ Trap:</strong> "A network with 5 devices needs 10 links for full mesh." — You need to verify: 5×4/2 = 10. ✅ Correct. But "A network with 5 devices needs 5 links for full mesh" — ❌ That's wrong (5 links would be a ring).</div>
+    </div>
+
+  </div>
+</section>
+<hr class="section-hr">
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 2.9 — TREE TOPOLOGY -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-tree" data-search-section="tree topology hierarchical star bus combination root node parent child scalable backbone failure advantages disadvantages">
+  <div class="section-heading">
+    <h2 class="prose">2.9 Tree Topology
+      <button class="bookmark-btn" data-id="s-tree" data-label="2.9 Tree Topology" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+
+  <div class="prose">
+
+    <div class="def-box">
+      <div class="def-term">Tree Topology</div>
+      A hierarchical topology that combines characteristics of <strong>star and bus</strong>. Devices are arranged in a hierarchy with a root node at the top, and branches of star networks connected via a backbone. Also called a <strong>hierarchical topology</strong>.
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">Tree Topology Diagram</span></div>
+      <pre><code>
+                    [Root Switch]
+                    /            \
+                   /              \
+          [Switch 1]            [Switch 2]
+           /  |  \               /  |  \
+          /   |   \             /   |   \
+        [A]  [B]  [C]        [D]  [E]  [F]
+
+    Root level:   Central backbone switch/router
+    Level 1:      Department switches
+    Level 2:      End devices (computers)
+      </code></pre>
+    </div>
+
+    <h4>How It Works</h4>
+    <ul>
+      <li>Multiple star networks are connected via a backbone (bus).</li>
+      <li>Data flows up the hierarchy to the backbone, then down to the destination branch.</li>
+      <li>The root node controls the entire network.</li>
+    </ul>
+
+    <table class="data-table reveal">
+      <thead>
+        <tr><th>Advantages ✅</th><th>Disadvantages ❌</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Natural hierarchy — matches organizational structure</td><td>Root/backbone failure = large portion of network down</td></tr>
+        <tr><td>Easy to add new branches (star groups)</td><td>More cabling than bus or star alone</td></tr>
+        <tr><td>Isolating faults is easier by branch</td><td>If a branch switch fails, that branch is disconnected</td></tr>
+        <tr><td>Scales better than flat bus/star</td><td>Complex to configure</td></tr>
+        <tr><td>Good for large campuses with departments</td><td>Dependent on backbone cable</td></tr>
+      </tbody>
+    </table>
+
+    <p><strong>Failure behavior:</strong> If a branch switch fails, only that branch is affected. If the root or backbone fails, large portions (or all) of the network go down.</p>
+
+    <p><strong>Applications:</strong> Large campus networks, corporate networks with departments on different floors, cable TV distribution.</p>
+
+  </div>
+</section>
+<hr class="section-hr">
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 2.10 — HYBRID & POINT-TO-POINT/MULTIPOINT -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-hybrid" data-search-section="hybrid topology combination star ring star bus point to point multipoint dedicated shared link">
+  <div class="section-heading">
+    <h2 class="prose">2.10 Hybrid & Point-to-Point/Multipoint
+      <button class="bookmark-btn" data-id="s-hybrid" data-label="2.10 Hybrid & P2P/Multipoint" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+
+  <div class="prose">
+
+    <h3>Hybrid Topology</h3>
+
+    <div class="def-box">
+      <div class="def-term">Hybrid Topology</div>
+      A topology that combines <strong>two or more different topologies</strong> to form a larger network. For example, a star-bus hybrid connects multiple star networks via a bus backbone (which is essentially a tree topology). A star-ring hybrid connects star groups in a ring pattern.
+    </div>
+
+    <ul>
+      <li><strong>Advantages:</strong> Flexible, scalable, inherits strengths of component topologies, can be designed to meet specific needs.</li>
+      <li><strong>Disadvantages:</strong> Complex to design and manage, expensive, troubleshooting can be challenging.</li>
+      <li><strong>Real-world usage:</strong> Most large-scale real networks are hybrids. A university might use star topology within each building and mesh/tree connectivity between buildings.</li>
+    </ul>
+
+    <h3>Point-to-Point Link</h3>
+
+    <div class="def-box">
+      <div class="def-term">Point-to-Point</div>
+      A <strong>dedicated link</strong> between exactly two devices. The entire capacity of the link is reserved for those two devices. Examples: a leased line between two offices, a USB cable between computer and printer, a direct fiber link between two routers.
+    </div>
+
+    <h3>Point-to-Multipoint (Multipoint / Multidrop)</h3>
+
+    <div class="def-box">
+      <div class="def-term">Point-to-Multipoint (Multipoint)</div>
+      A link shared by <strong>more than two devices</strong>. Multiple devices share the same communication channel. Examples: a bus topology cable, a Wi-Fi access point broadcasting to multiple devices, a satellite broadcasting to ground receivers.
+    </div>
+
+    <table class="data-table reveal">
+      <thead>
+        <tr><th>Feature</th><th>Point-to-Point</th><th>Multipoint</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Devices per link</strong></td><td>Exactly 2</td><td>3 or more</td></tr>
+        <tr><td><strong>Bandwidth</strong></td><td>Dedicated (full capacity)</td><td>Shared among devices</td></tr>
+        <tr><td><strong>Examples</strong></td><td>Leased line, USB, direct fiber</td><td>Bus cable, Wi-Fi, satellite</td></tr>
+        <tr><td><strong>Privacy</strong></td><td>High (only 2 devices on the link)</td><td>Lower (all devices see all traffic)</td></tr>
+        <tr><td><strong>Cost</strong></td><td>Higher per link</td><td>Lower (shared medium)</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout tip">
+      <span class="callout-icon">💡</span>
+      <div><strong>Key insight:</strong> "Point-to-point" refers to the <strong>link type</strong>, not a topology per se. Star topology uses point-to-point links (each device has a dedicated link to the hub). Mesh topology also uses point-to-point links (every pair has a dedicated link). Bus topology uses a multipoint link.</div>
+    </div>
+
+  </div>
+</section>
+<hr class="section-hr">
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 2.11 — GRAND TOPOLOGY COMPARISON -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-topology-compare" data-search-section="topology comparison table bus star ring mesh tree hybrid cost cable failure scalability performance">
+  <div class="section-heading">
+    <h2 class="prose">2.11 Grand Topology Comparison <span class="uni-syllabus-badge">🎓 Uni: Topology Matrix</span>
+      <button class="bookmark-btn" data-id="s-topology-compare" data-label="2.11 Grand Comparison" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+
+  <div class="prose">
+
+    <div style="overflow-x:auto">
+    <table class="data-table reveal">
+      <thead>
+        <tr>
+          <th>Criterion</th>
+          <th>Bus</th>
+          <th>Star</th>
+          <th>Ring</th>
+          <th>Mesh (Full)</th>
+          <th>Tree</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Cable required</strong></td>
+          <td>Least</td>
+          <td>Moderate</td>
+          <td>Moderate</td>
+          <td>Most: n(n-1)/2</td>
+          <td>Moderate</td>
+        </tr>
+        <tr>
+          <td><strong>Central device</strong></td>
+          <td>None</td>
+          <td>Hub/Switch</td>
+          <td>None</td>
+          <td>None</td>
+          <td>Root switch</td>
+        </tr>
+        <tr>
+          <td><strong>Single point of failure</strong></td>
+          <td>Backbone cable</td>
+          <td>Hub/Switch</td>
+          <td>Any link (single ring)</td>
+          <td>None</td>
+          <td>Root/backbone</td>
+        </tr>
+        <tr>
+          <td><strong>Fault tolerance</strong></td>
+          <td>Poor</td>
+          <td>Moderate</td>
+          <td>Poor (single) / Good (dual)</td>
+          <td>Excellent</td>
+          <td>Moderate</td>
+        </tr>
+        <tr>
+          <td><strong>Cost</strong></td>
+          <td>Low</td>
+          <td>Moderate</td>
+          <td>Moderate</td>
+          <td>Very High</td>
+          <td>Moderate–High</td>
+        </tr>
+        <tr>
+          <td><strong>Scalability</strong></td>
+          <td>Poor (bus limits)</td>
+          <td>Good (add ports)</td>
+          <td>Difficult (must break ring)</td>
+          <td>Poor (n² growth)</td>
+          <td>Good (add branches)</td>
+        </tr>
+        <tr>
+          <td><strong>Performance</strong></td>
+          <td>Degrades with load</td>
+          <td>Good (switches)</td>
+          <td>Good under load</td>
+          <td>Excellent</td>
+          <td>Good</td>
+        </tr>
+        <tr>
+          <td><strong>Troubleshooting</strong></td>
+          <td>Hard</td>
+          <td>Easy</td>
+          <td>Hard</td>
+          <td>Easy</td>
+          <td>Moderate</td>
+        </tr>
+        <tr>
+          <td><strong>Link type</strong></td>
+          <td>Multipoint</td>
+          <td>Point-to-point</td>
+          <td>Point-to-point</td>
+          <td>Point-to-point</td>
+          <td>Mixed</td>
+        </tr>
+        <tr>
+          <td><strong>Common today?</strong></td>
+          <td>No (obsolete)</td>
+          <td><strong>Yes (dominant)</strong></td>
+          <td>Rarely</td>
+          <td>WAN backbones</td>
+          <td>Large campuses</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3>Quick Decision Guide for MCQs</h3>
+
+    <div class="callout tip">
+      <span class="callout-icon">💡</span>
+      <div><strong>"How to recognize a topology in an MCQ":</strong>
+        <ul style="margin:4px 0 0;padding-left:18px">
+          <li>Question mentions "backbone cable" or "terminator" → <strong>Bus</strong></li>
+          <li>Question mentions "central hub" or "central switch" → <strong>Star</strong></li>
+          <li>Question mentions "token passing" or "circular path" → <strong>Ring</strong></li>
+          <li>Question mentions "dedicated link to every other device" or asks about n(n-1)/2 → <strong>Mesh</strong></li>
+          <li>Question mentions "hierarchical" or "root node" or "star+bus combination" → <strong>Tree</strong></li>
+          <li>Question mentions "combination of topologies" → <strong>Hybrid</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Section Recap</h3>
+
+    <div class="callout info">
+      <span class="callout-icon">📌</span>
+      <div><strong>Key takeaways from Chapter 2:</strong>
+        <ul style="margin:4px 0 0;padding-left:18px">
+          <li>Networks by scope: PAN → LAN → MAN → WAN (increasing range)</li>
+          <li>Internet (public) ⊃ Extranet (partners) ⊃ Intranet (internal only)</li>
+          <li>Client-server: centralized, one dedicated server; P2P: distributed, all peers equal</li>
+          <li>Physical topology ≠ logical topology (they can differ)</li>
+          <li>Bus: shared backbone, cheap but fragile; obsolete</li>
+          <li>Star: central hub/switch, most common today, easy to troubleshoot</li>
+          <li>Ring: circular path, token passing, deterministic but fragile (single ring)</li>
+          <li>Mesh: n(n-1)/2 links, maximum fault tolerance, very expensive</li>
+          <li>Tree: hierarchical star+bus, good for departments/campuses</li>
+          <li>Real networks are usually hybrid combinations</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+<hr class="section-hr">
+
+
+  <!-- PREV/NEXT NAV -->
+  <div class="prev-next">
+    <a href="ch01-fundamentals.html" class="nav-btn">← Ch 1: Fundamentals</a>
+    <a href="ch03-models-addressing.html" class="nav-btn primary">Next: Models & Addressing →</a>
+  </div>
+
+</div>
+</main>
+
+<!-- FLOATING MODE PANEL -->
+<div id="mode-panel">
+  <button class="mode-btn active" data-mode="all">📚 All</button>
+  <button class="mode-btn uni-btn" data-mode="uni">🎓 Uni</button>
+  <button class="mode-btn gate-btn" data-mode="gate">⚡ GATE</button>
+  <button class="mode-btn adv-btn" data-mode="advanced">🔬 Adv</button>
+</div>
+
+<!-- TTS FLOATING PANEL -->
+<div id="tts-panel">
+  <div class="tts-controls">
+    <button class="tts-btn" id="tts-play" title="Play/Pause">▶</button>
+    <button class="tts-btn" id="tts-stop" title="Stop">⏹</button>
+    <div class="tts-speed"><span>Speed</span><input type="range" id="tts-rate" min="0.5" max="2" step="0.1" value="1"><span id="tts-rate-label">1.0x</span></div>
+  </div>
+  <div class="tts-voice"><select id="tts-voice-select"><option>Loading voices…</option></select></div>
+</div>
+
+<!-- SEARCH MODAL -->
+<div id="search-modal">
+  <div class="search-box">
+    <div class="search-input-wrap"><span class="s-icon">🔍</span><input id="search-input" type="text" placeholder="Search chapters, topics, protocols…" autocomplete="off"></div>
+    <div id="search-results"></div>
+    <div class="search-hint"><span><kbd>↵</kbd> to navigate</span><span><kbd>Esc</kbd> to close</span><span><kbd>Ctrl+K</kbd> to open</span></div>
+  </div>
+</div>
+
+<!-- MOBILE NAV -->
+<nav id="mobile-nav">
+  <button class="mobile-nav-btn" onclick="SidebarManager?.toggle()"><span class="icon">☰</span>Menu</button>
+  <a href="../index.html" class="mobile-nav-btn"><span class="icon">🏠</span>Home</a>
+  <a href="ch02-types-topologies.html" class="mobile-nav-btn active"><span class="icon">📖</span>Chapters</a>
+  <a href="../exams/mock-exam.html" class="mobile-nav-btn"><span class="icon">📝</span>Exams</a>
+  <button class="mobile-nav-btn" onclick="SearchManager?.open()"><span class="icon">🔍</span>Search</button>
+</nav>
+
+<div id="toast-container"></div>
+<script src="../assets/js/state.js"></script>
+<script src="../assets/js/core.js"></script>
+<script src="../assets/js/modes.js"></script>
+<script src="../assets/js/tts.js"></script>
+<script src="../assets/js/timer-settings.js"></script>
+<script src="../assets/js/timer.js"></script>
+<script src="../assets/js/timer-analytics.js"></script>
+<script src="../assets/js/timer-notifications.js"></script>
+<script src="../assets/js/timer-ui.js"></script>
+<script src="../assets/js/print.js"></script>
+<script src="../assets/js/notes.js"></script>
+<script src="../assets/js/glossary.js"></script>
+</body>
+</html>

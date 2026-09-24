@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<!-- ⚡ Arpit | CN MiniBook 2026 -->
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="Arpit">
+<meta name="description" content="100 MCQ Mock Examination — Computer Networks MiniBook. Comprehensive test covering Part I Intro, Part II Physical Layer, and Part III Data Link Layer.">
+<title>100 MCQ Mock Exam | CN MiniBook 🌐 Arpit</title>
+<link rel="manifest" href="../manifest.json">
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/animations.css">
+<link rel="stylesheet" href="../assets/css/timer.css">
+<link rel="stylesheet" href="../assets/css/chapters.css">
+<style>
+.exam-header-card {
+  background: var(--bg-card);
+  border: 1px solid var(--bd-default);
+  border-radius: var(--r-xl);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+.filter-bar {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin: 1.5rem 0;
+}
+.filter-btn {
+  padding: 0.5rem 1rem;
+  border-radius: var(--r-md);
+  border: 1px solid var(--bd-default);
+  background: var(--bg-card);
+  color: var(--tx-secondary);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  transition: all var(--t-fast);
+}
+.filter-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent-light);
+}
+.filter-btn.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.score-widget {
+  background: var(--bg-elevated);
+  border: 1px solid var(--accent);
+  border-radius: var(--r-lg);
+  padding: 1.25rem;
+  margin: 1.5rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+.score-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.score-stat .val {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent-light);
+}
+.score-stat .lbl {
+  font-size: 0.75rem;
+  color: var(--tx-muted);
+  text-transform: uppercase;
+}
+.question-card {
+  background: var(--bg-card);
+  border: 1px solid var(--bd-default);
+  border-radius: var(--r-lg);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  transition: border-color var(--t-fast);
+}
+.question-card:hover {
+  border-color: var(--accent-border);
+}
+.q-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.8rem;
+  color: var(--tx-muted);
+}
+.diff-badge {
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+.diff-easy { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+.diff-mod { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+.diff-hard { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+
+.q-text {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--tx-primary);
+  margin-bottom: 1.25rem;
+  line-height: 1.5;
+}
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.option-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--r-md);
+  border: 1px solid var(--bd-default);
+  background: var(--bg-elevated);
+  cursor: pointer;
+  transition: all var(--t-fast);
+}
+.option-label:hover {
+  border-color: var(--accent-light);
+  background: var(--accent-soft);
+}
+.option-label.correct {
+  border-color: #10b981 !important;
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #10b981 !important;
+}
+.option-label.wrong {
+  border-color: #ef4444 !important;
+  background: rgba(239, 68, 68, 0.15) !important;
+  color: #ef4444 !important;
+}
+.option-label input[type="radio"] {
+  margin-top: 0.25rem;
+}
+.q-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+.sol-btn {
+  background: transparent;
+  border: 1px solid var(--bd-default);
+  color: var(--tx-muted);
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--r-md);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all var(--t-fast);
+}
+.sol-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent-light);
+}
+.q-solution {
+  display: none;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  border-radius: var(--r-md);
+  padding: 1rem;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--tx-secondary);
+}
+.q-solution.show {
+  display: block;
+}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<!-- HEADER -->
+<header id="main-header">
+  <div class="header-left">
+    <button id="sidebar-toggle" class="icon-btn" title="Toggle Sidebar (S)">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </button>
+    <div class="brand-logo">
+      <div class="brand-icon">🌐</div>
+      <div class="brand-text"><span class="main">CN MiniBook</span><span class="sub">Computer Networks</span></div>
+    </div>
+  </div>
+  <span class="header-chapter-title">100 MCQ Mock Examination</span>
+  <div class="header-right">
+    <button id="search-btn" class="icon-btn" title="Search (Ctrl+K)">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.35-4.35"></path></svg>
+    </button>
+    <button id="tts-toggle" class="icon-btn" title="Read Aloud">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"></path></svg>
+    </button>
+    <button id="print-btn" title="Print / Save as PDF (Ctrl+P)" aria-label="Print"><svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="flex-shrink:0"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg><span class="print-label">PDF</span></button>
+    <button id="reading-mode-btn" class="icon-btn" title="Reading Mode (F)" aria-pressed="false" aria-label="Toggle reading mode">📖</button>
+    <button id="theme-toggle" class="icon-btn" title="Toggle Theme (T)"></button>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<div id="sidebar-overlay"></div>
+<aside id="sidebar">
+  <nav class="sidebar-nav">
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Navigation</div>
+      <a href="../index.html" class="sidebar-link"><span class="link-icon">🏠</span>Home</a>
+      <a href="../progress.html" class="sidebar-link"><span class="link-icon">📊</span>Dashboard</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Exams</div>
+      <a href="mock-exam.html" class="sidebar-link active"><span class="link-icon">📝</span>100 MCQ Mock Exam</a>
+      <a href="unit-quiz.html" class="sidebar-link"><span class="link-icon">📋</span>Chapter Quizzes</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">All Chapters</div>
+      <a href="../chapters/ch01-fundamentals.html" class="sidebar-link"><span class="link-icon">📡</span>Ch 1 — Fundamentals</a>
+      <a href="../chapters/ch02-types-topologies.html" class="sidebar-link"><span class="link-icon">🔗</span>Ch 2 — Types &amp; Topologies</a>
+      <a href="../chapters/ch03-models-addressing.html" class="sidebar-link"><span class="link-icon">📦</span>Ch 3 — Models &amp; Addressing</a>
+      <a href="../chapters/ch04-devices-sdn.html" class="sidebar-link"><span class="link-icon">🔌</span>Ch 4 — Devices &amp; SDN</a>
+      <a href="../chapters/ch05-physical-fundamentals.html" class="sidebar-link"><span class="link-icon">📶</span>Ch 5 — Physical Fundamentals</a>
+      <a href="../chapters/ch06-media-signaling.html" class="sidebar-link"><span class="link-icon">🔌</span>Ch 6 — Media &amp; Line Coding</a>
+      <a href="../chapters/ch07-modulation-switching.html" class="sidebar-link"><span class="link-icon">📻</span>Ch 7 — Modulation &amp; Switching</a>
+      <a href="../chapters/ch08-dll-fundamentals.html" class="sidebar-link"><span class="link-icon">🔧</span>Ch 8 — DLL Fundamentals</a>
+      <a href="../chapters/ch09-protocols-sliding.html" class="sidebar-link"><span class="link-icon">🔄</span>Ch 9 — Protocols &amp; Sliding Window</a>
+      <a href="../chapters/ch10-mac-ethernet.html" class="sidebar-link"><span class="link-icon">🌐</span>Ch 10 — MAC &amp; Ethernet</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Bookmarks</div>
+      <div id="bookmarks-list"></div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">My Notes</div>
+      <div id="notes-sidebar-list"></div>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-brand-mark"><div class="mark">🌐</div><span>Arpit · CN MiniBook 2026</span></div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main id="main-content">
+<div class="content-inner">
+
+  <!-- CHAPTER HERO -->
+  <div class="chapter-hero">
+    <div class="chapter-breadcrumb">
+      <a href="../index.html">Home</a><span>›</span><span>Exams</span><span>›</span><span style="color:var(--tx-primary)">100 MCQ Mock Examination</span>
+    </div>
+    <div class="chapter-num">📝 Part IV Examination</div>
+    <h1 class="chapter-title">100 MCQ Full Mock Examination</h1>
+    <div class="chapter-meta">
+      <span>⏱️ 90–120 min</span>
+      <span>📚 100 Questions</span>
+      <span>🎯 25 Easy · 45 Moderate · 30 Hard</span>
+      <span>⚡ Instant Scoring & Explanations</span>
+    </div>
+  </div>
+
+  <!-- INSTRUCTIONS CARD -->
+  <div class="exam-header-card">
+    <h3 style="color:var(--accent-light); margin-bottom:0.75rem;">📋 Examination Guidelines</h3>
+    <ul style="color:var(--tx-secondary); line-height:1.6; margin-left:1.25rem;">
+      <li><strong>Total Questions:</strong> 100 questions covering Part I (Intro), Part II (Physical Layer), and Part III (Data Link Layer).</li>
+      <li><strong>Scoring Scheme:</strong> +1 mark for every correct response; 0 for unattempted. (Standard competitive practice: -0.25 or -0.33 for wrong answers in GATE).</li>
+      <li><strong>Instant Explanations:</strong> Click the "💡 Reveal Solution" button on any question to view the full pedagogical derivation and rule.</li>
+      <li><strong>Filtering:</strong> Use the filter buttons below to focus on specific parts of the syllabus or test all 100 questions.</li>
+    </ul>
+
+    <!-- FILTER BAR -->
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">All 100 Questions</button>
+      <button class="filter-btn" data-filter="uni1">🎓 Uni: Unit I (Q1–Q55)</button>
+      <button class="filter-btn" data-filter="uni2">🎓 Uni: Unit II (Q56–Q100)</button>
+      <button class="filter-btn" data-filter="1">Part I: Intro (Q1–Q25)</button>
+      <button class="filter-btn" data-filter="2">Part II: Physical (Q26–Q55)</button>
+      <button class="filter-btn" data-filter="3">Part III: Data Link (Q56–Q100)</button>
+    </div>
+
+    <!-- SCORE WIDGET -->
+    <div class="score-widget">
+      <div class="score-stat"><span class="val" id="score-val">0 / 100</span><span class="lbl">Score</span></div>
+      <div class="score-stat"><span class="val" id="pct-val" style="color:var(--accent-light);">0%</span><span class="lbl">Percentage</span></div>
+      <div class="score-stat"><span class="val" id="attempted-val">0</span><span class="lbl">Attempted</span></div>
+      <div class="score-stat"><span class="val" id="correct-val" style="color:#10b981;">0</span><span class="lbl">Correct</span></div>
+      <div class="score-stat"><span class="val" id="wrong-val" style="color:#ef4444;">0</span><span class="lbl">Incorrect</span></div>
+      <div>
+        <button id="submit-exam-btn" class="nav-btn primary" style="cursor:pointer;">✅ Submit & Evaluate</button>
+        <button id="reset-exam-btn" class="nav-btn" style="cursor:pointer; margin-top:0.5rem;">🔄 Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUESTIONS CONTAINER -->
+  <div id="questions-container">
+    <!-- Populated dynamically via JS -->
+  </div>
+
+  <!-- PREV/NEXT NAV -->
+  <div class="prev-next">
+    <a href="../chapters/ch10-mac-ethernet.html" class="nav-btn">← Ch 10: MAC & Ethernet</a>
+    <a href="unit-quiz.html" class="nav-btn primary">Chapter-wise Quiz Builder →</a>
+  </div>
+
+</div>
+</main>
+
+<!-- FLOATING MODE PANEL -->
+<div id="mode-panel">
+  <button class="mode-btn active" data-mode="all">📚 All</button>
+  <button class="mode-btn uni-btn" data-mode="uni">🎓 Uni</button>
+  <button class="mode-btn gate-btn" data-mode="gate">⚡ GATE</button>
+  <button class="mode-btn adv-btn" data-mode="advanced">🔬 Adv</button>
+</div>
+
+<!-- TTS FLOATING PANEL -->
+<div id="tts-panel">
+  <div class="tts-controls">
+    <button class="tts-btn" id="tts-play" title="Play/Pause">▶</button>
+    <button class="tts-btn" id="tts-stop" title="Stop">⏹</button>
+    <div class="tts-speed"><span>Speed</span><input type="range" id="tts-rate" min="0.5" max="2" step="0.1" value="1"><span id="tts-rate-label">1.0x</span></div>
+  </div>
+  <div class="tts-voice"><select id="tts-voice-select"><option>Loading voices…</option></select></div>
+</div>
+
+<!-- SEARCH MODAL -->
+<div id="search-modal">
+  <div class="search-box">
+    <div class="search-input-wrap"><span class="s-icon">🔍</span><input id="search-input" type="text" placeholder="Search chapters, topics, protocols…" autocomplete="off"></div>
+    <div id="search-results"></div>
+    <div class="search-hint"><span><kbd>↵</kbd> to navigate</span><span><kbd>Esc</kbd> to close</span><span><kbd>Ctrl+K</kbd> to open</span></div>
+  </div>
+</div>
+
+<!-- MOBILE NAV -->
+<nav id="mobile-nav">
+  <button class="mobile-nav-btn" onclick="SidebarManager?.toggle()"><span class="icon">☰</span>Menu</button>
+  <a href="../index.html" class="mobile-nav-btn"><span class="icon">🏠</span>Home</a>
+  <a href="../chapters/ch01-fundamentals.html" class="mobile-nav-btn"><span class="icon">📖</span>Chapters</a>
+  <a href="mock-exam.html" class="mobile-nav-btn active"><span class="icon">📝</span>Exams</a>
+  <button class="mobile-nav-btn" onclick="SearchManager?.open()"><span class="icon">🔍</span>Search</button>
+</nav>
+
+<div id="toast-container"></div>
+<script src="../assets/js/state.js"></script>
+<script src="../assets/js/core.js"></script>
+<script src="../assets/js/modes.js"></script>
+<script src="../assets/js/tts.js"></script>
+<script src="../assets/js/timer-settings.js"></script>
+<script src="../assets/js/timer.js"></script>
+<script src="../assets/js/timer-analytics.js"></script>
+<script src="../assets/js/timer-notifications.js"></script>
+<script src="../assets/js/timer-ui.js"></script>
+<script src="../assets/js/print.js"></script>
+<script src="../assets/js/notes.js"></script>
+<script src="../assets/js/glossary.js"></script>
+<script src="../assets/js/quiz-data.js"></script>
+<script>
+// Interactive Exam Engine
+let userAnswers = {};
+let currentFilter = 'all';
+
+function renderQuestions() {
+  const container = document.getElementById('questions-container');
+  if (!container || typeof CN_QUIZ_DATA === 'undefined') return;
+
+  container.innerHTML = '';
+  const filtered = CN_QUIZ_DATA.filter(q => {
+    if (currentFilter === 'all') return true;
+    if (currentFilter === 'uni1') return q.unit === 'Unit I';
+    if (currentFilter === 'uni2') return q.unit === 'Unit II';
+    return q.part === parseInt(currentFilter);
+  });
+
+  filtered.forEach(q => {
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.id = `q-card-${q.id}`;
+    
+    let diffClass = q.diff === 'Easy' ? 'diff-easy' : q.diff === 'Moderate' ? 'diff-mod' : 'diff-hard';
+
+    const optsHtml = q.options.map((opt, idx) => `
+      <label class="option-label" id="opt-lbl-${q.id}-${idx}">
+        <input type="radio" name="q-${q.id}" value="${idx}" onchange="selectOption(${q.id}, ${idx})">
+        <span><strong>${['A', 'B', 'C', 'D'][idx]}.</strong> ${opt}</span>
+      </label>
+    `).join('');
+
+    card.innerHTML = `
+      <div class="q-meta">
+        <span>Question ${q.id} of 100 · ${q.unit || ('Part ' + q.part)} (Ch ${q.chapter})</span>
+        ${q.uni ? `<span class="uni-syllabus-badge" title="Official University Syllabus Topic">🎓 ${q.topic || 'Uni Syllabus'}</span>` : ''}
+        <span class="diff-badge ${diffClass}">${q.diff}</span>
+      </div>
+      <div class="q-text">${q.q}</div>
+      <div class="options-list">${optsHtml}</div>
+      <div class="q-actions">
+        <button class="sol-btn" onclick="toggleSolution(${q.id})">💡 Reveal Solution</button>
+      </div>
+      <div class="q-solution" id="sol-${q.id}">
+        <strong>Correct Answer: Option ${['A', 'B', 'C', 'D'][q.ans]}</strong><br>
+        <p style="margin-top:0.4rem;">${q.exp}</p>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+
+  // Restore selections
+  Object.keys(userAnswers).forEach(qid => {
+    const chosen = userAnswers[qid];
+    const inp = document.querySelector(`input[name="q-${qid}"][value="${chosen}"]`);
+    if (inp) inp.checked = true;
+  });
+}
+
+function selectOption(qid, optIdx) {
+  userAnswers[qid] = optIdx;
+  updateStats();
+}
+
+function toggleSolution(qid) {
+  const sol = document.getElementById(`sol-${qid}`);
+  if (sol) {
+    sol.classList.toggle('show');
+  }
+}
+
+function updateStats() {
+  const attempted = Object.keys(userAnswers).length;
+  document.getElementById('attempted-val').textContent = attempted;
+}
+
+function evaluateExam() {
+  let correct = 0;
+  let wrong = 0;
+
+  CN_QUIZ_DATA.forEach(q => {
+    const chosen = userAnswers[q.id];
+    const sol = document.getElementById(`sol-${q.id}`);
+    if (sol) sol.classList.add('show'); // Reveal all solutions
+
+    q.options.forEach((opt, idx) => {
+      const lbl = document.getElementById(`opt-lbl-${q.id}-${idx}`);
+      if (!lbl) return;
+      lbl.classList.remove('correct', 'wrong');
+      if (idx === q.ans) {
+        lbl.classList.add('correct');
+      }
+      if (chosen !== undefined && chosen === idx && chosen !== q.ans) {
+        lbl.classList.add('wrong');
+      }
+    });
+
+    if (chosen !== undefined) {
+      if (chosen === q.ans) {
+        correct++;
+      } else {
+        wrong++;
+      }
+    }
+  });
+
+  const attempted = Object.keys(userAnswers).length;
+  const pct = Math.round((correct / 100) * 100);
+
+  document.getElementById('score-val').textContent = `${correct} / 100`;
+  document.getElementById('pct-val').textContent = `${pct}%`;
+  document.getElementById('attempted-val').textContent = attempted;
+  document.getElementById('correct-val').textContent = correct;
+  document.getElementById('wrong-val').textContent = wrong;
+
+  if (window.ToastManager) {
+    ToastManager.show(`Exam Evaluated: Score ${correct} / 100 (${pct}%)`);
+  }
+}
+
+function resetExam() {
+  userAnswers = {};
+  document.getElementById('score-val').textContent = '0 / 100';
+  document.getElementById('pct-val').textContent = '0%';
+  document.getElementById('attempted-val').textContent = '0';
+  document.getElementById('correct-val').textContent = '0';
+  document.getElementById('wrong-val').textContent = '0';
+  renderQuestions();
+  if (window.ToastManager) {
+    ToastManager.show('Exam reset successfully.');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderQuestions();
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilter = btn.dataset.filter;
+      renderQuestions();
+    });
+  });
+
+  document.getElementById('submit-exam-btn')?.addEventListener('click', evaluateExam);
+  document.getElementById('reset-exam-btn')?.addEventListener('click', resetExam);
+});
+</script>
+</body>
+</html>
