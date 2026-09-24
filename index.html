@@ -42,7 +42,10 @@
 .units-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;max-width:1100px;margin:0 auto; }
 .part-divider { grid-column:1/-1;display:flex;align-items:center;gap:16px;margin:12px 0 4px; }
 .part-divider::before,.part-divider::after { content:'';flex:1;height:1px;background:var(--bd-default); }
-.part-label { font-size:.8rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-light);white-space:nowrap; }
+.part-label { font-size:.8rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap; }
+.part-label.part-i { color: #38bdf8; }
+.part-label.part-ii { color: #fbbf24; }
+.part-label.part-iii { color: #f87171; }
 /* Groups section */
 .groups-section { padding:70px 24px; background:var(--bg-base); }
 .groups-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;max-width:1000px;margin:32px auto 0; }
@@ -171,20 +174,20 @@ body[data-phase="long_break"] { background-image:none !important; }
       <a href="./progress.html" class="sidebar-link"><span class="link-icon">📊</span>Dashboard</a>
     </div>
     <div class="sidebar-section">
-      <div class="sidebar-section-label">Part I — Introduction</div>
+      <div class="sidebar-section-label part-label part-i">Part I — Introduction</div>
       <a href="chapters/ch01-fundamentals.html" class="sidebar-link"><span class="link-icon">📡</span>Ch 1 — Fundamentals</a>
       <a href="chapters/ch02-types-topologies.html" class="sidebar-link"><span class="link-icon">🔗</span>Ch 2 — Types & Topologies</a>
       <a href="chapters/ch03-models-addressing.html" class="sidebar-link"><span class="link-icon">📦</span>Ch 3 — Models & Addressing</a>
       <a href="chapters/ch04-devices-sdn.html" class="sidebar-link"><span class="link-icon">🔌</span>Ch 4 — Devices & SDN</a>
     </div>
     <div class="sidebar-section">
-      <div class="sidebar-section-label">Part II — Physical Layer</div>
+      <div class="sidebar-section-label part-label part-ii">Part II — Physical Layer</div>
       <a href="chapters/ch05-physical-fundamentals.html" class="sidebar-link"><span class="link-icon">📶</span>Ch 5 — Physical Fundamentals</a>
       <a href="chapters/ch06-media-signaling.html" class="sidebar-link"><span class="link-icon">🔌</span>Ch 6 — Media & Line Coding</a>
       <a href="chapters/ch07-modulation-switching.html" class="sidebar-link"><span class="link-icon">📻</span>Ch 7 — Modulation & Switching</a>
     </div>
     <div class="sidebar-section">
-      <div class="sidebar-section-label">Part III — Data Link Layer</div>
+      <div class="sidebar-section-label part-label part-iii">Part III — Data Link Layer</div>
       <a href="chapters/ch08-dll-fundamentals.html" class="sidebar-link"><span class="link-icon">🔧</span>Ch 8 — DLL Fundamentals</a>
       <a href="chapters/ch09-protocols-sliding.html" class="sidebar-link"><span class="link-icon">🔄</span>Ch 9 — Protocols & Sliding Window</a>
       <a href="chapters/ch10-mac-ethernet.html" class="sidebar-link"><span class="link-icon">🌐</span>Ch 10 — MAC & Ethernet</a>
@@ -297,7 +300,7 @@ body[data-phase="long_break"] { background-image:none !important; }
     <div class="units-grid stagger-children">
 
       <!-- PART I -->
-      <div class="part-divider"><span class="part-label">Part I — Introduction to Computer Networks</span></div>
+      <div class="part-divider"><span class="part-label part-i">Part I — Introduction to Computer Networks</span></div>
 
       <a href="chapters/ch01-fundamentals.html" class="unit-card" style="--unit-color:rgba(8,145,178,.12)">
         <div class="unit-num">Chapter 1</div>
@@ -332,7 +335,7 @@ body[data-phase="long_break"] { background-image:none !important; }
       </a>
 
       <!-- PART II -->
-      <div class="part-divider"><span class="part-label">Part II — Physical Layer</span></div>
+      <div class="part-divider"><span class="part-label part-ii">Part II — Physical Layer</span></div>
 
       <a href="chapters/ch05-physical-fundamentals.html" class="unit-card" style="--unit-color:rgba(245,158,11,.1)">
         <div class="unit-num">Chapter 5</div>
@@ -359,7 +362,7 @@ body[data-phase="long_break"] { background-image:none !important; }
       </a>
 
       <!-- PART III -->
-      <div class="part-divider"><span class="part-label">Part III — Data Link Layer ⭐</span></div>
+      <div class="part-divider"><span class="part-label part-iii">Part III — Data Link Layer ⭐</span></div>
 
       <a href="chapters/ch08-dll-fundamentals.html" class="unit-card" style="--unit-color:rgba(239,68,68,.1)">
         <div class="unit-num">Chapter 8</div>

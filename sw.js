@@ -1,10 +1,10 @@
 /**
- * ⚡ Arpit | sw.js — CN MiniBook 2026 Service Worker
- * Cache-first strategy for full offline capability
+ * ⚡ Arpit | sw.js — CN MiniBook 2026 Service Worker (v3)
+ * Network-First for Navigation (always fresh HTML) + Cache-First for static assets
  */
 
-const CACHE_NAME    = 'cn-minibook-v1';
-const RUNTIME_CACHE = 'cn-minibook-runtime-v1';
+const CACHE_NAME    = 'cn-minibook-v3';
+const RUNTIME_CACHE = 'cn-minibook-runtime-v3';
 const ASSETS = [
   './',
   './index.html',
@@ -48,11 +48,12 @@ function isCacheableResponse(response) {
 }
 
 function isNavigationRequest(request) {
-  return request.mode === 'navigate' || request.headers.get('accept')?.includes('text/html');
+  return request.mode === 'navigate' || (request.headers && request.headers.get('accept') && request.headers.get('accept').includes('text/html'));
 }
 
-/* ── INSTALL: Pre-cache all assets ───────────────────────── */
+/* ── INSTALL: Pre-cache all core assets ───────────────────── */
 self.addEventListener('install', event => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
@@ -60,11 +61,10 @@ self.addEventListener('install', event => {
           ASSETS.map(url => cache.add(url).catch(err => console.warn('SW cache miss:', url, err)))
         );
       })
-      .then(() => self.skipWaiting())
   );
 });
 
-/* ── ACTIVATE: Clean up old caches ──────────────────────── */
+/* ── ACTIVATE: Clean up old caches immediately ───────────── */
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys =>
@@ -75,19 +75,40 @@ self.addEventListener('activate', event => {
   );
 });
 
-/* ── FETCH: Cache-first, network fallback ────────────────── */
+/* ── FETCH: Network-first for HTML, Cache-first for assets ─ */
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
   if (!event.request.url.startsWith('http')) return;
 
+  // 1. Navigation requests (HTML pages): Network-First with cache fallback
+  if (isNavigationRequest(event.request)) {
+    event.respondWith(
+      fetch(event.request)
+        .then(response => {
+          if (isCacheableResponse(response)) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+          }
+          return response;
+        })
+        .catch(() => {
+          return caches.match(event.request).then(cached => {
+            if (cached) return cached;
+            return caches.match('./index.html');
+          });
+        })
+    );
+    return;
+  }
+
+  // 2. Static Assets: Cache-first with background revalidation
   event.respondWith(
     caches.match(event.request).then(cached => {
       const networkFetch = fetch(event.request)
         .then(response => {
           if (isCacheableResponse(response)) {
             const clone = response.clone();
-            caches.open(event.request.mode === 'navigate' ? CACHE_NAME : RUNTIME_CACHE)
-              .then(cache => cache.put(event.request, clone));
+            caches.open(RUNTIME_CACHE).then(cache => cache.put(event.request, clone));
           }
           return response;
         })
@@ -98,16 +119,12 @@ self.addEventListener('fetch', event => {
         return cached;
       }
 
-      return networkFetch.then(response => {
-        if (response) return response;
-        if (isNavigationRequest(event.request)) return caches.match('./index.html');
-        return undefined;
-      });
+      return networkFetch.then(response => response || undefined);
     })
   );
 });
 
-/* ── BACKGROUND SYNC: Notify clients of updates ─────────── */
+/* ── BACKGROUND SYNC / SKIP_WAITING ──────────────────────── */
 self.addEventListener('message', event => {
   if (event.data === 'SKIP_WAITING') {
     self.skipWaiting();

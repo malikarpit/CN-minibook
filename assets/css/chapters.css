@@ -998,4 +998,142 @@ body[data-mode="uni"] .toc-item.in-uni {
   }
 }
 
+/* ================================================================
+   PART DIFFERENTIATION SYSTEM (PART I, PART II, PART III)
+   ================================================================ */
+
+/* Sidebar Section Labels with Part Branding */
+.sidebar-section-label.part-label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.75rem;
+  margin: 0.75rem var(--sp-2) 0.35rem;
+  border-radius: var(--r-md);
+  font-weight: 800;
+  font-size: 0.70rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.sidebar-section-label.part-label.part-i {
+  background: rgba(8, 145, 178, 0.15);
+  color: #38bdf8;
+  border-left: 3px solid #0891b2;
+}
+.sidebar-section-label.part-label.part-ii {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border-left: 3px solid #f59e0b;
+}
+.sidebar-section-label.part-label.part-iii {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border-left: 3px solid #ef4444;
+}
+
+/* Active sidebar link part differentiation */
+.sidebar-link.active.part-i {
+  color: #38bdf8 !important;
+  font-weight: 700 !important;
+  background: rgba(8, 145, 178, 0.16) !important;
+}
+.sidebar-link.active.part-i::before {
+  background: #0891b2 !important;
+}
+.sidebar-link.active.part-ii {
+  color: #fbbf24 !important;
+  font-weight: 700 !important;
+  background: rgba(245, 158, 11, 0.16) !important;
+}
+.sidebar-link.active.part-ii::before {
+  background: #f59e0b !important;
+}
+.sidebar-link.active.part-iii {
+  color: #f87171 !important;
+  font-weight: 700 !important;
+  background: rgba(239, 68, 68, 0.16) !important;
+}
+.sidebar-link.active.part-iii::before {
+  background: #ef4444 !important;
+}
+
+/* Chapter Hero Part Banner */
+.chapter-part-banner {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--r-full);
+  margin-bottom: 0.85rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.18);
+  width: fit-content;
+}
+.chapter-part-banner.part-i {
+  background: rgba(8, 145, 178, 0.16);
+  border: 1px solid rgba(8, 145, 178, 0.45);
+  color: #38bdf8;
+}
+.chapter-part-banner.part-ii {
+  background: rgba(245, 158, 11, 0.16);
+  border: 1px solid rgba(245, 158, 11, 0.45);
+  color: #fbbf24;
+}
+.chapter-part-banner.part-iii {
+  background: rgba(239, 68, 68, 0.16);
+  border: 1px solid rgba(239, 68, 68, 0.45);
+  color: #f87171;
+}
+.part-banner-badge {
+  display: inline-block;
+  padding: 0.12rem 0.5rem;
+  border-radius: var(--r-full);
+  font-size: 0.70rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.chapter-part-banner.part-i .part-banner-badge {
+  background: #0891b2;
+  color: #fff;
+}
+.chapter-part-banner.part-ii .part-banner-badge {
+  background: #f59e0b;
+  color: #000;
+}
+.chapter-part-banner.part-iii .part-banner-badge {
+  background: #ef4444;
+  color: #fff;
+}
+
+/* TOC Part Header */
+.toc-part-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--r-sm);
+  margin-bottom: 0.65rem;
+}
+.toc-part-tag.part-i {
+  background: rgba(8,145,178,0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(8,145,178,0.3);
+}
+.toc-part-tag.part-ii {
+  background: rgba(245,158,11,0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245,158,11,0.3);
+}
+.toc-part-tag.part-iii {
+  background: rgba(239,68,68,0.15);
+  color: #f87171;
+  border: 1px solid rgba(239,68,68,0.3);
+}
+
 
