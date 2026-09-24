@@ -119,21 +119,37 @@
     <div><strong>Introduction to Computer Networks:</strong> Network topologies (Bus, Star, Ring, Mesh, Tree, Hybrid) and network types (PAN, LAN, MAN, WAN, Internet, Intranet).</div>
   </div>
 
+    <!-- UNIVERSITY SYLLABUS FILTER SWITCH -->
+  <div class="uni-mode-toggle-card">
+    <div>
+      <div style="font-weight:700; font-size:0.95rem; color:var(--tx-primary); display:flex; align-items:center; gap:0.4rem;">
+        <span>🎓</span> University Exam Focus Filter
+      </div>
+      <div style="font-size:0.8rem; color:var(--tx-muted); margin-top:0.2rem;">
+        Focus specifically on sections prescribed in Delhi University syllabus vs supplementary deep-dives.
+      </div>
+    </div>
+    <div class="uni-filter-switch">
+      <button class="uni-toggle-btn active" id="filter-all-btn" data-mode="all" onclick="ModeManager.apply('all')">📚 Show All Content</button>
+      <button class="uni-toggle-btn" id="filter-uni-btn" data-mode="uni" onclick="ModeManager.apply('uni')">🎓 Focus Uni Syllabus Only</button>
+    </div>
+  </div>
+
   <!-- TABLE OF CONTENTS -->
   <div class="toc-card reveal">
     <h3>📋 Table of Contents</h3>
     <div class="toc-list">
-      <a href="#s-network-types" class="toc-item"><span class="toc-num">2.1</span>Types of Networks (PAN, LAN, MAN, WAN, WLAN)</a>
-      <a href="#s-internet-intranet" class="toc-item"><span class="toc-num">2.2</span>Internet, Intranet, Extranet</a>
-      <a href="#s-client-server" class="toc-item"><span class="toc-num">2.3</span>Client-Server vs Peer-to-Peer</a>
-      <a href="#s-topology-intro" class="toc-item"><span class="toc-num">2.4</span>Network Topologies — Overview</a>
-      <a href="#s-bus" class="toc-item"><span class="toc-num">2.5</span>Bus Topology</a>
-      <a href="#s-star" class="toc-item"><span class="toc-num">2.6</span>Star Topology</a>
-      <a href="#s-ring" class="toc-item"><span class="toc-num">2.7</span>Ring Topology</a>
-      <a href="#s-mesh" class="toc-item"><span class="toc-num">2.8</span>Mesh Topology</a>
-      <a href="#s-tree" class="toc-item"><span class="toc-num">2.9</span>Tree Topology</a>
-      <a href="#s-hybrid" class="toc-item"><span class="toc-num">2.10</span>Hybrid & Point-to-Point/Multipoint</a>
-      <a href="#s-topology-compare" class="toc-item"><span class="toc-num">2.11</span>Grand Topology Comparison</a>
+      <a href="#s-network-types" class="toc-item in-uni"><span class="toc-num">2.1</span>Types of Networks (PAN, LAN, MAN, WAN, WLAN) <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-internet-intranet" class="toc-item in-uni"><span class="toc-num">2.2</span>Internet, Intranet, Extranet <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-client-server" class="toc-item in-uni"><span class="toc-num">2.3</span>Client-Server vs Peer-to-Peer <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-topology-intro" class="toc-item in-uni"><span class="toc-num">2.4</span>Network Topologies — Overview <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-bus" class="toc-item in-uni"><span class="toc-num">2.5</span>Bus Topology <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-star" class="toc-item in-uni"><span class="toc-num">2.6</span>Star Topology <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-ring" class="toc-item in-uni"><span class="toc-num">2.7</span>Ring Topology <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-mesh" class="toc-item in-uni"><span class="toc-num">2.8</span>Mesh Topology <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-tree" class="toc-item in-uni"><span class="toc-num">2.9</span>Tree Topology <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-hybrid" class="toc-item in-uni"><span class="toc-num">2.10</span>Hybrid & Point-to-Point/Multipoint <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-topology-compare" class="toc-item in-uni"><span class="toc-num">2.11</span>Grand Topology Comparison <span class="toc-uni-tag">🎓 Uni Core</span></a>
     </div>
   </div>
 
@@ -157,12 +173,17 @@
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 2.1 — TYPES OF NETWORKS -->
 <!-- ═══════════════════════════════════════════════════════ -->
-<section id="s-network-types" data-search-section="types of networks PAN LAN MAN WAN WLAN personal area local area metropolitan wide area wireless classification geographic scope range speed">
+<section id="s-network-types" data-search-section="types of networks PAN LAN MAN WAN WLAN personal area local area metropolitan wide area wireless classification geographic scope range speed" class="section-in-uni">
   <div class="section-heading">
     <h2 class="prose">2.1 Types of Networks
       <button class="bookmark-btn" data-id="s-network-types" data-label="2.1 Types of Networks" title="Bookmark">🔖</button>
     </h2>
   </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Network types (PAN, LAN, MAN, WAN, WLAN)</strong></span>
+  </div>
+
 
   <div class="prose">
 
@@ -277,12 +298,17 @@
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 2.2 — INTERNET, INTRANET, EXTRANET -->
 <!-- ═══════════════════════════════════════════════════════ -->
-<section id="s-internet-intranet" data-search-section="internet intranet extranet public private access scope VPN authorized users partners difference">
+<section id="s-internet-intranet" data-search-section="internet intranet extranet public private access scope VPN authorized users partners difference" class="section-in-uni">
   <div class="section-heading">
     <h2 class="prose">2.2 Internet, Intranet, Extranet
       <button class="bookmark-btn" data-id="s-internet-intranet" data-label="2.2 Internet, Intranet, Extranet" title="Bookmark">🔖</button>
     </h2>
   </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Network types (Internet, Intranet, and Extranet)</strong></span>
+  </div>
+
 
   <div class="prose">
 
@@ -340,12 +366,17 @@
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 2.3 — CLIENT-SERVER VS P2P -->
 <!-- ═══════════════════════════════════════════════════════ -->
-<section id="s-client-server" data-search-section="client server peer to peer P2P centralized distributed architecture comparison advantages disadvantages">
+<section id="s-client-server" data-search-section="client server peer to peer P2P centralized distributed architecture comparison advantages disadvantages" class="section-in-uni">
   <div class="section-heading">
     <h2 class="prose">2.3 Client-Server vs Peer-to-Peer
       <button class="bookmark-btn" data-id="s-client-server" data-label="2.3 Client-Server vs P2P" title="Bookmark">🔖</button>
     </h2>
   </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Network models (Client-Server vs Peer-to-Peer Models)</strong></span>
+  </div>
+
 
   <div class="prose">
 
@@ -444,12 +475,17 @@
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 2.4 — TOPOLOGY OVERVIEW -->
 <!-- ═══════════════════════════════════════════════════════ -->
-<section id="s-topology-intro" data-search-section="network topology physical logical arrangement connection pattern bus star ring mesh tree hybrid">
+<section id="s-topology-intro" data-search-section="network topology physical logical arrangement connection pattern bus star ring mesh tree hybrid" class="section-in-uni">
   <div class="section-heading">
     <h2 class="prose">2.4 Network Topologies — Overview <span class="uni-syllabus-badge">🎓 Uni: Topologies</span>
       <button class="bookmark-btn" data-id="s-topology-intro" data-label="2.4 Topologies Overview" title="Bookmark">🔖</button>
     </h2>
   </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Network topologies (Physical vs Logical Topologies Overview)</strong></span>
+  </div>
+
 
   <div class="prose">
 
@@ -491,12 +527,17 @@
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 2.5 — BUS TOPOLOGY -->
 <!-- ═══════════════════════════════════════════════════════ -->
-<section id="s-bus" data-search-section="bus topology backbone cable terminator broadcast shared medium collision single point of failure advantages disadvantages">
+<section id="s-bus" data-search-section="bus topology backbone cable terminator broadcast shared medium collision single point of failure advantages disadvantages" class="section-in-uni">
   <div class="section-heading">
     <h2 class="prose">2.5 Bus Topology
       <button class="bookmark-btn" data-id="s-bus" data-label="2.5 Bus Topology" title="Bookmark">🔖</button>
     </h2>
   </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Network topologies (Bus Topology)</strong></span>
+  </div>
+
 
   <div class="prose">
 
@@ -562,12 +603,17 @@
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 2.6 — STAR TOPOLOGY -->
 <!-- ═══════════════════════════════════════════════════════ -->
-<section id="s-star" data-search-section="star topology hub switch central device point to point link dedicated easy troubleshoot single point of failure advantages disadvantages">
+<section id="s-star" data-search-section="star topology hub switch central device point to point link dedicated easy troubleshoot single point of failure advantages disadvantages" class="section-in-uni">
   <div class="section-heading">
     <h2 class="prose">2.6 Star Topology
       <button class="bookmark-btn" data-id="s-star" data-label="2.6 Star Topology" title="Bookmark">🔖</button>
     </h2>
   </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Network topologies (Star Topology)</strong></span>
+  </div>
+
 
   <div class="prose">
 
@@ -634,12 +680,17 @@
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 2.7 — RING TOPOLOGY -->
 <!-- ═══════════════════════════════════════════════════════ -->
-<section id="s-ring" data-search-section="ring topology unidirectional bidirectional dual ring token passing circular regenerate signal advantages disadvantages">
+<section id="s-ring" data-search-section="ring topology unidirectional bidirectional dual ring token passing circular regenerate signal advantages disadvantages" class="section-in-uni">
   <div class="section-heading">
     <h2 class="prose">2.7 Ring Topology
       <button class="bookmark-btn" data-id="s-ring" data-label="2.7 Ring Topology" title="Bookmark">🔖</button>
     </h2>
   </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Network topologies (Ring Topology)</strong></span>
+  </div>
+
 
   <div class="prose">
 
@@ -727,12 +778,17 @@
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 2.8 — MESH TOPOLOGY -->
 <!-- ═══════════════════════════════════════════════════════ -->
-<section id="s-mesh" data-search-section="mesh topology full mesh partial mesh redundancy dedicated link fault tolerance n(n-1)/2 formula advantages disadvantages robust expensive">
+<section id="s-mesh" data-search-section="mesh topology full mesh partial mesh redundancy dedicated link fault tolerance n(n-1)/2 formula advantages disadvantages robust expensive" class="section-in-uni">
   <div class="section-heading">
     <h2 class="prose">2.8 Mesh Topology
       <button class="bookmark-btn" data-id="s-mesh" data-label="2.8 Mesh Topology" title="Bookmark">🔖</button>
     </h2>
   </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Network topologies (Mesh Topology & Link Calculation n(n-1)/2)</strong></span>
+  </div>
+
 
   <div class="prose">
 
@@ -832,12 +888,17 @@
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 2.9 — TREE TOPOLOGY -->
 <!-- ═══════════════════════════════════════════════════════ -->
-<section id="s-tree" data-search-section="tree topology hierarchical star bus combination root node parent child scalable backbone failure advantages disadvantages">
+<section id="s-tree" data-search-section="tree topology hierarchical star bus combination root node parent child scalable backbone failure advantages disadvantages" class="section-in-uni">
   <div class="section-heading">
     <h2 class="prose">2.9 Tree Topology
       <button class="bookmark-btn" data-id="s-tree" data-label="2.9 Tree Topology" title="Bookmark">🔖</button>
     </h2>
   </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Network topologies (Tree / Hierarchical Topology)</strong></span>
+  </div>
+
 
   <div class="prose">
 
@@ -895,12 +956,17 @@
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 2.10 — HYBRID & POINT-TO-POINT/MULTIPOINT -->
 <!-- ═══════════════════════════════════════════════════════ -->
-<section id="s-hybrid" data-search-section="hybrid topology combination star ring star bus point to point multipoint dedicated shared link">
+<section id="s-hybrid" data-search-section="hybrid topology combination star ring star bus point to point multipoint dedicated shared link" class="section-in-uni">
   <div class="section-heading">
     <h2 class="prose">2.10 Hybrid & Point-to-Point/Multipoint
       <button class="bookmark-btn" data-id="s-hybrid" data-label="2.10 Hybrid & P2P/Multipoint" title="Bookmark">🔖</button>
     </h2>
   </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Network topologies (Hybrid & Point-to-Point / Multipoint)</strong></span>
+  </div>
+
 
   <div class="prose">
 
@@ -957,12 +1023,17 @@
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 2.11 — GRAND TOPOLOGY COMPARISON -->
 <!-- ═══════════════════════════════════════════════════════ -->
-<section id="s-topology-compare" data-search-section="topology comparison table bus star ring mesh tree hybrid cost cable failure scalability performance">
+<section id="s-topology-compare" data-search-section="topology comparison table bus star ring mesh tree hybrid cost cable failure scalability performance" class="section-in-uni">
   <div class="section-heading">
     <h2 class="prose">2.11 Grand Topology Comparison <span class="uni-syllabus-badge">🎓 Uni: Topology Matrix</span>
       <button class="bookmark-btn" data-id="s-topology-compare" data-label="2.11 Grand Comparison" title="Bookmark">🔖</button>
     </h2>
   </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Network topologies (Grand Comparison & Selection Matrix)</strong></span>
+  </div>
+
 
   <div class="prose">
 

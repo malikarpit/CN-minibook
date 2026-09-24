@@ -122,33 +122,54 @@
     <div><strong>Introduction to Computer Networks:</strong> Network Devices (Hubs, Switches, Routers, Gateways) and Introduction to software-defined networking (SDN).</div>
   </div>
 
+    <!-- UNIVERSITY SYLLABUS FILTER SWITCH -->
+  <div class="uni-mode-toggle-card">
+    <div>
+      <div style="font-weight:700; font-size:0.95rem; color:var(--tx-primary); display:flex; align-items:center; gap:0.4rem;">
+        <span>🎓</span> University Exam Focus Filter
+      </div>
+      <div style="font-size:0.8rem; color:var(--tx-muted); margin-top:0.2rem;">
+        Focus specifically on sections prescribed in Delhi University syllabus vs supplementary deep-dives.
+      </div>
+    </div>
+    <div class="uni-filter-switch">
+      <button class="uni-toggle-btn active" id="filter-all-btn" data-mode="all" onclick="ModeManager.apply('all')">📚 Show All Content</button>
+      <button class="uni-toggle-btn" id="filter-uni-btn" data-mode="uni" onclick="ModeManager.apply('uni')">🎓 Focus Uni Syllabus Only</button>
+    </div>
+  </div>
+
   <!-- TABLE OF CONTENTS -->
   <div class="toc-card">
     <div class="toc-title"><span>📑</span>Table of Contents</div>
     <div class="toc-grid">
-      <a href="#s-repeater" class="toc-item"><span class="toc-num">4.1</span>Repeater</a>
-      <a href="#s-hub" class="toc-item"><span class="toc-num">4.2</span>Hub (Multiport Repeater)</a>
-      <a href="#s-bridge" class="toc-item"><span class="toc-num">4.3</span>Bridge & Transparent Learning</a>
-      <a href="#s-switch" class="toc-item"><span class="toc-num">4.4</span>Switch & Switching Modes</a>
-      <a href="#s-router" class="toc-item"><span class="toc-num">4.5</span>Router & Routing Architecture</a>
-      <a href="#s-gateway" class="toc-item"><span class="toc-num">4.6</span>Gateway & Protocol Translators</a>
-      <a href="#s-modem" class="toc-item"><span class="toc-num">4.7</span>Modem (Modulation & Demodulation)</a>
-      <a href="#s-ap" class="toc-item"><span class="toc-num">4.8</span>Access Point (Wireless Bridge)</a>
-      <a href="#s-firewall" class="toc-item"><span class="toc-num">4.9</span>Firewall & Security Filtering</a>
-      <a href="#s-device-compare" class="toc-item"><span class="toc-num">4.10</span>Grand Device Comparison Table</a>
-      <a href="#s-collision-broadcast" class="toc-item"><span class="toc-num">4.11</span>Collision vs Broadcast Domains</a>
-      <a href="#s-sdn-intro" class="toc-item"><span class="toc-num">4.12</span>Intro to Software-Defined Networking</a>
-      <a href="#s-sdn-arch" class="toc-item"><span class="toc-num">4.13</span>SDN Architecture & OpenFlow</a>
-      <a href="#s-summary-ch4" class="toc-item"><span class="toc-num">4.14</span>Summary & High-Yield Traps</a>
+      <a href="#s-repeater" class="toc-item in-uni"><span class="toc-num">4.1</span>Repeater <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-hub" class="toc-item in-uni"><span class="toc-num">4.2</span>Hub (Multiport Repeater) <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-bridge" class="toc-item in-uni"><span class="toc-num">4.3</span>Bridge & Transparent Learning <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-switch" class="toc-item in-uni"><span class="toc-num">4.4</span>Switch & Switching Modes <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-router" class="toc-item in-uni"><span class="toc-num">4.5</span>Router & Routing Architecture <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-gateway" class="toc-item in-uni"><span class="toc-num">4.6</span>Gateway & Protocol Translators <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-modem" class="toc-item in-uni"><span class="toc-num">4.7</span>Modem (Modulation & Demodulation) <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-ap" class="toc-item in-uni"><span class="toc-num">4.8</span>Access Point (Wireless Bridge) <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-firewall" class="toc-item not-in-uni"><span class="toc-num">4.9</span>Firewall & Security Filtering <span class="toc-supp-tag">🔬 Extra</span></a>
+      <a href="#s-device-compare" class="toc-item in-uni"><span class="toc-num">4.10</span>Grand Device Comparison Table <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-collision-broadcast" class="toc-item in-uni"><span class="toc-num">4.11</span>Collision vs Broadcast Domains <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-sdn-intro" class="toc-item in-uni"><span class="toc-num">4.12</span>Intro to Software-Defined Networking <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-sdn-arch" class="toc-item in-uni"><span class="toc-num">4.13</span>SDN Architecture & OpenFlow <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-summary-ch4" class="toc-item in-uni"><span class="toc-num">4.14</span>Summary & High-Yield Traps <span class="toc-uni-tag">🎓 Uni Core</span></a>
     </div>
   </div>
 
   <!-- SECTION 4.1: REPEATER -->
-  <section id="s-repeater" class="content-section">
+  <section id="s-repeater" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 4.1</div>
       <h2 class="section-title">Repeater (Layer 1 Device)</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Network Devices (Repeater — Layer 1 Regeneration)</strong></span>
+  </div>
+
 
     <p>As electrical or optical signals travel through a transmission cable, they experience resistance and energy dissipation, leading to <strong>attenuation</strong> (loss of signal strength) and waveform distortion. If a cable runs beyond its maximum physical specification (e.g., 100 meters for Cat5e copper twisted-pair), the signal becomes too weak and distorted for the receiving node to decode accurately. A <strong>Repeater</strong> solves this fundamental physical constraint.</p>
 
@@ -192,11 +213,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 4.2: HUB -->
-  <section id="s-hub" class="content-section">
+  <section id="s-hub" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 4.2</div>
       <h2 class="section-title">Hub (Multiport Repeater)</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Network Devices (Hub — Multiport Repeater, Collision Domains)</strong></span>
+  </div>
+
 
     <p>A <strong>Hub</strong> is simply a <strong>multiport repeater</strong>. Instead of having just two ports to connect two cable segments, a hub typically features 4, 8, 16, or 24 ports, serving as the central connection point in a physical star topology.</p>
 
@@ -265,11 +291,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 4.3: BRIDGE -->
-  <section id="s-bridge" class="content-section">
+  <section id="s-bridge" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 4.3</div>
       <h2 class="section-title">Bridge & Transparent Learning</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Network Devices (Bridge — Layer 2 Transparent Learning)</strong></span>
+  </div>
+
 
     <p>To eliminate the crippling collision problems of hubs and repeaters, networking engineers developed the <strong>Bridge</strong>. A bridge operates at <strong>Layer 2 (Data Link Layer)</strong>. It is smart enough to inspect the physical <strong>MAC addresses</strong> inside frames and make intelligent forwarding and filtering decisions.</p>
 
@@ -323,11 +354,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 4.4: SWITCH -->
-  <section id="s-switch" class="content-section">
+  <section id="s-switch" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 4.4</div>
       <h2 class="section-title">Switch & Switching Modes</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Network Devices (Switch — Layer 2 Multiport Store-and-Forward)</strong></span>
+  </div>
+
 
     <p>A <strong>Switch</strong> is essentially a high-performance, high-density <strong>multiport bridge</strong>. While traditional bridges performed frame inspection and forwarding via software using a general-purpose CPU, a modern switch uses specialized hardware chips called <strong>ASICs (Application-Specific Integrated Circuits)</strong>, enabling simultaneous wire-speed switching across dozens or hundreds of ports.</p>
 
@@ -400,11 +436,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 4.5: ROUTER -->
-  <section id="s-router" class="content-section">
+  <section id="s-router" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 4.5</div>
       <h2 class="section-title">Router & Routing Architecture</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Network Devices (Router — Layer 3 Path Determination & IP Forwarding)</strong></span>
+  </div>
+
 
     <p>While hubs, bridges, and switches operate locally within a single broadcast domain (LAN), the <strong>Router</strong> is the foundational pillar of the global Internet. Operating at <strong>Layer 3 (Network Layer)</strong>, a router connects multiple distinct, heterogeneous logical networks together.</p>
 
@@ -441,11 +482,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 4.6: GATEWAY -->
-  <section id="s-gateway" class="content-section">
+  <section id="s-gateway" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 4.6</div>
       <h2 class="section-title">Gateway & Protocol Translators</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Network Devices (Gateway — Higher-Layer Protocol Translation)</strong></span>
+  </div>
+
 
     <p>In classical computer networking theory, a <strong>Gateway</strong> (often called a Protocol Translator or Application Gateway) is the most sophisticated internetworking device. It operates at <strong>all layers (Layers 1 through 7)</strong> of the OSI model.</p>
 
@@ -466,11 +512,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 4.7: MODEM -->
-  <section id="s-modem" class="content-section">
+  <section id="s-modem" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 4.7</div>
       <h2 class="section-title">Modem (Modulator / Demodulator)</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Network Devices (Modem — Modulation & Demodulation)</strong></span>
+  </div>
+
 
     <p>Computers process and store information as <strong>digital discrete binary signals</strong> ($0	ext{s}$ and $1	ext{s}$). However, traditional telecommunication channels—such as legacy copper telephone local loops, cable TV coaxial systems, and wireless radio atmospheric links—were engineered to carry continuous <strong>analog waveforms</strong>. A <strong>Modem</strong> bridges this gap.</p>
 
@@ -500,11 +551,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 4.8: ACCESS POINT -->
-  <section id="s-ap" class="content-section">
+  <section id="s-ap" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 4.8</div>
       <h2 class="section-title">Wireless Access Point (AP)</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Network Devices (Access Point — 802.11 Wireless AP)</strong></span>
+  </div>
+
 
     <p>A <strong>Wireless Access Point (WAP or AP)</strong> acts as a Layer 2 wireless bridge. It allows wireless devices (smartphones, laptops, IoT gadgets) conforming to IEEE 802.11 standards to connect seamlessly into a wired IEEE 802.3 Ethernet LAN infrastructure.</p>
 
@@ -525,11 +581,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 4.9: FIREWALL -->
-  <section id="s-firewall" class="content-section">
+  <section id="s-firewall" class="section-not-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 4.9</div>
       <h2 class="section-title">Firewall & Security Filtering</h2>
     </div>
+  <div class="non-uni-req-banner">
+    <span class="uni-req-badge" style="background:rgba(148,163,184,0.18); border-color:rgba(148,163,184,0.4); color:#94a3b8;">🔬 Supplementary</span>
+    <span>Supplementary deep-dive / GATE detail — not directly in standard university syllabus</span>
+  </div>
+
 
     <p>A <strong>Firewall</strong> is a specialized security mechanism (hardware appliance or software program) that monitors, inspects, and filters incoming and outgoing network traffic based on an organization's predetermined security rules. It forms the primary protective perimeter between a trusted internal network and an untrusted external network (such as the public Internet).</p>
 
@@ -570,11 +631,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 4.10: GRAND DEVICE COMPARISON TABLE -->
-  <section id="s-device-compare" class="content-section">
+  <section id="s-device-compare" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 4.10</div>
       <h2 class="section-title">Grand Network Device Comparison Table <span class="uni-syllabus-badge">🎓 Uni: Network Devices</span></h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Network Devices (Grand 8-Device Comparison Matrix)</strong></span>
+  </div>
+
 
     <p>This master comparison table summarizes every major network hardware device across all critical exam criteria:</p>
 
@@ -671,11 +737,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 4.11: DOMAINS & COUNTING -->
-  <section id="s-collision-broadcast" class="content-section">
+  <section id="s-collision-broadcast" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 4.11</div>
       <h2 class="section-title">Collision Domains vs Broadcast Domains (With Calculations)</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Network Devices (Collision Domains vs Broadcast Domains)</strong></span>
+  </div>
+
 
     <p>Calculating the exact number of <strong>Collision Domains</strong> and <strong>Broadcast Domains</strong> in an arbitrary network diagram is one of the highest-frequency numerical questions in university exams, GATE, and Cisco CCNA certifications.</p>
 
@@ -764,11 +835,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 4.12: INTRO TO SDN -->
-  <section id="s-sdn-intro" class="content-section">
+  <section id="s-sdn-intro" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 4.12</div>
       <h2 class="section-title">Introduction to Software-Defined Networking (SDN) <span class="uni-syllabus-badge">🎓 Uni: Introduction to SDN</span> <span class="uni-syllabus-badge">🎓 Uni Syllabus</span></h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Introduction to software-defined networking (SDN: Decoupled Control & Data Planes)</strong></span>
+  </div>
+
 
     <p>For four decades, computer networking followed a rigid, decentralized model: every router and switch purchased from vendors (such as Cisco, Juniper, or Arista) contained its own proprietary operating system and made its own independent forwarding and routing decisions.</p>
 
@@ -806,11 +882,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 4.13: SDN ARCHITECTURE & OPENFLOW -->
-  <section id="s-sdn-arch" class="content-section">
+  <section id="s-sdn-arch" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 4.13</div>
       <h2 class="section-title">SDN Three-Tier Architecture & OpenFlow Protocol</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Introduction to software-defined networking (SDN Three-Tier Architecture & OpenFlow)</strong></span>
+  </div>
+
 
     <p>The standard SDN architecture defined by the <strong>Open Networking Foundation (ONF)</strong> is organized into three distinct hierarchical planes connected by open interfaces:</p>
 
@@ -900,11 +981,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 4.14: SUMMARY & EXAM TRAPS -->
-  <section id="s-summary-ch4" class="content-section">
+  <section id="s-summary-ch4" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 4.14</div>
       <h2 class="section-title">Chapter Summary & High-Yield Exam Traps</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Network Devices & SDN (Chapter Revision & Exam Traps)</strong></span>
+  </div>
+
 
     <div class="callout tip">
       <div class="callout-title">⚡ High-Yield Rapid Review Points</div>

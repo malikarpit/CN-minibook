@@ -149,6 +149,37 @@ details.qa-item .qa-answer { padding: var(--sp-5); background: var(--bg-elevated
 .mode-btn.uni-btn.active   { background: var(--uni-c);  box-shadow: 0 2px 10px rgba(249,115,22,0.5); }
 .mode-btn.adv-btn.active   { background: var(--adv-c);  box-shadow: 0 2px 10px rgba(16,185,129,0.5); }
 
+/* Minibook-wide Uni Filter Switch */
+.uni-filter-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--bg-elevated);
+  padding: 0.25rem;
+  border-radius: var(--r-full);
+  border: 1px solid var(--bd-default);
+}
+.uni-toggle-btn {
+  background: transparent;
+  border: none;
+  color: var(--tx-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--r-full);
+  cursor: pointer;
+  transition: all var(--t-fast);
+}
+.uni-toggle-btn:hover {
+  color: var(--tx-primary);
+}
+.uni-toggle-btn.active {
+  background: var(--uni-c, #f97316);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 2px 10px rgba(249,115,22,0.35);
+}
+
 @media (max-width: 768px) {
   #mode-panel { bottom: 68px; padding: var(--sp-1) var(--sp-2); }
   .mode-btn { padding: 5px 10px; font-size: 11px; }

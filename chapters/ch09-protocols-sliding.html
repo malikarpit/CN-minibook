@@ -126,37 +126,58 @@
     <div><strong>Data Link Layer:</strong> Elementary data link protocols (Stop-and-Wait) and Sliding window protocols (Go-Back-N, Selective Repeat).</div>
   </div>
 
+    <!-- UNIVERSITY SYLLABUS FILTER SWITCH -->
+  <div class="uni-mode-toggle-card">
+    <div>
+      <div style="font-weight:700; font-size:0.95rem; color:var(--tx-primary); display:flex; align-items:center; gap:0.4rem;">
+        <span>🎓</span> University Exam Focus Filter
+      </div>
+      <div style="font-size:0.8rem; color:var(--tx-muted); margin-top:0.2rem;">
+        Focus specifically on sections prescribed in Delhi University syllabus vs supplementary deep-dives.
+      </div>
+    </div>
+    <div class="uni-filter-switch">
+      <button class="uni-toggle-btn active" id="filter-all-btn" data-mode="all" onclick="ModeManager.apply('all')">📚 Show All Content</button>
+      <button class="uni-toggle-btn" id="filter-uni-btn" data-mode="uni" onclick="ModeManager.apply('uni')">🎓 Focus Uni Syllabus Only</button>
+    </div>
+  </div>
+
   <!-- TABLE OF CONTENTS -->
   <div class="toc-card">
     <div class="toc-title"><span>📑</span>Table of Contents</div>
     <div class="toc-grid">
-      <a href="#s-why-protocols" class="toc-item"><span class="toc-num">9.1</span>Why Protocols Are Required</a>
-      <a href="#s-simplex-unrest" class="toc-item"><span class="toc-num">9.2</span>Unrestricted Simplex Protocol</a>
-      <a href="#s-stop-wait-simple" class="toc-item"><span class="toc-num">9.3</span>Simplex Stop-and-Wait</a>
-      <a href="#s-stop-wait-arq" class="toc-item"><span class="toc-num">9.4</span>Stop-and-Wait ARQ</a>
-      <a href="#s-sw-arq-detail" class="toc-item"><span class="toc-num">9.5</span>Detailed Failure Scenarios</a>
-      <a href="#s-sw-problems" class="toc-item"><span class="toc-num">9.6</span>Efficiency & Pipe Underutilization</a>
-      <a href="#s-pipeline-intro" class="toc-item"><span class="toc-num">9.7</span>Pipelining Concept</a>
-      <a href="#s-sliding-window" class="toc-item"><span class="toc-num">9.8</span>Sliding Window Mechanism</a>
-      <a href="#s-gbn-working" class="toc-item"><span class="toc-num">9.9</span>Go-Back-N Working</a>
-      <a href="#s-gbn-scenarios" class="toc-item"><span class="toc-num">9.10</span>Go-Back-N Scenarios</a>
-      <a href="#s-gbn-window" class="toc-item"><span class="toc-num">9.11</span>GBN Window Size Proof (2^n - 1)</a>
-      <a href="#s-sr-working" class="toc-item"><span class="toc-num">9.12</span>Selective Repeat Working</a>
-      <a href="#s-sr-scenarios" class="toc-item"><span class="toc-num">9.13</span>Selective Repeat Scenarios</a>
-      <a href="#s-sr-window" class="toc-item"><span class="toc-num">9.14</span>SR Window Size Proof (2^(n-1))</a>
-      <a href="#s-protocol-compare" class="toc-item"><span class="toc-num">9.15</span>Grand Protocol Comparison</a>
-      <a href="#s-throughput" class="toc-item"><span class="toc-num">9.16</span>Efficiency & Formulas</a>
-      <a href="#s-piggybacking" class="toc-item"><span class="toc-num">9.17</span>Piggybacking</a>
-      <a href="#s-summary-ch9" class="toc-item"><span class="toc-num">9.18</span>Summary & Exam Traps</a>
+      <a href="#s-why-protocols" class="toc-item in-uni"><span class="toc-num">9.1</span>Why Protocols Are Required <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-simplex-unrest" class="toc-item in-uni"><span class="toc-num">9.2</span>Unrestricted Simplex Protocol <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-stop-wait-simple" class="toc-item in-uni"><span class="toc-num">9.3</span>Simplex Stop-and-Wait <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-stop-wait-arq" class="toc-item in-uni"><span class="toc-num">9.4</span>Stop-and-Wait ARQ <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-sw-arq-detail" class="toc-item in-uni"><span class="toc-num">9.5</span>Detailed Failure Scenarios <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-sw-problems" class="toc-item in-uni"><span class="toc-num">9.6</span>Efficiency & Pipe Underutilization <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-pipeline-intro" class="toc-item in-uni"><span class="toc-num">9.7</span>Pipelining Concept <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-sliding-window" class="toc-item in-uni"><span class="toc-num">9.8</span>Sliding Window Mechanism <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-gbn-working" class="toc-item in-uni"><span class="toc-num">9.9</span>Go-Back-N Working <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-gbn-scenarios" class="toc-item in-uni"><span class="toc-num">9.10</span>Go-Back-N Scenarios <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-gbn-window" class="toc-item in-uni"><span class="toc-num">9.11</span>GBN Window Size Proof (2^n - 1) <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-sr-working" class="toc-item in-uni"><span class="toc-num">9.12</span>Selective Repeat Working <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-sr-scenarios" class="toc-item in-uni"><span class="toc-num">9.13</span>Selective Repeat Scenarios <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-sr-window" class="toc-item in-uni"><span class="toc-num">9.14</span>SR Window Size Proof (2^(n-1)) <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-protocol-compare" class="toc-item in-uni"><span class="toc-num">9.15</span>Grand Protocol Comparison <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-throughput" class="toc-item in-uni"><span class="toc-num">9.16</span>Efficiency & Formulas <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-piggybacking" class="toc-item in-uni"><span class="toc-num">9.17</span>Piggybacking <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-summary-ch9" class="toc-item in-uni"><span class="toc-num">9.18</span>Summary & Exam Traps <span class="toc-uni-tag">🎓 Uni Core</span></a>
     </div>
   </div>
 
   <!-- SECTION 9.1: WHY PROTOCOLS -->
-  <section id="s-why-protocols" class="content-section">
+  <section id="s-why-protocols" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 9.1</div>
       <h2 class="section-title">Why Data Link Control Protocols Are Required</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: Elementary data link protocols (Flow & Error Control Need)</strong></span>
+  </div>
+
 
     <p>In data communications, transmitting bits across physical links faces three inevitable physical realities:</p>
     <ul>
@@ -173,11 +194,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 9.2: UNRESTRICTED SIMPLEX -->
-  <section id="s-simplex-unrest" class="content-section">
+  <section id="s-simplex-unrest" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 9.2</div>
       <h2 class="section-title">Protocol 1: Unrestricted Simplex Protocol ("Utopia")</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: Elementary data link protocols (Protocol 1: Unrestricted Simplex Protocol)</strong></span>
+  </div>
+
 
     <p>To understand protocol design, computer scientists begin with the ideal theoretical baseline: the <strong>Unrestricted Simplex Protocol</strong>.</p>
     <ul>
@@ -189,11 +215,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 9.3: SIMPLEX STOP-AND-WAIT -->
-  <section id="s-stop-wait-simple" class="content-section">
+  <section id="s-stop-wait-simple" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 9.3</div>
       <h2 class="section-title">Protocol 2: Simplex Stop-and-Wait Protocol <span class="uni-syllabus-badge">🎓 Uni Unit II: Elementary Protocols</span></h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: Elementary data link protocols (Protocol 2: Simplex Stop-and-Wait Protocol)</strong></span>
+  </div>
+
 
     <p>To prevent a fast sender from flooding a slow receiver (flow control), the <strong>Simplex Stop-and-Wait Protocol</strong> introduces a feedback loop.</p>
 
@@ -222,11 +253,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 9.4: STOP-AND-WAIT ARQ -->
-  <section id="s-stop-wait-arq" class="content-section">
+  <section id="s-stop-wait-arq" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 9.4</div>
       <h2 class="section-title">Protocol 3: Stop-and-Wait ARQ (Noisy Channels)</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: Elementary data link protocols (Protocol 3: Stop-and-Wait ARQ Protocol)</strong></span>
+  </div>
+
 
     <p><strong>Stop-and-Wait ARQ</strong> solves both flow control and error control over noisy, unreliable channels by introducing three crucial mechanisms:</p>
 
@@ -242,11 +278,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 9.5: SW ARQ SCENARIOS -->
-  <section id="s-sw-arq-detail" class="content-section">
+  <section id="s-sw-arq-detail" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 9.5</div>
       <h2 class="section-title">Stop-and-Wait ARQ Failure Scenarios Walkthrough</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: Elementary data link protocols (Stop-and-Wait ARQ Failure Scenarios Walkthrough)</strong></span>
+  </div>
+
 
     <div class="diagram-box">
       <div class="diagram-title">Figure 9.2: Scenario A — Frame Lost in Transit</div>
@@ -292,11 +333,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 9.6: SW EFFICIENCY -->
-  <section id="s-sw-problems" class="content-section">
+  <section id="s-sw-problems" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 9.6</div>
       <h2 class="section-title">The Problem with Stop-and-Wait: Massive Pipe Underutilization</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: Sliding window protocols (Stop-and-Wait Inefficiency & Pipelining Motivation)</strong></span>
+  </div>
+
 
     <p>While Stop-and-Wait ARQ is simple and mathematically robust, it suffers from a devastating performance flaw: <strong>miserable link utilization on high-bandwidth or long-delay links</strong>.</p>
 
@@ -324,11 +370,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 9.7: PIPELINING -->
-  <section id="s-pipeline-intro" class="content-section">
+  <section id="s-pipeline-intro" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 9.7</div>
       <h2 class="section-title">The Pipelining Solution</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: Sliding window protocols (Concept of Pipelined Transmission)</strong></span>
+  </div>
+
 
     <p>To achieve 100% link utilization on high-latency links, the sender must not stop and wait after transmitting 1 frame. Instead, it must <strong>keep the transmission pipe full</strong> by transmitting multiple consecutive frames back-to-back before pausing to wait for an acknowledgment. This strategy is called <strong>Pipelining</strong>.</p>
 
@@ -348,11 +399,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 9.8: SLIDING WINDOW MECHANISM -->
-  <section id="s-sliding-window" class="content-section">
+  <section id="s-sliding-window" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 9.8</div>
       <h2 class="section-title">The Sliding Window Mechanism <span class="uni-syllabus-badge">🎓 Uni Unit II: Sliding Window Protocols</span></h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: Sliding window protocols (Sliding Window Mechanics & Sequence Numbers)</strong></span>
+  </div>
+
 
     <p>In a <strong>Sliding Window Protocol</strong>, both the sender and receiver maintain a conceptual "window" of acceptable sequence numbers:</p>
 
@@ -378,11 +434,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 9.9: GBN WORKING -->
-  <section id="s-gbn-working" class="content-section">
+  <section id="s-gbn-working" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 9.9</div>
       <h2 class="section-title">Go-Back-N (GBN) ARQ Protocol Working <span class="uni-syllabus-badge">🎓 Uni Unit II: Go-Back-N ARQ</span></h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: Sliding window protocols (Go-Back-N ARQ Protocol Working & Window Rules)</strong></span>
+  </div>
+
 
     <p><strong>Go-Back-N (GBN)</strong> is the simpler of the two major pipelined sliding window protocols. It achieves high link utilization while keeping the receiver hardware extremely simple.</p>
 
@@ -399,11 +460,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 9.10: GBN SCENARIOS -->
-  <section id="s-gbn-scenarios" class="content-section">
+  <section id="s-gbn-scenarios" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 9.10</div>
       <h2 class="section-title">Go-Back-N Worked Failure Scenario Walkthrough</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: Sliding window protocols (Go-Back-N ARQ Failure Scenarios Walkthrough)</strong></span>
+  </div>
+
 
     <div class="diagram-box">
       <div class="diagram-title">Figure 9.6: Frame 2 Lost in Go-Back-N ($W_s = 4$)</div>
@@ -434,11 +500,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 9.11: GBN WINDOW PROOF -->
-  <section id="s-gbn-window" class="content-section">
+  <section id="s-gbn-window" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 9.11</div>
       <h2 class="section-title">Go-Back-N Window Size Proof: Why $W_s \le 2^n - 1$</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: Sliding window protocols (Go-Back-N Window Size Proof: W_s <= 2^n - 1)</strong></span>
+  </div>
+
 
     <p>A perennial GATE and university examination question asks: If sequence numbers are represented by $n$ bits (yielding sequence space $0$ to $2^n - 1$), why is the maximum allowable sender window size in GBN <strong>$2^n - 1$ and NOT $2^n$</strong>?</p>
 
@@ -471,11 +542,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 9.12: SELECTIVE REPEAT -->
-  <section id="s-sr-working" class="content-section">
+  <section id="s-sr-working" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 9.12</div>
       <h2 class="section-title">Selective Repeat (SR) ARQ Protocol Working <span class="uni-syllabus-badge">🎓 Uni Unit II: Selective Repeat ARQ</span></h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: Sliding window protocols (Selective Repeat ARQ Protocol Working & Individual ACKs)</strong></span>
+  </div>
+
 
     <p>To eliminate the wasteful retransmissions of Go-Back-N, <strong>Selective Repeat (SR)</strong> introduces receiver buffering and selective retransmission.</p>
 
@@ -492,11 +568,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 9.13: SR SCENARIOS -->
-  <section id="s-sr-scenarios" class="content-section">
+  <section id="s-sr-scenarios" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 9.13</div>
       <h2 class="section-title">Selective Repeat Worked Failure Scenario Walkthrough</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: Sliding window protocols (Selective Repeat ARQ Failure Scenarios Walkthrough)</strong></span>
+  </div>
+
 
     <div class="diagram-box">
       <div class="diagram-title">Figure 9.7: Frame 2 Lost in Selective Repeat ($W_s = 4, W_r = 4$)</div>
@@ -521,11 +602,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 9.14: SR WINDOW PROOF -->
-  <section id="s-sr-window" class="content-section">
+  <section id="s-sr-window" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 9.14</div>
       <h2 class="section-title">Selective Repeat Window Size Proof: Why $W_s \le 2^{n-1}$</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: Sliding window protocols (Selective Repeat Window Size Proof: W_s <= 2^(n-1))</strong></span>
+  </div>
+
 
     <div class="formula-box">
       <div class="formula-title">Selective Repeat Window Size Inequality</div>
@@ -557,11 +643,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 9.15: PROTOCOL COMPARISON -->
-  <section id="s-protocol-compare" class="content-section">
+  <section id="s-protocol-compare" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 9.15</div>
       <h2 class="section-title">Grand Sliding Window Protocol Comparison Table</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: Elementary & Sliding window protocols (Grand Protocol Comparison)</strong></span>
+  </div>
+
 
     <div class="table-wrap">
       <table class="data-table">
@@ -629,11 +720,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 9.16: UTILIZATION FORMULAS -->
-  <section id="s-throughput" class="content-section">
+  <section id="s-throughput" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 9.16</div>
       <h2 class="section-title">Throughput and Efficiency Calculations (GATE Level)</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: Sliding window protocols (Efficiency & Throughput Calculations)</strong></span>
+  </div>
+
 
     <div class="formula-box">
       <div class="formula-title">Optimal Window Size for 100% Link Utilization</div>
@@ -664,11 +760,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 9.17: PIGGYBACKING -->
-  <section id="s-piggybacking" class="content-section">
+  <section id="s-piggybacking" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 9.17</div>
       <h2 class="section-title">Piggybacking in Bidirectional Protocols</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: Elementary data link protocols (Piggybacking ACKs on Data Frames)</strong></span>
+  </div>
+
 
     <p>In full-duplex communication, both stations transmit data simultaneously. If Station B sends a dedicated, standalone ACK frame for every data frame received from Station A, 50% of the channel's transmission capacity is wasted carrying small empty ACK headers.</p>
 
@@ -695,11 +796,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 9.18: SUMMARY & EXAM TRAPS -->
-  <section id="s-summary-ch9" class="content-section">
+  <section id="s-summary-ch9" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 9.18</div>
       <h2 class="section-title">Chapter Summary & High-Yield Exam Traps</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: Elementary & Sliding window protocols (Chapter Revision & Exam Traps)</strong></span>
+  </div>
+
 
     <div class="callout tip">
       <div class="callout-title">⚡ High-Yield Rapid Review Points</div>

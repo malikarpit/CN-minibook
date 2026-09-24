@@ -245,7 +245,13 @@ body[data-phase="long_break"] { background-image:none !important; }
           </div>
           <p style="color:var(--tx-muted); margin-top:0.35rem; font-size:var(--text-xs);">Direct syllabus mapping for Unit I (Intro & Physical Layer) and Unit II (Data Link Layer).</p>
         </div>
-        <a href="exams/mock-exam.html" class="btn-primary" style="background:var(--uni-c); border-color:var(--uni-b-hd); font-size:var(--text-xs); padding:0.4rem 1rem;">Practice 100 Uni MCQs →</a>
+        <div style="display:flex; align-items:center; gap:0.75rem; flex-wrap:wrap;">
+          <div class="uni-filter-switch">
+            <button class="uni-toggle-btn active" id="filter-all-btn" data-mode="all" onclick="ModeManager.apply('all')">📚 Show All</button>
+            <button class="uni-toggle-btn" id="filter-uni-btn" data-mode="uni" onclick="ModeManager.apply('uni')">🎓 Uni Focus</button>
+          </div>
+          <a href="exams/mock-exam.html" class="btn-primary" style="background:var(--uni-c); border-color:var(--uni-b-hd); font-size:var(--text-xs); padding:0.4rem 1rem;">Practice 100 Uni MCQs →</a>
+        </div>
       </div>
 
       <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:1.25rem;">

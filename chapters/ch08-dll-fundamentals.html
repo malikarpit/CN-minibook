@@ -130,41 +130,62 @@
     <div><strong>Data Link Layer:</strong> Design issues, framing techniques (byte/bit stuffing), error detection and correction (Parity, Checksum, CRC, Hamming Codes).</div>
   </div>
 
+    <!-- UNIVERSITY SYLLABUS FILTER SWITCH -->
+  <div class="uni-mode-toggle-card">
+    <div>
+      <div style="font-weight:700; font-size:0.95rem; color:var(--tx-primary); display:flex; align-items:center; gap:0.4rem;">
+        <span>🎓</span> University Exam Focus Filter
+      </div>
+      <div style="font-size:0.8rem; color:var(--tx-muted); margin-top:0.2rem;">
+        Focus specifically on sections prescribed in Delhi University syllabus vs supplementary deep-dives.
+      </div>
+    </div>
+    <div class="uni-filter-switch">
+      <button class="uni-toggle-btn active" id="filter-all-btn" data-mode="all" onclick="ModeManager.apply('all')">📚 Show All Content</button>
+      <button class="uni-toggle-btn" id="filter-uni-btn" data-mode="uni" onclick="ModeManager.apply('uni')">🎓 Focus Uni Syllabus Only</button>
+    </div>
+  </div>
+
   <!-- TABLE OF CONTENTS -->
   <div class="toc-card">
     <div class="toc-title"><span>📑</span>Table of Contents</div>
     <div class="toc-grid">
-      <a href="#s-dll-role" class="toc-item"><span class="toc-num">8.1</span>Role of Data Link Layer</a>
-      <a href="#s-dll-services" class="toc-item"><span class="toc-num">8.2</span>Services to Network Layer</a>
-      <a href="#s-dll-design" class="toc-item"><span class="toc-num">8.3</span>Major Design Issues</a>
-      <a href="#s-framing-intro" class="toc-item"><span class="toc-num">8.4</span>Why Framing?</a>
-      <a href="#s-char-count" class="toc-item"><span class="toc-num">8.5</span>Character Count Framing</a>
-      <a href="#s-byte-stuffing" class="toc-item"><span class="toc-num">8.6</span>Byte / Character Stuffing</a>
-      <a href="#s-bit-stuffing" class="toc-item"><span class="toc-num">8.7</span>Bit Stuffing (Flag 01111110)</a>
-      <a href="#s-framing-compare" class="toc-item"><span class="toc-num">8.8</span>Framing Comparison Table</a>
-      <a href="#s-error-types" class="toc-item"><span class="toc-num">8.9</span>Types of Transmission Errors</a>
-      <a href="#s-detect-vs-correct" class="toc-item"><span class="toc-num">8.10</span>Detection vs Correction</a>
-      <a href="#s-parity" class="toc-item"><span class="toc-num">8.11</span>Simple Parity Check</a>
-      <a href="#s-2d-parity" class="toc-item"><span class="toc-num">8.12</span>Two-Dimensional Parity</a>
-      <a href="#s-checksum" class="toc-item"><span class="toc-num">8.13</span>Internet Checksum</a>
-      <a href="#s-crc-theory" class="toc-item"><span class="toc-num">8.14</span>CRC Theory & Polynomials</a>
-      <a href="#s-crc-step" class="toc-item"><span class="toc-num">8.15</span>CRC Division Walkthrough</a>
-      <a href="#s-crc-verify" class="toc-item"><span class="toc-num">8.16</span>CRC Receiver Verification</a>
-      <a href="#s-crc-mcq" class="toc-item"><span class="toc-num">8.17</span>CRC High-Yield Traps</a>
-      <a href="#s-hamming-intro" class="toc-item"><span class="toc-num">8.18</span>Hamming Distance</a>
-      <a href="#s-hamming-code" class="toc-item"><span class="toc-num">8.19</span>Hamming Code Construction</a>
-      <a href="#s-hamming-detect" class="toc-item"><span class="toc-num">8.20</span>Hamming Correction Walkthrough</a>
-      <a href="#s-error-compare" class="toc-item"><span class="toc-num">8.21</span>Error Handling Comparison</a>
-      <a href="#s-summary-ch8" class="toc-item"><span class="toc-num">8.22</span>Summary & Exam Traps</a>
+      <a href="#s-dll-role" class="toc-item in-uni"><span class="toc-num">8.1</span>Role of Data Link Layer <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-dll-services" class="toc-item in-uni"><span class="toc-num">8.2</span>Services to Network Layer <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-dll-design" class="toc-item in-uni"><span class="toc-num">8.3</span>Major Design Issues <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-framing-intro" class="toc-item in-uni"><span class="toc-num">8.4</span>Why Framing? <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-char-count" class="toc-item in-uni"><span class="toc-num">8.5</span>Character Count Framing <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-byte-stuffing" class="toc-item in-uni"><span class="toc-num">8.6</span>Byte / Character Stuffing <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-bit-stuffing" class="toc-item in-uni"><span class="toc-num">8.7</span>Bit Stuffing (Flag 01111110) <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-framing-compare" class="toc-item in-uni"><span class="toc-num">8.8</span>Framing Comparison Table <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-error-types" class="toc-item in-uni"><span class="toc-num">8.9</span>Types of Transmission Errors <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-detect-vs-correct" class="toc-item in-uni"><span class="toc-num">8.10</span>Detection vs Correction <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-parity" class="toc-item in-uni"><span class="toc-num">8.11</span>Simple Parity Check <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-2d-parity" class="toc-item in-uni"><span class="toc-num">8.12</span>Two-Dimensional Parity <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-checksum" class="toc-item in-uni"><span class="toc-num">8.13</span>Internet Checksum <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-crc-theory" class="toc-item in-uni"><span class="toc-num">8.14</span>CRC Theory & Polynomials <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-crc-step" class="toc-item in-uni"><span class="toc-num">8.15</span>CRC Division Walkthrough <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-crc-verify" class="toc-item in-uni"><span class="toc-num">8.16</span>CRC Receiver Verification <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-crc-mcq" class="toc-item in-uni"><span class="toc-num">8.17</span>CRC High-Yield Traps <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-hamming-intro" class="toc-item in-uni"><span class="toc-num">8.18</span>Hamming Distance <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-hamming-code" class="toc-item in-uni"><span class="toc-num">8.19</span>Hamming Code Construction <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-hamming-detect" class="toc-item in-uni"><span class="toc-num">8.20</span>Hamming Correction Walkthrough <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-error-compare" class="toc-item in-uni"><span class="toc-num">8.21</span>Error Handling Comparison <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-summary-ch8" class="toc-item in-uni"><span class="toc-num">8.22</span>Summary & Exam Traps <span class="toc-uni-tag">🎓 Uni Core</span></a>
     </div>
   </div>
 
   <!-- SECTION 8.1: ROLE OF DLL -->
-  <section id="s-dll-role" class="content-section">
+  <section id="s-dll-role" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 8.1</div>
       <h2 class="section-title">Role and Position of the Data Link Layer (OSI Layer 2)</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer (Position, Functions & LLC/MAC Sublayers)</strong></span>
+  </div>
+
 
     <p>The Physical Layer provides a raw, unorganized bit-pipe capable of moving electrical, optical, or radio pulses from one machine to another. However, physical communication channels are inherently error-prone: noise, attenuation, and interference cause bits to flip ($0 \to 1$ or $1 \to 0$). Furthermore, physical wires have no concept of where a message starts or ends, nor do they prevent a fast sender from drowning a slow receiver in unbuffered data.</p>
 
@@ -176,11 +197,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 8.2: SERVICES TO NETWORK LAYER -->
-  <section id="s-dll-services" class="content-section">
+  <section id="s-dll-services" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 8.2</div>
       <h2 class="section-title">Services Provided to the Network Layer</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer (Services Provided to the Network Layer)</strong></span>
+  </div>
+
 
     <p>The Data Link Layer offers three distinct classes of service to Layer 3, tailored for different communication environments:</p>
 
@@ -220,11 +246,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 8.3: MAJOR DESIGN ISSUES -->
-  <section id="s-dll-design" class="content-section">
+  <section id="s-dll-design" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 8.3</div>
       <h2 class="section-title">Major Design Issues in Data Link Layer <span class="uni-syllabus-badge">🎓 Uni Unit II: DLL Design Issues</span></h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: design issues (Framing, Flow Control, Error Control)</strong></span>
+  </div>
+
 
     <p>To provide reliable node-to-node delivery, the Data Link Layer must solve four fundamental engineering design challenges:</p>
     <ol>
@@ -237,11 +268,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 8.4: WHY FRAMING -->
-  <section id="s-framing-intro" class="content-section">
+  <section id="s-framing-intro" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 8.4</div>
       <h2 class="section-title">Why Framing? (The Frame Delimiting Problem) <span class="uni-syllabus-badge">🎓 Uni Unit II: Framing</span></h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: framing (The Frame Delimiting Problem)</strong></span>
+  </div>
+
 
     <p>The Physical Layer delivers data as an uninterrupted, continuous stream of electrical or optical pulses ($0\text{s}$ and $1\text{s}$). If a sender transmits three separate messages back-to-back, the receiver's physical layer simply outputs an undifferentiated 10,000-bit string:</p>
     <pre style="background:var(--bg-elevated); padding:0.75rem; border-radius:8px; color:var(--accent-light);">...0110100101110101011001010111001001101110011001010111010001100011...</pre>
@@ -250,11 +286,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 8.5: CHARACTER COUNT -->
-  <section id="s-char-count" class="content-section">
+  <section id="s-char-count" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 8.5</div>
       <h2 class="section-title">Framing Method 1: Character Count</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: framing (Character Count Method)</strong></span>
+  </div>
+
 
     <p>In this simple approach, the frame header contains a fixed-size integer field specifying the <strong>total number of characters (bytes) in the frame</strong>, including the count byte itself.</p>
 
@@ -278,11 +319,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 8.6: BYTE STUFFING -->
-  <section id="s-byte-stuffing" class="content-section">
+  <section id="s-byte-stuffing" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 8.6</div>
       <h2 class="section-title">Framing Method 2: Byte / Character Stuffing</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: framing (Byte / Character Stuffing)</strong></span>
+  </div>
+
 
     <p>To overcome the desynchronization vulnerability of character counting, modern framing protocols mark the start and end of every frame using a special reserved delimiter byte called a <strong>FLAG byte</strong> (e.g., ASCII `0x7E`).</p>
 
@@ -317,11 +363,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 8.7: BIT STUFFING -->
-  <section id="s-bit-stuffing" class="content-section">
+  <section id="s-bit-stuffing" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 8.7</div>
       <h2 class="section-title">Framing Method 3: Bit Stuffing (The 01111110 Flag)</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: framing (Bit Stuffing & 01111110 Flag)</strong></span>
+  </div>
+
 
     <p>While byte stuffing works for character-oriented protocols, modern high-speed networks are <strong>bit-oriented</strong> (data consists of arbitrary arbitrary-length bit streams, not fixed 8-bit bytes). The universal standard for bit-oriented framing (used in HDLC, SDLC, and PPP) is <strong>Bit Stuffing</strong>.</p>
 
@@ -360,11 +411,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 8.8: FRAMING COMPARISON -->
-  <section id="s-framing-compare" class="content-section">
+  <section id="s-framing-compare" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 8.8</div>
       <h2 class="section-title">Master Framing Techniques Comparison</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: framing (Master Framing Techniques Comparison)</strong></span>
+  </div>
+
 
     <div class="table-wrap">
       <table class="data-table">
@@ -413,11 +469,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 8.9: ERROR TYPES -->
-  <section id="s-error-types" class="content-section">
+  <section id="s-error-types" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 8.9</div>
       <h2 class="section-title">Types of Transmission Errors</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: error detection and correction (Single-bit vs Burst Errors)</strong></span>
+  </div>
+
 
     <p>An electromagnetic error occurs when a transmitted bit is inverted during transit ($0 \to 1$ or $1 \to 0$). Errors are classified into two broad categories:</p>
 
@@ -445,11 +506,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 8.10: DETECT VS CORRECT -->
-  <section id="s-detect-vs-correct" class="content-section">
+  <section id="s-detect-vs-correct" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 8.10</div>
       <h2 class="section-title">Error Detection vs Error Correction (The Redundancy Trade-Off) <span class="uni-syllabus-badge">🎓 Uni Unit II: Error Detection & Correction</span></h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: error detection and correction (Detection vs Correction Trade-Offs)</strong></span>
+  </div>
+
 
     <p>All error handling mechanisms rely on <strong>Redundancy</strong>: transmitting extra check bits along with the data bits so that the receiver can verify message integrity.</p>
 
@@ -483,11 +549,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 8.11: PARITY -->
-  <section id="s-parity" class="content-section">
+  <section id="s-parity" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 8.11</div>
       <h2 class="section-title">Error Detection 1: Simple Parity Check</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: error detection and correction (Simple Parity Check)</strong></span>
+  </div>
+
 
     <p>The simplest error detection scheme appends a single <strong>Parity Bit</strong> to a block of data bits to make the total count of $1\text{s}$ either even or odd.</p>
 
@@ -507,11 +578,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 8.12: 2D PARITY -->
-  <section id="s-2d-parity" class="content-section">
+  <section id="s-2d-parity" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 8.12</div>
       <h2 class="section-title">Error Detection 2: Two-Dimensional (2D) Parity</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: error detection and correction (Two-Dimensional Parity)</strong></span>
+  </div>
+
 
     <p>In <strong>Two-Dimensional Parity (Longitudinal and Vertical Redundancy Check)</strong>, data bytes are arranged in a 2D matrix grid. A parity bit is computed for each row (horizontal), and an entire parity byte is computed for each column (vertical).</p>
 
@@ -536,11 +612,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 8.13: CHECKSUM -->
-  <section id="s-checksum" class="content-section">
+  <section id="s-checksum" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 8.13</div>
       <h2 class="section-title">Error Detection 3: The Internet Checksum Algorithm</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: error detection and correction (Internet Checksum Algorithm)</strong></span>
+  </div>
+
 
     <p>Used widely in TCP, UDP, and IPv4, the <strong>Internet Checksum</strong> is based on 16-bit <strong>One's Complement Arithmetic</strong>.</p>
 
@@ -560,11 +641,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 8.14: CRC THEORY -->
-  <section id="s-crc-theory" class="content-section">
+  <section id="s-crc-theory" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 8.14</div>
       <h2 class="section-title">Error Detection 4: Cyclic Redundancy Check (CRC) — Theory & Polynomials <span class="uni-syllabus-badge">🎓 Uni Unit II: CRC Detection</span></h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: error detection and correction (Cyclic Redundancy Check — CRC Theory & Polynomials)</strong></span>
+  </div>
+
 
     <p>The <strong>Cyclic Redundancy Check (CRC)</strong> is by far the most powerful, widely used error-detecting code in modern networks (Ethernet, Wi-Fi, ATM, cellular, SATA). It is based on <strong>polynomial modulo-2 binary division</strong>.</p>
 
@@ -617,11 +703,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 8.15: CRC STEP WALKTHROUGH -->
-  <section id="s-crc-step" class="content-section">
+  <section id="s-crc-step" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 8.15</div>
       <h2 class="section-title">CRC Step-by-Step XOR Division Walkthrough (Sender Side)</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: error detection and correction (CRC Sender Step-by-Step XOR Division)</strong></span>
+  </div>
+
 
     <p>Modulo-2 division uses simple <strong>XOR logic</strong> instead of standard arithmetic subtraction (no borrows, no carries):<br>
     $0 \oplus 0 = 0,\ 0 \oplus 1 = 1,\ 1 \oplus 0 = 1,\ 1 \oplus 1 = 0$.</p>
@@ -672,11 +763,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 8.16: CRC RECEIVER VERIFY -->
-  <section id="s-crc-verify" class="content-section">
+  <section id="s-crc-verify" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 8.16</div>
       <h2 class="section-title">CRC Receiver Verification Process</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: error detection and correction (CRC Receiver Verification Process)</strong></span>
+  </div>
+
 
     <div class="callout tip">
       <div class="callout-title">📝 Verification of Transmitted Frame 100100001</div>
@@ -712,11 +808,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 8.17: CRC MCQ TRAPS -->
-  <section id="s-crc-mcq" class="content-section">
+  <section id="s-crc-mcq" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 8.17</div>
       <h2 class="section-title">High-Yield CRC Exam Traps (GATE / Finals)</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: error detection and correction (CRC Exam Traps & Properties)</strong></span>
+  </div>
+
 
     <div class="table-wrap">
       <table class="data-table">
@@ -755,11 +856,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 8.18: HAMMING DISTANCE -->
-  <section id="s-hamming-intro" class="content-section">
+  <section id="s-hamming-intro" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 8.18</div>
       <h2 class="section-title">Error Correction: Hamming Distance Fundamentals <span class="uni-syllabus-badge">🎓 Uni Unit II: Hamming Correction</span></h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: error detection and correction (Hamming Distance & Code Principles)</strong></span>
+  </div>
+
 
     <div class="def-box">
       <div class="def-term">Hamming Distance $d(x, y)$</div>
@@ -781,11 +887,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 8.19: HAMMING CODE CONSTRUCTION -->
-  <section id="s-hamming-code" class="content-section">
+  <section id="s-hamming-code" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 8.19</div>
       <h2 class="section-title">Hamming Code Construction ($2^r \ge m + r + 1$)</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: error detection and correction (Hamming Code Construction 2^r >= m + r + 1)</strong></span>
+  </div>
+
 
     <p>Richard Hamming invented the first practical Forward Error Correcting (FEC) code capable of automatically detecting and correcting any single-bit error.</p>
 
@@ -865,11 +976,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 8.20: HAMMING CORRECTION WALKTHROUGH -->
-  <section id="s-hamming-detect" class="content-section">
+  <section id="s-hamming-detect" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 8.20</div>
       <h2 class="section-title">Hamming Code Error Detection & Correction Walkthrough</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: error detection and correction (Hamming Single-Bit Error Correction Walkthrough)</strong></span>
+  </div>
+
 
     <div class="callout tip">
       <div class="callout-title">📝 Worked Problem 8.2 (7-Bit Hamming Code)</div>
@@ -898,11 +1014,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 8.21: ERROR HANDLING COMPARISON -->
-  <section id="s-error-compare" class="content-section">
+  <section id="s-error-compare" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 8.21</div>
       <h2 class="section-title">Master Error Handling Comparison Table</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: error detection and correction (Master Error Handling Comparison)</strong></span>
+  </div>
+
 
     <div class="table-wrap">
       <table class="data-table">
@@ -970,11 +1091,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 8.22: SUMMARY & EXAM TRAPS -->
-  <section id="s-summary-ch8" class="content-section">
+  <section id="s-summary-ch8" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 8.22</div>
       <h2 class="section-title">Chapter Summary & High-Yield Exam Traps</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>UNIT II Data link layer: design issues, framing & error control (Chapter Revision & Exam Traps)</strong></span>
+  </div>
+
 
     <div class="callout tip">
       <div class="callout-title">⚡ High-Yield Rapid Review Points</div>

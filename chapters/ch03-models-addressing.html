@@ -123,34 +123,55 @@
     <div><strong>Introduction to Computer Networks:</strong> Network models, OSI Reference Model, TCP/IP reference model, and Addressing hierarchy.</div>
   </div>
 
+    <!-- UNIVERSITY SYLLABUS FILTER SWITCH -->
+  <div class="uni-mode-toggle-card">
+    <div>
+      <div style="font-weight:700; font-size:0.95rem; color:var(--tx-primary); display:flex; align-items:center; gap:0.4rem;">
+        <span>🎓</span> University Exam Focus Filter
+      </div>
+      <div style="font-size:0.8rem; color:var(--tx-muted); margin-top:0.2rem;">
+        Focus specifically on sections prescribed in Delhi University syllabus vs supplementary deep-dives.
+      </div>
+    </div>
+    <div class="uni-filter-switch">
+      <button class="uni-toggle-btn active" id="filter-all-btn" data-mode="all" onclick="ModeManager.apply('all')">📚 Show All Content</button>
+      <button class="uni-toggle-btn" id="filter-uni-btn" data-mode="uni" onclick="ModeManager.apply('uni')">🎓 Focus Uni Syllabus Only</button>
+    </div>
+  </div>
+
   <!-- TABLE OF CONTENTS -->
   <div class="toc-card">
     <div class="toc-title"><span>📑</span>Table of Contents</div>
     <div class="toc-grid">
-      <a href="#s-layering" class="toc-item"><span class="toc-num">3.1</span>Why Layered Architecture?</a>
-      <a href="#s-terminology-layers" class="toc-item"><span class="toc-num">3.2</span>Services, Protocols & Interfaces</a>
-      <a href="#s-osi-overview" class="toc-item"><span class="toc-num">3.3</span>OSI 7-Layer Model Overview</a>
-      <a href="#s-osi-physical" class="toc-item"><span class="toc-num">3.4</span>Layer 1: Physical Layer</a>
-      <a href="#s-osi-datalink" class="toc-item"><span class="toc-num">3.5</span>Layer 2: Data Link Layer</a>
-      <a href="#s-osi-network" class="toc-item"><span class="toc-num">3.6</span>Layer 3: Network Layer</a>
-      <a href="#s-osi-transport" class="toc-item"><span class="toc-num">3.7</span>Layer 4: Transport Layer</a>
-      <a href="#s-osi-session" class="toc-item"><span class="toc-num">3.8</span>Layer 5: Session Layer</a>
-      <a href="#s-osi-presentation" class="toc-item"><span class="toc-num">3.9</span>Layer 6: Presentation Layer</a>
-      <a href="#s-osi-application" class="toc-item"><span class="toc-num">3.10</span>Layer 7: Application Layer</a>
-      <a href="#s-encap-detail" class="toc-item"><span class="toc-num">3.11</span>Encapsulation & Decapsulation</a>
-      <a href="#s-tcpip" class="toc-item"><span class="toc-num">3.12</span>TCP/IP Protocol Suite</a>
-      <a href="#s-osi-vs-tcpip" class="toc-item"><span class="toc-num">3.13</span>OSI vs TCP/IP Comparison</a>
-      <a href="#s-addressing" class="toc-item"><span class="toc-num">3.14</span>Types of Addressing</a>
-      <a href="#s-summary-ch3" class="toc-item"><span class="toc-num">3.15</span>Summary & Exam Traps</a>
+      <a href="#s-layering" class="toc-item in-uni"><span class="toc-num">3.1</span>Why Layered Architecture? <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-terminology-layers" class="toc-item in-uni"><span class="toc-num">3.2</span>Services, Protocols & Interfaces <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-osi-overview" class="toc-item in-uni"><span class="toc-num">3.3</span>OSI 7-Layer Model Overview <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-osi-physical" class="toc-item in-uni"><span class="toc-num">3.4</span>Layer 1: Physical Layer <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-osi-datalink" class="toc-item in-uni"><span class="toc-num">3.5</span>Layer 2: Data Link Layer <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-osi-network" class="toc-item in-uni"><span class="toc-num">3.6</span>Layer 3: Network Layer <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-osi-transport" class="toc-item in-uni"><span class="toc-num">3.7</span>Layer 4: Transport Layer <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-osi-session" class="toc-item in-uni"><span class="toc-num">3.8</span>Layer 5: Session Layer <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-osi-presentation" class="toc-item in-uni"><span class="toc-num">3.9</span>Layer 6: Presentation Layer <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-osi-application" class="toc-item in-uni"><span class="toc-num">3.10</span>Layer 7: Application Layer <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-encap-detail" class="toc-item in-uni"><span class="toc-num">3.11</span>Encapsulation & Decapsulation <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-tcpip" class="toc-item in-uni"><span class="toc-num">3.12</span>TCP/IP Protocol Suite <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-osi-vs-tcpip" class="toc-item in-uni"><span class="toc-num">3.13</span>OSI vs TCP/IP Comparison <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-addressing" class="toc-item in-uni"><span class="toc-num">3.14</span>Types of Addressing <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-summary-ch3" class="toc-item in-uni"><span class="toc-num">3.15</span>Summary & Exam Traps <span class="toc-uni-tag">🎓 Uni Core</span></a>
     </div>
   </div>
 
   <!-- SECTION 3.1: WHY LAYERED ARCHITECTURE? -->
-  <section id="s-layering" class="content-section">
+  <section id="s-layering" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 3.1</div>
       <h2 class="section-title">Why Layered Architecture?</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>OSI Reference Model & TCP/IP (Layered Architecture Principles)</strong></span>
+  </div>
+
 
     <p>Computer networking is an enormously complex task involving electrical signals, hardware transceivers, error detection, flow arbitration, congestion control, routing across billions of global devices, security, encryption, and application semantics. Trying to design a single, monolithic piece of software or hardware to accomplish all of this at once would result in an unmaintainable, brittle, and impossible system.</p>
 
@@ -225,11 +246,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 3.2: SERVICES, PROTOCOLS & INTERFACES -->
-  <section id="s-terminology-layers" class="content-section">
+  <section id="s-terminology-layers" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 3.2</div>
       <h2 class="section-title">Key Terminology: Service, Protocol, Interface & Primitives</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>OSI Reference Model (Services, Protocols, Interfaces & SAPs)</strong></span>
+  </div>
+
 
     <p>A frequent point of confusion in university exams and interviews is the exact formal distinction between a <strong>Service</strong>, a <strong>Protocol</strong>, and an <strong>Interface</strong>. ISO 7498 defines these with mathematical precision.</p>
 
@@ -374,11 +400,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 3.3: OSI REFERENCE MODEL OVERVIEW -->
-  <section id="s-osi-overview" class="content-section">
+  <section id="s-osi-overview" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 3.3</div>
       <h2 class="section-title">The OSI 7-Layer Reference Model Overview <span class="uni-syllabus-badge">🎓 Uni: OSI Reference Model</span></h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>OSI Reference Model (The 7-Layer Architecture Overview)</strong></span>
+  </div>
+
 
     <p>In 1984, the <strong>International Organization for Standardization (ISO)</strong> released ISO standard 7498, establishing the <strong>Open Systems Interconnection (OSI)</strong> reference model. An "open system" is one that can communicate with any other system anywhere in the world, regardless of underlying hardware architecture, operating system, or manufacturer, provided both conform to OSI standards.</p>
 
@@ -454,11 +485,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 3.4: LAYER 1 PHYSICAL -->
-  <section id="s-osi-physical" class="content-section">
+  <section id="s-osi-physical" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 3.4</div>
       <h2 class="section-title">Layer 1: Physical Layer Deep Dive</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>OSI Reference Model (Layer 1 — Physical Layer)</strong></span>
+  </div>
+
 
     <p>The Physical Layer is the lowest layer of the OSI model. Its sole mission is the transmission and reception of unstructured raw bit streams ($0	ext{s}$ and $1	ext{s}$) over a physical transmission medium. It converts digital binary digits into physical signals (voltages, light pulses, or radio waves) and vice-versa.</p>
 
@@ -520,11 +556,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 3.5: LAYER 2 DATA LINK -->
-  <section id="s-osi-datalink" class="content-section">
+  <section id="s-osi-datalink" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 3.5</div>
       <h2 class="section-title">Layer 2: Data Link Layer (DLL) Deep Dive</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>OSI Reference Model (Layer 2 — Data Link Layer)</strong></span>
+  </div>
+
 
     <p>The Data Link Layer transforms a raw, error-prone transmission facility (Layer 1) into an apparently flawless, reliable link. It is responsible for <strong>node-to-node (hop-to-hop)</strong> frame delivery across a single physical link connecting two directly adjacent machines.</p>
 
@@ -590,11 +631,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 3.6: LAYER 3 NETWORK -->
-  <section id="s-osi-network" class="content-section">
+  <section id="s-osi-network" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 3.6</div>
       <h2 class="section-title">Layer 3: Network Layer Deep Dive</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>OSI Reference Model (Layer 3 — Network Layer)</strong></span>
+  </div>
+
 
     <p>While the Data Link Layer oversees delivery between two directly adjacent nodes on the same link, the <strong>Network Layer</strong> is responsible for the <strong>source-to-destination (end-to-end host) delivery of packets</strong> across multiple heterogeneous networks (an internetwork).</p>
 
@@ -630,11 +676,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 3.7: LAYER 4 TRANSPORT -->
-  <section id="s-osi-transport" class="content-section">
+  <section id="s-osi-transport" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 3.7</div>
       <h2 class="section-title">Layer 4: Transport Layer Deep Dive</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>OSI Reference Model (Layer 4 — Transport Layer)</strong></span>
+  </div>
+
 
     <p>The Transport Layer is known as the <strong>"Heart of the OSI Model"</strong>. It provides <strong>process-to-process (end-to-end application)</strong> delivery of the entire message. A computer does not just run one program; it might run a web browser, a Zoom meeting, Spotify, and an email client simultaneously. The Network Layer delivers packets to the correct machine, but the Transport Layer delivers the data to the exact <strong>process/program</strong> running on that machine.</p>
 
@@ -699,11 +750,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 3.8: LAYER 5 SESSION -->
-  <section id="s-osi-session" class="content-section">
+  <section id="s-osi-session" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 3.8</div>
       <h2 class="section-title">Layer 5: Session Layer Deep Dive</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>OSI Reference Model (Layer 5 — Session Layer)</strong></span>
+  </div>
+
 
     <p>The Session Layer is the network dialog controller. It establishes, maintains, synchronizes, and terminates interactions between communicating applications. In modern TCP/IP networks, Session Layer functions are usually folded directly into the Application layer or handled by software libraries.</p>
 
@@ -728,11 +784,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 3.9: LAYER 6 PRESENTATION -->
-  <section id="s-osi-presentation" class="content-section">
+  <section id="s-osi-presentation" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 3.9</div>
       <h2 class="section-title">Layer 6: Presentation Layer Deep Dive</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>OSI Reference Model (Layer 6 — Presentation Layer)</strong></span>
+  </div>
+
 
     <p>The Presentation Layer is concerned with the <strong>syntax and semantics</strong> of the information exchanged between two systems. Different computers use different internal data representations (for example, IBM mainframes use EBCDIC character encoding, while PCs use ASCII or UTF-8; some architectures are Big-Endian, others are Little-Endian). The Presentation Layer acts as a universal translator, ensuring that sender and receiver understand one another.</p>
 
@@ -777,11 +838,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 3.10: LAYER 7 APPLICATION -->
-  <section id="s-osi-application" class="content-section">
+  <section id="s-osi-application" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 3.10</div>
       <h2 class="section-title">Layer 7: Application Layer Deep Dive</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>OSI Reference Model (Layer 7 — Application Layer)</strong></span>
+  </div>
+
 
     <p>The Application Layer is the top layer of the OSI model. It serves as the direct window through which network applications access communication services. It provides network services directly to end-user software.</p>
 
@@ -854,11 +920,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 3.11: ENCAPSULATION & DECAPSULATION -->
-  <section id="s-encap-detail" class="content-section">
+  <section id="s-encap-detail" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 3.11</div>
       <h2 class="section-title">Encapsulation, Decapsulation & Peer Communication</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>OSI Reference Model (7-Layer Encapsulation & Headers)</strong></span>
+  </div>
+
 
     <p>Data transmission through a layered network architecture follows a strict, elegant process called <strong>Encapsulation</strong> at the sender, and <strong>Decapsulation</strong> at the receiver.</p>
 
@@ -923,11 +994,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 3.12: TCP/IP PROTOCOL SUITE -->
-  <section id="s-tcpip" class="content-section">
+  <section id="s-tcpip" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 3.12</div>
       <h2 class="section-title">The TCP/IP Reference Model & Protocol Suite <span class="uni-syllabus-badge">🎓 Uni: TCP/IP Reference Model</span></h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>TCP/IP reference model (The 4/5-Layer Architecture & Protocols)</strong></span>
+  </div>
+
 
     <p>While the OSI model was developed by international committees as a theoretical conceptual framework, the <strong>TCP/IP Protocol Suite</strong> (also known as the Internet Protocol Suite) was developed by DARPA (Defense Advanced Research Projects Agency) for ARPANET in the 1970s. It is the practical, commercial architecture that powers the global Internet today.</p>
 
@@ -1000,11 +1076,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 3.13: OSI VS TCP/IP COMPARISON -->
-  <section id="s-osi-vs-tcpip" class="content-section">
+  <section id="s-osi-vs-tcpip" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 3.13</div>
       <h2 class="section-title">Grand Comparison: OSI Reference Model vs TCP/IP Suite</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>OSI Reference Model vs TCP/IP reference model (Grand Comparison)</strong></span>
+  </div>
+
 
     <p>A classic university exam essay question and technical interview staple is the thorough comparison between the OSI and TCP/IP models. While they share the fundamental philosophy of layering, they differ drastically in design philosophy, history, and real-world adoption.</p>
 
@@ -1086,11 +1167,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 3.14: TYPES OF ADDRESSING -->
-  <section id="s-addressing" class="content-section">
+  <section id="s-addressing" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 3.14</div>
       <h2 class="section-title">Types of Addressing in Computer Networks <span class="uni-syllabus-badge">🎓 Uni: Addressing Hierarchy</span></h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Addressing (Physical MAC, Logical IP, Port & Specific Addresses)</strong></span>
+  </div>
+
 
     <p>To deliver data successfully from an application running on one device to an application running on another device across the globe, networks utilize four distinct levels of addressing across different layers of the model.</p>
 
@@ -1192,11 +1278,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 3.15: SUMMARY & EXAM TRAPS -->
-  <section id="s-summary-ch3" class="content-section">
+  <section id="s-summary-ch3" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 3.15</div>
       <h2 class="section-title">Chapter Summary & High-Yield Exam Traps</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>OSI Reference Model & Addressing (Chapter Revision & Exam Traps)</strong></span>
+  </div>
+
 
     <div class="callout tip">
       <div class="callout-title">⚡ High-Yield Rapid Review Points</div>

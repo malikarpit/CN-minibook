@@ -127,38 +127,59 @@
     <div><strong>Physical Layer:</strong> Modulation and demodulation (ASK, FSK, PSK, QAM) and Switching (Circuit, Datagram, Virtual Circuit).</div>
   </div>
 
+    <!-- UNIVERSITY SYLLABUS FILTER SWITCH -->
+  <div class="uni-mode-toggle-card">
+    <div>
+      <div style="font-weight:700; font-size:0.95rem; color:var(--tx-primary); display:flex; align-items:center; gap:0.4rem;">
+        <span>🎓</span> University Exam Focus Filter
+      </div>
+      <div style="font-size:0.8rem; color:var(--tx-muted); margin-top:0.2rem;">
+        Focus specifically on sections prescribed in Delhi University syllabus vs supplementary deep-dives.
+      </div>
+    </div>
+    <div class="uni-filter-switch">
+      <button class="uni-toggle-btn active" id="filter-all-btn" data-mode="all" onclick="ModeManager.apply('all')">📚 Show All Content</button>
+      <button class="uni-toggle-btn" id="filter-uni-btn" data-mode="uni" onclick="ModeManager.apply('uni')">🎓 Focus Uni Syllabus Only</button>
+    </div>
+  </div>
+
   <!-- TABLE OF CONTENTS -->
   <div class="toc-card">
     <div class="toc-title"><span>📑</span>Table of Contents</div>
     <div class="toc-grid">
-      <a href="#s-mod-need" class="toc-item"><span class="toc-num">7.1</span>Why Modulation?</a>
-      <a href="#s-ask" class="toc-item"><span class="toc-num">7.2</span>ASK (Amplitude Shift Keying)</a>
-      <a href="#s-fsk" class="toc-item"><span class="toc-num">7.3</span>FSK (Frequency Shift Keying)</a>
-      <a href="#s-psk" class="toc-item"><span class="toc-num">7.4</span>PSK & BPSK</a>
-      <a href="#s-qpsk" class="toc-item"><span class="toc-num">7.5</span>QPSK (Quadrature PSK)</a>
-      <a href="#s-qam" class="toc-item"><span class="toc-num">7.6</span>QAM (Constellations)</a>
-      <a href="#s-mod-compare" class="toc-item"><span class="toc-num">7.7</span>Modulation Master Comparison</a>
-      <a href="#s-multiplex-intro" class="toc-item"><span class="toc-num">7.8</span>Why Multiplexing?</a>
-      <a href="#s-fdm" class="toc-item"><span class="toc-num">7.9</span>FDM (Frequency Division)</a>
-      <a href="#s-tdm" class="toc-item"><span class="toc-num">7.10</span>TDM (Time Division)</a>
-      <a href="#s-wdm" class="toc-item"><span class="toc-num">7.11</span>WDM (Wavelength Division)</a>
-      <a href="#s-mux-compare" class="toc-item"><span class="toc-num">7.12</span>Multiplexing Comparison Table</a>
-      <a href="#s-switching-intro" class="toc-item"><span class="toc-num">7.13</span>Why Switching?</a>
-      <a href="#s-circuit-switching" class="toc-item"><span class="toc-num">7.14</span>Circuit Switching</a>
-      <a href="#s-packet-switching" class="toc-item"><span class="toc-num">7.15</span>Packet Switching</a>
-      <a href="#s-datagram-vc" class="toc-item"><span class="toc-num">7.16</span>Datagram vs Virtual Circuit</a>
-      <a href="#s-message-switching" class="toc-item"><span class="toc-num">7.17</span>Message Switching</a>
-      <a href="#s-switch-compare" class="toc-item"><span class="toc-num">7.18</span>Switching Master Comparison</a>
-      <a href="#s-summary-ch7" class="toc-item"><span class="toc-num">7.19</span>Summary & Exam Traps</a>
+      <a href="#s-mod-need" class="toc-item in-uni"><span class="toc-num">7.1</span>Why Modulation? <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-ask" class="toc-item in-uni"><span class="toc-num">7.2</span>ASK (Amplitude Shift Keying) <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-fsk" class="toc-item in-uni"><span class="toc-num">7.3</span>FSK (Frequency Shift Keying) <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-psk" class="toc-item in-uni"><span class="toc-num">7.4</span>PSK & BPSK <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-qpsk" class="toc-item in-uni"><span class="toc-num">7.5</span>QPSK (Quadrature PSK) <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-qam" class="toc-item in-uni"><span class="toc-num">7.6</span>QAM (Constellations) <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-mod-compare" class="toc-item in-uni"><span class="toc-num">7.7</span>Modulation Master Comparison <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-multiplex-intro" class="toc-item not-in-uni"><span class="toc-num">7.8</span>Why Multiplexing? <span class="toc-supp-tag">🔬 Extra</span></a>
+      <a href="#s-fdm" class="toc-item not-in-uni"><span class="toc-num">7.9</span>FDM (Frequency Division) <span class="toc-supp-tag">🔬 Extra</span></a>
+      <a href="#s-tdm" class="toc-item not-in-uni"><span class="toc-num">7.10</span>TDM (Time Division) <span class="toc-supp-tag">🔬 Extra</span></a>
+      <a href="#s-wdm" class="toc-item not-in-uni"><span class="toc-num">7.11</span>WDM (Wavelength Division) <span class="toc-supp-tag">🔬 Extra</span></a>
+      <a href="#s-mux-compare" class="toc-item not-in-uni"><span class="toc-num">7.12</span>Multiplexing Comparison Table <span class="toc-supp-tag">🔬 Extra</span></a>
+      <a href="#s-switching-intro" class="toc-item in-uni"><span class="toc-num">7.13</span>Why Switching? <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-circuit-switching" class="toc-item in-uni"><span class="toc-num">7.14</span>Circuit Switching <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-packet-switching" class="toc-item in-uni"><span class="toc-num">7.15</span>Packet Switching <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-datagram-vc" class="toc-item in-uni"><span class="toc-num">7.16</span>Datagram vs Virtual Circuit <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-message-switching" class="toc-item not-in-uni"><span class="toc-num">7.17</span>Message Switching <span class="toc-supp-tag">🔬 Extra</span></a>
+      <a href="#s-switch-compare" class="toc-item in-uni"><span class="toc-num">7.18</span>Switching Master Comparison <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-summary-ch7" class="toc-item in-uni"><span class="toc-num">7.19</span>Summary & Exam Traps <span class="toc-uni-tag">🎓 Uni Core</span></a>
     </div>
   </div>
 
   <!-- SECTION 7.1: WHY MODULATION -->
-  <section id="s-mod-need" class="content-section">
+  <section id="s-mod-need" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 7.1</div>
       <h2 class="section-title">Why Modulation? (Baseband vs Passband Transmission) <span class="uni-syllabus-badge">🎓 Uni: Modulation & Demodulation</span></h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Physical layer: modulation and demodulation (Baseband vs Passband Need)</strong></span>
+  </div>
+
 
     <p>In Chapter 6, we studied <strong>Baseband Transmission</strong>: sending digital pulses directly over a cable (e.g., Ethernet over UTP). However, baseband transmission requires a low-pass channel with a spectrum starting near $0\text{ Hz}$. Many critical media—such as the wireless air atmosphere, satellite links, and cable TV networks—are <strong>bandpass channels</strong> that cannot propagate low-frequency baseband signals. To transmit digital information over these media, we must perform <strong>Digital Modulation</strong> (Passband Transmission).</p>
 
@@ -181,11 +202,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 7.2: ASK -->
-  <section id="s-ask" class="content-section">
+  <section id="s-ask" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 7.2</div>
       <h2 class="section-title">Amplitude Shift Keying (ASK & OOK)</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Physical layer: modulation and demodulation (Amplitude Shift Keying — ASK & OOK)</strong></span>
+  </div>
+
 
     <p>In <strong>Amplitude Shift Keying (ASK)</strong>, the amplitude of the high-frequency carrier wave is varied to represent binary $1\text{s}$ and $0\text{s}$, while the carrier's frequency and phase remain strictly constant.</p>
 
@@ -217,11 +243,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 7.3: FSK -->
-  <section id="s-fsk" class="content-section">
+  <section id="s-fsk" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 7.3</div>
       <h2 class="section-title">Frequency Shift Keying (FSK)</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Physical layer: modulation and demodulation (Frequency Shift Keying — FSK)</strong></span>
+  </div>
+
 
     <p>In <strong>Frequency Shift Keying (FSK)</strong>, the frequency of the carrier signal is shifted between two distinct values to represent binary $1$ and $0$, while peak amplitude and phase remain constant.</p>
 
@@ -248,11 +279,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 7.4: PSK & BPSK -->
-  <section id="s-psk" class="content-section">
+  <section id="s-psk" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 7.4</div>
       <h2 class="section-title">Phase Shift Keying (PSK & BPSK)</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Physical layer: modulation and demodulation (Phase Shift Keying — PSK & BPSK)</strong></span>
+  </div>
+
 
     <p>In <strong>Phase Shift Keying (PSK)</strong>, the phase of the carrier signal is shifted to represent binary values, while amplitude and frequency remain constant. PSK is significantly more bandwidth-efficient than FSK and vastly more noise-resistant than ASK.</p>
 
@@ -284,11 +320,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 7.5: QPSK -->
-  <section id="s-qpsk" class="content-section">
+  <section id="s-qpsk" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 7.5</div>
       <h2 class="section-title">Quadrature Phase Shift Keying (QPSK)</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Physical layer: modulation and demodulation (Quadrature Phase Shift Keying — QPSK)</strong></span>
+  </div>
+
 
     <p>In BPSK, each symbol transmits only 1 single bit. Can we transmit more bits per symbol to double our spectral efficiency? Yes! <strong>Quadrature PSK (QPSK)</strong> uses <strong>four distinct phase shifts</strong> separated by $90^\circ$ ($\pi/2$ radians).</p>
 
@@ -321,11 +362,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 7.6: QAM -->
-  <section id="s-qam" class="content-section">
+  <section id="s-qam" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 7.6</div>
       <h2 class="section-title">Quadrature Amplitude Modulation (QAM)</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Physical layer: modulation and demodulation (Quadrature Amplitude Modulation — QAM)</strong></span>
+  </div>
+
 
     <p>If we try to squeeze more than 8 or 16 phase shifts into pure PSK (e.g., 32-PSK), the constellation points crowd so tightly together around the unit circle that even tiny noise fluctuations cause phase detection errors. To overcome this limitation, <strong>Quadrature Amplitude Modulation (QAM)</strong> combines both <strong>ASK (Amplitude Variation)</strong> and <strong>PSK (Phase Variation)</strong> simultaneously.</p>
 
@@ -358,11 +404,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 7.7: MODULATION MASTER COMPARISON -->
-  <section id="s-mod-compare" class="content-section">
+  <section id="s-mod-compare" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 7.7</div>
       <h2 class="section-title">Master Digital Modulation Comparison Table</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Physical layer: modulation and demodulation (Digital Modulation Comparison Table)</strong></span>
+  </div>
+
 
     <div class="table-wrap">
       <table class="data-table">
@@ -432,11 +483,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 7.8: WHY MULTIPLEXING -->
-  <section id="s-multiplex-intro" class="content-section">
+  <section id="s-multiplex-intro" class="section-not-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 7.8</div>
       <h2 class="section-title">Why Multiplexing?</h2>
     </div>
+  <div class="non-uni-req-banner">
+    <span class="uni-req-badge" style="background:rgba(148,163,184,0.18); border-color:rgba(148,163,184,0.4); color:#94a3b8;">🔬 Supplementary</span>
+    <span>Supplementary deep-dive / GATE detail — not directly in standard university syllabus</span>
+  </div>
+
 
     <p>In any wide-area network, laying physical transmission media (such as undersea transoceanic fiber or burying copper cables across cities) is enormously expensive. If each individual telephone conversation or data connection required its own dedicated physical wire across the country, telecommunications would be financially impossible.</p>
 
@@ -450,11 +506,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 7.9: FDM -->
-  <section id="s-fdm" class="content-section">
+  <section id="s-fdm" class="section-not-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 7.9</div>
       <h2 class="section-title">Frequency Division Multiplexing (FDM)</h2>
     </div>
+  <div class="non-uni-req-banner">
+    <span class="uni-req-badge" style="background:rgba(148,163,184,0.18); border-color:rgba(148,163,184,0.4); color:#94a3b8;">🔬 Supplementary</span>
+    <span>Supplementary deep-dive / GATE detail — not directly in standard university syllabus</span>
+  </div>
+
 
     <p><strong>Frequency Division Multiplexing (FDM)</strong> is an analog technique used when the total bandwidth of the physical link is significantly larger than the bandwidth required by each individual channel.</p>
 
@@ -477,11 +538,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 7.10: TDM -->
-  <section id="s-tdm" class="content-section">
+  <section id="s-tdm" class="section-not-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 7.10</div>
       <h2 class="section-title">Time Division Multiplexing (TDM: Synchronous vs Statistical)</h2>
     </div>
+  <div class="non-uni-req-banner">
+    <span class="uni-req-badge" style="background:rgba(148,163,184,0.18); border-color:rgba(148,163,184,0.4); color:#94a3b8;">🔬 Supplementary</span>
+    <span>Supplementary deep-dive / GATE detail — not directly in standard university syllabus</span>
+  </div>
+
 
     <p><strong>Time Division Multiplexing (TDM)</strong> is a digital technique where multiple digital streams share a single communication line by interleaving portions of each signal in the <strong>time domain</strong>. The entire channel bandwidth is dedicated to one single connection for a brief fraction of time (called a <strong>time slot</strong>).</p>
 
@@ -522,11 +588,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 7.11: WDM -->
-  <section id="s-wdm" class="content-section">
+  <section id="s-wdm" class="section-not-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 7.11</div>
       <h2 class="section-title">Wavelength Division Multiplexing (WDM & DWDM)</h2>
     </div>
+  <div class="non-uni-req-banner">
+    <span class="uni-req-badge" style="background:rgba(148,163,184,0.18); border-color:rgba(148,163,184,0.4); color:#94a3b8;">🔬 Supplementary</span>
+    <span>Supplementary deep-dive / GATE detail — not directly in standard university syllabus</span>
+  </div>
+
 
     <p><strong>Wavelength Division Multiplexing (WDM)</strong> is conceptually identical to FDM, but designed specifically for <strong>optical fiber cables</strong>. Multiple laser light beams of different optical wavelengths (different colors/frequencies) are combined and propagated through a single strand of silica glass fiber.</p>
 
@@ -547,11 +618,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 7.12: MULTIPLEXING COMPARISON -->
-  <section id="s-mux-compare" class="content-section">
+  <section id="s-mux-compare" class="section-not-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 7.12</div>
       <h2 class="section-title">Master Multiplexing Comparison Table</h2>
     </div>
+  <div class="non-uni-req-banner">
+    <span class="uni-req-badge" style="background:rgba(148,163,184,0.18); border-color:rgba(148,163,184,0.4); color:#94a3b8;">🔬 Supplementary</span>
+    <span>Supplementary deep-dive / GATE detail — not directly in standard university syllabus</span>
+  </div>
+
 
     <div class="table-wrap">
       <table class="data-table">
@@ -600,11 +676,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 7.13: WHY SWITCHING -->
-  <section id="s-switching-intro" class="content-section">
+  <section id="s-switching-intro" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 7.13</div>
       <h2 class="section-title">Why Switching?</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Physical layer: switching (Overview of Switching Methodologies)</strong></span>
+  </div>
+
 
     <p>If we want to connect $N$ computers or telephones worldwide, building direct point-to-point dedicated links between every pair requires a full mesh topology with:</p>
     $$\text{Number of Links} = \frac{N(N - 1)}{2}$$
@@ -613,11 +694,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 7.14: CIRCUIT SWITCHING -->
-  <section id="s-circuit-switching" class="content-section">
+  <section id="s-circuit-switching" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 7.14</div>
       <h2 class="section-title">Circuit Switching</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Physical layer: switching (Circuit Switching: Setup, Transfer, Teardown)</strong></span>
+  </div>
+
 
     <p><strong>Circuit Switching</strong> was invented for the traditional Public Switched Telephone Network (PSTN). It establishes a <strong>dedicated, physical end-to-end communication path</strong> between sender and receiver before any data can be transferred.</p>
 
@@ -638,11 +724,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 7.15: PACKET SWITCHING -->
-  <section id="s-packet-switching" class="content-section">
+  <section id="s-packet-switching" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 7.15</div>
       <h2 class="section-title">Packet Switching (Store-and-Forward) <span class="uni-syllabus-badge">🎓 Uni: Packet Switching</span></h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Physical layer: switching (Packet Switching: Store-and-Forward)</strong></span>
+  </div>
+
 
     <p>To eliminate the massive resource waste of circuit switching, computer scientists developed <strong>Packet Switching</strong>—the foundational switching architecture of the modern Internet.</p>
 
@@ -667,11 +758,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 7.16: DATAGRAM VS VIRTUAL CIRCUIT -->
-  <section id="s-datagram-vc" class="content-section">
+  <section id="s-datagram-vc" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 7.16</div>
       <h2 class="section-title">Datagram Networks vs Virtual Circuit Networks</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Physical layer: switching (Datagram vs Virtual Circuit Approaches)</strong></span>
+  </div>
+
 
     <p>Within packet switching, there are two distinct architectural philosophies: <strong>Datagram (Connectionless)</strong> and <strong>Virtual Circuit (Connection-Oriented)</strong>.</p>
 
@@ -722,11 +818,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 7.17: MESSAGE SWITCHING -->
-  <section id="s-message-switching" class="content-section">
+  <section id="s-message-switching" class="section-not-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 7.17</div>
       <h2 class="section-title">Message Switching (Historical Context)</h2>
     </div>
+  <div class="non-uni-req-banner">
+    <span class="uni-req-badge" style="background:rgba(148,163,184,0.18); border-color:rgba(148,163,184,0.4); color:#94a3b8;">🔬 Supplementary</span>
+    <span>Supplementary deep-dive / GATE detail — not directly in standard university syllabus</span>
+  </div>
+
 
     <p>In historical <strong>Message Switching</strong> (used in early telegraph and military telex networks), the sender transmits the <strong>entire message as a single complete unit</strong> (without breaking it into packets). Intermediate switches store the entire message on hard disks before forwarding it to the next switch (often called <em>Store-and-Forward Telex</em>).</p>
     <ul>
@@ -738,11 +839,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 7.18: SWITCHING MASTER COMPARISON -->
-  <section id="s-switch-compare" class="content-section">
+  <section id="s-switch-compare" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 7.18</div>
       <h2 class="section-title">Master Switching Comparison Table</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Physical layer: switching (Grand Switching Comparison Matrix)</strong></span>
+  </div>
+
 
     <div class="table-wrap">
       <table class="data-table">
@@ -804,11 +910,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 7.19: SUMMARY & EXAM TRAPS -->
-  <section id="s-summary-ch7" class="content-section">
+  <section id="s-summary-ch7" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 7.19</div>
       <h2 class="section-title">Chapter Summary & High-Yield Exam Traps</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Physical layer: modulation & switching (Chapter Revision & Exam Traps)</strong></span>
+  </div>
+
 
     <div class="callout tip">
       <div class="callout-title">⚡ High-Yield Rapid Review Points</div>

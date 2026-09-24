@@ -814,3 +814,188 @@ details.active-recall[open] summary::before { transform: rotate(90deg); }
   letter-spacing: 0.04em;
 }
 
+/* ================================================================
+   UNIVERSITY SYLLABUS FILTER & TOPIC REQUIREMENT TAGS
+   ================================================================ */
+
+/* Toggle Card in Chapters */
+.uni-mode-toggle-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background: linear-gradient(135deg, rgba(249,115,22,0.12) 0%, rgba(8,145,178,0.05) 100%);
+  border: 1px solid var(--uni-b-hd, rgba(249,115,22,0.5));
+  border-radius: var(--r-xl);
+  padding: 1rem 1.4rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.18);
+}
+.uni-filter-switch {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--bg-elevated);
+  padding: 0.25rem;
+  border-radius: var(--r-full);
+  border: 1px solid var(--bd-default);
+}
+.uni-toggle-btn {
+  background: transparent;
+  border: none;
+  color: var(--tx-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--r-full);
+  cursor: pointer;
+  transition: all var(--t-fast);
+}
+.uni-toggle-btn:hover {
+  color: var(--tx-primary);
+}
+.uni-toggle-btn.active {
+  background: var(--uni-c, #f97316);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 2px 10px rgba(249,115,22,0.35);
+}
+
+/* Requirement Banners on each section */
+.uni-req-banner {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  background: linear-gradient(135deg, rgba(249,115,22,0.12) 0%, rgba(249,115,22,0.03) 100%);
+  border: 1px solid rgba(249,115,22,0.35);
+  border-left: 4px solid var(--uni-c, #f97316);
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+  padding: 0.55rem 0.9rem;
+  margin: 0.75rem 0 1.25rem;
+  font-size: 0.82rem;
+  color: var(--tx-secondary);
+}
+.uni-req-banner strong {
+  color: var(--uni-text, #fdba74);
+  font-weight: 700;
+}
+.uni-req-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: var(--uni-bg-hd, rgba(249,115,22,0.22));
+  color: var(--uni-text, #fdba74);
+  border: 1px solid var(--uni-b-hd, rgba(249,115,22,0.6));
+  font-size: 0.70rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--r-full);
+  white-space: nowrap;
+}
+
+.non-uni-req-banner {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  background: rgba(148,163,184,0.06);
+  border: 1px solid rgba(148,163,184,0.2);
+  border-left: 4px solid #64748b;
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+  padding: 0.5rem 0.85rem;
+  margin: 0.75rem 0 1.25rem;
+  font-size: 0.78rem;
+  color: var(--tx-muted);
+}
+.non-uni-req-banner strong {
+  color: #cbd5e1;
+}
+
+/* TOC Badges */
+.toc-uni-tag {
+  display: inline-block;
+  background: var(--uni-bg-hd, rgba(249,115,22,0.18));
+  color: var(--uni-text, #fdba74);
+  border: 1px solid var(--uni-b-hd, rgba(249,115,22,0.5));
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  margin-left: auto;
+  white-space: nowrap;
+}
+.toc-supp-tag {
+  display: inline-block;
+  background: rgba(148,163,184,0.12);
+  color: #94a3b8;
+  border: 1px solid rgba(148,163,184,0.25);
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+/* Minibook-Wide Uni Mode (body[data-mode="uni"]) Active Rules */
+body[data-mode="uni"] .section-in-uni {
+  position: relative;
+  background: linear-gradient(90deg, rgba(249,115,22,0.035) 0%, transparent 100%);
+  border-left: 3px solid var(--uni-c, #f97316);
+  padding-left: 1.25rem;
+  margin-left: -1.25rem;
+  border-radius: 0 var(--r-lg) var(--r-lg) 0;
+}
+body[data-mode="uni"] .section-not-in-uni {
+  opacity: 0.42;
+  transition: opacity 0.3s ease;
+  border-left: 2px dashed rgba(148,163,184,0.3);
+  padding-left: 1.25rem;
+  margin-left: -1.25rem;
+}
+body[data-mode="uni"] .section-not-in-uni::before {
+  content: "🔬 Supplementary / Deep-Dive Section (Dimmed under Uni Filter — Hover to view)";
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--tx-muted);
+  background: rgba(148,163,184,0.12);
+  border: 1px solid rgba(148,163,184,0.25);
+  border-radius: var(--r-sm);
+  padding: 0.25rem 0.65rem;
+  margin-bottom: 0.85rem;
+}
+body[data-mode="uni"] .uni-req-banner {
+  box-shadow: 0 0 16px rgba(249,115,22,0.18);
+  border-color: rgba(249,115,22,0.6);
+}
+body[data-mode="uni"] .toc-item.not-in-uni {
+  opacity: 0.45;
+}
+body[data-mode="uni"] .toc-item.in-uni {
+  border-left: 3px solid var(--uni-c, #f97316);
+  background: rgba(249,115,22,0.06);
+}
+
+@media (max-width: 640px) {
+  .uni-mode-toggle-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .uni-filter-switch {
+    width: 100%;
+    justify-content: center;
+  }
+  .uni-toggle-btn {
+    flex: 1;
+    text-align: center;
+    padding: 0.45rem 0.6rem;
+    font-size: 0.72rem;
+  }
+}
+
+

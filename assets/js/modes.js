@@ -14,15 +14,23 @@ const ModeManager = (() => {
   function apply(mode) {
     current = mode;
     localStorage.setItem(KEY, mode);
+    document.body.dataset.mode = mode;
+    document.documentElement.dataset.mode = mode;
 
     // Show/hide content divs
     if (mode === 'all') {
       document.querySelectorAll('.mode-uni, .mode-gate, .mode-adv').forEach(el => el.classList.remove('mode-hidden'));
     } else {
-      const { hide } = MODES[mode];
+      const { hide } = MODES[mode] || { hide: [] };
       document.querySelectorAll('.mode-uni, .mode-gate, .mode-adv').forEach(el => el.classList.remove('mode-hidden'));
       hide.forEach(sel => document.querySelectorAll(sel).forEach(el => el.classList.add('mode-hidden')));
     }
+
+    // Toggle in-page Uni syllabus toggle switch buttons
+    document.querySelectorAll('.uni-toggle-btn').forEach(btn => {
+      if (btn.dataset.mode === 'uni' || btn.id === 'filter-uni-btn') btn.classList.toggle('active', mode === 'uni');
+      if (btn.dataset.mode === 'all' || btn.id === 'filter-all-btn') btn.classList.toggle('active', mode === 'all');
+    });
 
     // Filter exam papers
     if (mode === 'uni')  { showPapers('uni'); }
@@ -56,6 +64,10 @@ const ModeManager = (() => {
   function init() {
     // Wire up floating panel buttons
     document.querySelectorAll('.mode-btn').forEach(btn => {
+      btn.addEventListener('click', () => apply(btn.dataset.mode));
+    });
+    // Wire up in-page uni syllabus toggle buttons
+    document.querySelectorAll('.uni-toggle-btn').forEach(btn => {
       btn.addEventListener('click', () => apply(btn.dataset.mode));
     });
     apply(current);

@@ -121,32 +121,53 @@
     <div><strong>Physical Layer:</strong> Signaling fundamentals, analog vs digital signals, transmission impairments, and Nyquist/Shannon channel capacity.</div>
   </div>
 
+    <!-- UNIVERSITY SYLLABUS FILTER SWITCH -->
+  <div class="uni-mode-toggle-card">
+    <div>
+      <div style="font-weight:700; font-size:0.95rem; color:var(--tx-primary); display:flex; align-items:center; gap:0.4rem;">
+        <span>🎓</span> University Exam Focus Filter
+      </div>
+      <div style="font-size:0.8rem; color:var(--tx-muted); margin-top:0.2rem;">
+        Focus specifically on sections prescribed in Delhi University syllabus vs supplementary deep-dives.
+      </div>
+    </div>
+    <div class="uni-filter-switch">
+      <button class="uni-toggle-btn active" id="filter-all-btn" data-mode="all" onclick="ModeManager.apply('all')">📚 Show All Content</button>
+      <button class="uni-toggle-btn" id="filter-uni-btn" data-mode="uni" onclick="ModeManager.apply('uni')">🎓 Focus Uni Syllabus Only</button>
+    </div>
+  </div>
+
   <!-- TABLE OF CONTENTS -->
   <div class="toc-card">
     <div class="toc-title"><span>📑</span>Table of Contents</div>
     <div class="toc-grid">
-      <a href="#s-phy-purpose" class="toc-item"><span class="toc-num">5.1</span>Purpose of Physical Layer</a>
-      <a href="#s-data-signals" class="toc-item"><span class="toc-num">5.2</span>Data vs Signals</a>
-      <a href="#s-periodic" class="toc-item"><span class="toc-num">5.3</span>Periodic vs Non-Periodic Signals</a>
-      <a href="#s-sine-wave" class="toc-item"><span class="toc-num">5.4</span>Sine Wave & Properties</a>
-      <a href="#s-bitrate-baud" class="toc-item"><span class="toc-num">5.5</span>Bit Rate vs Baud Rate</a>
-      <a href="#s-attenuation" class="toc-item"><span class="toc-num">5.6</span>Attenuation & Decibels</a>
-      <a href="#s-distortion" class="toc-item"><span class="toc-num">5.7</span>Distortion</a>
-      <a href="#s-noise" class="toc-item"><span class="toc-num">5.8</span>Noise & Its Types</a>
-      <a href="#s-snr" class="toc-item"><span class="toc-num">5.9</span>Signal-to-Noise Ratio (SNR)</a>
-      <a href="#s-nyquist" class="toc-item"><span class="toc-num">5.10</span>Nyquist Theorem (Noiseless)</a>
-      <a href="#s-shannon" class="toc-item"><span class="toc-num">5.11</span>Shannon's Capacity (Noisy)</a>
-      <a href="#s-numerical-practice" class="toc-item"><span class="toc-num">5.12</span>Worked Numerical Practice</a>
-      <a href="#s-summary-ch5" class="toc-item"><span class="toc-num">5.13</span>Summary & Exam Traps</a>
+      <a href="#s-phy-purpose" class="toc-item in-uni"><span class="toc-num">5.1</span>Purpose of Physical Layer <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-data-signals" class="toc-item in-uni"><span class="toc-num">5.2</span>Data vs Signals <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-periodic" class="toc-item in-uni"><span class="toc-num">5.3</span>Periodic vs Non-Periodic Signals <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-sine-wave" class="toc-item in-uni"><span class="toc-num">5.4</span>Sine Wave & Properties <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-bitrate-baud" class="toc-item in-uni"><span class="toc-num">5.5</span>Bit Rate vs Baud Rate <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-attenuation" class="toc-item in-uni"><span class="toc-num">5.6</span>Attenuation & Decibels <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-distortion" class="toc-item in-uni"><span class="toc-num">5.7</span>Distortion <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-noise" class="toc-item in-uni"><span class="toc-num">5.8</span>Noise & Its Types <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-snr" class="toc-item in-uni"><span class="toc-num">5.9</span>Signal-to-Noise Ratio (SNR) <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-nyquist" class="toc-item in-uni"><span class="toc-num">5.10</span>Nyquist Theorem (Noiseless) <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-shannon" class="toc-item in-uni"><span class="toc-num">5.11</span>Shannon's Capacity (Noisy) <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-numerical-practice" class="toc-item in-uni"><span class="toc-num">5.12</span>Worked Numerical Practice <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-summary-ch5" class="toc-item in-uni"><span class="toc-num">5.13</span>Summary & Exam Traps <span class="toc-uni-tag">🎓 Uni Core</span></a>
     </div>
   </div>
 
   <!-- SECTION 5.1: PURPOSE OF PHYSICAL LAYER -->
-  <section id="s-phy-purpose" class="content-section">
+  <section id="s-phy-purpose" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 5.1</div>
       <h2 class="section-title">Purpose and Specifications of the Physical Layer</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Physical layer: signaling (Physical Layer Functions & Specs)</strong></span>
+  </div>
+
 
     <p>Everything in a computer network—whether it is an email, an HD video stream, or a banking transaction—ultimately consists of abstract mathematical bits ($0\text{s}$ and $1\text{s}$). However, copper wires, fiber-optic glass cables, and the wireless atmosphere cannot transport abstract numbers; they can only transport <strong>physical energy</strong> (voltages, light pulses, or electromagnetic waves). The primary objective of the Physical Layer is to bridge this gap.</p>
 
@@ -193,11 +214,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 5.2: DATA VS SIGNALS -->
-  <section id="s-data-signals" class="content-section">
+  <section id="s-data-signals" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 5.2</div>
       <h2 class="section-title">Data vs Signals (The Four Transmission Combinations) <span class="uni-syllabus-badge">🎓 Uni: Signaling Fundamentals</span></h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Physical layer: signaling (Analog vs Digital Data and Signals)</strong></span>
+  </div>
+
 
     <p>Students frequently conflate <strong>Data</strong> with <strong>Signals</strong>. In computer science and telecommunications, they represent fundamentally different concepts:</p>
 
@@ -251,11 +277,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 5.3: PERIODIC VS NON-PERIODIC -->
-  <section id="s-periodic" class="content-section">
+  <section id="s-periodic" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 5.3</div>
       <h2 class="section-title">Periodic vs Non-Periodic & Composite Signals</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Physical layer: signaling (Periodic vs Non-Periodic & Composite Signals)</strong></span>
+  </div>
+
 
     <p>A signal can be categorized as <strong>periodic</strong> or <strong>non-periodic (aperiodic)</strong>:</p>
     <ul>
@@ -272,11 +303,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 5.4: SINE WAVE PROPERTIES -->
-  <section id="s-sine-wave" class="content-section">
+  <section id="s-sine-wave" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 5.4</div>
       <h2 class="section-title">Sine Wave Properties & Fundamental Formulas</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Physical layer: signaling (Sine Wave: Amplitude, Frequency, Phase)</strong></span>
+  </div>
+
 
     <p>The <strong>sine wave</strong> is the fundamental building block of all analog and electromagnetic communications. A general sine wave is represented mathematically as:</p>
 
@@ -364,11 +400,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 5.5: BIT RATE VS BAUD RATE -->
-  <section id="s-bitrate-baud" class="content-section">
+  <section id="s-bitrate-baud" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 5.5</div>
       <h2 class="section-title">Bit Rate vs Baud Rate (Signaling Rate)</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Physical layer: signaling (Bit Rate vs Baud Rate Formulation)</strong></span>
+  </div>
+
 
     <p>A classic, high-frequency trap in university exams and competitive tests is the fundamental distinction between <strong>Bit Rate</strong> and <strong>Baud Rate</strong> (Modulation Rate).</p>
 
@@ -419,11 +460,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 5.6: ATTENUATION -->
-  <section id="s-attenuation" class="content-section">
+  <section id="s-attenuation" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 5.6</div>
       <h2 class="section-title">Transmission Impairment 1: Attenuation & Decibels</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Physical layer: signaling (Transmission Impairment 1: Attenuation & Decibels)</strong></span>
+  </div>
+
 
     <p>Signals traveling through any transmission medium experience <strong>three fundamental physical impairments</strong>: 1. Attenuation, 2. Distortion, and 3. Noise.</p>
 
@@ -459,11 +505,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 5.7: DISTORTION -->
-  <section id="s-distortion" class="content-section">
+  <section id="s-distortion" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 5.7</div>
       <h2 class="section-title">Transmission Impairment 2: Distortion & Dispersion</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Physical layer: signaling (Transmission Impairment 2: Distortion & Dispersion)</strong></span>
+  </div>
+
 
     <div class="def-box">
       <div class="def-term">2. Distortion</div>
@@ -479,11 +530,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 5.8: NOISE -->
-  <section id="s-noise" class="content-section">
+  <section id="s-noise" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 5.8</div>
       <h2 class="section-title">Transmission Impairment 3: Noise & Its Types</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Physical layer: signaling (Transmission Impairment 3: Thermal & Induced Noise)</strong></span>
+  </div>
+
 
     <div class="def-box">
       <div class="def-term">3. Noise</div>
@@ -527,11 +583,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 5.9: SNR -->
-  <section id="s-snr" class="content-section">
+  <section id="s-snr" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 5.9</div>
       <h2 class="section-title">Signal-to-Noise Ratio (SNR & SNR_dB)</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Physical layer: signaling (Signal-to-Noise Ratio & SNR_dB)</strong></span>
+  </div>
+
 
     <p>To quantify the quality and fidelity of a communication channel, engineers calculate the <strong>Signal-to-Noise Ratio (SNR)</strong>.</p>
 
@@ -558,11 +619,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 5.10: NYQUIST THEOREM -->
-  <section id="s-nyquist" class="content-section">
+  <section id="s-nyquist" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 5.10</div>
       <h2 class="section-title">Nyquist Bit Rate Theorem (Noiseless Channel) <span class="uni-syllabus-badge">🎓 Uni: Channel Capacity</span></h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Physical layer: signaling (Nyquist Bit Rate Theorem for Noiseless Channels)</strong></span>
+  </div>
+
 
     <p>In 1928, Harry Nyquist published a seminal theorem that establishes the absolute theoretical maximum data rate of a <strong>noiseless (ideal) communication channel</strong> with bandwidth $B$.</p>
 
@@ -603,11 +669,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 5.11: SHANNON CAPACITY -->
-  <section id="s-shannon" class="content-section">
+  <section id="s-shannon" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 5.11</div>
       <h2 class="section-title">Shannon Capacity Theorem (Noisy Channel) <span class="uni-syllabus-badge">🎓 Uni: Shannon Capacity</span></h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Physical layer: signaling (Shannon Capacity Theorem for Noisy Channels)</strong></span>
+  </div>
+
 
     <p>In the real world, a completely noiseless channel does not exist. In 1948, Claude Shannon published his legendary foundation of Information Theory, introducing the <strong>Shannon Capacity Formula</strong>. This formula establishes the insurmountable, hard physical upper limit on the data rate of any real-world channel subject to thermal (white) noise, regardless of how many signal levels ($L$) you attempt to use!</p>
 
@@ -648,11 +719,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 5.12: WORKED NUMERICAL PRACTICE -->
-  <section id="s-numerical-practice" class="content-section">
+  <section id="s-numerical-practice" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 5.12</div>
       <h2 class="section-title">Comprehensive Worked Numerical Practice (GATE / Exam Level)</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Physical layer: signaling (Worked Numerical Problems on Capacity)</strong></span>
+  </div>
+
 
     <p>In advanced competitive exams like GATE and university finals, questions combine both Nyquist and Shannon theorems to test deep conceptual mastery.</p>
 
@@ -725,11 +801,16 @@
   <hr class="section-hr">
 
   <!-- SECTION 5.13: SUMMARY & EXAM TRAPS -->
-  <section id="s-summary-ch5" class="content-section">
+  <section id="s-summary-ch5" class="section-in-uni content-section">
     <div class="section-header">
       <div class="section-tag">Section 5.13</div>
       <h2 class="section-title">Chapter Summary & High-Yield Exam Traps</h2>
     </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Physical layer: signaling (Chapter Revision & Exam Traps)</strong></span>
+  </div>
+
 
     <div class="callout tip">
       <div class="callout-title">⚡ High-Yield Rapid Review Points</div>

@@ -114,16 +114,32 @@
     <div><strong>Introduction to Computer Networks:</strong> Overview of computer networks and their importance, communication components, criteria, protocols, standards, and encapsulation.</div>
   </div>
 
+    <!-- UNIVERSITY SYLLABUS FILTER SWITCH -->
+  <div class="uni-mode-toggle-card">
+    <div>
+      <div style="font-weight:700; font-size:0.95rem; color:var(--tx-primary); display:flex; align-items:center; gap:0.4rem;">
+        <span>🎓</span> University Exam Focus Filter
+      </div>
+      <div style="font-size:0.8rem; color:var(--tx-muted); margin-top:0.2rem;">
+        Focus specifically on sections prescribed in Delhi University syllabus vs supplementary deep-dives.
+      </div>
+    </div>
+    <div class="uni-filter-switch">
+      <button class="uni-toggle-btn active" id="filter-all-btn" data-mode="all" onclick="ModeManager.apply('all')">📚 Show All Content</button>
+      <button class="uni-toggle-btn" id="filter-uni-btn" data-mode="uni" onclick="ModeManager.apply('uni')">🎓 Focus Uni Syllabus Only</button>
+    </div>
+  </div>
+
   <!-- TABLE OF CONTENTS -->
   <div class="toc-card reveal">
     <h3>📋 Table of Contents</h3>
     <div class="toc-list">
-      <a href="#s-definition" class="toc-item"><span class="toc-num">1.1</span>What is a Computer Network?</a>
-      <a href="#s-components" class="toc-item"><span class="toc-num">1.2</span>Basic Network Components</a>
-      <a href="#s-criteria" class="toc-item"><span class="toc-num">1.3</span>Network Criteria</a>
-      <a href="#s-protocols" class="toc-item"><span class="toc-num">1.4</span>Protocols and Standards</a>
-      <a href="#s-encapsulation" class="toc-item"><span class="toc-num">1.5</span>Encapsulation & Decapsulation</a>
-      <a href="#s-terminology" class="toc-item"><span class="toc-num">1.6</span>Networking Terminology</a>
+      <a href="#s-definition" class="toc-item in-uni"><span class="toc-num">1.1</span>What is a Computer Network? <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-components" class="toc-item in-uni"><span class="toc-num">1.2</span>Basic Network Components <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-criteria" class="toc-item in-uni"><span class="toc-num">1.3</span>Network Criteria <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-protocols" class="toc-item in-uni"><span class="toc-num">1.4</span>Protocols and Standards <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-encapsulation" class="toc-item in-uni"><span class="toc-num">1.5</span>Encapsulation & Decapsulation <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-terminology" class="toc-item in-uni"><span class="toc-num">1.6</span>Networking Terminology <span class="toc-uni-tag">🎓 Uni Core</span></a>
     </div>
   </div>
 
@@ -146,12 +162,17 @@
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 1.1 — WHAT IS A COMPUTER NETWORK? -->
 <!-- ═══════════════════════════════════════════════════════ -->
-<section id="s-definition" data-search-section="What is a computer network definition importance goals resource sharing communication reliability scalability performance cost">
+<section id="s-definition" data-search-section="What is a computer network definition importance goals resource sharing communication reliability scalability performance cost" class="section-in-uni">
   <div class="section-heading">
     <h2 class="prose">1.1 What is a Computer Network?
       <button class="bookmark-btn" data-id="s-definition" data-label="1.1 What is a Computer Network?" title="Bookmark">🔖</button>
     </h2>
   </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Overview of computer networks and their importance</strong></span>
+  </div>
+
 
   <div class="prose">
 
@@ -241,12 +262,17 @@
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 1.2 — BASIC NETWORK COMPONENTS -->
 <!-- ═══════════════════════════════════════════════════════ -->
-<section id="s-components" data-search-section="network components sender receiver message medium protocol data communication model five components">
+<section id="s-components" data-search-section="network components sender receiver message medium protocol data communication model five components" class="section-in-uni">
   <div class="section-heading">
     <h2 class="prose">1.2 Basic Network Components
       <button class="bookmark-btn" data-id="s-components" data-label="1.2 Basic Network Components" title="Bookmark">🔖</button>
     </h2>
   </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Overview of computer networks (5 Components of Data Communication)</strong></span>
+  </div>
+
 
   <div class="prose">
 
@@ -341,12 +367,17 @@
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 1.3 — NETWORK CRITERIA -->
 <!-- ═══════════════════════════════════════════════════════ -->
-<section id="s-criteria" data-search-section="network criteria performance reliability security throughput latency delay transit time response time">
+<section id="s-criteria" data-search-section="network criteria performance reliability security throughput latency delay transit time response time" class="section-in-uni">
   <div class="section-heading">
     <h2 class="prose">1.3 Network Criteria
       <button class="bookmark-btn" data-id="s-criteria" data-label="1.3 Network Criteria" title="Bookmark">🔖</button>
     </h2>
   </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Overview of computer networks (Performance, Reliability, Security Criteria)</strong></span>
+  </div>
+
 
   <div class="prose">
 
@@ -439,12 +470,17 @@
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 1.4 — PROTOCOLS AND STANDARDS -->
 <!-- ═══════════════════════════════════════════════════════ -->
-<section id="s-protocols" data-search-section="protocol standards de jure de facto ISO IEEE ITU IETF RFC protocol stack rules syntax semantics timing">
+<section id="s-protocols" data-search-section="protocol standards de jure de facto ISO IEEE ITU IETF RFC protocol stack rules syntax semantics timing" class="section-in-uni">
   <div class="section-heading">
     <h2 class="prose">1.4 Protocols and Standards
       <button class="bookmark-btn" data-id="s-protocols" data-label="1.4 Protocols and Standards" title="Bookmark">🔖</button>
     </h2>
   </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Overview of computer networks (Protocols, De Facto & De Jure Standards)</strong></span>
+  </div>
+
 
   <div class="prose">
 
@@ -572,12 +608,17 @@
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 1.5 — ENCAPSULATION & DECAPSULATION -->
 <!-- ═══════════════════════════════════════════════════════ -->
-<section id="s-encapsulation" data-search-section="encapsulation decapsulation PDU protocol data unit header trailer data segment packet frame bits layering">
+<section id="s-encapsulation" data-search-section="encapsulation decapsulation PDU protocol data unit header trailer data segment packet frame bits layering" class="section-in-uni">
   <div class="section-heading">
     <h2 class="prose">1.5 Encapsulation & Decapsulation
       <button class="bookmark-btn" data-id="s-encapsulation" data-label="1.5 Encapsulation & Decapsulation" title="Bookmark">🔖</button>
     </h2>
   </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Overview of computer networks (Protocol Data Units & Encapsulation)</strong></span>
+  </div>
+
 
   <div class="prose">
 
@@ -671,12 +712,17 @@
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 1.6 — NETWORKING TERMINOLOGY -->
 <!-- ═══════════════════════════════════════════════════════ -->
-<section id="s-terminology" data-search-section="networking terminology node host link packet frame segment datagram bandwidth throughput latency jitter RTT round trip time hop delay propagation transmission queuing processing">
+<section id="s-terminology" data-search-section="networking terminology node host link packet frame segment datagram bandwidth throughput latency jitter RTT round trip time hop delay propagation transmission queuing processing" class="section-in-uni">
   <div class="section-heading">
     <h2 class="prose">1.6 Networking Terminology
       <button class="bookmark-btn" data-id="s-terminology" data-label="1.6 Networking Terminology" title="Bookmark">🔖</button>
     </h2>
   </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Required for syllabus topic: <strong>Overview of computer networks (Bandwidth, Throughput, Latency, Jitter, RTT)</strong></span>
+  </div>
+
 
   <div class="prose">
 
