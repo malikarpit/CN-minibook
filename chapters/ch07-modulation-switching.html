@@ -5,7 +5,7 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="author" content="Arpit">
 <meta name="description" content="Chapter 7: Modulation, Multiplexing & Switching — CN MiniBook. ASK, FSK, PSK, QPSK, QAM, FDM, TDM, WDM, Circuit switching, Packet switching, Datagram vs Virtual Circuit.">
-<title>Ch 7 — Modulation, Multiplexing & Switching | CN MiniBook 🌐 Arpit</title>
+<title>Ch 7 — Modulation, Multiplexing &amp; Switching | CN MiniBook 🌐 Arpit</title>
 <link rel="manifest" href="../manifest.json">
 <link rel="stylesheet" href="../assets/css/main.css">
 <link rel="stylesheet" href="../assets/css/components.css">
@@ -27,7 +27,7 @@
       <div class="brand-text"><span class="main">CN MiniBook</span><span class="sub">Computer Networks</span></div>
     </div>
   </div>
-  <span class="header-chapter-title">Ch 7 — Modulation & Switching</span>
+  <span class="header-chapter-title">Ch 7 — Modulation &amp; Switching</span>
   <div class="header-right">
     <button id="search-btn" class="icon-btn" title="Search (Ctrl+K)">
       <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.35-4.35"></path></svg>
@@ -55,7 +55,7 @@
       <a href="#s-mod-need" class="sidebar-link active"><span class="link-icon">📻</span>7.1 Why Modulation?</a>
       <a href="#s-ask" class="sidebar-link"><span class="link-icon">📊</span>7.2 ASK (Amplitude Shift)</a>
       <a href="#s-fsk" class="sidebar-link"><span class="link-icon">〰️</span>7.3 FSK (Frequency Shift)</a>
-      <a href="#s-psk" class="sidebar-link"><span class="link-icon">🔄</span>7.4 PSK & BPSK</a>
+      <a href="#s-psk" class="sidebar-link"><span class="link-icon">🔄</span>7.4 PSK &amp; BPSK</a>
       <a href="#s-qpsk" class="sidebar-link"><span class="link-icon">✦</span>7.5 QPSK (4-Phase)</a>
       <a href="#s-qam" class="sidebar-link"><span class="link-icon">✨</span>7.6 QAM (Constellations)</a>
       <a href="#s-mod-compare" class="sidebar-link"><span class="link-icon">⚖️</span>7.7 Modulation Comparison</a>
@@ -65,14 +65,14 @@
       <a href="#s-wdm" class="sidebar-link"><span class="link-icon">💡</span>7.11 WDM (Optical Division)</a>
       <a href="#s-mux-compare" class="sidebar-link"><span class="link-icon">📊</span>7.12 Multiplexing Comparison</a>
       <a href="#s-switching-intro" class="sidebar-link"><span class="link-icon">🔀</span>7.13 Why Switching?</a>
-      <a href="#s-circuit-switching" class="sidebar-link"><span class="link-icon">📞</span>7.14 Circuit Switching <span class="uni-syllabus-badge">🎓 Uni: Circuit Switching</span></a>
+      <a href="#s-circuit-switching" class="sidebar-link"><span class="link-icon">📞</span>7.14 Circuit Switching</a>
       <a href="#s-packet-switching" class="sidebar-link"><span class="link-icon">📦</span>7.15 Packet Switching</a>
       <a href="#s-datagram-vc" class="sidebar-link"><span class="link-icon">🗺️</span>7.16 Datagram vs Virtual Circuit</a>
       <a href="#s-message-switching" class="sidebar-link"><span class="link-icon">✉️</span>7.17 Message Switching</a>
       <a href="#s-switch-compare" class="sidebar-link"><span class="link-icon">🏆</span>7.18 Switching Master Comparison</a>
-      <a href="#s-summary-ch7" class="sidebar-link"><span class="link-icon">🎯</span>7.19 Summary & Exam Traps</a>
+      <a href="#s-summary-ch7" class="sidebar-link"><span class="link-icon">🎯</span>7.19 Summary &amp; Exam Traps</a>
     </div>
-                <div class="sidebar-section">
+    <div class="sidebar-section">
       <div class="sidebar-section-label part-label part-i">Part I — Introduction</div>
       <a href="ch01-fundamentals.html" class="sidebar-link"><span class="link-icon">📡</span>Ch 1 — Fundamentals</a>
       <a href="ch02-types-topologies.html" class="sidebar-link"><span class="link-icon">🔗</span>Ch 2 — Types &amp; Topologies</a>
@@ -91,6 +91,18 @@
       <a href="ch09-protocols-sliding.html" class="sidebar-link"><span class="link-icon">🔄</span>Ch 9 — Protocols &amp; Sliding Window</a>
       <a href="ch10-mac-ethernet.html" class="sidebar-link"><span class="link-icon">🌐</span>Ch 10 — MAC &amp; Ethernet</a>
     </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label part-label part-iv">Part IV — Network Layer</div>
+      <a href="ch11-network-layer-foundations.html" class="sidebar-link"><span class="link-icon">🗺️</span>Ch 11 — Network Layer Foundations</a>
+      <a href="ch12-shortest-path-routing.html" class="sidebar-link"><span class="link-icon">🧭</span>Ch 12 — Shortest Path Routing</a>
+      <a href="ch13-link-state-distance-vector.html" class="sidebar-link part-iv"><span class="link-icon">🔁</span>Ch 13 — Link-State &amp; Distance-Vector</a>
+      <a href="ch14-logical-addressing-ipv4.html" class="sidebar-link part-iv"><span class="link-icon">🏷️</span>Ch 14 — Logical Addressing &amp; IPv4</a>
+      <a href="ch15-ipv4-internals.html" class="sidebar-link part-iv"><span class="link-icon">📦</span>Ch 15 — IPv4 Internals</a>
+      
+      <a href="ch17-address-mapping-icmp.html" class="sidebar-link part-iv"><span class="link-icon">🔎</span>Ch 17 — Address Mapping &amp; ICMP</a>
+      <a href="ch18-routers-switches-firewalls.html" class="sidebar-link part-iv"><span class="link-icon">🛡️</span>Ch 18 — Routers, Switches &amp; Firewalls</a>
+    </div>
+
     <div class="sidebar-section">
       <div class="sidebar-section-label">My Notes</div>
       <div id="notes-sidebar-list"></div>
@@ -111,27 +123,27 @@
       <a href="../index.html">Home</a><span>›</span><span>Part II — Physical Layer</span><span>›</span><span style="color:var(--tx-primary)">Chapter 7</span>
     </div>
     <div class="chapter-num">📻 Chapter 7 · Part II — Physical Layer</div>
-        <div class="chapter-part-banner part-ii">
+    <div class="chapter-part-banner part-ii">
       <span class="part-banner-badge">Part II</span>
       <span>Physical Layer</span>
     </div>
-    <h1 class="chapter-title">Modulation, Multiplexing & Switching</h1>
+    <h1 class="chapter-title">Modulation, Multiplexing &amp; Switching</h1>
     <div class="chapter-meta">
-      <span class="chapter-meta-item" style="background:var(--uni-bg-hd); border-color:var(--uni-b-hd); color:var(--uni-text); font-weight:700;">🎓 Uni Syllabus: Modulation & Switching</span>
+      <span class="chapter-meta-item" style="background:var(--uni-bg-hd); border-color:var(--uni-b-hd); color:var(--uni-text); font-weight:700;">🎓 Uni Syllabus: Modulation &amp; Switching</span>
       <span>⏱️ 60 min read</span>
       <span>📚 19 Sections</span>
       <span>🎓 Complete Communications Theory</span>
-      <span>⚡ QAM, DWDM, Virtual Circuits & Datagrams</span>
+      <span>⚡ QAM, DWDM, Virtual Circuits &amp; Datagrams</span>
     </div>
   </div>
 
   <!-- UNIVERSITY SYLLABUS CALLOUT -->
   <div class="uni-syllabus-callout">
     <div class="uni-callout-title">🎓 Official University Syllabus Focus</div>
-    <div><strong>Physical Layer:</strong> Modulation and demodulation (ASK, FSK, PSK, QAM) and Switching (Circuit, Datagram, Virtual Circuit).</div>
+    <div><strong>Physical Layer:</strong> Modulation and demodulation (ASK, FSK, PSK, QAM), Multiplexing (FDM, TDM, WDM), and Switching (Circuit, Packet, Datagram vs Virtual Circuit).</div>
   </div>
 
-    <!-- UNIVERSITY SYLLABUS FILTER SWITCH -->
+  <!-- UNIVERSITY SYLLABUS FILTER SWITCH -->
   <div class="uni-mode-toggle-card">
     <div>
       <div style="font-weight:700; font-size:0.95rem; color:var(--tx-primary); display:flex; align-items:center; gap:0.4rem;">
@@ -155,7 +167,7 @@
       <a href="#s-mod-need" class="toc-item in-uni"><span class="toc-num">7.1</span>Why Modulation? <span class="toc-uni-tag">🎓 Uni Core</span></a>
       <a href="#s-ask" class="toc-item in-uni"><span class="toc-num">7.2</span>ASK (Amplitude Shift Keying) <span class="toc-uni-tag">🎓 Uni Core</span></a>
       <a href="#s-fsk" class="toc-item in-uni"><span class="toc-num">7.3</span>FSK (Frequency Shift Keying) <span class="toc-uni-tag">🎓 Uni Core</span></a>
-      <a href="#s-psk" class="toc-item in-uni"><span class="toc-num">7.4</span>PSK & BPSK <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-psk" class="toc-item in-uni"><span class="toc-num">7.4</span>PSK &amp; BPSK <span class="toc-uni-tag">🎓 Uni Core</span></a>
       <a href="#s-qpsk" class="toc-item in-uni"><span class="toc-num">7.5</span>QPSK (Quadrature PSK) <span class="toc-uni-tag">🎓 Uni Core</span></a>
       <a href="#s-qam" class="toc-item in-uni"><span class="toc-num">7.6</span>QAM (Constellations) <span class="toc-uni-tag">🎓 Uni Core</span></a>
       <a href="#s-mod-compare" class="toc-item in-uni"><span class="toc-num">7.7</span>Modulation Master Comparison <span class="toc-uni-tag">🎓 Uni Core</span></a>
@@ -170,699 +182,978 @@
       <a href="#s-datagram-vc" class="toc-item in-uni"><span class="toc-num">7.16</span>Datagram vs Virtual Circuit <span class="toc-uni-tag">🎓 Uni Core</span></a>
       <a href="#s-message-switching" class="toc-item in-uni"><span class="toc-num">7.17</span>Message Switching <span class="toc-uni-tag">🎓 Uni Core</span></a>
       <a href="#s-switch-compare" class="toc-item in-uni"><span class="toc-num">7.18</span>Switching Master Comparison <span class="toc-uni-tag">🎓 Uni Core</span></a>
-      <a href="#s-summary-ch7" class="toc-item in-uni"><span class="toc-num">7.19</span>Summary & Exam Traps <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-summary-ch7" class="toc-item in-uni"><span class="toc-num">7.19</span>Summary &amp; Exam Traps <span class="toc-uni-tag">🎓 Uni Core</span></a>
     </div>
   </div>
 
-  <!-- SECTION 7.1: WHY MODULATION -->
-  <section id="s-mod-need" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 7.1</div>
-      <h2 class="section-title">Why Modulation? (Baseband vs Passband Transmission) <span class="uni-syllabus-badge">🎓 Uni: Modulation & Demodulation</span></h2>
+  <!-- LEARNING OBJECTIVES CALLOUT -->
+  <div class="callout info" style="margin-bottom:var(--sp-6);border-left:4px solid var(--accent-border)">
+    <span class="callout-icon">🎯</span>
+    <div><strong>After studying this chapter you will be able to:</strong>
+      <ul style="margin:6px 0 0;padding-left:18px">
+        <li>Explain why digital baseband data must be modulated for passband transmission and derive the antenna length formula $L = \lambda/4 = c/(4f)$.</li>
+        <li>Compare the four digital-to-analog modulation families: ASK, FSK, PSK (BPSK/QPSK), and QAM.</li>
+        <li>Analyze constellation diagrams and calculate bits per symbol ($r = \log_2 M$) and baud rates.</li>
+        <li>Distinguish Frequency Division Multiplexing (FDM), Time Division Multiplexing (Synchronous vs. Statistical TDM), and Wavelength Division Multiplexing (WDM/DWDM).</li>
+        <li>Differentiate Circuit Switching, Packet Switching, and historical Message Switching across setup delay, resource dedication, and network utilization.</li>
+        <li>Compare Datagram (Connectionless) packet switching with Virtual Circuit (Connection-Oriented) packet switching.</li>
+      </ul>
     </div>
+  </div>
+
+  <!-- STUDY PATH -->
+  <div class="study-path">
+    <strong>🧭 How to study this chapter (Signaling to Routing Mechanics):</strong>
+    <div class="path">
+      <span>1. Why Modulation &amp; Antenna Physics</span> → 
+      <span>2. Digital Modulation (ASK, FSK, PSK, QAM)</span> → 
+      <span>3. Multiplexing (FDM, TDM, WDM)</span> → 
+      <span>4. Switching Paradigms (Circuit vs Packet Switching)</span> → 
+      <span>5. Datagram vs Virtual Circuit Pipeline</span>
+    </div>
+    <div style="margin-top:.65rem;color:var(--tx-muted);font-size:.84rem"><strong>Exam Lens:</strong> Sections 7.1 to 7.7 (Digital Modulation) and 7.13 to 7.16 (Switching Mechanisms) represent the core syllabus topics marked <code>data-midsem="core"</code>.</div>
+  </div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 7.1 — WHY MODULATION -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-mod-need" data-midsem="core" data-exam-priority="core" data-search-section="Why modulation baseband passband antenna length wavelength carrier frequency" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">7.1 Why Modulation? (Baseband vs. Passband)
+      <button class="bookmark-btn" data-id="s-mod-need" data-label="7.1 Why Modulation?" title="Bookmark">🔖</button>
+    </h2>
+  </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: modulation and demodulation (Baseband vs Passband Need)</strong></span>
+    <span>Prescribed syllabus topic: <strong>Physical Layer: Modulation Need (Baseband vs Passband Channels)</strong></span>
   </div>
 
-
-    <p>In Chapter 6, we studied <strong>Baseband Transmission</strong>: sending digital pulses directly over a cable (e.g., Ethernet over UTP). However, baseband transmission requires a low-pass channel with a spectrum starting near $0\text{ Hz}$. Many critical media—such as the wireless air atmosphere, satellite links, and cable TV networks—are <strong>bandpass channels</strong> that cannot propagate low-frequency baseband signals. To transmit digital information over these media, we must perform <strong>Digital Modulation</strong> (Passband Transmission).</p>
-
+  <div class="prose">
     <div class="def-box">
-      <div class="def-term">Digital-to-Analog Modulation</div>
-      <p class="def-body">The process of systematically altering one or more fundamental characteristics (Amplitude, Frequency, or Phase) of a high-frequency analog <strong>carrier signal</strong> according to the digital binary data bits being transmitted.</p>
+      <div class="def-term">Modulation — Definition &amp; Core Objective</div>
+      <strong>Modulation</strong> is the systematic modification of one or more fundamental characteristics (amplitude, frequency, or phase) of a high-frequency analog <strong>carrier wave</strong> in accordance with the instantaneous values of a digital or analog information-bearing signal (the <strong>baseband modulating signal</strong>).
     </div>
 
-    <h3>The Three Imperative Reasons for Modulation</h3>
-    <ol>
-      <li><strong>Antenna Practicality ($\lambda/4$ Rule):</strong> Electromagnetic physics dictates that an efficient transmitting antenna must have a physical length equal to at least one-quarter of the signal's wavelength:
-      $$\text{Length} \ge \frac{\lambda}{4} = \frac{c}{4f}$$
-      If you tried to transmit human baseband voice ($f \approx 3\text{ kHz}$) directly through the air, the required antenna would be:
-      $$\text{Length} = \frac{3 \times 10^8}{4 \times 3000} = \mathbf{25,000\text{ meters}}\ (25\text{ kilometers tall!})$$
-      By modulating the data onto a high-frequency carrier (e.g., $f_c = 2.4\text{ GHz}$ for Wi-Fi), the antenna shrinks to just <strong>$3.1\text{ centimeters}$</strong>, fitting easily inside a smartphone!</li>
-      <li><strong>Frequency Multiplexing:</strong> Modulation shifts baseband signals to different distinct carrier frequencies, allowing thousands of radio stations, TV channels, or cellular calls to share the air simultaneously without collision.</li>
-      <li><strong>Noise Immunity & Range:</strong> High-frequency modulated carriers penetrate the atmosphere with far less power loss than low-frequency baseband signals.</li>
-    </ol>
-  </section>
-  <hr class="section-hr">
+    <h3>Baseband vs. Passband Transmission</h3>
+    <ul>
+      <li><strong>Baseband Transmission:</strong> Sending a digital signal directly over a channel without frequency shifting. Requires a <strong>low-pass channel</strong> (a physical wire or optical fiber with bandwidth starting from $0\ \text{Hz}$). Impossible over wireless radio or bandpass media.</li>
+      <li><strong>Passband (Broadband) Transmission:</strong> Shifting the baseband signal up to a higher frequency band around a carrier frequency $f_c$. Required whenever the physical medium is a <strong>bandpass channel</strong> (air, satellite, cable TV coaxial systems, or telephone local loops).</li>
+    </ul>
 
-  <!-- SECTION 7.2: ASK -->
-  <section id="s-ask" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 7.2</div>
-      <h2 class="section-title">Amplitude Shift Keying (ASK & OOK)</h2>
+    <h3>The Antenna Length Physics Derivation</h3>
+    <p>In wireless communications, electromagnetic waves radiate efficiently only when the physical transmitting and receiving antenna length $L$ is on the order of a quarter of the signal wavelength ($\lambda / 4$):</p>
+    $$L = \frac{\lambda}{4} = \frac{c}{4f}$$
+    <p>where $c \approx 3 \times 10^8\ \text{m/s}$ is the speed of light, and $f$ is the signal frequency.</p>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">Why Modulation is Physically Mandatory</span></div>
+      <pre><code>
+   SCENARIO 1: Direct Baseband Transmission of Voice (f = 3 kHz)
+   λ = c / f = (3 × 10^8 m/s) / 3,000 Hz = 100,000 meters = 100 km!
+   Antenna Length L = λ / 4 = 100 km / 4 = 25 KILOMETERS!
+   (A 25 km antenna is physically and economically impossible!)
+
+   SCENARIO 2: Modulating Voice onto a 5G / Wi-Fi Carrier (f = 3 GHz)
+   λ = c / f = (3 × 10^8 m/s) / (3 × 10^9 Hz) = 0.1 meters = 10 cm!
+   Antenna Length L = λ / 4 = 10 cm / 4 = 2.5 CENTIMETERS!
+   (Easily fits inside a sleek smartphone!)
+      </code></pre>
     </div>
+
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 7.1</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 5, Section 5.1: "Digital-to-Analog Conversion Overview".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Stallings (10th Ed):</strong> Chapter 5, Section 5.2: "Digital Data, Analog Signals".</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 7.2 — ASK -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-ask" data-midsem="core" data-exam-priority="core" data-search-section="ASK amplitude shift keying OOK on off keying carrier modulation noise vulnerability" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">7.2 Amplitude Shift Keying (ASK &amp; OOK)
+      <button class="bookmark-btn" data-id="s-ask" data-label="7.2 Amplitude Shift Keying" title="Bookmark">🔖</button>
+    </h2>
+  </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: modulation and demodulation (Amplitude Shift Keying — ASK & OOK)</strong></span>
+    <span>Prescribed syllabus topic: <strong>Digital Modulation — Amplitude Shift Keying (ASK &amp; OOK)</strong></span>
   </div>
 
-
-    <p>In <strong>Amplitude Shift Keying (ASK)</strong>, the amplitude of the high-frequency carrier wave is varied to represent binary $1\text{s}$ and $0\text{s}$, while the carrier's frequency and phase remain strictly constant.</p>
-
+  <div class="prose">
     <div class="def-box">
-      <div class="def-term">Binary ASK / On-Off Keying (OOK)</div>
-      <p class="def-body">
-        The simplest form of ASK is On-Off Keying (OOK):<br>
-        • <strong>Bit 1:</strong> Transmit carrier wave at full amplitude $A$: $s(t) = A \cos(2\pi f_c t)$<br>
-        • <strong>Bit 0:</strong> Transmit zero carrier wave (silence): $s(t) = 0$
-      </p>
+      <div class="def-term">Amplitude Shift Keying (ASK) — Definition</div>
+      In <strong>Amplitude Shift Keying (ASK)</strong>, the amplitude of the high-frequency analog carrier wave is varied to represent binary data, while its frequency and phase remain strictly constant:
+      $$s(t) = \begin{cases} A_1 \sin(2\pi f_c t) & \text{for bit } 1 \\ A_2 \sin(2\pi f_c t) & \text{for bit } 0 \end{cases}$$
+      When $A_2 = 0$ (the carrier is simply turned on and off), it is called <strong>On-Off Keying (OOK)</strong>.
     </div>
 
-    <div class="diagram-box">
-      <div class="diagram-title">Figure 7.1: ASK (OOK) Waveform for Bit Sequence [ 1 0 1 1 0 ]</div>
-      <pre>
-   Bit Stream: |   1   |   0   |   1   |   1   |   0   |
-   -----------------------------------------------------
-   Carrier:    |/\/\/\/|       |/\/\/\/|/\/\/\/|       |
-               |/\/\/\/|       |/\/\/\/|/\/\/\/|       |
-               (Wave)   (Quiet) (Wave)  (Wave)  (Quiet)
-      </pre>
-    </div>
+    <h3>Bandwidth Requirement &amp; Severe Limitation</h3>
+    <ul>
+      <li><strong>Required Bandwidth:</strong> $B = (1 + d) \times S$, where $S$ is the baud rate and $d$ is a factor related to modulation filtering ($0 \le d \le 1$).</li>
+      <li><strong>Severe Limitation:</strong> Highly susceptible to noise. Transmission impairments (thermal noise, atmospheric interference, line resistance) affect signal <strong>amplitude</strong> first and foremost. Consequently, pure ASK is rarely used over long-distance radio channels, but remains standard in optical fiber (where lasers are pulsed on and off).</li>
+    </ul>
 
-    <div class="callout danger">
-      <div class="callout-title">⚠️ The Crippling Weakness of ASK: Noise Susceptibility</div>
-      <p>Natural and man-made electrical noise (lightning, sparks, atmospheric attenuation) primarily affects the <strong>amplitude</strong> of an electromagnetic wave. Because ASK encodes data in amplitude variations, noise easily alters the signal level, causing bit errors. As a result, pure ASK is rarely used in wireless communications today, though it remains widely used in <strong>optical fiber links</strong> (laser light turned ON/OFF).</p>
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 7.2</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 5, Section 5.1.1: "Amplitude Shift Keying".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Stallings (10th Ed):</strong> Chapter 5, Section 5.2: "Amplitude Shift Keying".</li>
+      </ul>
     </div>
-  </section>
-  <hr class="section-hr">
+  </div>
+</section>
+<hr class="section-hr">
 
-  <!-- SECTION 7.3: FSK -->
-  <section id="s-fsk" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 7.3</div>
-      <h2 class="section-title">Frequency Shift Keying (FSK)</h2>
-    </div>
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 7.3 — FSK -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-fsk" data-midsem="core" data-exam-priority="core" data-search-section="FSK frequency shift keying mark space coherent non-coherent bandwidth" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">7.3 Frequency Shift Keying (FSK)
+      <button class="bookmark-btn" data-id="s-fsk" data-label="7.3 Frequency Shift Keying" title="Bookmark">🔖</button>
+    </h2>
+  </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: modulation and demodulation (Frequency Shift Keying — FSK)</strong></span>
+    <span>Prescribed syllabus topic: <strong>Digital Modulation — Frequency Shift Keying (FSK)</strong></span>
   </div>
 
-
-    <p>In <strong>Frequency Shift Keying (FSK)</strong>, the frequency of the carrier signal is shifted between two distinct values to represent binary $1$ and $0$, while peak amplitude and phase remain constant.</p>
-
+  <div class="prose">
     <div class="def-box">
-      <div class="def-term">Binary FSK (BFSK) Rules</div>
-      <p class="def-body">
-        • <strong>Bit 1 (Mark frequency $f_1$):</strong> Higher frequency carrier wave.<br>
-        • <strong>Bit 0 (Space frequency $f_2$):</strong> Lower frequency carrier wave.<br>
-        Because data is encoded in frequency rather than amplitude, FSK is <strong>far more immune to noise and amplitude fluctuations than ASK!</strong>
-      </p>
+      <div class="def-term">Frequency Shift Keying (FSK) — Definition</div>
+      In <strong>Binary Frequency Shift Keying (BFSK)</strong>, the frequency of the carrier wave is shifted between two distinct values ($f_1$ and $f_2$) to represent bits $1$ and $0$, while the amplitude and phase remain constant:
+      $$s(t) = \begin{cases} A \sin(2\pi f_1 t) & \text{for bit } 1 \text{ (Mark Frequency)} \\ A \sin(2\pi f_2 t) & \text{for bit } 0 \text{ (Space Frequency)} \end{cases}$$
     </div>
 
-    <div class="diagram-box">
-      <div class="diagram-title">Figure 7.2: BFSK Waveform for Bit Sequence [ 1 0 1 0 ]</div>
-      <pre>
-   Bit Stream: |    1    |    0    |    1    |    0    |
-   -------------------------------------------------------
-   Waveform:   |/\/\/\/\/|  /\  /\ |/\/\/\/\/|  /\  /\ |
-               (Fast f1) |(Slow f2)|(Fast f1)|(Slow f2)|
-      </pre>
-    </div>
-    <p><em>Applications:</em> Legacy 1200 bps dial-up modems (Bell 103/202 standard), caller ID signaling on analog phone lines, and low-power HF radio.</p>
-  </section>
-  <hr class="section-hr">
+    <h3>Bandwidth &amp; Noise Immunity</h3>
+    <ul>
+      <li><strong>Noise Immunity:</strong> Significantly higher than ASK because noise spikes corrupt amplitude, whereas the receiver detects zero-crossings and frequency transitions.</li>
+      <li><strong>Bandwidth Overhead:</strong> Requires larger bandwidth than ASK because it must encompass both carrier frequencies plus their sidebands:
+      $$B = 2\Delta f + (1 + d)S$$
+      where $\Delta f = |f_1 - f_2| / 2$ is the frequency deviation.</li>
+    </ul>
 
-  <!-- SECTION 7.4: PSK & BPSK -->
-  <section id="s-psk" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 7.4</div>
-      <h2 class="section-title">Phase Shift Keying (PSK & BPSK)</h2>
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 7.3</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 5, Section 5.1.2: "Frequency Shift Keying".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Stallings (10th Ed):</strong> Chapter 5, Section 5.2: "Frequency Shift Keying".</li>
+      </ul>
     </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 7.4 — PSK & BPSK -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-psk" data-midsem="core" data-exam-priority="core" data-search-section="PSK BPSK phase shift keying binary constellation 180 degree shift" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">7.4 Phase Shift Keying (PSK &amp; BPSK)
+      <button class="bookmark-btn" data-id="s-psk" data-label="7.4 Phase Shift Keying" title="Bookmark">🔖</button>
+    </h2>
+  </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: modulation and demodulation (Phase Shift Keying — PSK & BPSK)</strong></span>
+    <span>Prescribed syllabus topic: <strong>Digital Modulation — Phase Shift Keying (BPSK &amp; Constellations)</strong></span>
   </div>
 
-
-    <p>In <strong>Phase Shift Keying (PSK)</strong>, the phase of the carrier signal is shifted to represent binary values, while amplitude and frequency remain constant. PSK is significantly more bandwidth-efficient than FSK and vastly more noise-resistant than ASK.</p>
-
+  <div class="prose">
     <div class="def-box">
-      <div class="def-term">Binary PSK (BPSK) Rules</div>
-      <p class="def-body">
-        Uses two opposite phases separated by <strong>$180^\circ$ ($\pi$ radians)</strong>:<br>
-        • <strong>Bit 0:</strong> Phase $= 0^\circ \implies s(t) = A \cos(2\pi f_c t)$<br>
-        • <strong>Bit 1:</strong> Phase $= 180^\circ \implies s(t) = A \cos(2\pi f_c t + \pi) = -A \cos(2\pi f_c t)$<br>
-        Whenever the bit stream switches between 0 and 1, the waveform instantaneously flips upside down!
-      </p>
+      <div class="def-term">Binary Phase Shift Keying (BPSK) — Definition</div>
+      In <strong>Binary Phase Shift Keying (BPSK)</strong>, the phase of the carrier is shifted by $180^\circ$ ($\pi$ radians) to differentiate between binary $1$ and binary $0$, while amplitude and frequency remain constant:
+      $$s(t) = \begin{cases} A \sin(2\pi f_c t) & \text{for bit } 1 \ (\text{Phase } 0^\circ) \\ A \sin(2\pi f_c t + 180^\circ) = -A \sin(2\pi f_c t) & \text{for bit } 0 \ (\text{Phase } 180^\circ) \end{cases}$$
     </div>
 
-    <div class="diagram-box">
-      <div class="diagram-title">Figure 7.3: BPSK Constellation Diagram</div>
-      <pre>
-                        Quadrature (Q)
-                              ^
-                              |
-             Bit 1            |            Bit 0
-           (-A, 0)            |           (+A, 0)
-              *---------------+---------------* ===> In-Phase (I)
-           (180°)             |              (0°)
-                              |
-                              |
-      </pre>
-    </div>
-  </section>
-  <hr class="section-hr">
+    <h3>Constellation Diagram for BPSK</h3>
+    <p>A <strong>constellation diagram</strong> represents modulated symbols in a 2D complex plane, where the horizontal axis represents the <strong>In-phase (I)</strong> component and the vertical axis represents the <strong>Quadrature (Q)</strong> component:</p>
 
-  <!-- SECTION 7.5: QPSK -->
-  <section id="s-qpsk" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 7.5</div>
-      <h2 class="section-title">Quadrature Phase Shift Keying (QPSK)</h2>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">BPSK Constellation Diagram</span></div>
+      <pre><code>
+                     Quadrature (Q)
+                          │
+                          │
+     Bit 0                │                Bit 1
+     (Phase 180°)         │                (Phase 0°)
+    ──────●───────────────┼───────────────●────── In-phase (I)
+        -A                │               +A
+                          │
+                          │
+      Distance between symbols is maximized (2A), providing exceptional noise immunity!
+      </code></pre>
     </div>
+
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 7.4</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 5, Section 5.1.3: "Phase Shift Keying".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Stallings (10th Ed):</strong> Chapter 5, Section 5.2: "Phase Shift Keying".</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 7.5 — QPSK -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-qpsk" data-midsem="core" data-exam-priority="core" data-search-section="QPSK quadrature phase shift keying 4 phases 2 bits symbol constellation" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">7.5 Quadrature Phase Shift Keying (QPSK)
+      <button class="bookmark-btn" data-id="s-qpsk" data-label="7.5 Quadrature Phase Shift Keying" title="Bookmark">🔖</button>
+    </h2>
+  </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: modulation and demodulation (Quadrature Phase Shift Keying — QPSK)</strong></span>
+    <span>Prescribed syllabus topic: <strong>Digital Modulation — Quadrature PSK (QPSK 4-Phase Modulation)</strong></span>
   </div>
 
-
-    <p>In BPSK, each symbol transmits only 1 single bit. Can we transmit more bits per symbol to double our spectral efficiency? Yes! <strong>Quadrature PSK (QPSK)</strong> uses <strong>four distinct phase shifts</strong> separated by $90^\circ$ ($\pi/2$ radians).</p>
-
+  <div class="prose">
     <div class="def-box">
-      <div class="def-term">QPSK Symbol Mapping (2 Bits Per Symbol)</div>
-      <p class="def-body">
-        Because there are $L = 4$ distinct phase states, each symbol carries $\log_2(4) = \mathbf{2\text{ bits}}$ (called a <strong>dibit</strong>):<br>
-        • <strong>Phase $45^\circ$:</strong> Represents bit pair <code>11</code><br>
-        • <strong>Phase $135^\circ$:</strong> Represents bit pair <code>01</code><br>
-        • <strong>Phase $225^\circ$:</strong> Represents bit pair <code>00</code><br>
-        • <strong>Phase $315^\circ$:</strong> Represents bit pair <code>10</code><br>
-        <code style="color:var(--accent-light); font-weight:bold;">For the exact same channel bandwidth, QPSK delivers DOUBLE the data rate of BPSK!</code>
-      </p>
+      <div class="def-term">Quadrature Phase Shift Keying (QPSK) — Definition</div>
+      <strong>QPSK</strong> modulates two carrier waves in quadrature (sine and cosine) with four distinct phase shifts ($45^\circ, 135^\circ, 225^\circ, 315^\circ$), allowing each transmitted symbol to encode <strong>two binary data bits ($r = \log_2 4 = 2\ \text{bits/symbol}$)</strong>:
+      $$\text{Bit Pairs (Dibits): } \{00, 01, 10, 11\}$$
     </div>
 
-    <div class="diagram-box">
-      <div class="diagram-title">Figure 7.4: QPSK Constellation Diagram (4 Phase Points)</div>
-      <pre>
-                        Quadrature (Q)
-                              ^
-                 01 (*135°)   |   11 (*45°)
-                              |
-             -----------------+----------------- > In-Phase (I)
-                              |
-                 00 (*225°)   |   10 (*315°)
-                              |
-      </pre>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">QPSK Constellation Diagram (4 Phase States)</span></div>
+      <pre><code>
+                          Quadrature (Q)
+                                │
+               01 (135°)        │        00 (45°)
+                    ●           │           ●
+                                │
+           ─────────────────────┼───────────────────── In-phase (I)
+                                │
+                    ●           │           ●
+               11 (225°)        │        10 (315°)
+                                │
+         Baud Rate S = N / 2. Delivers DOUBLE the bit rate of BPSK in the same bandwidth!
+      </code></pre>
     </div>
-  </section>
-  <hr class="section-hr">
 
-  <!-- SECTION 7.6: QAM -->
-  <section id="s-qam" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 7.6</div>
-      <h2 class="section-title">Quadrature Amplitude Modulation (QAM)</h2>
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 7.5</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 5, Section 5.1.3: "Quadrature PSK".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Stallings (10th Ed):</strong> Chapter 5, Section 5.2: "Quadrature PSK".</li>
+      </ul>
     </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 7.6 — QAM -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-qam" data-midsem="core" data-exam-priority="core" data-search-section="QAM quadrature amplitude modulation 16-QAM 64-QAM 256-QAM constellation spectral efficiency" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">7.6 Quadrature Amplitude Modulation (QAM)
+      <button class="bookmark-btn" data-id="s-qam" data-label="7.6 Quadrature Amplitude Modulation" title="Bookmark">🔖</button>
+    </h2>
+  </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: modulation and demodulation (Quadrature Amplitude Modulation — QAM)</strong></span>
+    <span>Prescribed syllabus topic: <strong>Digital Modulation — Quadrature Amplitude Modulation (QAM Constellations)</strong></span>
   </div>
 
-
-    <p>If we try to squeeze more than 8 or 16 phase shifts into pure PSK (e.g., 32-PSK), the constellation points crowd so tightly together around the unit circle that even tiny noise fluctuations cause phase detection errors. To overcome this limitation, <strong>Quadrature Amplitude Modulation (QAM)</strong> combines both <strong>ASK (Amplitude Variation)</strong> and <strong>PSK (Phase Variation)</strong> simultaneously.</p>
-
+  <div class="prose">
     <div class="def-box">
-      <div class="def-term">QAM Constellations</div>
-      <p class="def-body">
-        In QAM, two carrier waves of the same frequency but shifted by $90^\circ$ (In-phase $I$ and Quadrature $Q$) are independently amplitude-modulated and summed together. This creates a 2D rectangular grid of distinct constellation points:<br>
-        • <strong>16-QAM:</strong> 16 constellation points $\implies \log_2(16) = \mathbf{4\text{ bits per symbol}}$<br>
-        • <strong>64-QAM:</strong> 64 constellation points $\implies \log_2(64) = \mathbf{6\text{ bits per symbol}}$<br>
-        • <strong>256-QAM:</strong> 256 constellation points $\implies \log_2(256) = \mathbf{8\text{ bits per symbol}}$<br>
-        • <strong>1024-QAM / 4096-QAM:</strong> Standard in modern Wi-Fi 6/7 and 5G cellular networks!
-      </p>
+      <div class="def-term">Quadrature Amplitude Modulation (QAM) — Definition</div>
+      <strong>QAM</strong> is an advanced hybrid modulation scheme that simultaneously varies <strong>both the amplitude and the phase</strong> of two orthogonal carrier waves (cosine and sine):
+      $$s(t) = I(t) \cos(2\pi f_c t) - Q(t) \sin(2\pi f_c t)$$
+      By combining multiple amplitudes with multiple phase shifts, QAM packs vast numbers of bits into each symbol interval.
     </div>
 
-    <div class="diagram-box">
-      <div class="diagram-title">Figure 7.5: 16-QAM Constellation Diagram (4x4 Grid = 16 Points)</div>
-      <pre>
-                        Quadrature (Q)
-                              ^
-                    *    *    |    *    *
-                    *    *    |    *    *
-             -----------------+----------------- > In-Phase (I)
-                    *    *    |    *    *
-                    *    *    |    *    *
-                              |
-             Each point carries 4 bits! Example: (0110)
-      </pre>
-    </div>
-  </section>
-  <hr class="section-hr">
-
-  <!-- SECTION 7.7: MODULATION MASTER COMPARISON -->
-  <section id="s-mod-compare" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 7.7</div>
-      <h2 class="section-title">Master Digital Modulation Comparison Table</h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: modulation and demodulation (Digital Modulation Comparison Table)</strong></span>
-  </div>
-
-
+    <h3>QAM Constellation Orders &amp; Bit Capacities</h3>
     <div class="table-wrap">
-      <table class="data-table">
+      <table class="prose-table">
+        <thead>
+          <tr>
+            <th>QAM Architecture</th>
+            <th>Constellation Points ($M$)</th>
+            <th>Bits per Symbol ($r = \log_2 M$)</th>
+            <th>Primary Application</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>16-QAM</strong></td>
+            <td>$16$</td>
+            <td>$4\ \text{bits/symbol}$</td>
+            <td>4G LTE cellular, 802.11a/g Wi-Fi.</td>
+          </tr>
+          <tr>
+            <td><strong>64-QAM</strong></td>
+            <td>$64$</td>
+            <td>$6\ \text{bits/symbol}$</td>
+            <td>DOCSIS 3.0 cable modems, 802.11n Wi-Fi 4.</td>
+          </tr>
+          <tr>
+            <td><strong>256-QAM</strong></td>
+            <td>$256$</td>
+            <td>$8\ \text{bits/symbol}$</td>
+            <td>DOCSIS 3.1 cable, 802.11ac Wi-Fi 5.</td>
+          </tr>
+          <tr>
+            <td><strong>1024-QAM / 4096-QAM</strong></td>
+            <td>$1024 / 4096$</td>
+            <td>$10 / 12\ \text{bits/symbol}$</td>
+            <td>Wi-Fi 6 (802.11ax), Wi-Fi 7 (802.11be), 5G NR.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout tip">
+      <span class="callout-icon">💡</span>
+      <div><strong>The Engineering Trade-Off: Spectral Efficiency vs. Noise Sensitivity</strong>
+      Higher-order QAM (like 256-QAM) packs constellation points extremely close together. Even minor thermal noise or phase jitter can push a received symbol into an adjacent decision boundary, causing decoding errors. Therefore, modern systems (such as LTE and Wi-Fi) use <strong>Adaptive Modulation and Coding (AMC)</strong>: switching to 256-QAM when close to the router, and downshifting to QPSK when signal quality drops!
+      </div>
+    </div>
+
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 7.6</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 5, Section 5.1.4: "Quadrature Amplitude Modulation".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Stallings (10th Ed):</strong> Chapter 5, Section 5.2: "Quadrature Amplitude Modulation".</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 7.7 — MODULATION MASTER COMPARISON -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-mod-compare" data-midsem="core" data-exam-priority="core" data-search-section="Modulation master comparison table ASK FSK BPSK QPSK QAM bits symbol noise" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">7.7 Modulation Master Comparison Table
+      <button class="bookmark-btn" data-id="s-mod-compare" data-label="7.7 Modulation Master Comparison Table" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Digital Modulation Comparison Matrix</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="table-wrap">
+      <table class="prose-table">
         <thead>
           <tr>
             <th>Modulation</th>
-            <th>Property Changed</th>
-            <th>Bits / Symbol ($r$)</th>
-            <th>Noise Immunity</th>
+            <th>Parameter Varied</th>
+            <th>Bits/Symbol ($r$)</th>
             <th>Bandwidth Efficiency</th>
-            <th>Primary Real-World Usage</th>
+            <th>Noise Immunity</th>
+            <th>Hardware Complexity</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>ASK / OOK</strong></td>
             <td>Amplitude</td>
-            <td>1 bit</td>
+            <td>$1$</td>
+            <td>Low</td>
             <td>Very Poor</td>
-            <td>Moderate</td>
-            <td>Optical fiber links, cheap wireless doorbells.</td>
+            <td>Extremely Simple</td>
           </tr>
           <tr>
-            <td><strong>FSK</strong></td>
+            <td><strong>BFSK</strong></td>
             <td>Frequency</td>
-            <td>1 bit</td>
-            <td>Good</td>
-            <td>Poor (needs wider spectrum)</td>
-            <td>Legacy 1200 bps modems, paging systems.</td>
+            <td>$1$</td>
+            <td>Very Low (widest $B$)</td>
+            <td>Moderate</td>
+            <td>Simple</td>
           </tr>
           <tr>
             <td><strong>BPSK</strong></td>
             <td>Phase ($180^\circ$)</td>
-            <td>1 bit</td>
-            <td><strong>Excellent</strong></td>
+            <td>$1$</td>
             <td>Moderate</td>
-            <td>Deep space satellite probes, GPS telemetry.</td>
+            <td><strong>High</strong></td>
+            <td>Moderate</td>
           </tr>
           <tr>
             <td><strong>QPSK</strong></td>
-            <td>Phase ($90^\circ$)</td>
-            <td><strong>2 bits</strong></td>
-            <td>Very Good</td>
+            <td>Phase ($90^\circ$ steps)</td>
+            <td>$2$</td>
             <td>High ($2\times$ BPSK)</td>
-            <td>Satellite DVB-S television broadcast, 4G LTE.</td>
+            <td>High</td>
+            <td>Moderate</td>
           </tr>
           <tr>
             <td><strong>16-QAM</strong></td>
-            <td>Amp + Phase</td>
-            <td><strong>4 bits</strong></td>
-            <td>Moderate</td>
+            <td>Amplitude &amp; Phase</td>
+            <td>$4$</td>
             <td>Very High ($4\times$ BPSK)</td>
-            <td>Cable DOCSIS modems, Wi-Fi 4 (802.11n).</td>
+            <td>Moderate</td>
+            <td>Complex</td>
           </tr>
           <tr>
-            <td><strong>64-QAM</strong></td>
-            <td>Amp + Phase</td>
-            <td><strong>6 bits</strong></td>
-            <td>Lower (needs high SNR)</td>
-            <td>Extremely High</td>
-            <td>Wi-Fi 5 (802.11ac), 4G LTE-Advanced.</td>
+            <td><strong>256-QAM</strong></td>
+            <td>Amplitude &amp; Phase</td>
+            <td>$8$</td>
+            <td>Ultra-High ($8\times$ BPSK)</td>
+            <td>Low (requires high SNR)</td>
+            <td>Very Complex (DSP)</td>
           </tr>
         </tbody>
       </table>
     </div>
-  </section>
-  <hr class="section-hr">
 
-  <!-- SECTION 7.8: WHY MULTIPLEXING -->
-  <section id="s-multiplex-intro" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 7.8</div>
-      <h2 class="section-title">Why Multiplexing?</h2>
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 7.7</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 5, Summary Table 5.1.</li>
+      </ul>
     </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 7.8 — WHY MULTIPLEXING -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-multiplex-intro" data-midsem="core" data-exam-priority="core" data-search-section="Why multiplexing MUX DEMUX channel sharing resource trunk utilization" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">7.8 Why Multiplexing? (Resource Optimization)
+      <button class="bookmark-btn" data-id="s-multiplex-intro" data-label="7.8 Why Multiplexing?" title="Bookmark">🔖</button>
+    </h2>
+  </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: signaling (Channel Multiplexing Concepts & Efficiency)</strong></span>
+    <span>Prescribed syllabus topic: <strong>Multiplexing Fundamentals — Channel Sharing &amp; Trunk Optimization</strong></span>
   </div>
 
-
-    <p>In any wide-area network, laying physical transmission media (such as undersea transoceanic fiber or burying copper cables across cities) is enormously expensive. If each individual telephone conversation or data connection required its own dedicated physical wire across the country, telecommunications would be financially impossible.</p>
-
+  <div class="prose">
     <div class="def-box">
-      <div class="def-term">Multiplexing</div>
-      <p class="def-body">The set of telecommunication techniques that allows the simultaneous transmission of multiple independent data streams or voice calls over a single shared high-capacity physical communication channel (link).<br>
-      • <strong>Multiplexer (MUX):</strong> Combines $N$ input communication channels into 1 shared composite channel at the sender.<br>
-      • <strong>Demultiplexer (DEMUX):</strong> Separates the composite signal back into $N$ individual streams at the destination.</p>
+      <div class="def-term">Multiplexing — Definition</div>
+      <strong>Multiplexing</strong> is the telecommunications technique that combines multiple independent low-speed information streams into a single composite signal transmitted across a shared, high-capacity physical transmission link (trunk). At the destination, a <strong>Demultiplexer (DEMUX)</strong> separates the composite signal back into its constituent individual streams.
     </div>
-  </section>
-  <hr class="section-hr">
 
-  <!-- SECTION 7.9: FDM -->
-  <section id="s-fdm" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 7.9</div>
-      <h2 class="section-title">Frequency Division Multiplexing (FDM)</h2>
+    <h3>Why It Exists: The Economics of Telecommunication Trunks</h3>
+    <p>Running separate, dedicated physical cables between every pair of communicating cities or continents is economically and physically unfeasible. Optical fibers and coaxial cables possess terabits of bandwidth, whereas individual telephone calls require only 64 kbps. Multiplexing bridges this gap by aggregating thousands of user sessions over one shared medium.</p>
+
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 7.8</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 6, Section 6.1: "Multiplexing Overview".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Stallings (10th Ed):</strong> Chapter 8, Section 8.1: "Frequency-Division Multiplexing".</li>
+      </ul>
     </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 7.9 — FDM -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-fdm" data-midsem="core" data-exam-priority="core" data-search-section="FDM frequency division multiplexing analog guard band crosstalk AM FM" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">7.9 Frequency Division Multiplexing (FDM)
+      <button class="bookmark-btn" data-id="s-fdm" data-label="7.9 Frequency Division Multiplexing" title="Bookmark">🔖</button>
+    </h2>
+  </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: signaling & modulation (Frequency Division Multiplexing — FDM)</strong></span>
+    <span>Prescribed syllabus topic: <strong>Multiplexing Techniques — Frequency Division Multiplexing (FDM &amp; Guard Bands)</strong></span>
   </div>
 
-
-    <p><strong>Frequency Division Multiplexing (FDM)</strong> is an analog technique used when the total bandwidth of the physical link is significantly larger than the bandwidth required by each individual channel.</p>
-
-    <div class="diagram-box">
-      <div class="diagram-title">Figure 7.6: FDM Spectrum Allocation with Guard Bands</div>
-      <pre>
-   Total Physical Link Bandwidth
-   |========================================================================|
-   [ Channel 1 ] |Guard| [ Channel 2 ] |Guard| [ Channel 3 ] |Guard| [ Chan 4 ]
-   (e.g., 90.1 MHz) Band  (e.g., 93.5 MHz) Band  (e.g., 98.3 MHz) Band  (104 MHz)
-      </pre>
-    </div>
-
+  <div class="prose">
     <div class="def-box">
-      <div class="def-term">Guard Bands in FDM</div>
-      <p class="def-body">Unused narrow frequency intervals left between adjacent channel allocations to prevent overlapping and eliminate mutual electromagnetic crosstalk caused by non-ideal filter roll-off.</p>
+      <div class="def-term">Frequency Division Multiplexing (FDM) — Definition</div>
+      <strong>FDM</strong> is an analog multiplexing technique applied when the total bandwidth of the physical link exceeds the combined bandwidths of the individual signals. The link bandwidth is partitioned into discrete, non-overlapping frequency bands, each modulated by a distinct carrier wave.
     </div>
-    <p><em>Applications:</em> AM and FM radio broadcasting, commercial cable television (carrying hundreds of channels simultaneously over one 75 $\Omega$ coaxial cable), and cellular voice systems (FDMA).</p>
-  </section>
-  <hr class="section-hr">
 
-  <!-- SECTION 7.10: TDM -->
-  <section id="s-tdm" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 7.10</div>
-      <h2 class="section-title">Time Division Multiplexing (TDM: Synchronous vs Statistical)</h2>
+    <h3>The Crucial Role of Guard Bands</h3>
+    <p>Real-world analog bandpass filters have finite roll-off slopes; they cannot cut off frequencies with infinite sharpness. To prevent spectral overlap and crosstalk between adjacent channels, narrow unused frequency intervals called <strong>guard bands</strong> are inserted between channels.</p>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">FDM Spectrum Allocation &amp; Guard Bands</span></div>
+      <pre><code>
+    Total Available Medium Bandwidth
+   ├─── Channel 1 ───┼─ Guard ─┼─── Channel 2 ───┼─ Guard ─┼─── Channel 3 ───┤
+   │  Carrier fc1    │  Band   │  Carrier fc2    │  Band   │  Carrier fc3    │
+   └─────────────────┴─────────┴─────────────────┴─────────┴─────────────────┘
+   ▲                                                                         ▲
+   f_min                                                                     f_max
+      </code></pre>
     </div>
+
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 7.9</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 6, Section 6.1.1: "Frequency-Division Multiplexing".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Tanenbaum &amp; Wetherall (5th Ed):</strong> Chapter 2, Section 2.5.1: "Frequency Division Multiplexing".</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 7.10 — TDM -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-tdm" data-midsem="core" data-exam-priority="core" data-search-section="TDM time division multiplexing synchronous statistical asynchronous time slot" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">7.10 Time Division Multiplexing (Synchronous vs. Statistical)
+      <button class="bookmark-btn" data-id="s-tdm" data-label="7.10 Time Division Multiplexing" title="Bookmark">🔖</button>
+    </h2>
+  </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: signaling & modulation (Time Division Multiplexing — Synchronous & Statistical TDM)</strong></span>
+    <span>Prescribed syllabus topic: <strong>Multiplexing Techniques — Time Division Multiplexing (TDM Variants)</strong></span>
   </div>
 
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Time Division Multiplexing (TDM) — Definition</div>
+      <strong>TDM</strong> is a digital multiplexing mechanism in which multiple low-speed digital connections share the entire transmission medium bandwidth by alternating in time, each connection occupying a periodic <strong>time slot</strong> within a repeating TDM frame.
+    </div>
 
-    <p><strong>Time Division Multiplexing (TDM)</strong> is a digital technique where multiple digital streams share a single communication line by interleaving portions of each signal in the <strong>time domain</strong>. The entire channel bandwidth is dedicated to one single connection for a brief fraction of time (called a <strong>time slot</strong>).</p>
-
+    <h3>Synchronous TDM vs. Statistical (Asynchronous) TDM</h3>
     <div class="table-wrap">
-      <table class="data-table">
+      <table class="prose-table">
         <thead>
           <tr>
-            <th>Characteristic</th>
+            <th>Feature</th>
             <th>Synchronous TDM</th>
-            <th>Statistical (Asynchronous) TDM</th>
+            <th>Statistical / Asynchronous TDM (STDM)</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>Time Slot Allocation</strong></td>
-            <td><strong>Pre-allocated, fixed time slots</strong> in round-robin order to every connected input line, regardless of whether that line has active data to send.</td>
-            <td><strong>Dynamic on-demand allocation</strong>; time slots are allocated exclusively to channels that currently have active data in their input buffer.</td>
+            <td><strong>Slot Allocation</strong></td>
+            <td><strong>Fixed &amp; Static.</strong> Every input line has an assigned time slot in every frame, regardless of data availability.</td>
+            <td><strong>Dynamic &amp; On-Demand.</strong> Slots are allocated only to lines that currently have data in their buffers.</td>
           </tr>
           <tr>
-            <td><strong>Empty Slot Waste</strong></td>
-            <td>⚠️ If Channel B is silent, its allocated time slot travels across the wire completely empty, wasting bandwidth!</td>
-            <td>✅ Zero empty slots! Silent channels consume zero time slots on the shared link.</td>
+            <td><strong>Idle Capacity</strong></td>
+            <td>If a terminal is idle, its time slot goes <strong>empty/wasted</strong> on the wire.</td>
+            <td>Zero waste. Idle lines receive zero slots; available bandwidth is utilized 100%.</td>
           </tr>
           <tr>
-            <td><strong>Addressing Required?</strong></td>
-            <td>❌ No. Slot position itself identifies the channel (Slot 1 = User 1).</td>
-            <td>✅ Yes! Because slots arrive out of fixed order, each slot must carry an address/ID header identifying the source channel.</td>
+            <td><strong>Slot Addressing</strong></td>
+            <td><strong>None needed.</strong> Position in the frame identifies the sender implicitly.</td>
+            <td><strong>Mandatory header.</strong> Each slot must include an address tag identifying which channel it belongs to.</td>
           </tr>
           <tr>
-            <td><strong>Typical Use</strong></td>
-            <td>Traditional digital telephone multiplexing: <strong>T1 Carrier (USA, 1.544 Mbps, 24 voice channels)</strong>, E1 Carrier (Europe, 2.048 Mbps, 30 channels).</td>
-            <td>Modern packet switches, asynchronous terminal multiplexers, IP routers.</td>
+            <td><strong>Aggregate Capacity</strong></td>
+            <td>Medium capacity MUST equal the sum of all input line capacities.</td>
+            <td>Medium capacity can be substantially <strong>less than</strong> the sum of input capacities (statistical multiplexing).</td>
           </tr>
         </tbody>
       </table>
     </div>
-  </section>
-  <hr class="section-hr">
 
-  <!-- SECTION 7.11: WDM -->
-  <section id="s-wdm" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 7.11</div>
-      <h2 class="section-title">Wavelength Division Multiplexing (WDM & DWDM)</h2>
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 7.10</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 6, Section 6.1.3: "Time-Division Multiplexing".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Stallings (10th Ed):</strong> Chapter 8, Section 8.2: "Synchronous Time-Division Multiplexing".</li>
+      </ul>
     </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 7.11 — WDM -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-wdm" data-midsem="core" data-exam-priority="core" data-search-section="WDM DWDM wavelength division multiplexing optical fiber prism diffraction grating" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">7.11 Wavelength Division Multiplexing (WDM &amp; DWDM)
+      <button class="bookmark-btn" data-id="s-wdm" data-label="7.11 Wavelength Division Multiplexing" title="Bookmark">🔖</button>
+    </h2>
+  </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: transmission media (Wavelength Division Multiplexing — WDM)</strong></span>
+    <span>Prescribed syllabus topic: <strong>Multiplexing Techniques — Wavelength Division Multiplexing (WDM/DWDM)</strong></span>
   </div>
 
-
-    <p><strong>Wavelength Division Multiplexing (WDM)</strong> is conceptually identical to FDM, but designed specifically for <strong>optical fiber cables</strong>. Multiple laser light beams of different optical wavelengths (different colors/frequencies) are combined and propagated through a single strand of silica glass fiber.</p>
-
-    <div class="diagram-box">
-      <div class="diagram-title">Figure 7.7: Wavelength Division Multiplexing Concept</div>
-      <pre>
-   Laser 1 (λ1 = 1550 nm) ---\                              /---> Detector 1 (λ1)
-   Laser 2 (λ2 = 1552 nm) ----+== PRISM / MUX ==> [ FIBER ] ==+== DEMUX ==> Detector 2 (λ2)
-   Laser 3 (λ3 = 1554 nm) ---/                              \---> Detector 3 (λ3)
-      </pre>
-    </div>
-
+  <div class="prose">
     <div class="def-box">
-      <div class="def-term">DWDM (Dense Wavelength Division Multiplexing)</div>
-      <p class="def-body">By spacing optical wavelengths extremely close together (channel spacing of $0.8\text{ nm}$ or $0.4\text{ nm}$ in the 1550 nm window), modern DWDM multiplexes <strong>80 to 160+ independent 100 Gbps wavelengths</strong> onto a single hair-thin optical fiber, achieving aggregate data rates exceeding <strong>16 Terabits per second (Tbps)</strong> per fiber strand!</p>
+      <div class="def-term">WDM — Optical Domain Multiplexing</div>
+      <strong>Wavelength Division Multiplexing (WDM)</strong> is analog frequency-division multiplexing applied in the optical domain. Multiple laser beams of different optical wavelengths ($\lambda_1, \lambda_2, \dots, \lambda_n$) are coupled onto a single optical fiber using an optical prism or arrayed waveguide grating (AWG).
     </div>
-  </section>
-  <hr class="section-hr">
 
-  <!-- SECTION 7.12: MULTIPLEXING COMPARISON -->
-  <section id="s-mux-compare" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 7.12</div>
-      <h2 class="section-title">Master Multiplexing Comparison Table</h2>
+    <h3>Coarse WDM (CWDM) vs. Dense WDM (DWDM)</h3>
+    <ul>
+      <li><strong>CWDM (ITU-T G.694.2):</strong> Up to 18 channels with wide channel spacing ($20\ \text{nm}$). Inexpensive, uncooled lasers; used in metropolitan campus networks.</li>
+      <li><strong>Dense WDM (DWDM — ITU-T G.694.1):</strong> Ultra-narrow channel spacing ($0.8\ \text{nm}$ or $0.4\ \text{nm}$, corresponding to $100\ \text{GHz}$ or $50\ \text{GHz}$ optical frequency grid). Multiplexes <strong>80 to 160+ independent wavelengths</strong> on a single strand of fiber, delivering aggregate capacities exceeding <strong>$20 - 40\ \text{Tbps}$</strong> across transoceanic undersea cables.</li>
+    </ul>
+
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 7.11</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 6, Section 6.1.2: "Wavelength-Division Multiplexing".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Tanenbaum &amp; Wetherall (5th Ed):</strong> Chapter 2, Section 2.5.2: "Wavelength Division Multiplexing".</li>
+        <li><span class="res-tag tag-spec">Standard</span> <strong>ITU-T G.694.1:</strong> Spectral Grids for WDM Applications: DWDM Frequency Grid.</li>
+      </ul>
     </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 7.12 — MULTIPLEXING COMPARISON TABLE -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-mux-compare" data-midsem="core" data-exam-priority="core" data-search-section="Multiplexing comparison table master FDM TDM WDM STDM medium domain" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">7.12 Master Multiplexing Comparison Table
+      <button class="bookmark-btn" data-id="s-mux-compare" data-label="7.12 Master Multiplexing Comparison Table" title="Bookmark">🔖</button>
+    </h2>
+  </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: signaling (Multiplexing Techniques Comparison Matrix)</strong></span>
+    <span>Prescribed syllabus topic: <strong>Multiplexing Techniques Comparison Matrix</strong></span>
   </div>
 
-
+  <div class="prose">
     <div class="table-wrap">
-      <table class="data-table">
+      <table class="prose-table">
         <thead>
           <tr>
             <th>Multiplexing Technique</th>
-            <th>Domain Divided</th>
+            <th>Operational Domain</th>
             <th>Signal Type</th>
-            <th>Transmission Medium</th>
-            <th>Primary Real-World Applications</th>
+            <th>Sharing Mechanism</th>
+            <th>Primary Application</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>FDM</strong></td>
-            <td>Frequency spectrum</td>
+            <td>Frequency ($\text{Hz}$)</td>
             <td>Analog</td>
-            <td>Coaxial, Radio, Microwave</td>
-            <td>AM/FM radio, Cable TV (CATV).</td>
+            <td>Subdivided frequency spectrum + Guard bands.</td>
+            <td>AM/FM radio, CATV, DSL.</td>
           </tr>
           <tr>
             <td><strong>Synchronous TDM</strong></td>
-            <td>Time intervals (Fixed)</td>
+            <td>Time ($\text{seconds}$)</td>
             <td>Digital</td>
-            <td>Twisted pair, Coaxial</td>
-            <td>T1/E1 digital telephone carrier trunks.</td>
+            <td>Fixed periodic time slots per channel.</td>
+            <td>T1/E1 telecommunication lines, SONET.</td>
           </tr>
           <tr>
             <td><strong>Statistical TDM</strong></td>
-            <td>Time intervals (Dynamic)</td>
+            <td>Time ($\text{seconds}$)</td>
             <td>Digital</td>
-            <td>Any digital link</td>
-            <td>Packet switches, modern IP multiplexing.</td>
+            <td>Dynamic demand-based time slots with headers.</td>
+            <td>Internet packet switching, ATM, Frame Relay.</td>
           </tr>
           <tr>
             <td><strong>WDM / DWDM</strong></td>
-            <td>Optical wavelengths ($\lambda$)</td>
-            <td>Optical light</td>
-            <td>Single-Mode Optical Fiber</td>
-            <td>Undersea cables, global Internet backbone.</td>
+            <td>Wavelength ($\text{nm}$)</td>
+            <td>Optical (Photons)</td>
+            <td>Multiple laser wavelengths combined on one fiber.</td>
+            <td>Long-haul optical backbones, undersea fiber cables.</td>
           </tr>
         </tbody>
       </table>
     </div>
-  </section>
-  <hr class="section-hr">
 
-  <!-- SECTION 7.13: WHY SWITCHING -->
-  <section id="s-switching-intro" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 7.13</div>
-      <h2 class="section-title">Why Switching?</h2>
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 7.12</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 6, Summary Table 6.1.</li>
+      </ul>
     </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 7.13 — WHY SWITCHING -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-switching-intro" data-midsem="core" data-exam-priority="core" data-search-section="Why switching point to point mesh scalability intermediate nodes" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">7.13 Why Switching? (Mesh Scalability Failure)
+      <button class="bookmark-btn" data-id="s-switching-intro" data-label="7.13 Why Switching?" title="Bookmark">🔖</button>
+    </h2>
+  </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: switching (Overview of Switching Methodologies)</strong></span>
+    <span>Prescribed syllabus topic: <strong>Switching Fundamentals — Need for Switched Networks</strong></span>
   </div>
 
-
-    <p>If we want to connect $N$ computers or telephones worldwide, building direct point-to-point dedicated links between every pair requires a full mesh topology with:</p>
-    $$\text{Number of Links} = \frac{N(N - 1)}{2}$$
-    <p>For just 1 million users, this requires roughly <strong>500 billion physical cables</strong>—an engineering impossibility. A <strong>Switched Network</strong> solves this by interconnecting devices through a series of intermediate nodes called <strong>Switches</strong>.</p>
-  </section>
-  <hr class="section-hr">
-
-  <!-- SECTION 7.14: CIRCUIT SWITCHING -->
-  <section id="s-circuit-switching" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 7.14</div>
-      <h2 class="section-title">Circuit Switching</h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: switching (Circuit Switching: Setup, Transfer, Teardown)</strong></span>
-  </div>
-
-
-    <p><strong>Circuit Switching</strong> was invented for the traditional Public Switched Telephone Network (PSTN). It establishes a <strong>dedicated, physical end-to-end communication path</strong> between sender and receiver before any data can be transferred.</p>
-
+  <div class="prose">
     <div class="def-box">
-      <div class="def-term">The Three Mandatory Phases of Circuit Switching</div>
-      <p class="def-body">
-        1. <strong>Circuit Establishment (Setup Phase):</strong> A signaling message traverses the network from caller to callee, reserving dedicated physical switches, copper circuits, and channel bandwidth along the entire route. If any intermediate switch has no free lines, a "busy signal" is returned.<br>
-        2. <strong>Data Transfer Phase:</strong> Continuous analog or digital data flows across the reserved dedicated pipe with <strong>zero queuing delay and constant propagation latency</strong>.<br>
-        3. <strong>Circuit Teardown (Release Phase):</strong> When either party terminates the session, a teardown signal is propagated to release all reserved switches and link bandwidth back to the shared pool.
-      </p>
+      <div class="def-term">Switched Network — First-Principles Definition</div>
+      A <strong>switched network</strong> consists of a series of interconnected nodes, called <strong>switches</strong>, capable of temporarily connecting two or more communicating end-devices on demand to transfer data, avoiding the catastrophic cost and physical impossibility of full point-to-point mesh connectivity.
     </div>
 
-    <div class="callout warning">
-      <div class="callout-title">⚠️ The Flaw of Circuit Switching: Resource Inefficiency</div>
-      <p>Once a circuit is established, that physical bandwidth is <strong>exclusively reserved for those two users</strong>, even if neither person is speaking! During silent pauses in a phone call or while a human is reading a web page, the reserved bandwidth sits completely idle and cannot be utilized by any other waiting callers.</p>
-    </div>
-  </section>
-  <hr class="section-hr">
+    <h3>The $N(N-1)/2$ Point-to-Point Collapse</h3>
+    <p>To interconnect $N$ computers directly with point-to-point physical links requires:</p>
+    $$L = \frac{N(N-1)}{2} \text{ links}$$
+    <p>For a small village of $10,000$ telephones, direct point-to-point mesh cabling would require $\approx 50,000,000$ cables running across every street! By placing a central telephone switch in town, each telephone needs only <strong>1 physical wire</strong> to the switch (total $10,000$ wires). Switching reduces physical complexity from $O(N^2)$ to $O(N)$.</p>
 
-  <!-- SECTION 7.15: PACKET SWITCHING -->
-  <section id="s-packet-switching" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 7.15</div>
-      <h2 class="section-title">Packet Switching (Store-and-Forward) <span class="uni-syllabus-badge">🎓 Uni: Packet Switching</span></h2>
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 7.13</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 8, Section 8.1: "Introduction to Switching".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Tanenbaum &amp; Wetherall (5th Ed):</strong> Chapter 2, Section 2.6: "The Public Switched Telephone Network".</li>
+      </ul>
     </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 7.14 — CIRCUIT SWITCHING -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-circuit-switching" data-midsem="core" data-exam-priority="core" data-search-section="Circuit switching setup transfer teardown dedicated resources PSTN blocking" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">7.14 Circuit Switching (Dedicated Resource Allocation)
+      <button class="bookmark-btn" data-id="s-circuit-switching" data-label="7.14 Circuit Switching" title="Bookmark">🔖</button>
+    </h2>
+  </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: switching (Packet Switching: Store-and-Forward)</strong></span>
+    <span>Prescribed syllabus topic: <strong>Switching Techniques — Circuit Switching (Phases, Guarantees &amp; Inefficiencies)</strong></span>
   </div>
 
-
-    <p>To eliminate the massive resource waste of circuit switching, computer scientists developed <strong>Packet Switching</strong>—the foundational switching architecture of the modern Internet.</p>
-
+  <div class="prose">
     <div class="def-box">
-      <div class="def-term">Packet Switching Principle</div>
-      <p class="def-body">Long application messages are broken down into small, manageable discrete chunks called <strong>Packets</strong>. Each packet contains a portion of the data payload plus a header with source and destination addresses. Packets are routed dynamically across intermediate routers using the <strong>Store-and-Forward</strong> mechanism.</p>
+      <div class="def-term">Circuit Switching — Definition</div>
+      <strong>Circuit switching</strong> is a connection-oriented switching paradigm in which a <strong>dedicated, physical end-to-end transmission path</strong> is established through intermediate switching nodes before data transmission begins. The allocated resources (bandwidth, switch time slots, buffer space) remain exclusively reserved for that connection until explicit teardown.
     </div>
 
-    <div class="diagram-box">
-      <div class="diagram-title">Figure 7.8: Store-and-Forward Packet Transmission Pipelining</div>
-      <pre>
-   Host A ----(Link 1: R bps)----> Router 1 ----(Link 2: R bps)----> Host B
-   
-   • Packet 1 transmitted onto Link 1.
-   • Router 1 MUST completely receive and buffer all bits of Packet 1 before
-     forwarding it onto Link 2!
-   • While Router 1 forwards Packet 1 onto Link 2, Host A transmits Packet 2 onto Link 1!
-   👉 Transmission is pipelined, dramatically reducing total end-to-end delivery time!
-      </pre>
-    </div>
-  </section>
-  <hr class="section-hr">
+    <h3>The 3 Chronological Phases of Circuit Switching</h3>
+    <ol style="margin:4px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:6px">
+      <li><strong>Connection Establishment (Setup Phase):</strong> A signaling probe traverses the network from source to destination. Intermediate switches allocate and bind physical circuits/time-slots. A confirmation signal returns to the sender.</li>
+      <li><strong>Data Transfer Phase:</strong> Bits flow continuously over the dedicated circuit. Because resources are reserved, data experiences <strong>zero queuing delay</strong>; the only latency is propagation delay ($t_{\text{prop}} = d / v$).</li>
+      <li><strong>Connection Teardown Phase:</strong> An explicit release signal deallocates switches and frees circuits for other subscribers.</li>
+    </ol>
 
-  <!-- SECTION 7.16: DATAGRAM VS VIRTUAL CIRCUIT -->
-  <section id="s-datagram-vc" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 7.16</div>
-      <h2 class="section-title">Datagram Networks vs Virtual Circuit Networks</h2>
+    <h3>Critical Advantages &amp; Severe Inefficiencies</h3>
+    <ul>
+      <li><strong>Guaranteed QoS:</strong> Continuous, constant data rate with predictable latency and zero jitter. Ideal for real-time voice phone calls (PSTN).</li>
+      <li><strong>Massive Inefficiency for Bursty Computer Data:</strong> Computer communications (web browsing, coding, database queries) are bursty: a host transmits for 200 ms and remains idle for 10 seconds while a human reads. In circuit switching, the allocated bandwidth sits 100% idle and wasted during pauses; other users are blocked even though the line is silent.</li>
+    </ul>
+
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 7.14</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 8, Section 8.2: "Circuit-Switched Networks".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Stallings (10th Ed):</strong> Chapter 10, Section 10.1: "Circuit-Switching Networks".</li>
+      </ul>
     </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 7.15 — PACKET SWITCHING -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-packet-switching" data-midsem="core" data-exam-priority="core" data-search-section="Packet switching store and forward pipelining statistical multiplexing delay formula" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">7.15 Packet Switching (Store-and-Forward Pipelining)
+      <button class="bookmark-btn" data-id="s-packet-switching" data-label="7.15 Packet Switching" title="Bookmark">🔖</button>
+    </h2>
+  </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: switching (Datagram vs Virtual Circuit Approaches)</strong></span>
+    <span>Prescribed syllabus topic: <strong>Switching Techniques — Packet Switching (Store-and-Forward &amp; Pipelining)</strong></span>
   </div>
 
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Packet Switching — Definition</div>
+      <strong>Packet switching</strong> is a communications method where long messages are partitioned into small, discrete, bounded data units called <strong>packets</strong>. Packets traverse the network independently via intermediate packet switches (routers) using the <strong>store-and-forward</strong> principle.
+    </div>
 
-    <p>Within packet switching, there are two distinct architectural philosophies: <strong>Datagram (Connectionless)</strong> and <strong>Virtual Circuit (Connection-Oriented)</strong>.</p>
+    <h3>Store-and-Forward Principle</h3>
+    <p>A packet switch must receive the <strong>entire packet</strong> into its memory buffer and verify its integrity (FCS check) before it can begin transmitting the first bit of that packet onto the outgoing link.</p>
 
+    <h3>The Pipelining Latency Reduction Derivation</h3>
+    <p>Consider a message of $M$ bits transmitted over a path of $N$ hops, where each link operates at transmission rate $R$ bps (ignoring propagation and queuing delays):</p>
+    <ul>
+      <li><strong>Unpacketized Message Switching:</strong> The entire message of $M$ bits must be fully received by Hop 1, then Hop 2, ..., Hop $N$:
+      $$T_{\text{message}} = N \times \frac{M}{R}$$</li>
+      <li><strong>Packet Switching:</strong> The message is broken into $k$ small packets of length $L$ bits ($M = k \times L$). As soon as Packet 1 arrives at Switch 1, Switch 1 immediately begins transmitting Packet 1 to Switch 2, while the source simultaneously begins transmitting Packet 2 to Switch 1!
+      $$T_{\text{packet}} = (N + k - 1) \times \frac{L}{R}$$</li>
+    </ul>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">Numerical Proof of Packet Switching Pipelining Gain</span></div>
+      <pre><code>
+   Parameters: File Size M = 10,000,000 bits (10 Mb).
+   Path: N = 5 hops (4 intermediate routers). Link Speed R = 10 Mbps.
+
+   CASE 1: MESSAGE SWITCHING (No Pipelining)
+   Transmission time per hop = 10 Mb / 10 Mbps = 1.0 second.
+   Total Time = 5 hops × 1.0 s = 5.0 SECONDS!
+
+   CASE 2: PACKET SWITCHING (k = 1,000 packets of L = 10,000 bits)
+   Transmission time per packet L / R = 10,000 bits / 10,000,000 bps = 0.001 s (1 ms).
+   Total Time = (N + k - 1) × (L / R) = (5 + 1000 - 1) × 0.001 s = 1.004 SECONDS!
+
+   RESULT: Packet switching is FIVE TIMES FASTER because links work in parallel (pipelining)!
+      </code></pre>
+    </div>
+
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 7.15</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Kurose &amp; Ross (8th Ed):</strong> Chapter 1, Section 1.3: "The Network Core: Packet Switching".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Tanenbaum &amp; Wetherall (5th Ed):</strong> Chapter 2, Section 2.6.5: "Packet Switching".</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 7.16 — DATAGRAM VS VIRTUAL CIRCUIT -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-datagram-vc" data-midsem="core" data-exam-priority="core" data-search-section="Datagram virtual circuit connectionless connection oriented VCI routing table state" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">7.16 Datagram vs. Virtual Circuit Networks
+      <button class="bookmark-btn" data-id="s-datagram-vc" data-label="7.16 Datagram vs. Virtual Circuit Networks" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Packet Switching Paradigms — Datagram (IP) vs Virtual Circuit (ATM/MPLS)</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">The Two Packet Switching Philosophies</div>
+      <ul>
+        <li><strong>Datagram Approach (Connectionless):</strong> Every packet is treated completely independently. Each packet carries the full source and destination IP address. Switches (routers) route packets individually. Packets belonging to the same message may traverse completely different physical paths and arrive out of order. (The fundamental design of the <strong>Internet Protocol / IP</strong>).</li>
+        <li><strong>Virtual Circuit Approach (Connection-Oriented):</strong> A logical end-to-end path is established before sending data. All packets belonging to that flow carry a short <strong>Virtual Circuit Identifier (VCI)</strong> and follow the exact same sequence of switches, arriving in order. Switches maintain state tables mapping incoming VCIs to outgoing ports and new VCIs. (ATM, X.25, Frame Relay, MPLS).</li>
+      </ul>
+    </div>
+
+    <h3>Master Comparison: Datagram vs. Virtual Circuit</h3>
     <div class="table-wrap">
-      <table class="data-table">
+      <table class="prose-table">
         <thead>
           <tr>
-            <th>Comparison Parameter</th>
-            <th>Datagram Packet Switching (e.g., Internet IP)</th>
-            <th>Virtual Circuit Packet Switching (e.g., ATM, Frame Relay)</th>
+            <th>Dimension</th>
+            <th>Datagram Network (Internet / IP)</th>
+            <th>Virtual Circuit Network (ATM / MPLS)</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>Connection Setup</strong></td>
-            <td><strong>Zero setup phase.</strong> Packets can be injected into the network immediately.</td>
-            <td><strong>Mandatory VC setup phase.</strong> Virtual circuit must be established before sending data.</td>
+            <td><strong>None.</strong> Transmission begins immediately.</td>
+            <td><strong>Required.</strong> Must exchange setup signaling before sending data.</td>
           </tr>
           <tr>
-            <td><strong>Packet Routing & Paths</strong></td>
-            <td>Each packet is treated as an independent <strong>datagram</strong>. Intermediate routers evaluate routing tables dynamically; packets may take completely different physical paths!</td>
-            <td>All packets in a connection follow the <strong>exact same pre-established virtual route</strong>.</td>
+            <td><strong>Addressing in Packets</strong></td>
+            <td>Full global addresses (32-bit IPv4 / 128-bit IPv6).</td>
+            <td>Short local Virtual Circuit Identifier (VCI).</td>
+          </tr>
+          <tr>
+            <td><strong>Router State</strong></td>
+            <td><strong>Stateless.</strong> Routers maintain no per-connection state.</td>
+            <td><strong>Stateful.</strong> Routers maintain VCI mapping tables for active calls.</td>
           </tr>
           <tr>
             <td><strong>Packet Ordering</strong></td>
-            <td>Packets may arrive at destination <strong>out-of-order</strong> (must be re-sequenced by Layer 4 TCP).</td>
-            <td>Packets arrive in <strong>strict sequential order</strong>.</td>
+            <td>Packets may arrive <strong>out of order</strong>.</td>
+            <td>Packets <strong>always arrive in strict sequential order</strong>.</td>
           </tr>
           <tr>
-            <td><strong>Header Overhead</strong></td>
-            <td><strong>Large header:</strong> Every single packet must carry full 32-bit/128-bit global Source and Destination IP addresses.</td>
-            <td><strong>Tiny header:</strong> Packets carry only a short <strong>Virtual Circuit Identifier (VCI)</strong> (e.g., 16 or 24 bits).</td>
+            <td><strong>Router Failure Impact</strong></td>
+            <td><strong>Highly robust.</strong> Packets dynamically route around failed nodes.</td>
+            <td><strong>Vulnerable.</strong> All VCs traversing the failed switch collapse instantly.</td>
           </tr>
           <tr>
-            <td><strong>Router State & Memory</strong></td>
-            <td><strong>Stateless routers:</strong> Routers maintain no memory of active user connections.</td>
-            <td><strong>Stateful routers:</strong> Routers must maintain a VCI translation table for every active connection.</td>
-          </tr>
-          <tr>
-            <td><strong>Failure Behavior</strong></td>
-            <td><strong>Highly robust:</strong> If a router crashes, subsequent datagrams automatically route around the failure.</td>
-            <td><strong>Vulnerable:</strong> If any intermediate router along the VC crashes, the entire connection is terminated and must be re-established.</td>
+            <td><strong>Quality of Service (QoS)</strong></td>
+            <td>Difficult (Best-Effort model).</td>
+            <td>Easy (Bandwidth and buffers reserved during setup).</td>
           </tr>
         </tbody>
       </table>
     </div>
-  </section>
-  <hr class="section-hr">
 
-  <!-- SECTION 7.17: MESSAGE SWITCHING -->
-  <section id="s-message-switching" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 7.17</div>
-      <h2 class="section-title">Message Switching (Historical Context)</h2>
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 7.16</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 8, Section 8.3 &amp; 8.4: "Datagram Networks &amp; Virtual-Circuit Networks".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Kurose &amp; Ross (8th Ed):</strong> Chapter 4, Section 4.1.2: "Connection-Oriented and Connectionless Service".</li>
+      </ul>
     </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 7.17 — MESSAGE SWITCHING -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-message-switching" data-midsem="core" data-exam-priority="core" data-search-section="Message switching telegraph telex disk storage historical store and forward" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">7.17 Message Switching (Historical Context)
+      <button class="bookmark-btn" data-id="s-message-switching" data-label="7.17 Message Switching" title="Bookmark">🔖</button>
+    </h2>
+  </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: switching (Message Switching: Store-and-Forward Principle)</strong></span>
+    <span>Prescribed syllabus topic: <strong>Switching History — Message Switching &amp; Storage Limitations</strong></span>
   </div>
 
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Message Switching — Definition</div>
+      <strong>Message switching</strong> is an archaic switching technique where messages are transmitted in their entirety as a single block. Intermediate switching nodes receive the complete message, store it temporarily on secondary storage (magnetic tape or hard disk), inspect the destination address, wait for an outgoing line to become free, and forward the entire message to the next switch.
+    </div>
 
-    <p>In historical <strong>Message Switching</strong> (used in early telegraph and military telex networks), the sender transmits the <strong>entire message as a single complete unit</strong> (without breaking it into packets). Intermediate switches store the entire message on hard disks before forwarding it to the next switch (often called <em>Store-and-Forward Telex</em>).</p>
+    <h3>Why Message Switching was Abandoned</h3>
     <ul>
-      <li><strong>Massive Buffering Required:</strong> If a message is 50 MB, every intermediate switch requires 50 MB of RAM/disk space.</li>
-      <li><strong>No Pipelining:</strong> An entire multi-megabyte message must completely cross Link 1 before Link 2 can even begin transmitting, causing enormous delays.</li>
-      <li><strong>Obsolete:</strong> Completely replaced by packet switching.</li>
+      <li><strong>Immense Storage Demands:</strong> Switches required massive, expensive disk drives to buffer multi-megabyte messages waiting for busy links.</li>
+      <li><strong>Intolerable Latency:</strong> A 10 MB message traversing 5 switches at 1 Mbps took over 50 seconds, making interactive applications impossible.</li>
+      <li><strong>Head-of-Line Blocking:</strong> A huge message monopolized a communication line for minutes, starving small urgent messages.</li>
     </ul>
-  </section>
-  <hr class="section-hr">
 
-  <!-- SECTION 7.18: SWITCHING MASTER COMPARISON -->
-  <section id="s-switch-compare" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 7.18</div>
-      <h2 class="section-title">Master Switching Comparison Table</h2>
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 7.17</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 8, Section 8.1: "Message Switching".</li>
+      </ul>
     </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 7.18 — SWITCHING MASTER COMPARISON -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-switch-compare" data-midsem="core" data-exam-priority="core" data-search-section="Switching master comparison table circuit message packet datagram virtual circuit" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">7.18 Switching Master Comparison Table
+      <button class="bookmark-btn" data-id="s-switch-compare" data-label="7.18 Switching Master Comparison Table" title="Bookmark">🔖</button>
+    </h2>
+  </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: switching (Grand Switching Comparison Matrix)</strong></span>
+    <span>Prescribed syllabus topic: <strong>Switching Techniques Architectural Master Matrix</strong></span>
   </div>
 
-
+  <div class="prose">
     <div class="table-wrap">
-      <table class="data-table">
+      <table class="prose-table">
         <thead>
           <tr>
-            <th>Evaluation Criteria</th>
+            <th>Characteristic</th>
             <th>Circuit Switching</th>
-            <th>Packet Switching (Datagram)</th>
-            <th>Packet Switching (Virtual Circuit)</th>
+            <th>Message Switching</th>
+            <th>Datagram Packet</th>
+            <th>Virtual Circuit Packet</th>
           </tr>
         </thead>
         <tbody>
@@ -870,146 +1161,151 @@
             <td><strong>Dedicated Physical Path?</strong></td>
             <td>✅ Yes</td>
             <td>❌ No</td>
+            <td>❌ No</td>
             <td>❌ No (Logical path only)</td>
           </tr>
           <tr>
-            <td><strong>Connection Setup Delay</strong></td>
-            <td>High (Setup required)</td>
-            <td><strong>Zero</strong> (Instantaneous)</td>
-            <td>Moderate (Setup required)</td>
+            <td><strong>Call Setup Phase?</strong></td>
+            <td>✅ Yes (Required)</td>
+            <td>❌ No</td>
+            <td>❌ No</td>
+            <td>✅ Yes (Required)</td>
           </tr>
           <tr>
-            <td><strong>End-to-End Transmission Delay</strong></td>
-            <td>Constant & predictable</td>
-            <td>Variable (Queuing jitter)</td>
-            <td>Predictable with small jitter</td>
+            <td><strong>Store-and-Forward?</strong></td>
+            <td>❌ No (Direct bitstream)</td>
+            <td>✅ Yes (Entire message)</td>
+            <td>✅ Yes (Per packet)</td>
+            <td>✅ Yes (Per packet)</td>
           </tr>
           <tr>
-            <td><strong>Bandwidth Utilization</strong></td>
-            <td>Poor (Wasted when idle)</td>
-            <td><strong>Optimal</strong> (Statistical MUX)</td>
-            <td>High</td>
+            <td><strong>Packet Pipelining?</strong></td>
+            <td>N/A</td>
+            <td>❌ No</td>
+            <td>✅ Yes</td>
+            <td>✅ Yes</td>
           </tr>
           <tr>
-            <td><strong>Call Blocking on Congestion</strong></td>
-            <td>Yes (Busy tone / call rejected)</td>
-            <td>No (Packets queued or delayed)</td>
-            <td>Yes (VC request rejected if full)</td>
+            <td><strong>In-Order Arrival?</strong></td>
+            <td>✅ Guaranteed</td>
+            <td>✅ Guaranteed</td>
+            <td>❌ No guarantee</td>
+            <td>✅ Guaranteed</td>
           </tr>
           <tr>
-            <td><strong>Store-and-Forward Delay</strong></td>
-            <td>None</td>
-            <td>Per packet at each hop</td>
-            <td>Per packet at each hop</td>
-          </tr>
-          <tr>
-            <td><strong>Dominant Usage</strong></td>
-            <td>Traditional voice PSTN</td>
-            <td><strong>The Global Internet (IP)</strong></td>
-            <td>ATM, Frame Relay, MPLS</td>
+            <td><strong>Bandwidth Efficiency</strong></td>
+            <td>Low (Wasted if silent)</td>
+            <td>Moderate</td>
+            <td><strong>High</strong> (Statistical)</td>
+            <td><strong>High</strong> (Statistical)</td>
           </tr>
         </tbody>
       </table>
     </div>
-  </section>
-  <hr class="section-hr">
 
-  <!-- SECTION 7.19: SUMMARY & EXAM TRAPS -->
-  <section id="s-summary-ch7" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 7.19</div>
-      <h2 class="section-title">Chapter Summary & High-Yield Exam Traps</h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: modulation & switching (Chapter Revision & Exam Traps)</strong></span>
-  </div>
-
-
-    <div class="callout tip">
-      <div class="callout-title">⚡ High-Yield Rapid Review Points</div>
-      <ul>
-        <li><strong>Antenna Formula:</strong> Length $\ge \lambda/4 = c/(4f)$. Modulation shifts signals to high frequency so antennas become small and practical.</li>
-        <li><strong>Modulation Schemes:</strong>
-          <br>• ASK: Changes amplitude. Sensitive to noise. (Used in fiber OOK).
-          <br>• FSK: Changes frequency. Good noise immunity. (1200 bps modems).
-          <br>• BPSK: $180^\circ$ phase shift. 1 bit/symbol. Excellent noise immunity.
-          <br>• QPSK: 4 phase shifts ($90^\circ$). 2 bits/symbol. Doubles bit rate for same bandwidth.
-          <br>• QAM: Combines ASK + PSK. $r = \log_2(M)$ bits/symbol. (Wi-Fi 6, 5G, cable modems).
-        </li>
-        <li><strong>Multiplexing Schemes:</strong>
-          <br>• FDM: Analog. Frequency spectrum divided with guard bands. (Radio, CATV).
-          <br>• Synchronous TDM: Digital. Fixed time slots. Silent channels waste slots. (T1/E1).
-          <br>• Statistical TDM: Digital. On-demand time slots with addressing. Zero waste.
-          <br>• WDM / DWDM: Optical. Wavelengths of light in glass fiber. (Terabit backbones).
-        </li>
-        <li><strong>Switching Schemes:</strong>
-          <br>• Circuit Switching: Dedicated physical path, 3 phases (setup/transfer/teardown), constant latency, wasted bandwidth.
-          <br>• Datagram Packet Switching: Connectionless, independent routing, out-of-order arrival, robust against failure, powers the Internet.
-          <br>• Virtual Circuit Packet Switching: Connection-oriented, fixed route, VCI headers, strict ordering.
-        </li>
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 7.18</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 8, Summary Table 8.1.</li>
       </ul>
     </div>
+  </div>
+</section>
+<hr class="section-hr">
 
-    <h3>Top 5 High-Yield Traps in Exams</h3>
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 7.19 — SUMMARY & EXAM TRAPS -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-summary-ch7" data-midsem="core" data-exam-priority="core" data-search-section="Chapter 7 summary traps exam revision self-check modulation switching" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">7.19 Summary &amp; High-Yield Exam Traps
+      <button class="bookmark-btn" data-id="s-summary-ch7" data-label="7.19 Summary &amp; High-Yield Exam Traps" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Chapter 7 Revision Checklist &amp; Common Pitfalls</strong></span>
+  </div>
+
+  <div class="prose">
+    <h3>Five Critical University Exam Traps</h3>
     <div class="table-wrap">
-      <table class="data-table">
+      <table class="prose-table">
         <thead>
           <tr>
-            <th>Trap #</th>
-            <th>The Common Misconception</th>
-            <th>The Technical Reality</th>
+            <th>Trap ID</th>
+            <th>Common Misconception</th>
+            <th>First-Principles Reality &amp; Refutation</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>Trap 1</strong></td>
-            <td>"Virtual Circuit switching reserves a dedicated physical wire."</td>
-            <td><strong>False!</strong> Virtual circuit switching is still <em>packet switching</em>. Physical links are shared via statistical multiplexing; only the logical routing path and VCI translation table entries are pre-established!</td>
+            <td>"QPSK transmits at double the baud rate of BPSK."</td>
+            <td><strong>False!</strong> QPSK operates at the <strong>exact same baud rate</strong> as BPSK, but conveys <strong>double the bit rate</strong> ($2\ \text{bits/symbol}$).</td>
           </tr>
           <tr>
             <td><strong>Trap 2</strong></td>
-            <td>"In Synchronous TDM, if a sender has no data, the multiplexer skips that slot."</td>
-            <td><strong>False!</strong> Synchronous TDM assigns rigid, fixed slots. If a sender is idle, its time slot is transmitted <strong>completely empty</strong> across the link! Only <em>Statistical TDM</em> skips idle channels.</td>
+            <td>"Circuit switching has higher data transmission latency than packet switching."</td>
+            <td><strong>False!</strong> Once established, circuit switching has <strong>zero queuing delay</strong> and lower transfer latency than store-and-forward packet switching. Its latency penalty is strictly in the initial setup phase.</td>
           </tr>
           <tr>
             <td><strong>Trap 3</strong></td>
-            <td>"16-QAM requires four times the bandwidth of BPSK."</td>
-            <td><strong>False!</strong> 16-QAM carries 4 bits per symbol, so it achieves <strong>four times the bit rate within the EXACT SAME bandwidth</strong> as BPSK!</td>
+            <td>"In datagram networks, routers guarantee packet delivery."</td>
+            <td><strong>False!</strong> Datagram IP networks provide <strong>Best-Effort delivery</strong>; packets may be dropped under congestion. Reliability is handled by Layer 4 (TCP).</td>
           </tr>
           <tr>
             <td><strong>Trap 4</strong></td>
-            <td>"FDM requires digital-to-analog converters."</td>
-            <td><strong>False!</strong> FDM is a strictly <strong>analog multiplexing technique</strong> that modulates analog subcarriers. TDM is the primary digital multiplexing technique.</td>
+            <td>"Synchronous TDM requires packet destination addresses in each slot."</td>
+            <td><strong>False!</strong> Synchronous TDM requires <strong>no addressing</strong> because the position of the time slot implicitly identifies the sender. Only Statistical TDM requires addressing headers!</td>
           </tr>
           <tr>
             <td><strong>Trap 5</strong></td>
-            <td>"Internet IP packets travel via Virtual Circuits."</td>
-            <td><strong>False!</strong> The Internet Protocol (IP) operates strictly as a <strong>Datagram Network</strong>. Every IP datagram is routed independently by intermediate routers.</td>
+            <td>"WDM is a time-division multiplexing technique."</td>
+            <td><strong>False!</strong> WDM is strictly an <strong>analog Frequency-Division Multiplexing (FDM)</strong> technique operating in the optical electromagnetic spectrum.</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <!-- CHAPTER PROGRESS CHECK -->
+    <!-- CHAPTER SELF-CHECK QUESTIONS -->
     <div class="def-box" style="margin-top:2rem; border-color:var(--accent);">
-      <div class="def-term">🎯 End of Chapter Self-Check</div>
+      <div class="def-term">🎯 End-of-Chapter Self-Check Questions</div>
       <p class="def-body">
         Verify your mastery before moving to Part III (Data Link Layer):<br>
-        1. Why can an antenna be only 3 cm long for Wi-Fi, while a baseband audio antenna would need to be 25 km tall?<br>
+        1. Explain why human speech cannot be transmitted directly over wireless airwaves without modulation, using the antenna formula $L = \lambda/4$.<br>
         2. Draw the constellation diagrams for BPSK and QPSK, and state the bits/symbol for each.<br>
-        3. Differentiate between Synchronous TDM and Statistical TDM in terms of slot allocation and addressing.<br>
-        4. Compare Circuit Switching, Datagram Packet Switching, and Virtual Circuit Switching across setup delay, ordering, and failure recovery.<br>
+        3. Differentiate between Synchronous TDM and Statistical TDM in terms of slot allocation and addressing overhead.<br>
+        4. Compare Circuit Switching, Datagram Packet Switching, and Virtual Circuit Switching across setup delay, ordering, and switch failure recovery.<br>
         5. Explain the role of guard bands in FDM.
       </p>
     </div>
-  </section>
-  <hr class="section-hr">
+  </div>
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Comprehensive chapter review and practice exam links.</div>
+      <div class="resource-grid">
+        <a href="https://www.mheducation.com/highered/product/data-communications-and-networking-with-tcp-ip-protocol-suite-forouzan.html" target="_blank" rel="noopener noreferrer">
+          📘 Forouzan — Chapter 5 &amp; 6 Modulation &amp; Multiplexing
+          <small>Constellation diagrams, QAM, and TDM/FDM exercises.</small>
+        </a>
+        <a href="https://www.pearson.com/en-gb/subject-catalog/p/computer-networks-global-edition/P200000005535/9781292498621" target="_blank" rel="noopener noreferrer">
+          📘 Tanenbaum &amp; Wetherall — Section 2.5 Multiplexing &amp; Switching
+          <small>Circuit switching vs packet switching and DWDM.</small>
+        </a>
+        <a href="../exams/mock-exam.html">
+          📝 CN MiniBook — Practice Exams
+          <small>Interactive self-testing on modulation, multiplexing, and switching.</small>
+        </a>
+      </div>
+    </div>
+</section>
+<hr class="section-hr">
 
   <!-- PREV/NEXT NAV -->
   <div class="prev-next">
-    <a href="ch06-media-signaling.html" class="nav-btn">← Ch 6: Media & Line Coding</a>
-    <a href="ch08-dll-fundamentals.html" class="nav-btn primary">Next: DLL Fundamentals & Error Handling →</a>
+    <a href="ch06-media-signaling.html" class="nav-btn">← Ch 6: Media &amp; Line Coding</a>
+    <a href="ch08-dll-fundamentals.html" class="nav-btn primary">Next: DLL Fundamentals &amp; Error Handling →</a>
   </div>
 
 </div>

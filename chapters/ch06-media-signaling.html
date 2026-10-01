@@ -5,7 +5,7 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="author" content="Arpit">
 <meta name="description" content="Chapter 6: Transmission Media & Line Coding — CN MiniBook. Twisted pair, coaxial, optical fiber, TIR, radio, microwave, satellite, NRZ, Manchester, Differential Manchester line coding.">
-<title>Ch 6 — Transmission Media & Line Coding | CN MiniBook 🌐 Arpit</title>
+<title>Ch 6 — Transmission Media &amp; Line Coding | CN MiniBook 🌐 Arpit</title>
 <link rel="manifest" href="../manifest.json">
 <link rel="stylesheet" href="../assets/css/main.css">
 <link rel="stylesheet" href="../assets/css/components.css">
@@ -27,7 +27,7 @@
       <div class="brand-text"><span class="main">CN MiniBook</span><span class="sub">Computer Networks</span></div>
     </div>
   </div>
-  <span class="header-chapter-title">Ch 6 — Media & Line Coding</span>
+  <span class="header-chapter-title">Ch 6 — Media &amp; Line Coding</span>
   <div class="header-right">
     <button id="search-btn" class="icon-btn" title="Search (Ctrl+K)">
       <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.35-4.35"></path></svg>
@@ -66,9 +66,9 @@
       <a href="#s-manchester" class="sidebar-link"><span class="link-icon">🔄</span>6.12 Manchester Encoding</a>
       <a href="#s-diff-manchester" class="sidebar-link"><span class="link-icon">⚡</span>6.13 Differential Manchester</a>
       <a href="#s-line-compare" class="sidebar-link"><span class="link-icon">⚖️</span>6.14 Line Coding Comparison</a>
-      <a href="#s-summary-ch6" class="sidebar-link"><span class="link-icon">🎯</span>6.15 Summary & Exam Traps</a>
+      <a href="#s-summary-ch6" class="sidebar-link"><span class="link-icon">🎯</span>6.15 Summary &amp; Exam Traps</a>
     </div>
-                <div class="sidebar-section">
+    <div class="sidebar-section">
       <div class="sidebar-section-label part-label part-i">Part I — Introduction</div>
       <a href="ch01-fundamentals.html" class="sidebar-link"><span class="link-icon">📡</span>Ch 1 — Fundamentals</a>
       <a href="ch02-types-topologies.html" class="sidebar-link"><span class="link-icon">🔗</span>Ch 2 — Types &amp; Topologies</a>
@@ -87,6 +87,18 @@
       <a href="ch09-protocols-sliding.html" class="sidebar-link"><span class="link-icon">🔄</span>Ch 9 — Protocols &amp; Sliding Window</a>
       <a href="ch10-mac-ethernet.html" class="sidebar-link"><span class="link-icon">🌐</span>Ch 10 — MAC &amp; Ethernet</a>
     </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label part-label part-iv">Part IV — Network Layer</div>
+      <a href="ch11-network-layer-foundations.html" class="sidebar-link"><span class="link-icon">🗺️</span>Ch 11 — Network Layer Foundations</a>
+      <a href="ch12-shortest-path-routing.html" class="sidebar-link"><span class="link-icon">🧭</span>Ch 12 — Shortest Path Routing</a>
+      <a href="ch13-link-state-distance-vector.html" class="sidebar-link part-iv"><span class="link-icon">🔁</span>Ch 13 — Link-State &amp; Distance-Vector</a>
+      <a href="ch14-logical-addressing-ipv4.html" class="sidebar-link part-iv"><span class="link-icon">🏷️</span>Ch 14 — Logical Addressing &amp; IPv4</a>
+      <a href="ch15-ipv4-internals.html" class="sidebar-link part-iv"><span class="link-icon">📦</span>Ch 15 — IPv4 Internals</a>
+      
+      <a href="ch17-address-mapping-icmp.html" class="sidebar-link part-iv"><span class="link-icon">🔎</span>Ch 17 — Address Mapping &amp; ICMP</a>
+      <a href="ch18-routers-switches-firewalls.html" class="sidebar-link part-iv"><span class="link-icon">🛡️</span>Ch 18 — Routers, Switches &amp; Firewalls</a>
+    </div>
+
     <div class="sidebar-section">
       <div class="sidebar-section-label">My Notes</div>
       <div id="notes-sidebar-list"></div>
@@ -107,27 +119,27 @@
       <a href="../index.html">Home</a><span>›</span><span>Part II — Physical Layer</span><span>›</span><span style="color:var(--tx-primary)">Chapter 6</span>
     </div>
     <div class="chapter-num">🔌 Chapter 6 · Part II — Physical Layer</div>
-        <div class="chapter-part-banner part-ii">
+    <div class="chapter-part-banner part-ii">
       <span class="part-banner-badge">Part II</span>
       <span>Physical Layer</span>
     </div>
-    <h1 class="chapter-title">Transmission Media & Line Coding</h1>
+    <h1 class="chapter-title">Transmission Media &amp; Line Coding</h1>
     <div class="chapter-meta">
-      <span class="chapter-meta-item" style="background:var(--uni-bg-hd); border-color:var(--uni-b-hd); color:var(--uni-text); font-weight:700;">🎓 Uni Syllabus: Media & Line Coding</span>
+      <span class="chapter-meta-item" style="background:var(--uni-bg-hd); border-color:var(--uni-b-hd); color:var(--uni-text); font-weight:700;">🎓 Uni Syllabus: Media &amp; Line Coding</span>
       <span>⏱️ 55 min read</span>
       <span>📚 15 Sections</span>
-      <span>🎓 Complete Hardware & Signaling Reference</span>
-      <span>⚡ Optical Fiber, Manchester & Waveforms</span>
+      <span>🎓 Complete Hardware &amp; Signaling Reference</span>
+      <span>⚡ Optical Fiber, Manchester &amp; Waveforms</span>
     </div>
   </div>
 
   <!-- UNIVERSITY SYLLABUS CALLOUT -->
   <div class="uni-syllabus-callout">
     <div class="uni-callout-title">🎓 Official University Syllabus Focus</div>
-    <div><strong>Physical Layer:</strong> Transmission media (guided copper/fiber & unguided wireless) and signaling (line coding techniques).</div>
+    <div><strong>Physical Layer:</strong> Transmission media (guided copper/fiber &amp; unguided wireless) and signaling (line coding techniques: NRZ, Manchester, Differential Manchester).</div>
   </div>
 
-    <!-- UNIVERSITY SYLLABUS FILTER SWITCH -->
+  <!-- UNIVERSITY SYLLABUS FILTER SWITCH -->
   <div class="uni-mode-toggle-card">
     <div>
       <div style="font-weight:700; font-size:0.95rem; color:var(--tx-primary); display:flex; align-items:center; gap:0.4rem;">
@@ -162,459 +174,558 @@
       <a href="#s-manchester" class="toc-item in-uni"><span class="toc-num">6.12</span>Manchester Encoding <span class="toc-uni-tag">🎓 Uni Core</span></a>
       <a href="#s-diff-manchester" class="toc-item in-uni"><span class="toc-num">6.13</span>Differential Manchester <span class="toc-uni-tag">🎓 Uni Core</span></a>
       <a href="#s-line-compare" class="toc-item in-uni"><span class="toc-num">6.14</span>Line Coding Comparison <span class="toc-uni-tag">🎓 Uni Core</span></a>
-      <a href="#s-summary-ch6" class="toc-item in-uni"><span class="toc-num">6.15</span>Summary & Exam Traps <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-summary-ch6" class="toc-item in-uni"><span class="toc-num">6.15</span>Summary &amp; Exam Traps <span class="toc-uni-tag">🎓 Uni Core</span></a>
     </div>
   </div>
 
-  <!-- SECTION 6.1: GUIDED VS UNGUIDED -->
-  <section id="s-media-overview" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 6.1</div>
-      <h2 class="section-title">Classification: Guided vs Unguided Transmission Media <span class="uni-syllabus-badge">🎓 Uni: Transmission Media</span></h2>
+  <!-- LEARNING OBJECTIVES CALLOUT -->
+  <div class="callout info" style="margin-bottom:var(--sp-6);border-left:4px solid var(--accent-border)">
+    <span class="callout-icon">🎯</span>
+    <div><strong>After studying this chapter you will be able to:</strong>
+      <ul style="margin:6px 0 0;padding-left:18px">
+        <li>Classify transmission media into guided (bounded) and unguided (wireless) physical structures.</li>
+        <li>Explain why twisting copper wire cancels external electromagnetic interference and differential crosstalk.</li>
+        <li>Derive the conditions for Total Internal Reflection (TIR), critical angle, and Numerical Aperture ($NA$) in optical fiber.</li>
+        <li>Compare Single-Mode Fiber (SMF) with Multimode Fiber (MMF) regarding modal dispersion and transmission reach.</li>
+        <li>Analyze the propagation properties of radio waves, terrestrial microwaves, and satellite orbits (GEO, MEO, LEO).</li>
+        <li>Evaluate digital line coding schemes (NRZ-L, NRZ-I, Manchester, Differential Manchester) regarding DC balance, baud rate overhead, and self-clocking.</li>
+      </ul>
     </div>
+  </div>
+
+  <!-- STUDY PATH -->
+  <div class="study-path">
+    <strong>🧭 How to study this chapter (Hardware to Signaling Progression):</strong>
+    <div class="path">
+      <span>1. Guided Media (Twisted Pair, Coax, Fiber Optics)</span> → 
+      <span>2. Unguided Media (Radio, Microwave, Infrared, Satellite)</span> → 
+      <span>3. Line Coding Theory &amp; Synchronization</span> → 
+      <span>4. NRZ vs. Manchester Waveform Analysis</span>
+    </div>
+    <div style="margin-top:.65rem;color:var(--tx-muted);font-size:.84rem"><strong>Exam Lens:</strong> Optical Fiber physics (Snell's Law / TIR) and Manchester line coding timing diagrams form core university examination staples marked <code>data-midsem="core"</code>.</div>
+  </div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 6.1 — GUIDED VS UNGUIDED MEDIA -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-media-overview" data-midsem="core" data-exam-priority="core" data-search-section="Guided unguided transmission media classification bounded unbounded physical path" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">6.1 Classification: Guided vs. Unguided Media
+      <button class="bookmark-btn" data-id="s-media-overview" data-label="6.1 Guided vs. Unguided Media" title="Bookmark">🔖</button>
+    </h2>
+  </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: transmission media (Guided vs Unguided Classification)</strong></span>
+    <span>Prescribed syllabus topic: <strong>Transmission Media — Guided vs Unguided Classification</strong></span>
   </div>
 
-
-    <p>A <strong>transmission medium</strong> is the physical communication path that carries a data signal from a sender to a receiver. Located beneath the Physical Layer, transmission media are fundamentally divided into two major classes based on physical conduit confinement:</p>
-
-    <div class="diagram-box">
-      <div class="diagram-title">Figure 6.1: Taxonomy of Transmission Media</div>
-      <pre>
-                               TRANSMISSION MEDIA
-                                        |
-                 +----------------------+----------------------+
-                 |                                             |
-         GUIDED (Wired / Bounded)                    UNGUIDED (Wireless / Unbounded)
-                 |                                             |
-        +--------+--------+                           +--------+--------+
-        |        |        |                           |        |        |
-     Twisted  Coaxial  Optical                      Radio   Microwaves Infrared
-      Pair     Cable    Fiber                       Waves      |
-     (UTP/STP) (50Ω/75Ω)(SM/MM)                                +-> Terrestrial
-                                                               +-> Satellite
-      </pre>
-    </div>
-
+  <div class="prose">
     <div class="def-box">
-      <div class="def-term">Guided vs Unguided Media</div>
-      <p class="def-body">
-        • <strong>Guided Media (Wired / Bound):</strong> Electromagnetic waves are physically constrained and guided along a solid conduit (copper wire or silica glass fiber). Provides high data rates, low interference, and physical security.<br>
-        • <strong>Unguided Media (Wireless / Unbound):</strong> Electromagnetic waves radiate freely through the atmosphere, vacuum, or water without physical conductors. Provides device mobility and wide geographical coverage at the cost of vulnerability to attenuation and interference.
-      </p>
+      <div class="def-term">Transmission Medium — Definition &amp; Taxonomy</div>
+      A <strong>transmission medium</strong> is the physical conduit situated beneath the OSI Physical Layer through which electromagnetic or optical energy signals propagate from sender to receiver. Transmission media are broadly classified into two categories:
+      <ul>
+        <li><strong>Guided (Bounded / Wired) Media:</strong> The signal waves are physically constrained and directed along a solid physical path (copper wire, glass strand).</li>
+        <li><strong>Unguided (Unbounded / Wireless) Media:</strong> Electromagnetic waves propagate freely through the atmosphere, vacuum, or water without physical conductors.</li>
+      </ul>
     </div>
-  </section>
-  <hr class="section-hr">
 
-  <!-- SECTION 6.2: TWISTED PAIR -->
-  <section id="s-twisted-pair" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 6.2</div>
-      <h2 class="section-title">Twisted Pair Cable (UTP & STP)</h2>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">Transmission Media Taxonomy Tree</span></div>
+      <pre><code>
+                              TRANSMISSION MEDIA
+                                      │
+            ┌─────────────────────────┴─────────────────────────┐
+            ▼                                                   ▼
+     GUIDED (Bounded)                                  UNGUIDED (Wireless)
+            │                                                   │
+   ┌────────┼────────┐                         ┌────────────────┼────────────────┐
+   ▼        ▼        ▼                         ▼                ▼                ▼
+Twisted   Coaxial  Optical                   Radio          Microwave         Infrared
+ Pair     Cable    Fiber                     Waves          (Terrestrial/      (Line-of-
+(UTP/STP)(50Ω/75Ω)(SMF/MMF)                 (Omni)          Satellite)         Sight)
+      </code></pre>
     </div>
+
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 6.1</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 7, Section 7.1: "Introduction to Transmission Media".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Tanenbaum &amp; Wetherall (5th Ed):</strong> Chapter 2, Section 2.2: "Guided Transmission Media".</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 6.2 — TWISTED PAIR CABLE -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-twisted-pair" data-midsem="core" data-exam-priority="core" data-search-section="Twisted pair UTP STP crosstalk balanced differential signaling Category Cat5e Cat6 RJ45" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">6.2 Twisted Pair Cable (UTP &amp; STP)
+      <button class="bookmark-btn" data-id="s-twisted-pair" data-label="6.2 Twisted Pair Cable" title="Bookmark">🔖</button>
+    </h2>
+  </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: transmission media (Twisted Pair Cable: UTP vs STP, Categories)</strong></span>
+    <span>Prescribed syllabus topic: <strong>Guided Media — Twisted Pair (Physics, Categories &amp; RJ-45)</strong></span>
   </div>
 
-
-    <p>The <strong>Twisted Pair Cable</strong> is the most ubiquitous transmission medium in local area networks (LANs). It consists of two insulated copper conductor wires twisted around each other in a regular helical pattern.</p>
-
-    <div class="diagram-box">
-      <div class="diagram-title">Figure 6.2: Why Are the Conductors Twisted?</div>
-      <pre>
-   EXTERNAL NOISE SOURCE:
-           \   |   /   (Electromagnetic Radiation)
-            \  |  /
-   Wire 1:  ---\     /---\     /---
-                \   /     \   /
-   Wire 2:  -----/ \-------/ \-----
-             [Loop 1]   [Loop 2]
-
-   • In Loop 1: Wire 1 is closer to the noise source -> picks up +ΔV.
-   • In Loop 2: Wire 2 is closer to the noise source -> picks up +ΔV.
-   • The receiver measures the DIFFERENCE (V1 - V2):
-     Differential Voltage = (V_signal + ΔV) - (-V_signal + ΔV) = 2·V_signal!
-   👉 The noise term (+ΔV) cancels out completely!
-      </pre>
-    </div>
-
+  <div class="prose">
     <div class="def-box">
-      <div class="def-term">Differential Signaling & Noise Cancellation</div>
-      <p class="def-body">Twisting ensures that both wires are equally exposed to ambient electromagnetic noise. Because the receiver measures the <strong>voltage difference</strong> between the two wires rather than the voltage relative to ground, identical induced noise spikes on both wires cancel each other out mathematically!</p>
+      <div class="def-term">Twisted Pair Cable — First-Principles Definition</div>
+      A <strong>twisted pair</strong> cable consists of two individually insulated copper wires twisted together in a helical spiral pattern. One wire carries the signal, while the other serves as the ground/differential reference. The continuous twisting cancels electromagnetic interference (EMI) and eliminates crosstalk from adjacent pairs.
     </div>
 
-    <h3>UTP vs STP</h3>
-    <div class="table-wrap">
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>Feature</th>
-            <th>Unshielded Twisted Pair (UTP)</th>
-            <th>Shielded Twisted Pair (STP)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Shielding</strong></td>
-            <td>Only plastic insulation around each wire and an outer PVC jacket. No metal foil.</td>
-            <td>Individual pairs wrapped in metal foil shielding, plus an overall braided wire shield.</td>
-          </tr>
-          <tr>
-            <td><strong>EMI Immunity</strong></td>
-            <td>Moderate (adequate for indoor office environments).</td>
-            <td>High (resists industrial machinery EMI and external radio frequency noise).</td>
-          </tr>
-          <tr>
-            <td><strong>Cost & Bulk</strong></td>
-            <td>Inexpensive, thin, lightweight, flexible, and very easy to terminate.</td>
-            <td>Expensive, thick, rigid, heavier, and requires proper electrical grounding.</td>
-          </tr>
-          <tr>
-            <td><strong>Connector</strong></td>
-            <td>Standard <strong>RJ45</strong> (8P8C) plug.</td>
-            <td>Shielded RJ45 or specialized industrial connectors.</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <h3>Why It Exists: Overcoming Parallel Wire Crosstalk</h3>
+    <p>If two copper wires run parallel to each other, external noise sources (power lines, electric motors, radio transmitters) induce significantly different voltages on the wire closer to the noise source than on the wire further away. This differential voltage corrupts the signal. By twisting the wires helically:</p>
+    <ul>
+      <li>Each wire alternates between being closer to and further from the noise source.</li>
+      <li>On average over the length of the cable, both conductors absorb an <strong>identical amount of noise voltage ($V_{\text{noise}}$)</strong>.</li>
+    </ul>
 
-    <h3>UTP Category Standards (TIA/EIA-568)</h3>
+    <h3>The Mathematical Proof of Differential Noise Cancellation</h3>
+    <p>Modern Ethernet utilizes <strong>balanced differential signaling</strong>:</p>
+    <ol style="margin:4px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:4px">
+      <li>The transmitter sends $+V_s / 2$ on Conductor A and $-V_s / 2$ on Conductor B (total signal difference $= V_s$).</li>
+      <li>External noise induces identical noise voltage $V_{\text{noise}}$ on both tightly twisted conductors:
+      $$V_A = +V_s / 2 + V_{\text{noise}}$$
+      $$V_B = -V_s / 2 + V_{\text{noise}}$$</li>
+      <li>The receiver uses a differential operational amplifier that measures the <strong>difference</strong> between the two conductors:
+      $$V_{\text{received}} = V_A - V_B = \left(+V_s / 2 + V_{\text{noise}}\right) - \left(-V_s / 2 + V_{\text{noise}}\right) = V_s$$</li>
+      <li><strong>Result:</strong> $V_{\text{noise}} - V_{\text{noise}} = 0$. The external noise is eliminated mathematically!</li>
+    </ol>
+
+    <h3>UTP Categories Reference</h3>
     <div class="table-wrap">
-      <table class="data-table">
+      <table class="prose-table">
         <thead>
           <tr>
             <th>Category</th>
-            <th>Rated Bandwidth</th>
-            <th>Maximum Data Rate</th>
-            <th>Typical Modern Application</th>
+            <th>Max Frequency</th>
+            <th>Max Data Rate</th>
+            <th>Common Application &amp; Standards</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>Cat 3</strong></td>
-            <td>16 MHz</td>
-            <td>10 Mbps</td>
-            <td>Legacy 10Base-T Ethernet, analog telephone lines.</td>
-          </tr>
-          <tr>
-            <td><strong>Cat 5</strong></td>
-            <td>100 MHz</td>
-            <td>100 Mbps (Fast Ethernet)</td>
-            <td>Obsolete 100Base-TX.</td>
+            <td>$16\ \text{MHz}$</td>
+            <td>$10\ \text{Mbps}$</td>
+            <td>Legacy 10BASE-T Ethernet and analog voice telephone lines.</td>
           </tr>
           <tr>
             <td><strong>Cat 5e</strong></td>
-            <td>100 MHz</td>
-            <td>1 Gbps (Gigabit Ethernet)</td>
-            <td>1000Base-T over 100 meters (reduced crosstalk).</td>
+            <td>$100\ \text{MHz}$</td>
+            <td>$1\ \text{Gbps}$ (1000BASE-T)</td>
+            <td>Standard residential and commercial Gigabit LANs (up to 100 meters).</td>
           </tr>
           <tr>
             <td><strong>Cat 6</strong></td>
-            <td>250 MHz</td>
-            <td>10 Gbps (up to 55m) / 1 Gbps (100m)</td>
-            <td>Standard modern enterprise office LAN cabling.</td>
+            <td>$250\ \text{MHz}$</td>
+            <td>$10\ \text{Gbps}$</td>
+            <td>Includes an internal plastic spline separator to reduce crosstalk; 10 Gbps up to 55m.</td>
           </tr>
           <tr>
             <td><strong>Cat 6a</strong></td>
-            <td>500 MHz</td>
-            <td>10 Gbps over full 100m</td>
-            <td>Datacenter server-to-switch interconnects.</td>
+            <td>$500\ \text{MHz}$</td>
+            <td>$10\ \text{Gbps}$</td>
+            <td>Full 10GBASE-T up to the maximum 100-meter channel distance.</td>
           </tr>
         </tbody>
       </table>
     </div>
-  </section>
-  <hr class="section-hr">
 
-  <!-- SECTION 6.3: COAXIAL CABLE -->
-  <section id="s-coaxial" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 6.3</div>
-      <h2 class="section-title">Coaxial Cable (Coax)</h2>
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 6.2</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 7, Section 7.1.1: "Twisted-Pair Cable".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Stallings (10th Ed):</strong> Chapter 4, Section 4.1: "Twisted Pair".</li>
+        <li><span class="res-tag tag-spec">Standard</span> <strong>ANSI/TIA-568.2-D:</strong> Balanced Twisted-Pair Telecommunications Cabling and Components.</li>
+      </ul>
     </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 6.3 — COAXIAL CABLE -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-coaxial" data-midsem="core" data-exam-priority="core" data-search-section="Coaxial cable coax baseband broadband 10BASE2 10BASE5 BNC impedance 50 ohm 75 ohm" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">6.3 Coaxial Cable (Coax)
+      <button class="bookmark-btn" data-id="s-coaxial" data-label="6.3 Coaxial Cable" title="Bookmark">🔖</button>
+    </h2>
+  </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: transmission media (Coaxial Cable: Baseband vs Broadband)</strong></span>
+    <span>Prescribed syllabus topic: <strong>Guided Media — Coaxial Cable (Structure, Standards &amp; Connectors)</strong></span>
   </div>
 
-
-    <p>A <strong>Coaxial Cable</strong> features two concentric conductors sharing the same geometric center axis (hence <em>co-axial</em>). It was the backbone of early Ethernet LANs and remains dominant in cable television and DOCSIS broadband internet.</p>
-
-    <div class="diagram-box">
-      <div class="diagram-title">Figure 6.3: Coaxial Cable Cross-Section</div>
-      <pre>
-   (Center outward):
-   1. [=====] Inner Conductor (Solid or stranded copper wire - carries signal)
-   2. [#####] Dielectric Insulator (Non-conductive plastic foam)
-   3. [:::::] Outer Metallic Conductor (Braided copper mesh / aluminum foil - ground & shield)
-   4. [=====] Outer Protective Plastic Jacket (PVC or Teflon)
-      </pre>
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Coaxial Cable — Definition &amp; Anatomy</div>
+      A <strong>coaxial cable</strong> carries signals of higher frequency ranges than twisted pair. It consists of a central solid or stranded copper core conductor surrounded by four concentric layers:
+      <ol style="margin:4px 0 0;padding-left:18px">
+        <li><strong>Inner Core:</strong> Solid copper wire carrying the signal.</li>
+        <li><strong>Dielectric Insulator:</strong> Non-conductive flexible plastic layer keeping concentric spacing constant.</li>
+        <li><strong>Outer Conductor / Shield:</strong> Braided metallic mesh providing ground return and shielding from outside RF noise.</li>
+        <li><strong>Outer Jacket:</strong> Tough plastic/PVC sheath protecting against physical damage and moisture.</li>
+      </ol>
     </div>
 
-    <h3>Baseband vs Broadband Coaxial Cable</h3>
+    <h3>Baseband vs. Broadband Coaxial Standards</h3>
     <div class="table-wrap">
-      <table class="data-table">
+      <table class="prose-table">
         <thead>
           <tr>
-            <th>Type</th>
-            <th>Characteristic Impedance</th>
-            <th>Signaling Mode</th>
-            <th>Historical / Modern Use</th>
+            <th>Parameter</th>
+            <th>Baseband Coaxial ($50\ \Omega$)</th>
+            <th>Broadband Coaxial ($75\ \Omega$)</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>Baseband Coaxial</strong></td>
-            <td><strong>50 $\Omega$ (Ohms)</strong></td>
-            <td>Digital signaling; entire cable bandwidth dedicated to a single digital pulse stream at any given time.</td>
-            <td>Legacy 10Base-5 ("Thicknet") and 10Base-2 ("Thinnet") bus Ethernet.</td>
+            <td><strong>Characteristic Impedance</strong></td>
+            <td>$50\ \Omega$ (Optimized for digital pulse transmission).</td>
+            <td>$75\ \Omega$ (Optimized for low attenuation analog RF signals).</td>
           </tr>
           <tr>
-            <td><strong>Broadband Coaxial</strong></td>
-            <td><strong>75 $\Omega$ (Ohms)</strong></td>
-            <td>Analog signaling; frequency division multiplexing (FDM) carries hundreds of TV channels and data streams simultaneously.</td>
-            <td>Cable TV (CATV), DOCSIS residential broadband cable modems.</td>
+            <td><strong>Signaling Type</strong></td>
+            <td>Digital baseband pulses (single channel occupying entire cable).</td>
+            <td>Analog passband / FDM (multiple modulated RF channels simultaneously).</td>
+          </tr>
+          <tr>
+            <td><strong>Historical Standards</strong></td>
+            <td><strong>10BASE5 (Thicknet):</strong> 500m max, 10 Mbps.<br><strong>10BASE2 (Thinnet):</strong> 185m max, 10 Mbps.</td>
+            <td>Cable Television (CATV), DOCSIS 3.1/4.0 Broadband Internet.</td>
+          </tr>
+          <tr>
+            <td><strong>Connectors</strong></td>
+            <td>Vampire taps (10BASE5), BNC T-connectors &amp; $50\ \Omega$ terminators (10BASE2).</td>
+            <td>F-type screw-on RF connectors.</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <div class="callout tip">
-      <div class="callout-title">💡 Connectors for Coaxial Cable</div>
-      <p>• <strong>BNC (Bayonet Neill-Concelman):</strong> Classic push-and-twist connector used in legacy 10Base-2 Ethernet and video broadcast equipment.<br>
-      • <strong>BNC T-Connector:</strong> Inserted directly into the NIC of a PC to splice into a bus backbone.<br>
-      • <strong>50 $\Omega$ Terminator:</strong> Attached to both physical ends of a coaxial bus to absorb electrical reflections and prevent standing wave collisions.<br>
-      • <strong>F-Type Connector:</strong> Threaded screw-on connector standard on modern cable modems and TV set-top boxes.</p>
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 6.3</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 7, Section 7.1.2: "Coaxial Cable".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Tanenbaum &amp; Wetherall (5th Ed):</strong> Chapter 2, Section 2.2.3: "Coaxial Cable".</li>
+      </ul>
     </div>
-  </section>
-  <hr class="section-hr">
+  </div>
+</section>
+<hr class="section-hr">
 
-  <!-- SECTION 6.4: OPTICAL FIBER -->
-  <section id="s-fiber" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 6.4</div>
-      <h2 class="section-title">Optical Fiber Cable (Physics & Total Internal Reflection)</h2>
-    </div>
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 6.4 — OPTICAL FIBER -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-fiber" data-midsem="core" data-exam-priority="core" data-search-section="Optical fiber Snell law critical angle total internal reflection TIR SMF MMF numerical aperture" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">6.4 Optical Fiber Cable (Physics &amp; TIR)
+      <button class="bookmark-btn" data-id="s-fiber" data-label="6.4 Optical Fiber Cable" title="Bookmark">🔖</button>
+    </h2>
+  </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: transmission media (Optical Fiber Cable: Total Internal Reflection)</strong></span>
+    <span>Prescribed syllabus topic: <strong>Guided Media — Optical Fiber (Snell's Law, TIR, SMF vs MMF)</strong></span>
   </div>
 
-
-    <p><strong>Optical Fiber</strong> is the undisputed king of high-speed long-distance telecommunications. Instead of conducting electrical currents, optical fibers transmit data as high-frequency pulses of light (photons) through thin strands of ultra-pure silica glass ($SiO_2$) or transparent plastic.</p>
-
-    <div class="diagram-box">
-      <div class="diagram-title">Figure 6.4: Total Internal Reflection in Optical Fiber</div>
-      <pre>
-                    CLADDING (Refractive Index n2)
-      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      \                                                       /
-       \  Angle of Incidence θ_i > Critical Angle θ_c        /
-        \                                                   /
-         \                                                 /
-          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                    CORE (Refractive Index n1 > n2)
-      </pre>
-    </div>
-
+  <div class="prose">
     <div class="def-box">
-      <div class="def-term">Total Internal Reflection (TIR) & Snell's Law</div>
-      <p class="def-body">
-        For light to remain trapped inside the core and propagate across hundreds of kilometers without escaping into the jacket, two physical conditions must hold:<br>
-        1. <strong>Refractive Index Condition:</strong> The core glass must be optically denser than the outer cladding:<br>
-        <code style="color:var(--accent-light); font-weight:bold;">n_core (n1) > n_cladding (n2)</code><br>
-        2. <strong>Critical Angle Condition:</strong> The angle of incidence ($\theta_i$) at the core-cladding boundary must be <strong>greater than the critical angle ($\theta_c$)</strong>:<br>
-        <code style="color:var(--accent-light); font-weight:bold;">\sin(\theta_c) = \frac{n_2}{n_1}</code><br>
-        When $\theta_i > \theta_c$, $100\%$ of the optical energy is reflected back into the core with zero refractive loss!
-      </p>
+      <div class="def-term">Optical Fiber — First-Principles Definition</div>
+      An <strong>optical fiber</strong> is a dielectric cylindrical waveguide made of ultra-pure silica glass ($SiO_2$) or plastic that transmits data encoded as pulses of light via the physical phenomenon of <strong>Total Internal Reflection (TIR)</strong>.
     </div>
 
-    <h3>Single-Mode vs Multi-Mode Fiber</h3>
+    <h3>The Physics of Total Internal Reflection</h3>
+    <p>A fiber consists of an inner <strong>core</strong> with refractive index $n_1$ surrounded by a concentric <strong>cladding</strong> with a lower refractive index $n_2$ ($n_1 > n_2$).</p>
+    <ul>
+      <li><strong>Snell's Law:</strong> $n_1 \sin \theta_1 = n_2 \sin \theta_2$.</li>
+      <li><strong>Critical Angle ($\theta_c$):</strong> When light moves from a denser medium ($n_1$) to a rarer medium ($n_2$), as the angle of incidence increases, the refracted angle reaches $90^\circ$. Setting $\theta_2 = 90^\circ$:
+      $$\sin \theta_c = \frac{n_2}{n_1} \implies \theta_c = \arcsin\left(\frac{n_2}{n_1}\right)$$</li>
+      <li><strong>TIR Condition:</strong> If the angle of incidence at the core-cladding boundary exceeds the critical angle ($\theta > \theta_c$), <strong>zero light is refracted into the cladding</strong>; 100% of the photon energy is reflected back into the core, guiding the light along the fiber.</li>
+      <li><strong>Numerical Aperture ($NA$):</strong> The light-gathering capacity of the fiber from air ($n_0 = 1$):
+      $$NA = \sqrt{n_1^2 - n_2^2} = \sin \theta_{\text{acceptance}}$$</li>
+    </ul>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">Total Internal Reflection in Optical Fiber</span></div>
+      <pre><code>
+                      CLADDING (Refractive Index n2)
+        ═════════════════════════════════════════════════════════════
+         \       /\  θ > θc (Total Internal Reflection!)     /
+          \     /  \                                        /
+           \   /    \                                      /
+            \ /      \                                    /
+             v        \                                  /
+        ───────────────────────────────────────────────────────────── (Fiber Axis)
+                       \                                /
+                        \                              /
+                         \                            /
+        ═════════════════════════════════════════════════════════════
+                      CLADDING (Refractive Index n2)
+                      Core Refractive Index n1 > n2
+      </code></pre>
+    </div>
+
+    <h3>Single-Mode Fiber (SMF) vs. Multimode Fiber (MMF)</h3>
     <div class="table-wrap">
-      <table class="data-table">
+      <table class="prose-table">
         <thead>
           <tr>
-            <th>Characteristic</th>
+            <th>Property</th>
             <th>Single-Mode Fiber (SMF)</th>
-            <th>Multi-Mode Fiber (MMF)</th>
+            <th>Multimode Fiber (MMF)</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>Core Diameter</strong></td>
-            <td>Extremely narrow: <strong>8 to 10 $\mu\text{m}$</strong> (roughly the width of a human red blood cell).</td>
-            <td>Much wider: <strong>50 to 62.5 $\mu\text{m}$</strong>.</td>
+            <td>$8\ \mu\text{m to } 10\ \mu\text{m}$ (Microscopic; comparable to light wavelength).</td>
+            <td>$50\ \mu\text{m to } 62.5\ \mu\text{m}$ (Substantially larger).</td>
           </tr>
           <tr>
-            <td><strong>Light Propagation Paths</strong></td>
-            <td>Only <strong>one single direct ray/mode</strong> of light travels straight down the center axis. Zero modal dispersion!</td>
-            <td><strong>Multiple rays/modes</strong> bounce off walls at different angles, arriving at slightly different times (modal dispersion).</td>
+            <td><strong>Light Propagation</strong></td>
+            <td>Single direct axial ray. <strong>Zero modal dispersion</strong>.</td>
+            <td>Multiple light rays (modes) bounce at varying angles.</td>
           </tr>
           <tr>
             <td><strong>Light Source</strong></td>
-            <td>Precision Injection <strong>Laser Diodes (ILD)</strong> (expensive, narrow spectral width).</td>
-            <td><strong>Light Emitting Diodes (LED)</strong> or VCSELs (inexpensive).</td>
+            <td>Infrared Semiconductor Laser Diodes (1310 nm / 1550 nm).</td>
+            <td>Light Emitting Diodes (LEDs) or VCSELs (850 nm / 1300 nm).</td>
           </tr>
           <tr>
-            <td><strong>Maximum Distance</strong></td>
-            <td>Up to <strong>80 to 100+ km</strong> without repeaters.</td>
-            <td>Up to <strong>300 to 2000 meters</strong> (limited by modal dispersion).</td>
-          </tr>
-          <tr>
-            <td><strong>Applications</strong></td>
-            <td>Undersea transoceanic cables, telecom backbones, long-haul inter-city links.</td>
-            <td>Campus LAN backbones, intra-datacenter server racks.</td>
+            <td><strong>Transmission Distance</strong></td>
+            <td>Long-haul backbones, trans-oceanic cables ($10\ \text{km to } 100+\ \text{km}$).</td>
+            <td>Short reach: Data center interconnects, campus LANs (&lt; 500m).</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <h3>Advantages & Disadvantages of Optical Fiber</h3>
-    <ul>
-      <li><strong>Enormous Bandwidth:</strong> Easily supports data rates from 10 Gbps to 800 Gbps per wavelength.</li>
-      <li><strong>Zero EMI Immunity:</strong> Being made of glass, fiber is 100% immune to electromagnetic interference, radio interference, and high-voltage power lines.</li>
-      <li><strong>Extremely Low Attenuation:</strong> Signals travel tens of kilometers before requiring regeneration (typically $\approx 0.2\text{ dB/km}$ at 1550 nm).</li>
-      <li><strong>High Security:</strong> Extremely difficult to tap without breaking the glass and causing an immediate detectable drop in optical power.</li>
-      <li><strong>Disadvantages:</strong> Higher installation cost, fragile (glass can crack if bent beyond minimum bend radius), and splicing requires precision fusion equipment.</li>
-    </ul>
-  </section>
-  <hr class="section-hr">
-
-  <!-- SECTION 6.5: UNGUIDED RADIO WAVES -->
-  <section id="s-radio" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 6.5</div>
-      <h2 class="section-title">Unguided Media: Radio Waves (3 kHz to 1 GHz)</h2>
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 6.4</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 7, Section 7.1.3: "Optical Fiber".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Tanenbaum &amp; Wetherall (5th Ed):</strong> Chapter 2, Section 2.2.4: "Fiber Optics".</li>
+        <li><span class="res-tag tag-spec">Standard</span> <strong>ITU-T G.652:</strong> Characteristics of a Single-Mode Optical Fibre Cable.</li>
+      </ul>
     </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 6.5 — RADIO WAVES -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-radio" data-midsem="core" data-exam-priority="core" data-search-section="Radio waves unguided wireless omnidirectional ground sky space wave propagation" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">6.5 Unguided Media: Radio Waves (3 kHz to 1 GHz)
+      <button class="bookmark-btn" data-id="s-radio" data-label="6.5 Unguided Media: Radio Waves" title="Bookmark">🔖</button>
+    </h2>
+  </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: transmission media (Unguided Media: Radio Waves 3 kHz to 1 GHz)</strong></span>
+    <span>Prescribed syllabus topic: <strong>Unguided Media — Radio Waves (Characteristics &amp; Propagation)</strong></span>
   </div>
 
-
-    <p><strong>Radio waves</strong> are electromagnetic waves ranging from $3\text{ kHz}$ to $1\text{ GHz}$. They are <strong>omnidirectional</strong>: when an antenna transmits radio waves, energy radiates outward in all directions equally. This means the transmitting and receiving antennas do not need to be physically aligned.</p>
-
+  <div class="prose">
     <div class="def-box">
-      <div class="def-term">Omnidirectional Radio Propagation</div>
-      <p class="def-body">Radio waves penetrate walls easily (especially lower frequencies), making them ideal for indoor multicast, mobile cellular, and consumer broadcast systems (AM/FM radio, Wi-Fi, Bluetooth). However, omnidirectional propagation means signals are susceptible to interference from other transmitters sharing the same frequency band.</p>
+      <div class="def-term">Radio Waves — Operational Properties</div>
+      Electromagnetic waves ranging from <strong>3 kHz to 1 GHz</strong> are called <strong>radio waves</strong>. Radio waves are <strong>omnidirectional</strong>: when an antenna transmits, electromagnetic energy radiates in all directions, allowing receiving antennas to capture signals without precise physical alignment.
     </div>
-  </section>
-  <hr class="section-hr">
 
-  <!-- SECTION 6.6: MICROWAVES -->
-  <section id="s-microwave" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 6.6</div>
-      <h2 class="section-title">Unguided Media: Microwaves (1 GHz to 300 GHz)</h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: transmission media (Unguided Media: Terrestrial & Satellite Microwaves)</strong></span>
-  </div>
-
-
-    <p>Electromagnetic waves between $1\text{ GHz}$ and $300\text{ GHz}$ are called <strong>microwaves</strong>. Unlike radio waves, microwaves are highly <strong>unidirectional (directional)</strong>. Energy can be focused into a narrow, concentrated beam using parabolic dish or horn antennas.</p>
-
-    <div class="callout warning">
-      <div class="callout-title">⚠️ The Line-of-Sight Constraint</div>
-      <p>Microwaves follow strict <strong>line-of-sight propagation</strong>. They cannot bend around the curvature of the Earth, nor can they pass through mountains or large solid buildings. To establish long-distance terrestrial microwave links, relay towers equipped with parabolic antennas must be erected on hilltops or tall buildings every <strong>40 to 50 km</strong>.</p>
-    </div>
-  </section>
-  <hr class="section-hr">
-
-  <!-- SECTION 6.7: INFRARED -->
-  <section id="s-infrared" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 6.7</div>
-      <h2 class="section-title">Unguided Media: Infrared (300 GHz to 400 THz)</h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: transmission media (Unguided Media: Infrared Line-of-Sight)</strong></span>
-  </div>
-
-
-    <p><strong>Infrared waves</strong> operate at frequencies from $300\text{ GHz}$ to $400\text{ THz}$ (wavelengths from 1 mm to 770 nm). Infrared communication is strictly short-range and line-of-sight.</p>
+    <h3>Propagation Modes Across the Radio Spectrum</h3>
     <ul>
-      <li><strong>Cannot Penetrate Solid Walls:</strong> This physical limitation is actually a tremendous security advantage! An infrared transmission inside a conference room cannot leak into the next room or be eavesdropped by outsiders.</li>
-      <li><strong>No Government License Required:</strong> Because infrared does not interfere with neighboring rooms, it is free from FCC/ITU spectrum licensing.</li>
-      <li><strong>Applications:</strong> Television remote controls, wireless keyboards/mice, infrared wireless transceivers.</li>
+      <li><strong>Ground Wave Propagation (&lt; 2 MHz):</strong> Waves follow the physical curvature of the Earth through the troposphere (AM radio, VLF submarine communications).</li>
+      <li><strong>Sky Wave Propagation (2 MHz to 30 MHz):</strong> Higher frequency radio waves radiate upward and refract off the ionized gas layers of the upper atmosphere (<strong>ionosphere</strong>), bouncing back to Earth. Enables intercontinental shortwave radio broadcasts.</li>
+      <li><strong>Line-of-Sight Space Wave (&gt; 30 MHz):</strong> Waves travel directly in a straight line from transmitting antenna to receiving antenna without atmospheric reflection (VHF/UHF television, FM radio, cellular networks).</li>
     </ul>
-  </section>
-  <hr class="section-hr">
 
-  <!-- SECTION 6.8: SATELLITE -->
-  <section id="s-satellite" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 6.8</div>
-      <h2 class="section-title">Satellite Communication (GEO, MEO, LEO)</h2>
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 6.5</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 7, Section 7.2.1: "Radio Waves".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Stallings (10th Ed):</strong> Chapter 4, Section 4.2: "Wireless Transmission: Terrestrial Radio".</li>
+      </ul>
     </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 6.6 — MICROWAVES -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-microwave" data-midsem="core" data-exam-priority="core" data-search-section="Microwaves unguided wireless unidirectional line of sight parabolic dish rain fade" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">6.6 Unguided Media: Microwaves (1 GHz to 300 GHz)
+      <button class="bookmark-btn" data-id="s-microwave" data-label="6.6 Unguided Media: Microwaves" title="Bookmark">🔖</button>
+    </h2>
+  </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: transmission media (Unguided Media: Satellite Communication GEO/MEO/LEO)</strong></span>
+    <span>Prescribed syllabus topic: <strong>Unguided Media — Terrestrial Microwaves (Line-of-Sight &amp; Antennas)</strong></span>
   </div>
 
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Microwaves — Definition &amp; Properties</div>
+      Electromagnetic waves ranging from <strong>1 GHz to 300 GHz</strong> are called <strong>microwaves</strong>. Unlike omnidirectional radio waves, microwaves are <strong>unidirectional</strong>: transmitting and receiving antennas must be narrowly focused and aligned precisely along a direct optical line of sight.
+    </div>
 
-    <p>A communications satellite acts as an enormous <strong>microwave relay repeater in the sky</strong>. An earth station transmits a microwave signal on an <strong>uplink frequency</strong>; the satellite's onboard <strong>transponder</strong> receives the signal, amplifies it, translates it to a different <strong>downlink frequency</strong> (to prevent interference between sender and receiver), and beams it back to Earth.</p>
+    <h3>Physical Constraints of Terrestrial Microwave Links</h3>
+    <ul>
+      <li><strong>Parabolic Dish Antennas:</strong> Geometry focuses incoming parallel rays into a single focal point, amplifying signal gain.</li>
+      <li><strong>Earth Curvature Horizon Limit:</strong> Because microwaves travel in straight lines, the maximum distance $d$ between two line-of-sight towers of heights $h_1$ and $h_2$ is governed by Earth's curvature:
+      $$d \approx 3.57 \left(\sqrt{h_1} + \sqrt{h_2}\right)\ \text{km}$$</li>
+      <li><strong>Rain Fade:</strong> At frequencies above 10 GHz, atmospheric water droplets absorb and scatter microwave energy, causing attenuation during heavy rainfall.</li>
+    </ul>
 
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 6.6</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 7, Section 7.2.2: "Microwaves".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Tanenbaum &amp; Wetherall (5th Ed):</strong> Chapter 2, Section 2.3.2: "Microwave Transmission".</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 6.7 — INFRARED -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-infrared" data-midsem="core" data-exam-priority="core" data-search-section="Infrared unguided wireless line of sight solid walls IrDA remote security" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">6.7 Unguided Media: Infrared (300 GHz to 400 THz)
+      <button class="bookmark-btn" data-id="s-infrared" data-label="6.7 Unguided Media: Infrared" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Unguided Media — Infrared Transmission &amp; Confinement</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Infrared — Characteristics</div>
+      <strong>Infrared signals</strong> span frequencies from <strong>300 GHz to 400 THz</strong> (wavelengths from $1\ \text{mm}$ to $770\ \text{nm}$). Used for short-range communication in closed rooms (television remote controls, wireless keyboards, legacy IrDA).
+    </div>
+
+    <h3>The Wall Confinement Principle &amp; Security Advantage</h3>
+    <p>Unlike radio waves and microwaves, infrared radiation <strong>cannot penetrate solid walls</strong>:</p>
+    <ul>
+      <li><strong>Interference Immunity:</strong> An infrared communication system in Room A cannot interfere with another infrared system operating on the same frequency in adjacent Room B.</li>
+      <li><strong>Physical Security:</strong> Eavesdropping from outside the building is physically impossible without direct line-of-sight access through a window.</li>
+      <li><strong>Limitation:</strong> Useless for outdoor long-distance transmission because sunlight contains immense infrared energy that blinds receivers.</li>
+    </ul>
+
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 6.7</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 7, Section 7.2.3: "Infrared".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Tanenbaum &amp; Wetherall (5th Ed):</strong> Chapter 2, Section 2.3.4: "Infrared Transmission".</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 6.8 — SATELLITE COMMUNICATION -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-satellite" data-midsem="core" data-exam-priority="core" data-search-section="Satellite communication GEO MEO LEO orbital mechanics propagation delay Starlink GPS" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">6.8 Satellite Communication (GEO, MEO, LEO)
+      <button class="bookmark-btn" data-id="s-satellite" data-label="6.8 Satellite Communication" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Unguided Media — Satellite Communication (Orbits &amp; Latency)</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Satellite Transponder — Definition</div>
+      A communication satellite functions as an orbital microwave relay station. It receives an uplink transmission from a ground station on one frequency band (e.g., $6\ \text{GHz}$), regenerates/amplifies the signal, and retransmits it on a different downlink frequency band (e.g., $4\ \text{GHz}$) to avoid self-interference.
+    </div>
+
+    <h3>Comparison of Satellite Orbits</h3>
     <div class="table-wrap">
-      <table class="data-table">
+      <table class="prose-table">
         <thead>
           <tr>
-            <th>Orbit Type</th>
+            <th>Orbit Class</th>
             <th>Altitude Above Earth</th>
-            <th>Round-Trip Latency</th>
-            <th>Constellation Size & Applications</th>
+            <th>Orbital Period</th>
+            <th>Round-Trip Latency (RTT)</th>
+            <th>Primary Application</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>GEO (Geostationary Earth Orbit)</strong></td>
-            <td><strong>35,786 km</strong> (Orbital period exactly matches Earth's 24h rotation).</td>
-            <td>High latency: <strong>$\approx 250\text{ to } 280\text{ ms}$</strong>.</td>
-            <td>Just <strong>3 satellites</strong> cover almost the entire globe! Used for satellite television broadcast (DTH) and weather monitoring.</td>
+            <td><strong>Geostationary (GEO)</strong></td>
+            <td>$35,786\ \text{km}$</td>
+            <td>$24\ \text{hours}$ (Matches Earth's rotation; fixed in sky).</td>
+            <td>$\approx 250 - 280\ \text{ms}$ (Physics: $2 \times d / c$).</td>
+            <td>Satellite TV (DTH), weather monitoring. <strong>3 satellites cover the entire planet</strong> (excluding poles).</td>
           </tr>
           <tr>
-            <td><strong>MEO (Medium Earth Orbit)</strong></td>
-            <td>5,000 to 20,000 km</td>
-            <td>Moderate latency: <strong>$50\text{ to } 100\text{ ms}$</strong>.</td>
-            <td>Global navigation systems: <strong>GPS (USA, ~20,200 km)</strong>, Galileo (Europe), GLONASS (Russia). Typically 24 satellites.</td>
+            <td><strong>Medium Earth Orbit (MEO)</strong></td>
+            <td>$8,000 - 20,000\ \text{km}$</td>
+            <td>$6 - 12\ \text{hours}$</td>
+            <td>$\approx 100 - 150\ \text{ms}$</td>
+            <td>Global Positioning Systems (GPS, Galileo, GLONASS).</td>
           </tr>
           <tr>
-            <td><strong>LEO (Low Earth Orbit)</strong></td>
-            <td>500 to 1,500 km</td>
-            <td>Low latency: <strong>$20\text{ to } 40\text{ ms}$</strong> (comparable to terrestrial fiber!).</td>
-            <td>High-speed satellite broadband internet: <strong>Starlink, OneWeb</strong>. Requires thousands of fast-moving satellites.</td>
+            <td><strong>Low Earth Orbit (LEO)</strong></td>
+            <td>$500 - 1,500\ \text{km}$</td>
+            <td>$90 - 120\ \text{minutes}$ (Moves rapidly across sky).</td>
+            <td>$\approx 20 - 40\ \text{ms}$ (Comparable to fiber!).</td>
+            <td>High-speed broadband constellations (Starlink, OneWeb, Amazon Kuiper). Requires thousands of satellites.</td>
           </tr>
         </tbody>
       </table>
     </div>
-  </section>
-  <hr class="section-hr">
 
-  <!-- SECTION 6.9: MEDIA COMPARISON TABLE -->
-  <section id="s-media-compare" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 6.9</div>
-      <h2 class="section-title">Grand Transmission Media Comparison Table</h2>
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 6.8</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 7, Section 7.2.2: "Satellite Networks".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Tanenbaum &amp; Wetherall (5th Ed):</strong> Chapter 2, Section 2.4: "Communication Satellites".</li>
+      </ul>
     </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 6.9 — MEDIA COMPARISON TABLE -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-media-compare" data-midsem="core" data-exam-priority="core" data-search-section="Media comparison table master guided unguided bandwidth attenuation cost EMI" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">6.9 Grand Transmission Media Comparison Table
+      <button class="bookmark-btn" data-id="s-media-compare" data-label="6.9 Grand Transmission Media Comparison Table" title="Bookmark">🔖</button>
+    </h2>
+  </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: transmission media (Master Media Comparison Table)</strong></span>
+    <span>Prescribed syllabus topic: <strong>Transmission Media Architectural Comparison Matrix</strong></span>
   </div>
 
-
+  <div class="prose">
     <div class="table-wrap">
-      <table class="data-table">
+      <table class="prose-table">
         <thead>
           <tr>
             <th>Medium</th>
-            <th>Type</th>
-            <th>Typical Bandwidth</th>
-            <th>Max Reach Without Repeater</th>
+            <th>Data Rate</th>
+            <th>Max Span per Segment</th>
+            <th>Attenuation</th>
             <th>EMI Immunity</th>
             <th>Relative Cost</th>
           </tr>
@@ -622,376 +733,448 @@
         <tbody>
           <tr>
             <td><strong>UTP (Cat 6)</strong></td>
-            <td>Guided (Copper)</td>
-            <td>Up to 10 Gbps</td>
-            <td>100 meters</td>
-            <td>Low to Moderate</td>
-            <td>Lowest ($)</td>
+            <td>$1 - 10\ \text{Gbps}$</td>
+            <td>$100\ \text{meters}$</td>
+            <td>High (increases with frequency)</td>
+            <td>Moderate (balanced twisting)</td>
+            <td>Very Low</td>
           </tr>
           <tr>
-            <td><strong>STP</strong></td>
-            <td>Guided (Copper)</td>
-            <td>Up to 10 Gbps</td>
-            <td>100 meters</td>
+            <td><strong>Coaxial Cable</strong></td>
+            <td>$10 - 1000\ \text{Mbps}$</td>
+            <td>$185\text{m} - 500\text{m}$</td>
+            <td>Moderate</td>
+            <td>High (braided outer shield)</td>
+            <td>Moderate</td>
+          </tr>
+          <tr>
+            <td><strong>Optical Fiber</strong></td>
+            <td>$10 - 800+\ \text{Gbps}$</td>
+            <td>$10 - 100+\ \text{km}$</td>
+            <td>Ultra-Low ($0.2\ \text{dB/km}$ @ 1550nm)</td>
+            <td><strong>100% Total Immunity</strong> (Dielectric glass)</td>
             <td>High</td>
-            <td>Moderate ($$)</td>
-          </tr>
-          <tr>
-            <td><strong>Coaxial</strong></td>
-            <td>Guided (Copper)</td>
-            <td>Up to 1 Gbps</td>
-            <td>200 to 500 meters</td>
-            <td>High</td>
-            <td>Moderate ($$)</td>
-          </tr>
-          <tr>
-            <td><strong>Multi-Mode Fiber</strong></td>
-            <td>Guided (Glass)</td>
-            <td>10 to 100 Gbps</td>
-            <td>Up to 2 km</td>
-            <td><strong>100% (Immune)</strong></td>
-            <td>High ($$$)</td>
-          </tr>
-          <tr>
-            <td><strong>Single-Mode Fiber</strong></td>
-            <td>Guided (Glass)</td>
-            <td>100 to 800+ Gbps</td>
-            <td><strong>Up to 100 km</strong></td>
-            <td><strong>100% (Immune)</strong></td>
-            <td>Highest ($$$$)</td>
           </tr>
           <tr>
             <td><strong>Radio Waves</strong></td>
-            <td>Unguided</td>
-            <td>Up to 1 Gbps (Wi-Fi)</td>
-            <td>Local to Regional</td>
-            <td>Low (Prone to RF interference)</td>
-            <td>Medium (Equipment cost)</td>
+            <td>Up to hundreds of Mbps</td>
+            <td>Variable (global with skywave)</td>
+            <td>Moderate</td>
+            <td>Low (susceptible to atmospheric noise)</td>
+            <td>Moderate (licensing fees)</td>
           </tr>
           <tr>
-            <td><strong>Microwave (LEO)</strong></td>
-            <td>Unguided</td>
-            <td>100 to 500 Mbps</td>
-            <td>Global (Satellite mesh)</td>
-            <td>Moderate (Rain fade)</td>
-            <td>High ($$$$)</td>
+            <td><strong>Microwave</strong></td>
+            <td>Up to Gbps</td>
+            <td>$40 - 50\ \text{km}$ (Tower line-of-sight)</td>
+            <td>Variable (rain fade)</td>
+            <td>Moderate</td>
+            <td>High (tower construction)</td>
           </tr>
         </tbody>
       </table>
     </div>
-  </section>
-  <hr class="section-hr">
 
-  <!-- SECTION 6.10: LINE CODING INTRO -->
-  <section id="s-line-coding-intro" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 6.10</div>
-      <h2 class="section-title">Digital-to-Digital: Line Coding Fundamentals <span class="uni-syllabus-badge">🎓 Uni: Signaling & Line Coding</span></h2>
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 6.9</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 7, Summary Table 7.1.</li>
+      </ul>
     </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 6.10 — LINE CODING FUNDAMENTALS -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-line-coding-intro" data-midsem="core" data-exam-priority="core" data-search-section="Line coding fundamentals digital digital DC component baseline wander self-clocking" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">6.10 Line Coding Fundamentals
+      <button class="bookmark-btn" data-id="s-line-coding-intro" data-label="6.10 Line Coding Fundamentals" title="Bookmark">🔖</button>
+    </h2>
+  </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: signaling (Digital-to-Digital Line Coding Fundamentals)</strong></span>
+    <span>Prescribed syllabus topic: <strong>Signaling: Digital-to-Digital Conversion (Line Coding Principles)</strong></span>
   </div>
 
-
-    <p>How do we represent digital computer bits ($1$ and $0$) as electrical voltages on a copper wire? The naive assumption is simply to use zero volts ($0\text{V}$) for bit $0$ and five volts ($+5\text{V}$) for bit $1$. In real-world engineering, this primitive approach fails catastrophically due to three major electrical hazards:</p>
-
+  <div class="prose">
     <div class="def-box">
-      <div class="def-term">The Three Critical Challenges of Line Coding</div>
-      <p class="def-body">
-        1. <strong>DC Component (Direct Current Bias):</strong> When voltage levels do not average out to zero over time, a non-zero average voltage accumulates on the cable. Transformers, capacitors, and AC-coupled communication equipment block DC signals, leading to signal distortion and wasted power.<br>
-        2. <strong>Baseline Wandering:</strong> A receiver determines whether a bit is $1$ or $0$ by comparing the signal voltage against a running average threshold (the baseline). Long consecutive strings of identical bits (all $1\text{s}$ or all $0\text{s}$) drift the baseline, causing the receiver to misinterpret incoming bits.<br>
-        3. <strong>Clock Synchronization Loss:</strong> When transmitting a long string of continuous identical bits (e.g., twenty consecutive zeros), the voltage line remains flat. The receiver's internal clock drifts out of sync with the sender's clock, losing count of how many bits were received!
-      </p>
+      <div class="def-term">Line Coding — Definition &amp; Purpose</div>
+      <strong>Line coding</strong> is the process of converting discrete digital data (sequences of bits: $0\text{s}$ and $1\text{s}$) into discrete digital signals (time-varying voltage or current pulses) for transmission over a guided transmission link.
     </div>
-  </section>
-  <hr class="section-hr">
 
-  <!-- SECTION 6.11: NRZ-L AND NRZ-I -->
-  <section id="s-nrz" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 6.11</div>
-      <h2 class="section-title">Non-Return-to-Zero (NRZ-L & NRZ-I)</h2>
+    <h3>The 4 Desirable Characteristics of Line Codes</h3>
+    <ol style="margin:4px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:6px">
+      <li><strong>Zero DC Component:</strong> If a signal has a constant non-zero average voltage, it accumulates a Direct Current (DC) component. DC energy cannot pass through electrical transformers or capacitive isolation blocks used in telephone lines and Ethernet ports, generating excess heat and signal distortion. An ideal line code has a <strong>zero mean voltage</strong>.</li>
+      <li><strong>Self-Clocking / Synchronization:</strong> Transmitter and receiver have separate internal crystal clocks. Over time, clock drift occurs. A line code must provide frequent voltage transitions so the receiver can lock its phase-locked loop (PLL) clock directly to the incoming data stream without a separate physical clock wire.</li>
+      <li><strong>Immunity to Baseline Wander:</strong> The receiver evaluates incoming voltages relative to an average running threshold ("baseline"). Long runs of $1\text{s}$ or $0\text{s}$ cause the baseline to drift, resulting in decoding bit errors.</li>
+      <li><strong>Bandwidth Efficiency:</strong> Minimizing the required signaling rate (baud rate) to maximize data throughput within a limited channel bandwidth.</li>
+    </ol>
+
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 6.10</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 4, Section 4.1: "Line Coding".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Stallings (10th Ed):</strong> Chapter 5, Section 5.1: "Digital Data, Digital Signals".</li>
+      </ul>
     </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 6.11 — NRZ-L AND NRZ-I -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-nrz" data-midsem="core" data-exam-priority="core" data-search-section="NRZ-L NRZ-I non return to zero polarity transition clock drift baseline wander" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">6.11 Non-Return-to-Zero (NRZ-L &amp; NRZ-I)
+      <button class="bookmark-btn" data-id="s-nrz" data-label="6.11 Non-Return-to-Zero" title="Bookmark">🔖</button>
+    </h2>
+  </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: signaling (NRZ-L & NRZ-I Line Coding)</strong></span>
+    <span>Prescribed syllabus topic: <strong>Line Coding Schemes — NRZ-L and NRZ-I Waveforms</strong></span>
   </div>
 
-
-    <p>In <strong>NRZ (Non-Return-to-Zero)</strong> schemes, the electrical signal maintains a constant voltage throughout the entire duration of the bit interval; the signal never returns to zero volts in the middle of a bit.</p>
-
+  <div class="prose">
     <div class="def-box">
-      <div class="def-term">NRZ-L vs NRZ-I</div>
-      <p class="def-body">
-        • <strong>NRZ-L (NRZ-Level):</strong> The voltage level depends directly on the value of the bit:<br>
-        &nbsp;&nbsp;- Bit $0$ = Positive Voltage ($+V$)<br>
-        &nbsp;&nbsp;- Bit $1$ = Negative Voltage ($-V$)<br>
-        • <strong>NRZ-I (NRZ-Invert):</strong> The signal <strong>inverts (transitions)</strong> if the bit is a $1$; it makes <strong>no transition</strong> if the bit is a $0$:<br>
-        &nbsp;&nbsp;- Bit $1$ = Transition at beginning of bit interval.<br>
-        &nbsp;&nbsp;- Bit $0$ = No transition at beginning of bit interval.
-      </p>
+      <div class="def-term">Non-Return-to-Zero (NRZ) Schemes</div>
+      In NRZ encoding, the electrical signal maintains a constant voltage level throughout the entire duration of a bit interval; it never "returns to zero" volts in the middle of a bit.
+      <ul>
+        <li><strong>NRZ-L (NRZ-Level):</strong> The voltage level depends strictly on the state of the bit. Typically: Positive Voltage $= 0$, Negative Voltage $= 1$.</li>
+        <li><strong>NRZ-I (NRZ-Invert):</strong> The signal level inverts (transitions) at the boundary of a bit interval if the bit is a $1$; no transition occurs if the bit is a $0$.</li>
+      </ul>
     </div>
 
-    <div class="diagram-box">
-      <div class="diagram-title">Figure 6.5: NRZ-L vs NRZ-I for Bit Stream [ 1 0 1 1 0 0 1 0 ]</div>
-      <pre>
-   Bit Stream:   |  1  |  0  |  1  |  1  |  0  |  0  |  1  |  0  |
-   -----------------------------------------------------------------
-   NRZ-L:
-   +V            |     |-----|     |     |-----|-----|     |-----|
-   -V            |-----|     |-----|-----|     |     |-----|     |
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">Timing Comparison: NRZ-L vs. NRZ-I</span></div>
+      <pre><code>
+   Bit Sequence:       0       1       0       0       1       1       0
+   Clock:          ┌───┐   ┌───┐   ┌───┐   ┌───┐   ┌───┐   ┌───┐   ┌───┐
+                   │   │   │   │   │   │   │   │   │   │   │   │   │   │
+                   ┘   └───┘   └───┘   └───┘   └───┘   └───┘   └───┘   └───
 
-   NRZ-I:
-   +V            |-----|-----|     |-----|-----|-----|     |     |
-   -V            |     |     |-----|     |     |     |-----|-----|
-   (Transition at every '1'; maintains level on '0')
-      </pre>
+   NRZ-L:          ┌───────┐       ┌───────────────┐               ┌───────
+   (+V for 0)      │       │       │               │               │
+   (-V for 1)  ────┘       └───────┘               └───────────────┘
+
+   NRZ-I:          ────────┌───────┐───────────────┌───────┐───────┐───────
+   (Invert on 1)           │       │               │       │       │
+               ────────────┘       └───────────────┘       └───────┘
+      </code></pre>
     </div>
 
-    <div class="callout warning">
-      <div class="callout-title">⚠️ Limitations of NRZ</div>
-      <p>While NRZ is simple and bandwidth-efficient, it suffers from two major flaws:<br>
-      • <strong>NRZ-L</strong> loses clock synchronization on long runs of consecutive $0\text{s}$ or $1\text{s}$.<br>
-      • <strong>NRZ-I</strong> fixes long runs of $1\text{s}$ (because each $1$ forces a transition), but it <strong>still loses synchronization on long runs of $0\text{s}$!</strong></p>
-    </div>
-  </section>
-  <hr class="section-hr">
+    <h3>Strengths &amp; Fatal Flaws</h3>
+    <ul>
+      <li><strong>Strengths:</strong> Highly bandwidth efficient ($S = N/2$). Simple transmitter hardware.</li>
+      <li><strong>Fatal Flaws:</strong> Heavy DC component. In NRZ-L, long runs of $0\text{s}$ or $1\text{s}$ produce flat DC lines with zero transitions, causing receiver clock desynchronization. In NRZ-I, long runs of $0\text{s}$ produce no transitions, causing identical clock failure.</li>
+    </ul>
 
-  <!-- SECTION 6.12: MANCHESTER -->
-  <section id="s-manchester" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 6.12</div>
-      <h2 class="section-title">Manchester Encoding (IEEE 802.3 Standard)</h2>
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 6.11</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 4, Section 4.1.2: "NRZ Schemes".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Stallings (10th Ed):</strong> Chapter 5, Section 5.1: "Nonreturn to Zero".</li>
+      </ul>
     </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 6.12 — MANCHESTER ENCODING -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-manchester" data-midsem="core" data-exam-priority="core" data-search-section="Manchester encoding IEEE 802.3 mid bit transition self-clocking zero DC baud rate" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">6.12 Manchester Encoding (IEEE 802.3 Standard)
+      <button class="bookmark-btn" data-id="s-manchester" data-label="6.12 Manchester Encoding" title="Bookmark">🔖</button>
+    </h2>
+  </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: signaling (Manchester Encoding — IEEE 802.3 Standard)</strong></span>
+    <span>Prescribed syllabus topic: <strong>Line Coding Schemes — Manchester Encoding &amp; Timing Diagrams</strong></span>
   </div>
 
-
-    <p>To eliminate both the DC component and clock synchronization loss completely, <strong>Manchester Encoding</strong> introduces a mandatory voltage transition in the exact <strong>middle of every single bit interval</strong>.</p>
-
+  <div class="prose">
     <div class="def-box">
-      <div class="def-term">Manchester Encoding Rules (IEEE 802.3 Standard)</div>
-      <p class="def-body">
-        Every bit period is split into two equal halves with a mid-bit transition:<br>
-        • <strong>Bit 0:</strong> High-to-Low transition (<span style="color:var(--accent-light); font-weight:bold;">High first half, Low second half</span>).<br>
-        • <strong>Bit 1:</strong> Low-to-High transition (<span style="color:var(--accent-light); font-weight:bold;">Low first half, High second half</span>).<br>
-        <em>Note:</em> The mid-bit transition serves two purposes simultaneously: 1. It carries the data value, and 2. It acts as an embedded self-clocking strobe!
-      </p>
+      <div class="def-term">Manchester Encoding — First-Principles Definition</div>
+      <strong>Manchester encoding</strong> is a biphase line coding technique where an electrical transition <strong>always occurs exactly at the midpoint of every bit interval</strong>. The mid-bit transition provides both clock synchronization and data representation.
+      <ul>
+        <li><strong>IEEE 802.3 Standard Convention:</strong>
+          <ul>
+            <li>Bit $0$ = <strong>High-to-Low</strong> transition at midpoint.</li>
+            <li>Bit $1$ = <strong>Low-to-High</strong> transition at midpoint.</li>
+          </ul>
+        </li>
+        <li><em>Thomas / G.E. Thomas Convention:</em> Exactly the opposite (Low-to-High for 0, High-to-Low for 1). University exams follow IEEE 802.3 unless explicitly stated.</li>
+      </ul>
     </div>
 
-    <div class="diagram-box">
-      <div class="diagram-title">Figure 6.6: Manchester Waveform for [ 1 0 1 1 0 0 1 0 ]</div>
-      <pre>
-   Bit Stream:   |   1   |   0   |   1   |   1   |   0   |   0   |   1   |   0   |
-   ---------------------------------------------------------------------------------
-   +V            |   /---|---|   |   /---|   /---|---|   |---|   |   /---|---|   |
-   -V            |---/   |   |---|---/   |---/   |   |---|   |---|---/   |   |---|
-                 (L -> H)|(H -> L)|(L -> H)|(L -> H)|(H -> L)|(H -> L)|(L -> H)|(H -> L)
-      </pre>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">Manchester Waveform Timing Diagram (IEEE 802.3)</span></div>
+      <pre><code>
+   Bit Sequence:         0             1             0             1
+   Mid-bit Point:        ▲             ▲             ▲             ▲
+                         │             │             │             │
+   Waveform:       ┌─────┐             ┌─────┐ ┌─────┐             ┌─────┐
+   (IEEE 802.3)    │     │             │     │ │     │             │     │
+                   ┘     └─────────────┘     └─┘     └─────────────┘     └───
+                   [High -> Low] [Low -> High] [High -> Low] [Low -> High]
+                     (Bit 0)       (Bit 1)       (Bit 0)       (Bit 1)
+      </code></pre>
+    </div>
+
+    <h3>The Inherent Bandwidth Trade-Off</h3>
+    <ul>
+      <li><strong>Advantages:</strong> 100% self-clocking (transition guaranteed every single bit). Zero DC component (voltage is high for 50% and low for 50% of every bit interval).</li>
+      <li><strong>Disadvantage:</strong> Because each bit requires two signal levels, the signaling rate is <strong>double the bit rate</strong> ($S = 2N$). A 10 Mbps Ethernet system requires a 20 MHz baud rate.</li>
+    </ul>
+
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 6.12</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 4, Section 4.1.4: "Manchester Encoding".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Stallings (10th Ed):</strong> Chapter 5, Section 5.1: "Biphase: Manchester".</li>
+        <li><span class="res-tag tag-spec">Standard</span> <strong>IEEE Std 802.3-2022:</strong> Clause 7 — Physical Signaling and Manchester Encoding.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 6.13 — DIFFERENTIAL MANCHESTER -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-diff-manchester" data-midsem="core" data-exam-priority="core" data-search-section="Differential Manchester IEEE 802.5 Token Ring polarity immunity mid-bit start transition" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">6.13 Differential Manchester Encoding (Token Ring)
+      <button class="bookmark-btn" data-id="s-diff-manchester" data-label="6.13 Differential Manchester Encoding" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Line Coding Schemes — Differential Manchester (IEEE 802.5)</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Differential Manchester — Rules of Construction</div>
+      Standardized in <strong>IEEE 802.5 Token Ring</strong>, Differential Manchester uses the presence or absence of a transition at the <strong>beginning of the bit interval</strong> to represent data:
+      <ol style="margin:4px 0 0;padding-left:18px">
+        <li>A transition <strong>always occurs at the midpoint</strong> of every bit interval (solely for clock synchronization).</li>
+        <li><strong>Bit 0:</strong> A transition occurs at the <strong>beginning</strong> of the bit interval.</li>
+        <li><strong>Bit 1:</strong> <strong>NO transition</strong> occurs at the beginning of the bit interval.</li>
+      </ol>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">Differential Manchester Waveform</span></div>
+      <pre><code>
+   Bit:              0             1             0             0
+   Start Transition: YES           NO            YES           YES
+   Mid Transition:   ALWAYS        ALWAYS        ALWAYS        ALWAYS
+
+   Waveform:       ┌─────┐       ┌───────────┐   ┌─────┐       ┌─────┐
+                   │     │       │           │   │     │       │     │
+               ────┘     └───────┘           └───┘     └───────┘     └───
+      </code></pre>
     </div>
 
     <div class="callout tip">
-      <div class="callout-title">💡 The Price of Manchester: Double the Bandwidth!</div>
-      <p>Because there is guaranteed to be at least one transition per bit (and up to two transitions when alternating), the <strong>minimum bandwidth of Manchester is double that of NRZ</strong>! For a 10 Mbps Ethernet link using Manchester encoding, the physical signaling rate is <strong>20 Megabaud</strong>. This is why Fast Ethernet (100 Mbps) replaced Manchester with 4B/5B + MLT-3 to conserve bandwidth.</p>
+      <span class="callout-icon">💡</span>
+      <div><strong>Why "Differential" Matters: Wire Inversion Immunity</strong>
+      In standard Manchester, if an installer accidentally swaps the two wires in an RJ-45 plug, every $0$ becomes a $1$ and every $1$ becomes a $0$! Differential Manchester depends only on the presence/absence of transitions, making it <strong>completely immune to 180° wire polarity inversion</strong>.
+      </div>
     </div>
-  </section>
-  <hr class="section-hr">
 
-  <!-- SECTION 6.13: DIFFERENTIAL MANCHESTER -->
-  <section id="s-diff-manchester" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 6.13</div>
-      <h2 class="section-title">Differential Manchester Encoding (Token Ring IEEE 802.5)</h2>
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 6.13</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 4, Section 4.1.4: "Differential Manchester".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Stallings (10th Ed):</strong> Chapter 5, Section 5.1: "Differential Manchester".</li>
+      </ul>
     </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 6.14 — LINE CODING COMPARISON -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-line-compare" data-midsem="core" data-exam-priority="core" data-search-section="Line coding comparison table NRZ Manchester Differential AMI baud rate DC balance" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">6.14 Master Line Coding Comparison Table
+      <button class="bookmark-btn" data-id="s-line-compare" data-label="6.14 Master Line Coding Comparison Table" title="Bookmark">🔖</button>
+    </h2>
+  </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: signaling (Differential Manchester Encoding — Token Ring)</strong></span>
+    <span>Prescribed syllabus topic: <strong>Line Coding Master Comparison Matrix</strong></span>
   </div>
 
-
-    <p><strong>Differential Manchester</strong> combines the self-clocking benefits of Manchester with the differential transition logic of NRZ-I. It is famously used in <strong>Token Ring LANs (IEEE 802.5)</strong>.</p>
-
-    <div class="def-box">
-      <div class="def-term">Differential Manchester Rules</div>
-      <p class="def-body">
-        1. <strong>Mid-bit Transition:</strong> A transition ALWAYS occurs in the middle of every bit interval (used solely for clock synchronization).<br>
-        2. <strong>Beginning-of-bit Transition dictates the Data:</strong><br>
-        • <strong>Bit 0:</strong> A transition occurs at the <strong>beginning</strong> of the bit interval.<br>
-        • <strong>Bit 1:</strong> <strong>NO transition</strong> occurs at the beginning of the bit interval.
-      </p>
-    </div>
-
-    <div class="diagram-box">
-      <div class="diagram-title">Figure 6.7: Differential Manchester Waveform</div>
-      <pre>
-   Bit Stream:        |   1   |   0   |   1   |   0   |
-   -------------------------------------------------------
-   Beginning Transition? None     YES      None    YES
-   Mid-bit Transition?   ALWAYS   ALWAYS   ALWAYS  ALWAYS
-      </pre>
-    </div>
-
-    <div class="callout tip">
-      <div class="callout-title">💡 Why Differential Manchester Is Superior in the Field</div>
-      <p>Differential Manchester depends on <strong>transitions</strong> rather than absolute voltage levels (+V or -V). If a network technician accidentally swaps the two wires of a twisted-pair cable (polarity reversal), standard Manchester will invert every single bit (turning all $0\text{s}$ into $1\text{s}$ and crashing the link). Differential Manchester is completely immune to wire inversion!</p>
-    </div>
-  </section>
-  <hr class="section-hr">
-
-  <!-- SECTION 6.14: LINE CODING COMPARISON -->
-  <section id="s-line-compare" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 6.14</div>
-      <h2 class="section-title">Master Line Coding Comparison Table <span class="uni-syllabus-badge">🎓 Uni: Line Coding</span></h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: signaling (Line Coding Schemes Comparison Matrix)</strong></span>
-  </div>
-
-
+  <div class="prose">
     <div class="table-wrap">
-      <table class="data-table">
+      <table class="prose-table">
         <thead>
           <tr>
             <th>Encoding Scheme</th>
+            <th>Baud Rate ($S$)</th>
             <th>Self-Clocking?</th>
             <th>DC Component?</th>
-            <th>Signal Transitions / Bit</th>
-            <th>Bandwidth Consumption</th>
-            <th>Standard Usage</th>
+            <th>Polarity Inversion Immune?</th>
+            <th>Primary Application</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>NRZ-L</strong></td>
+            <td>$S = N/2$</td>
+            <td>❌ No (Fails on long 0s/1s)</td>
+            <td>Yes (High DC)</td>
             <td>❌ No</td>
-            <td>⚠️ High</td>
-            <td>0 or 1</td>
-            <td>Low ($B/2$)</td>
-            <td>Internal computer buses, RS-232 serial.</td>
+            <td>Internal digital computer buses, RS-232.</td>
           </tr>
           <tr>
             <td><strong>NRZ-I</strong></td>
-            <td>⚠️ Partial (Only on $1\text{s}$)</td>
-            <td>⚠️ High</td>
-            <td>0 or 1</td>
-            <td>Low ($B/2$)</td>
-            <td>USB 2.0 (with bit stuffing), FDDI.</td>
+            <td>$S = N/2$</td>
+            <td>❌ No (Fails on long 0s)</td>
+            <td>Yes (High DC)</td>
+            <td>✅ Yes</td>
+            <td>USB 2.0 (with bit stuffing to prevent long 0s).</td>
           </tr>
           <tr>
             <td><strong>Manchester</strong></td>
-            <td>✅ <strong>Yes (100%)</strong></td>
-            <td>✅ <strong>Zero DC</strong></td>
-            <td>1 or 2</td>
-            <td>High ($B$) — Double of NRZ</td>
-            <td>Classic 10Base-T Ethernet (IEEE 802.3).</td>
+            <td>$S = N$ (Double!)</td>
+            <td>✅ <strong>Yes</strong> (Every bit)</td>
+            <td><strong>None (Zero DC)</strong></td>
+            <td>❌ No</td>
+            <td>10BASE-T Ethernet (IEEE 802.3).</td>
           </tr>
           <tr>
             <td><strong>Differential Manchester</strong></td>
-            <td>✅ <strong>Yes (100%)</strong></td>
-            <td>✅ <strong>Zero DC</strong></td>
-            <td>1 or 2</td>
-            <td>High ($B$) — Double of NRZ</td>
+            <td>$S = N$ (Double!)</td>
+            <td>✅ <strong>Yes</strong> (Every bit)</td>
+            <td><strong>None (Zero DC)</strong></td>
+            <td>✅ <strong>Yes</strong></td>
             <td>Token Ring (IEEE 802.5).</td>
+          </tr>
+          <tr>
+            <td><strong>Bipolar-AMI</strong></td>
+            <td>$S = N/2$</td>
+            <td>❌ No (Fails on long 0s)</td>
+            <td><strong>None (Zero DC)</strong></td>
+            <td>✅ Yes</td>
+            <td>T1 Carrier lines ($1.544\ \text{Mbps}$).</td>
           </tr>
         </tbody>
       </table>
     </div>
-  </section>
-  <hr class="section-hr">
 
-  <!-- SECTION 6.15: SUMMARY & EXAM TRAPS -->
-  <section id="s-summary-ch6" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 6.15</div>
-      <h2 class="section-title">Chapter Summary & High-Yield Exam Traps</h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: transmission media & signaling (Chapter Revision & Exam Traps)</strong></span>
-  </div>
-
-
-    <div class="callout tip">
-      <div class="callout-title">⚡ High-Yield Rapid Review Points</div>
-      <ul>
-        <li><strong>Twisted Pair:</strong> Twisting cancels induced EMI through differential signaling. UTP (cheap) vs STP (shielded). Cat5e = 1 Gbps; Cat6 = 10 Gbps up to 55m.</li>
-        <li><strong>Coaxial:</strong> Inner conductor, dielectric, outer mesh shield, jacket. 50 $\Omega$ Baseband (digital, 10Base2/5); 75 $\Omega$ Broadband (cable TV).</li>
-        <li><strong>Optical Fiber:</strong> Operates by Total Internal Reflection (TIR). Condition 1: $n_{\text{core}} > n_{\text{cladding}}$. Condition 2: $\theta_i > \theta_c$.</li>
-        <li><strong>Single-Mode vs Multi-Mode:</strong> SMF has tiny core (8–10 $\mu\text{m}$), uses laser, zero modal dispersion, reaches 100 km. MMF has wide core (50–62.5 $\mu\text{m}$), uses LED, reaches 2 km.</li>
-        <li><strong>Unguided Media:</strong> Radio ($3\text{ kHz}-1\text{ GHz}$, omnidirectional, penetrates walls); Microwave ($1-300\text{ GHz}$, unidirectional, line-of-sight); Infrared ($300\text{ GHz}-400\text{ THz}$, short-range, blocked by walls).</li>
-        <li><strong>Line Coding:</strong>
-          <br>• NRZ-L: Bit $0 = +V$, Bit $1 = -V$.
-          <br>• NRZ-I: Transition on $1$; no transition on $0$.
-          <br>• Manchester: Mid-bit transition always. IEEE 802.3: Bit $0 = \text{High-to-Low}$; Bit $1 = \text{Low-to-High}$.
-          <br>• Differential Manchester: Mid-bit transition always. Bit $0 = \text{transition at start}$; Bit $1 = \text{no transition at start}$.
-        </li>
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 6.14</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 4, Summary Table 4.1.</li>
       </ul>
     </div>
+  </div>
+</section>
+<hr class="section-hr">
 
-    <h3>Top 5 High-Yield Traps in Exams</h3>
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 6.15 — SUMMARY & EXAM TRAPS -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-summary-ch6" data-midsem="core" data-exam-priority="core" data-search-section="Chapter 6 summary traps exam revision self-check line coding media" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">6.15 Summary &amp; High-Yield Exam Traps
+      <button class="bookmark-btn" data-id="s-summary-ch6" data-label="6.15 Summary &amp; High-Yield Exam Traps" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Chapter 6 Revision Checklist &amp; Common Pitfalls</strong></span>
+  </div>
+
+  <div class="prose">
+    <h3>Five Critical University Exam Traps</h3>
     <div class="table-wrap">
-      <table class="data-table">
+      <table class="prose-table">
         <thead>
           <tr>
-            <th>Trap #</th>
-            <th>The Common Misconception</th>
-            <th>The Technical Reality</th>
+            <th>Trap ID</th>
+            <th>Common Misconception</th>
+            <th>First-Principles Reality &amp; Refutation</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>Trap 1</strong></td>
-            <td>"Light moves faster in glass than in vacuum."</td>
-            <td><strong>False!</strong> Light speed in vacuum is $c \approx 3 \times 10^8\text{ m/s}$. Inside silica glass fiber ($n \approx 1.5$), speed is slowed to $v = c/n \approx 2 \times 10^8\text{ m/s}$ (approx. $5\ \mu\text{s/km}$ delay).</td>
+            <td>"Manchester encoding is more bandwidth-efficient than NRZ."</td>
+            <td><strong>False!</strong> Manchester requires <strong>double the bandwidth</strong> of NRZ because it requires two signal transitions per bit interval ($r = 1/2$).</td>
           </tr>
           <tr>
             <td><strong>Trap 2</strong></td>
-            <td>"In Differential Manchester, bit 1 has a transition at the beginning."</td>
-            <td><strong>False!</strong> Bit <strong>0</strong> has a transition at the beginning; Bit <strong>1</strong> has NO transition at the beginning. (Both have a transition in the middle).</td>
+            <td>"Optical fiber cladding has a higher refractive index than the core."</td>
+            <td><strong>Fatal Error!</strong> For Total Internal Reflection (TIR) to occur, the core MUST be optically denser than the cladding ($n_{\text{core}} > n_{\text{cladding}}$).</td>
           </tr>
           <tr>
             <td><strong>Trap 3</strong></td>
-            <td>"Single-mode fiber is called single-mode because it only carries one wavelength of light."</td>
-            <td><strong>False!</strong> It is called single-mode because light travels along a <strong>single spatial electromagnetic path</strong> (zero bounce angles). Through Wavelength Division Multiplexing (WDM), a single-mode fiber can carry dozens of wavelengths simultaneously!</td>
+            <td>"Single-mode fiber is called 'single' because it transmits in only one direction."</td>
+            <td><strong>False!</strong> "Single-mode" refers to light propagating as a <strong>single electromagnetic ray/mode</strong> along the axial core, eliminating modal dispersion.</td>
           </tr>
           <tr>
             <td><strong>Trap 4</strong></td>
-            <td>"NRZ-I solves all synchronization issues."</td>
-            <td><strong>False!</strong> NRZ-I solves sync only for strings of $1\text{s}$. If a string of twenty $0\text{s}$ arrives, the voltage remains flat and synchronization is lost!</td>
+            <td>"Differential Manchester determines bit values by the midpoint transition."</td>
+            <td><strong>False!</strong> The midpoint transition is <strong>solely for clock recovery</strong>. Bit values are determined by the presence or absence of a transition at the <strong>beginning</strong> of the bit interval!</td>
           </tr>
           <tr>
             <td><strong>Trap 5</strong></td>
-            <td>"Manchester encoding has higher data rate than NRZ."</td>
-            <td><strong>False!</strong> Manchester has higher <em>baud rate (signaling transitions)</em>, which means it requires <strong>twice the channel bandwidth</strong> to carry the exact same bit rate as NRZ.</td>
+            <td>"LEO satellites experience higher latency than GEO satellites."</td>
+            <td><strong>False!</strong> LEO satellites orbit at 500–1200 km (latency $\sim 20 - 40\ \text{ms}$), while GEO satellites orbit at 35,786 km (latency $\sim 270\ \text{ms}$).</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <!-- CHAPTER PROGRESS CHECK -->
+    <!-- CHAPTER SELF-CHECK QUESTIONS -->
     <div class="def-box" style="margin-top:2rem; border-color:var(--accent);">
-      <div class="def-term">🎯 End of Chapter Self-Check</div>
+      <div class="def-term">🎯 End-of-Chapter Self-Check Questions</div>
       <p class="def-body">
-        Verify your mastery before moving to Modulation & Switching:<br>
-        1. Draw the waveforms for the bit sequence <code>01001110</code> using NRZ-L, NRZ-I, Manchester, and Differential Manchester.<br>
-        2. State the two physical conditions required for Total Internal Reflection in optical fibers.<br>
-        3. Differentiate between Single-Mode and Multi-Mode fibers across 4 criteria.<br>
-        4. Explain why Manchester encoding requires twice the bandwidth of NRZ-L.<br>
-        5. Why does twisting the two wires in UTP reduce electromagnetic crosstalk?
+        Verify your mastery before moving to Chapter 7:<br>
+        1. Draw the Manchester and Differential Manchester waveforms for the bitstream `1 0 1 1 0 0 1`.<br>
+        2. Derive the equation for the critical angle $\theta_c$ in an optical fiber with core index $n_1 = 1.50$ and cladding index $n_2 = 1.45$.<br>
+        3. Explain the mathematical principle of balanced differential signaling in twisted pair cables.<br>
+        4. What is the fundamental difference between Baseband ($50\ \Omega$) and Broadband ($75\ \Omega$) coaxial cables?<br>
+        5. Why does Manchester encoding eliminate the DC component completely?
       </p>
     </div>
-  </section>
-  <hr class="section-hr">
+  </div>
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Comprehensive chapter review and practice exam links.</div>
+      <div class="resource-grid">
+        <a href="https://www.mheducation.com/highered/product/data-communications-and-networking-with-tcp-ip-protocol-suite-forouzan.html" target="_blank" rel="noopener noreferrer">
+          📘 Forouzan — Chapter 4 Digital Transmission
+          <small>Line coding line graphs and optical transmission guides.</small>
+        </a>
+        <a href="https://www.pearson.com/en-gb/subject-catalog/p/computer-networks-global-edition/P200000005535/9781292498621" target="_blank" rel="noopener noreferrer">
+          📘 Tanenbaum &amp; Wetherall — Section 2.2 Guided Transmission
+          <small>Twisted pair, coaxial cable, and fiber-optic characteristics.</small>
+        </a>
+        <a href="../exams/mock-exam.html">
+          📝 CN MiniBook — Practice Exams
+          <small>Interactive self-testing on line coding and media properties.</small>
+        </a>
+      </div>
+    </div>
+</section>
+<hr class="section-hr">
 
   <!-- PREV/NEXT NAV -->
   <div class="prev-next">
     <a href="ch05-physical-fundamentals.html" class="nav-btn">← Ch 5: Physical Fundamentals</a>
-    <a href="ch07-modulation-switching.html" class="nav-btn primary">Next: Modulation & Switching →</a>
+    <a href="ch07-modulation-switching.html" class="nav-btn primary">Next: Modulation &amp; Switching →</a>
   </div>
 
 </div>

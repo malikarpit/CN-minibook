@@ -5,13 +5,6 @@
  */
 'use strict';
 
-/* ── ARPIT BRAND ─────────────────────────────────────────────────── */
-console.log(
-  '%c🌐 Arpit\'s CN MiniBook%c\nComputer Networks Textbook & Exam System · 2026\nBuilt with 💜 for networking mastery. Pro Edition loaded.',
-  'color:#0891b2;font-size:20px;font-weight:900;letter-spacing:1px;',
-  'color:#94a3b8;font-size:12px;'
-);
-
 /* ── UTILITIES (Debounce, rAF, A11y) ─────────────────────────────── */
 const Utils = (() => {
   /** @param {Function} func @param {number} wait */
@@ -28,40 +21,67 @@ const Utils = (() => {
 })();
 
 /* StateManager now provided by assets/js/state.js - keep global alias */
-const StateManager = window.StateManager;
+const StateManager = window.StateManager || {
+  init() {}, get() { return undefined; }, set() {}, save() {},
+  exportData() {}, importData() {}, setMCQResult() {}, getMCQStats() { return { total: 0, correct: 0, pct: 0 }; },
+  setReadProgress() {}, getReadProgress() { return 0; }, getAllReadProgress() { return {}; }
+};
 
-/* ── THEME (System Sync) ───────────────────────────────────────────── */
+/* ── THEME ──────────────────────────────────────────────────────────── */
 const ThemeManager = (() => {
   const root = document.documentElement;
+  const THEMES = ['auto', 'light', 'dark', 'paper'];
 
-  function apply(themeMode) {
-    let actualTheme = themeMode;
-    if (themeMode === 'auto') {
-      actualTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  function actualTheme(mode) {
+    if (mode === 'auto') {
+      return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
-    root.setAttribute('data-theme', actualTheme);
-    StateManager.set('theme', themeMode);
-    
+    return ['light', 'dark', 'paper'].includes(mode) ? mode : 'light';
+  }
+
+  function icon(theme) {
+    const paths = {
+      light: '<circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/>',
+      dark: '<path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/>',
+      paper: '<path d="M6 3.5h10.5A1.5 1.5 0 0 1 18 5v14.5H7.5A1.5 1.5 0 0 1 6 18V3.5Z"/><path d="M8.5 7h6M8.5 10h6M8.5 13h4"/>'
+    };
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[theme] || paths.light}</svg>`;
+  }
+
+  function apply(mode, options = {}) {
+    const normalized = THEMES.includes(mode) ? mode : 'auto';
+    const active = actualTheme(normalized);
+    root.setAttribute('data-theme', active);
+    root.dataset.themePreference = normalized;
+    if (!options.skipPersist) StateManager.set('theme', normalized);
+
     const btn = document.getElementById('theme-toggle');
     if (btn) {
-      btn.innerHTML = actualTheme === 'dark'
-        ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>`
-        : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>`;
-      btn.setAttribute('aria-label', `Switch theme (Current: ${actualTheme})`);
+      btn.innerHTML = icon(active);
+      btn.dataset.theme = active;
+      btn.dataset.themePreference = normalized;
+      btn.setAttribute('aria-label', `Theme: ${normalized}. Current appearance: ${active}. Press T to change.`);
+      btn.title = `Theme: ${normalized}`;
     }
+    return active;
   }
 
   function toggle() {
-    const current = StateManager.get('theme');
-    apply(current === 'dark' ? 'light' : 'dark'); 
+    const current = THEMES.includes(StateManager.get('theme')) ? StateManager.get('theme') : 'auto';
+    const next = THEMES[(THEMES.indexOf(current) + 1) % THEMES.length];
+    return apply(next);
   }
 
   function init() {
-    apply(StateManager.get('theme'));
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-      if (StateManager.get('theme') === 'auto') apply('auto');
-    });
+    apply(StateManager.get('theme') || 'auto', { skipPersist: true });
+    const media = window.matchMedia?.('(prefers-color-scheme: dark)');
+    if (media) {
+      const handler = () => { if (StateManager.get('theme') === 'auto') apply('auto', { skipPersist: true }); };
+      if (media.addEventListener) media.addEventListener('change', handler);
+      else if (media.addListener) media.addListener(handler);
+    }
   }
+
   return { init, toggle, apply };
 })();
 
@@ -115,7 +135,8 @@ const ProgressBar = (() => {
     const bar = document.getElementById('progress-bar');
     if (!bar) return;
     const el = document.documentElement;
-    const pct = (el.scrollTop / (el.scrollHeight - el.clientHeight)) * 100;
+    const max = el.scrollHeight - el.clientHeight;
+    const pct = max > 0 ? (el.scrollTop / max) * 100 : 0;
     bar.style.width = Math.min(100, Math.max(0, pct)) + '%';
     ticking = false;
   }
@@ -142,7 +163,16 @@ const ScrollSpy = (() => {
           if (e.isIntersecting) {
             links.forEach(l => l.classList.remove('active'));
             const active = document.querySelector(`.sidebar-link[href="#${e.target.id}"]`);
-            if (active) { active.classList.add('active'); active.scrollIntoView({ block: 'nearest' }); }
+            if (active) {
+              active.classList.add('active');
+              const sb = document.getElementById('sidebar') || active.closest('aside');
+              if (sb) {
+                const relTop = active.offsetTop - sb.offsetTop;
+                if (relTop < sb.scrollTop || relTop > sb.scrollTop + sb.clientHeight - 40) {
+                  sb.scrollTo({ top: Math.max(0, relTop - sb.clientHeight / 3), behavior: 'smooth' });
+                }
+              }
+            }
             const hdr = document.querySelector('.header-chapter-title');
             if (hdr) { hdr.textContent = e.target.querySelector('h2,h3')?.textContent || ''; hdr.classList.add('visible'); }
           }
@@ -171,7 +201,7 @@ const ChecklistManager = (() => {
       const sidebar = document.getElementById('sidebar');
       if (sidebar) sidebar.insertBefore(dash, sidebar.firstChild);
     }
-    dash.innerHTML = `🏆 OS Mastery: <span style="color:var(--primary)">${pct}%</span> (${checked}/${cbs.length})`;
+    dash.innerHTML = `🏆 CN Mastery: <span style="color:var(--accent, #46645f)">${pct}%</span> (${checked}/${cbs.length})`;
   }
 
   function init() {
@@ -195,19 +225,28 @@ const ChecklistManager = (() => {
 
 /* ── BOOKMARKS ─────────────────────────────────────────────────────── */
 const BookmarkManager = (() => {
+  function list() {
+    const value = StateManager.get('bookmarks');
+    return Array.isArray(value) ? value : [];
+  }
+
   function toggle(id, label) {
-    let bms = StateManager.get('bookmarks');
+    const bms = list();
     const idx = bms.findIndex(b => b.id === id);
-    const btn = document.querySelector(`.bookmark-btn[data-id="${id}"]`);
-    
+    const safeId = typeof CSS !== 'undefined' && CSS.escape ? CSS.escape(String(id)) : String(id).replace(/[^a-zA-Z0-9_-]/g, '\\$&');
+    const btn = document.querySelector(`.bookmark-btn[data-id="${safeId}"]`);
     if (idx >= 0) {
       bms.splice(idx, 1);
-      if (btn) { btn.classList.remove('bookmarked'); btn.title = 'Bookmark'; }
-      Toast.show('🔖 Bookmark removed');
+      btn?.classList.remove('bookmarked');
+      btn?.setAttribute('aria-pressed', 'false');
+      if (btn) btn.title = 'Bookmark';
+      Toast.show('Bookmark removed', 'info');
     } else {
-      bms.push({ id, label, url: location.href.split('#')[0] + '#' + id, ts: Date.now() });
-      if (btn) { btn.classList.add('bookmarked'); btn.title = 'Bookmarked!'; }
-      Toast.show('🔖 Bookmarked!', 'success');
+      bms.push({ id: String(id), label: String(label || id), url: `${location.href.split('#')[0]}#${encodeURIComponent(id)}`, ts: Date.now() });
+      btn?.classList.add('bookmarked');
+      btn?.setAttribute('aria-pressed', 'true');
+      if (btn) btn.title = 'Bookmarked';
+      Toast.show('Bookmarked', 'success');
     }
     StateManager.set('bookmarks', bms);
     renderPanel();
@@ -216,27 +255,41 @@ const BookmarkManager = (() => {
   function renderPanel() {
     const panel = document.getElementById('bookmarks-list');
     if (!panel) return;
-    const bms = StateManager.get('bookmarks');
-    panel.innerHTML = bms.length
-      ? bms.map(b => `<a href="${b.url}" class="sidebar-link"><span class="link-icon">🔖</span>${b.label}</a>`).join('')
-      : '<p class="text-xs text-muted" style="padding:8px 12px">No bookmarks yet.</p>';
+    panel.replaceChildren();
+    const bms = list();
+    if (!bms.length) {
+      const empty = document.createElement('p');
+      empty.className = 'text-xs text-muted';
+      empty.textContent = 'No bookmarks yet.';
+      panel.appendChild(empty);
+      return;
+    }
+    bms.forEach(bookmark => {
+      const a = document.createElement('a');
+      a.href = bookmark.url;
+      a.className = 'sidebar-link';
+      const icon = document.createElement('span');
+      icon.className = 'link-icon';
+      icon.textContent = '•';
+      a.append(icon, document.createTextNode(` ${bookmark.label}`));
+      panel.appendChild(a);
+    });
   }
 
   function init() {
-    const bms = StateManager.get('bookmarks');
+    const bms = list();
     document.querySelectorAll('.bookmark-btn').forEach(btn => {
-      const id = btn.dataset.id;
-      if (bms.find(b => b.id === id)) btn.classList.add('bookmarked');
+      const active = bms.some(b => b.id === btn.dataset.id);
+      btn.classList.toggle('bookmarked', active);
+      btn.setAttribute('aria-pressed', String(active));
     });
     renderPanel();
-
-    // Auto-resume via sessionStorage
     const urlKey = 'cn-scroll-' + location.pathname;
-    const saved = sessionStorage.getItem(urlKey);
-    if (saved) setTimeout(() => Utils.safeScrollTo(+saved), 50);
-    window.addEventListener('scroll', Utils.debounce(() => {
-      sessionStorage.setItem(urlKey, window.scrollY);
-    }, 200), { passive: true });
+    try {
+      const saved = sessionStorage.getItem(urlKey);
+      if (saved) setTimeout(() => Utils.safeScrollTo(Number(saved) || 0), 50);
+      window.addEventListener('scroll', Utils.debounce(() => sessionStorage.setItem(urlKey, String(window.scrollY)), 200), { passive: true });
+    } catch { /* session storage unavailable */ }
   }
   return { init, toggle };
 })();
@@ -245,108 +298,72 @@ const BookmarkManager = (() => {
 const SearchManager = (() => {
   let index = [];
   let modal, input, results;
-
   function buildIndex() {
-    if (index.length) return; // Lazy load once
+    if (index.length) return;
     document.querySelectorAll('[data-search-section], section.content-section').forEach(section => {
       const id = section.id || '';
       const title = section.querySelector('h2,h3,h4')?.textContent?.trim() || section.dataset.searchSection || 'Section';
-      const body = section.textContent.replace(/\s+/g, ' ');
+      const body = (section.textContent || '').replace(/\s+/g, ' ').trim();
       index.push({ id, title, body });
     });
   }
-
-  function executeCommand(cmd) {
+  function clearResults() { results?.replaceChildren(); }
+  function addEmpty(message) { clearResults(); const el=document.createElement('div'); el.className='search-empty'; el.textContent=message; results?.appendChild(el); }
+  function runCommand(name) {
     const commands = {
       'toggle theme': ThemeManager.toggle,
       'toggle sidebar': SidebarManager.toggle,
       'export data': StateManager.exportData,
       'import data': StateManager.importData,
-      'clear storage': () => { localStorage.clear(); location.reload(); }
+      'clear storage': () => { try { localStorage.clear(); } finally { location.reload(); } }
     };
-    
-    results.innerHTML = Object.keys(commands)
-      .filter(k => k.includes(cmd))
-      .map(k => `<div class="search-result-item" tabindex="0" data-cmd="${k}">
-        <div class="search-result-title">⚡ Run: ${k}</div>
-      </div>`).join('');
+    commands[name]?.(); close();
   }
-
-  function handleSearch(q) {
-    if (!q.trim()) { results.innerHTML = ''; return; }
-    
-    // Command Palette Mode
-    if (q.startsWith('>')) { return executeCommand(q.slice(1).trim().toLowerCase()); }
-
-    const hits = index.filter(item =>
-      item.title.toLowerCase().includes(q.toLowerCase()) ||
-      item.body.toLowerCase().includes(q.toLowerCase())
-    ).slice(0, 12);
-
-    results.innerHTML = hits.length ? hits.map(h => {
-      const idx = h.body.toLowerCase().indexOf(q.toLowerCase());
-      const snippet = idx >= 0 ? h.body.slice(Math.max(0, idx - 60), idx + 80) : h.body.slice(0, 120);
-      return `<div class="search-result-item" tabindex="0" onclick="location.href='#${h.id}';SearchManager.close()">
-        <div class="search-result-title">${h.title}</div>
-        <div class="search-result-snippet">${snippet}…</div>
-      </div>`;
-    }).join('') : '<div style="padding:16px;color:var(--tx-muted);font-size:14px">No results found.</div>';
+  function executeCommand(query) {
+    clearResults();
+    const names=['toggle theme','toggle sidebar','export data','import data','clear storage'].filter(name=>name.includes(query));
+    if(!names.length) return addEmpty('No commands found.');
+    names.forEach(name=>{ const item=document.createElement('button'); item.type='button'; item.className='search-result-item'; item.dataset.cmd=name; item.textContent=`Run: ${name}`; item.addEventListener('click',()=>runCommand(name)); results?.appendChild(item); });
   }
-
-  function open() { 
-    modal?.classList.add('open'); 
-    modal?.setAttribute('aria-hidden', 'false');
-    input?.focus(); 
-    buildIndex(); 
-  }
-  
-  function close() { 
-    modal?.classList.remove('open'); 
-    modal?.setAttribute('aria-hidden', 'true');
-    if (input) input.value = ''; 
-    if (results) results.innerHTML = ''; 
-  }
-
-  function init() {
-    modal = document.getElementById('search-modal');
-    input = document.getElementById('search-input');
-    results = document.getElementById('search-results');
-    
-    // Accessibility roles
-    modal?.setAttribute('role', 'dialog');
-    modal?.setAttribute('aria-modal', 'true');
-
-    document.getElementById('search-btn')?.addEventListener('click', open);
-    input?.addEventListener('input', Utils.debounce(e => handleSearch(e.target.value), 250));
-    
-    modal?.addEventListener('click', e => { if (e.target === modal) close(); });
-
-    // Keyboard Nav inside Search
-    input?.addEventListener('keydown', e => {
-      const items = results.querySelectorAll('.search-result-item');
-      if (!items.length) return;
-      if (e.key === 'ArrowDown') { e.preventDefault(); items[0].focus(); }
+  function search(query) {
+    const q=query.trim().toLowerCase();
+    if(!q) return clearResults();
+    if(q.startsWith('>')) return executeCommand(q.slice(1).trim());
+    buildIndex();
+    const hits=index.filter(item=>item.title.toLowerCase().includes(q)||item.body.toLowerCase().includes(q)).slice(0,12);
+    clearResults();
+    if(!hits.length) return addEmpty('No results found.');
+    hits.forEach(hit=>{
+      const item=document.createElement('button'); item.type='button'; item.className='search-result-item';
+      const title=document.createElement('div'); title.className='search-result-title'; title.textContent=hit.title;
+      const snippet=document.createElement('div'); snippet.className='search-result-snippet'; const pos=hit.body.toLowerCase().indexOf(q); snippet.textContent=(pos>=0?hit.body.slice(Math.max(0,pos-60),pos+q.length+100):hit.body.slice(0,120))+'…';
+      item.append(title,snippet);
+      item.addEventListener('click',()=>{ if(hit.id){ document.getElementById(hit.id)?.scrollIntoView({behavior:Utils.isReducedMotion()?'auto':'smooth',block:'start'}); history.replaceState(null,'',`#${encodeURIComponent(hit.id)}`);} close(); });
+      results?.appendChild(item);
     });
-
-    results?.addEventListener('keydown', e => {
-      if (e.target.classList.contains('search-result-item')) {
-        if (e.key === 'Enter') {
-          if (e.target.dataset.cmd) {
-            const cmdMap = {
-              'toggle theme': ThemeManager.toggle, 'toggle sidebar': SidebarManager.toggle,
-              'export data': StateManager.exportData, 'import data': StateManager.importData,
-            };
-            cmdMap[e.target.dataset.cmd]?.(); close();
-          } else { e.target.click(); }
-        }
-        if (e.key === 'ArrowDown') e.target.nextElementSibling?.focus();
-        if (e.key === 'ArrowUp') e.target.previousElementSibling ? e.target.previousElementSibling.focus() : input.focus();
-      }
-    });
+  }
+  function open(){ modal?.classList.add('open'); modal?.setAttribute('aria-hidden','false'); buildIndex(); setTimeout(()=>input?.focus(),0); }
+  function close(){ modal?.classList.remove('open'); modal?.setAttribute('aria-hidden','true'); if(input) input.value=''; clearResults(); }
+  function init(){
+    modal=document.getElementById('search-modal'); input=document.getElementById('search-input'); results=document.getElementById('search-results');
+    if(!modal||!input||!results) return;
+    modal.setAttribute('role','dialog'); modal.setAttribute('aria-modal','true'); modal.setAttribute('aria-hidden','true');
+    document.getElementById('search-btn')?.addEventListener('click',open);
+    input.addEventListener('input',Utils.debounce(e=>search(e.target.value),180));
+    modal.addEventListener('click',e=>{ if(e.target===modal) close(); });
+    input.addEventListener('keydown',e=>{ if(e.key==='ArrowDown'){ const first=results.querySelector('.search-result-item'); if(first){e.preventDefault();first.focus();} } if(e.key==='Escape'){e.preventDefault();close();} });
+    results.addEventListener('keydown',e=>{ const items=[...results.querySelectorAll('.search-result-item')]; const idx=items.indexOf(e.target); if(e.key==='ArrowDown'){e.preventDefault();items[idx+1]?.focus();} if(e.key==='ArrowUp'){e.preventDefault();(items[idx-1]||input).focus();} if(e.key==='Escape'){e.preventDefault();close();} });
   }
   return { init, open, close };
 })();
 window.SearchManager = SearchManager;
+window.ThemeManager = ThemeManager;
+window.SidebarManager = SidebarManager;
+window.BookmarkManager = BookmarkManager;
+window.ChecklistManager = ChecklistManager;
+window.ProgressBar = ProgressBar;
+window.ScrollSpy = ScrollSpy;
+
 
 /* ── KEYBOARD SHORTCUTS ────────────────────────────────────────────── */
 const KeyboardManager = (() => {
@@ -356,7 +373,7 @@ const KeyboardManager = (() => {
         if (e.key === 'k') { e.preventDefault(); SearchManager.open(); return; }
         if (e.key === 'p') { e.preventDefault(); window.PrintManager?.print(); return; }
       }
-      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      if (e.target.matches?.('input, textarea, select, [contenteditable="true"]')) return;
       switch (e.key.toLowerCase()) {
         case 't': ThemeManager.toggle(); break;
         case 's': SidebarManager.toggle(); break;
@@ -384,7 +401,8 @@ const Toast = (() => {
     }
     const t = document.createElement('div');
     t.className = `toast ${type}`;
-    t.innerHTML = `<span>${msg}</span>`;
+    t.setAttribute('role', type === 'error' || type === 'warn' ? 'alert' : 'status');
+    t.textContent = String(msg);
     container.appendChild(t);
     setTimeout(() => { t.style.opacity='0'; t.style.transform='translateX(20px)'; t.style.transition='all 0.3s ease'; }, 2200);
     setTimeout(() => t.remove(), 2600);
@@ -419,28 +437,17 @@ function initDelegatedEvents() {
 
 /* ── LIGHTBOX (Image Zoom) ─────────────────────────────────────────── */
 const LightboxManager = (() => {
-  let overlay;
-  function open(src, alt) {
-    if (!overlay) {
-      overlay = document.createElement('div');
-      overlay.id = 'lightbox-overlay';
-      overlay.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.85);z-index:9999;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.2s;pointer-events:none;';
-      overlay.innerHTML = `<img style="max-width:90%;max-height:90%;border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,0.5);" src="" alt="">`;
-      document.body.appendChild(overlay);
-      overlay.addEventListener('click', close);
-    }
-    overlay.querySelector('img').src = src;
-    overlay.querySelector('img').alt = alt;
-    overlay.style.pointerEvents = 'all';
-    window.requestAnimationFrame(() => overlay.style.opacity = '1');
+  let overlay, closeButton, image;
+  function ensure(){
+    if(overlay) return;
+    overlay=document.createElement('div'); overlay.id='lightbox-overlay'; overlay.setAttribute('role','dialog'); overlay.setAttribute('aria-modal','true'); overlay.setAttribute('aria-label','Image viewer'); overlay.setAttribute('tabindex','-1');
+    image=document.createElement('img'); image.className='lightbox-image';
+    closeButton=document.createElement('button'); closeButton.type='button'; closeButton.className='lightbox-close'; closeButton.setAttribute('aria-label','Close image'); closeButton.textContent='×';
+    overlay.append(image,closeButton); document.body.appendChild(overlay); overlay.addEventListener('click',e=>{if(e.target===overlay||e.target===closeButton) close();});
   }
-  function close() {
-    if (overlay) {
-      overlay.style.opacity = '0';
-      overlay.style.pointerEvents = 'none';
-    }
-  }
-  return { open, close };
+  function open(src,alt){ ensure(); image.src=src; image.alt=alt||''; overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false'); closeButton.focus(); }
+  function close(){ if(!overlay) return; overlay.classList.remove('open'); overlay.setAttribute('aria-hidden','true'); }
+  return {open,close};
 })();
 
 /* ── READING TIME ESTIMATOR ────────────────────────────────────────── */
@@ -454,9 +461,10 @@ const ReadingTimeManager = (() => {
     const wordCount = text.split(/\s+/).length;
     const mins = Math.max(1, Math.ceil(wordCount / 220)); // Avg 220 wpm
     
+    if (header.querySelector('.reading-time-badge')) return;
     const badge = document.createElement('span');
-    badge.style.cssText = 'font-size:12px; color:var(--tx-muted); margin-left: 10px; background:var(--bg-card); padding:2px 8px; border-radius:12px;';
-    badge.innerHTML = `⏱️ ~${mins} min read`;
+    badge.className = 'reading-time-badge';
+    badge.textContent = `~${mins} min read`;
     header.appendChild(badge);
   }
   return { init };
@@ -465,19 +473,22 @@ const ReadingTimeManager = (() => {
 /* ── FLOATING ACTION BUTTON (Scroll to Top) ────────────────────────── */
 const FABManager = (() => {
   function init() {
+    if (document.getElementById('scroll-top-fab')) return;
     const fab = document.createElement('button');
-    fab.innerHTML = '↑';
+    fab.id = 'scroll-top-fab';
+    fab.className = 'scroll-top-fab';
+    fab.type = 'button';
+    fab.textContent = '↑';
     fab.setAttribute('aria-label', 'Scroll to top');
-    fab.style.cssText = 'position:fixed;bottom:30px;right:90px;width:42px;height:42px;border-radius:50%;background:var(--accent);color:#fff;border:none;box-shadow:0 4px 14px rgba(124,58,237,0.4);cursor:pointer;opacity:0;transform:translateY(20px);transition:all 0.3s ease;z-index:900;pointer-events:none;font-size:18px;display:flex;align-items:center;justify-content:center;';
     document.body.appendChild(fab);
 
     fab.addEventListener('click', () => Utils.safeScrollTo(0));
 
     window.addEventListener('scroll', Utils.debounce(() => {
       if (window.scrollY > 500) {
-        fab.style.opacity = '1'; fab.style.transform = 'translateY(0)'; fab.style.pointerEvents = 'all';
+        fab.classList.add('is-visible');
       } else {
-        fab.style.opacity = '0'; fab.style.transform = 'translateY(20px)'; fab.style.pointerEvents = 'none';
+        fab.classList.remove('is-visible');
       }
     }, 150));
   }
@@ -543,18 +554,7 @@ const DocumentEnhancer = (() => {
     });
 
     // ── CODE COPY BUTTONS (fallback if not in event delegation) ─────────
-    document.querySelectorAll('.code-copy').forEach(btn => {
-      if (btn.dataset.bound) return;
-      btn.dataset.bound = '1';
-      btn.addEventListener('click', () => {
-        const pre = btn.closest('.code-block')?.querySelector('pre');
-        if (!pre) return;
-        navigator.clipboard.writeText(pre.textContent).then(() => {
-          btn.textContent = '✓ Copied!'; btn.style.color = 'var(--success)';
-          setTimeout(() => { btn.textContent = 'Copy'; btn.style.color = ''; }, 1800);
-        });
-      });
-    });
+
   }
   return { init };
 })();
@@ -636,16 +636,14 @@ function initScrollDepthTracker() {
   const page = location.pathname.split('/').pop() || 'index.html';
   window.addEventListener('scroll', Utils.debounce(() => {
     const el  = document.documentElement;
-    const pct = Math.round((el.scrollTop / (el.scrollHeight - el.clientHeight)) * 100);
+    const max = el.scrollHeight - el.clientHeight;
+    const pct = max > 0 ? Math.round((el.scrollTop / max) * 100) : 0;
     if (pct > 5) StateManager.setReadProgress(page, pct);
   }, 1000), { passive: true });
 }
 
 /* ── ARPIT HIDDEN MARKS (every ~12 lines via data attrs) ───────────── */
-function embedArpitMarks() {
-  const sections = document.querySelectorAll('section, .mode-uni, .mode-gate, .mode-adv, .prose');
-  sections.forEach((el, i) => { if (i % 3 === 0) el.setAttribute('data-a', '⚡arpit-pro'); });
-}
+function embedArpitMarks() { /* retired; compatibility no-op */ }
 
 /* ── INIT SEQUENCE ─────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {

@@ -46,6 +46,7 @@
 .part-label.part-i { color: #38bdf8; }
 .part-label.part-ii { color: #fbbf24; }
 .part-label.part-iii { color: #f87171; }
+.part-label.part-iv { color: #c084fc; }
 /* Groups section */
 .groups-section { padding:70px 24px; background:var(--bg-base); }
 .groups-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;max-width:1000px;margin:32px auto 0; }
@@ -193,6 +194,17 @@ body[data-phase="long_break"] { background-image:none !important; }
       <a href="chapters/ch10-mac-ethernet.html" class="sidebar-link"><span class="link-icon">🌐</span>Ch 10 — MAC & Ethernet</a>
     </div>
     <div class="sidebar-section">
+      <div class="sidebar-section-label part-label part-iv">Part IV — Network Layer</div>
+      <a href="chapters/ch11-network-layer-foundations.html" class="sidebar-link"><span class="link-icon">🗺️</span>Ch 11 — Network Layer Foundations</a>
+      <a href="chapters/ch12-shortest-path-routing.html" class="sidebar-link"><span class="link-icon">🧭</span>Ch 12 — Shortest Path Routing</a>
+      <a href="chapters/ch13-link-state-distance-vector.html" class="sidebar-link"><span class="link-icon">🔁</span>Ch 13 — Link-State &amp; Distance-Vector</a>
+      <a href="chapters/ch14-logical-addressing-ipv4.html" class="sidebar-link"><span class="link-icon">🏷️</span>Ch 14 — Logical Addressing &amp; IPv4</a>
+      <a href="chapters/ch15-ipv4-internals.html" class="sidebar-link"><span class="link-icon">📦</span>Ch 15 — IPv4 Internals</a>
+      <a href="chapters/ch16-ipv6.html" class="sidebar-link"><span class="link-icon">🚀</span>Ch 16 — IPv6 Architecture</a>
+      <a href="chapters/ch17-address-mapping-icmp.html" class="sidebar-link"><span class="link-icon">🔎</span>Ch 17 — Address Mapping &amp; ICMP</a>
+      <a href="chapters/ch18-routers-switches-firewalls.html" class="sidebar-link"><span class="link-icon">🛡️</span>Ch 18 — Routers, Switches &amp; Firewalls</a>
+    </div>
+    <div class="sidebar-section">
       <div class="sidebar-section-label">Exams</div>
       <a href="exams/mock-exam.html" class="sidebar-link"><span class="link-icon">📝</span>100 MCQ Mock Exam</a>
       <a href="exams/unit-quiz.html" class="sidebar-link"><span class="link-icon">📋</span>Chapter Quizzes</a>
@@ -223,16 +235,16 @@ body[data-phase="long_break"] { background-image:none !important; }
     <div class="hero-content anim-slide-up">
       <div class="hero-badge">🎓 University of Delhi &nbsp;·&nbsp; B.Tech CSE &nbsp;·&nbsp; Computer Networks</div>
       <h1 class="hero-title">Computer Networks</h1>
-      <p class="hero-sub">A comprehensive interactive textbook covering Introduction to Networks, Physical Layer, and Data Link Layer. Built for deep learning and MCQ exam preparation.</p>
+      <p class="hero-sub">A comprehensive interactive textbook covering Introduction to Networks, Physical Layer, Data Link Layer, and Network Layer. Built for deep learning and MCQ exam preparation.</p>
       <div class="hero-btns">
         <a href="chapters/ch01-fundamentals.html" class="btn-primary">Start Learning →</a>
         <a href="exams/mock-exam.html" class="btn-secondary">📝 100 MCQ Exam</a>
       </div>
       <div class="stats-row">
-        <div class="stat"><div class="stat-num">10</div><div class="stat-label">Chapters</div></div>
-        <div class="stat"><div class="stat-num">3</div><div class="stat-label">Parts</div></div>
+        <div class="stat"><div class="stat-num">18</div><div class="stat-label">Chapters</div></div>
+        <div class="stat"><div class="stat-num">4</div><div class="stat-label">Parts</div></div>
         <div class="stat"><div class="stat-num">100</div><div class="stat-label">MCQ Questions</div></div>
-        <div class="stat"><div class="stat-num">6</div><div class="stat-label">Study Groups</div></div>
+        <div class="stat"><div class="stat-num">7</div><div class="stat-label">Study Groups</div></div>
       </div>
     </div>
   </section>
@@ -279,14 +291,22 @@ body[data-phase="long_break"] { background-image:none !important; }
         <div style="background:var(--bg-card); border:1px solid var(--bd-default); border-radius:var(--r-lg); padding:1.25rem;">
           <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.75rem;">
             <span style="font-weight:800; color:var(--uni-text); font-size:var(--text-xs); text-transform:uppercase; letter-spacing:0.05em;">Unit II: Data Link Layer</span>
-            <span class="uni-syllabus-badge">Ch 8 – 10</span>
+            <span class="uni-syllabus-badge">Ch 8 – 18</span>
           </div>
           <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.6rem; font-size:var(--text-xs);">
             <li><a href="chapters/ch08-dll-fundamentals.html" style="color:var(--tx-secondary); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--accent-light);">•</span> <span><strong>DLL Design Issues & Framing:</strong> Character count, byte/bit stuffing</span> <span style="margin-left:auto; color:var(--accent-light); font-weight:600;">Ch 8 →</span></a></li>
-            <li><a href="chapters/ch08-dll-fundamentals.html#s-error-detection" style="color:var(--tx-secondary); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--accent-light);">•</span> <span><strong>Error Detection & Correction:</strong> Parity, Checksum, CRC, Hamming</span> <span style="margin-left:auto; color:var(--accent-light); font-weight:600;">Ch 8 →</span></a></li>
+            <li><a href="chapters/ch08-dll-fundamentals.html#s-detect-vs-correct" style="color:var(--tx-secondary); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--accent-light);">•</span> <span><strong>Error Detection & Correction:</strong> Parity, Checksum, CRC, Hamming</span> <span style="margin-left:auto; color:var(--accent-light); font-weight:600;">Ch 8 →</span></a></li>
             <li><a href="chapters/ch09-protocols-sliding.html" style="color:var(--tx-secondary); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--accent-light);">•</span> <span><strong>Elementary Protocols:</strong> Stop-and-Wait ARQ, flow & error control</span> <span style="margin-left:auto; color:var(--accent-light); font-weight:600;">Ch 9 →</span></a></li>
             <li><a href="chapters/ch09-protocols-sliding.html#s-sliding-window" style="color:var(--tx-secondary); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--accent-light);">•</span> <span><strong>Sliding Window Protocols:</strong> Go-Back-N, Selective Repeat, efficiency</span> <span style="margin-left:auto; color:var(--accent-light); font-weight:600;">Ch 9 →</span></a></li>
             <li><a href="chapters/ch10-mac-ethernet.html" style="color:var(--tx-secondary); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--accent-light);">•</span> <span><strong>MAC Protocols:</strong> ALOHA, CSMA, CSMA/CD, CSMA/CA, RTS/CTS, Ethernet</span> <span style="margin-left:auto; color:var(--accent-light); font-weight:600;">Ch 10 →</span></a></li>
+            <li><a href="chapters/ch11-network-layer-foundations.html" style="color:var(--tx-secondary); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--accent-light);">•</span> <span><strong>Network Layer Design Issues:</strong> Store-and-forward, virtual circuits vs datagrams, routing taxonomy</span> <span style="margin-left:auto; color:var(--accent-light); font-weight:600;">Ch 11 →</span></a></li>
+            <li><a href="chapters/ch12-shortest-path-routing.html" style="color:var(--tx-secondary); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--accent-light);">•</span> <span><strong>Shortest Path Routing:</strong> Dijkstra step-by-step, SPT trees, metrics, OSPF link-state</span> <span style="margin-left:auto; color:var(--accent-light); font-weight:600;">Ch 12 →</span></a></li>
+            <li><a href="chapters/ch13-link-state-distance-vector.html" style="color:var(--tx-secondary); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--accent-light);">•</span> <span><strong>Link-State &amp; Distance-Vector:</strong> Reliable flooding, LSDB, Bellman-Ford, Count-to-Infinity, Split Horizon</span> <span style="margin-left:auto; color:var(--accent-light); font-weight:600;">Ch 13 →</span></a></li>
+            <li><a href="chapters/ch14-logical-addressing-ipv4.html" style="color:var(--tx-secondary); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--accent-light);">•</span> <span><strong>Logical Addressing &amp; IPv4:</strong> 32-bit CIDR, subnet masks, VLSM calculations, LPM forwarding</span> <span style="margin-left:auto; color:var(--accent-light); font-weight:600;">Ch 14 →</span></a></li>
+            <li><a href="chapters/ch15-ipv4-internals.html" style="color:var(--tx-secondary); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--accent-light);">•</span> <span><strong>IPv4 Internals &amp; Datagrams:</strong> Header fields, fragmentation offset math, TTL, checksum, MTU</span> <span style="margin-left:auto; color:var(--accent-light); font-weight:600;">Ch 15 →</span></a></li>
+            <li><a href="chapters/ch16-ipv6.html" style="color:var(--tx-secondary); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--accent-light);">•</span> <span><strong>IPv6 Architecture &amp; Protocols:</strong> 128-bit hex, extension headers, SLAAC, EUI-64, dual-stack</span> <span style="margin-left:auto; color:var(--accent-light); font-weight:600;">Ch 16 →</span></a></li>
+            <li><a href="chapters/ch17-address-mapping-icmp.html" style="color:var(--tx-secondary); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--accent-light);">•</span> <span><strong>Address Mapping &amp; ICMP:</strong> ARP cache, DAD, Gratuitous ARP, NDP, Destination Unreachable, PMTUD, Traceroute</span> <span style="margin-left:auto; color:var(--accent-light); font-weight:600;">Ch 17 →</span></a></li>
+            <li><a href="chapters/ch18-routers-switches-firewalls.html" style="color:var(--tx-secondary); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--accent-light);">•</span> <span><strong>Routers, Switches &amp; Firewalls:</strong> Transparent bridging, HOL blocking, TCAM LPM, L3 switches, stateful inspection, NGFW</span> <span style="margin-left:auto; color:var(--accent-light); font-weight:600;">Ch 18 →</span></a></li>
           </ul>
         </div>
       </div>
@@ -296,7 +316,7 @@ body[data-phase="long_break"] { background-image:none !important; }
   <!-- UNITS GRID -->
   <section class="units-section">
     <h2>📚 Course Chapters</h2>
-    <p class="section-sub">Click any chapter to dive in. 10 in-depth chapters across 3 parts.</p>
+    <p class="section-sub">Click any chapter to dive in. 18 in-depth chapters across 4 parts.</p>
     <div class="units-grid stagger-children">
 
       <!-- PART I -->
@@ -388,6 +408,73 @@ body[data-phase="long_break"] { background-image:none !important; }
         <div class="unit-tags"><span class="unit-tag">CSMA/CD</span><span class="unit-tag">ALOHA</span><span class="unit-tag">Ethernet</span><span class="unit-tag">CDMA</span></div>
       </a>
 
+      <!-- PART IV -->
+      <div class="part-divider"><span class="part-label part-iv">Part IV — Network Layer</span></div>
+
+      <a href="chapters/ch11-network-layer-foundations.html" class="unit-card" style="--unit-color:rgba(192,132,252,.12)">
+        <div class="unit-num">Chapter 11</div>
+        <div class="unit-icon">🗺️</div>
+        <div class="unit-title">Network Layer Foundations & Design Issues</div>
+        <div class="unit-desc">Store-and-forward packet switching, virtual circuits vs datagram subnets, routing vs forwarding, optimality principle, and algorithm taxonomy.</div>
+        <div class="unit-tags"><span class="unit-tag">Datagrams</span><span class="unit-tag">Virtual Circuits</span><span class="unit-tag">Optimality</span><span class="unit-tag">L2 vs L3</span></div>
+      </a>
+
+      <a href="chapters/ch12-shortest-path-routing.html" class="unit-card" style="--unit-color:rgba(192,132,252,.12)">
+        <div class="unit-num">Chapter 12</div>
+        <div class="unit-icon">🧭</div>
+        <div class="unit-title">Shortest Path Routing & Dijkstra</div>
+        <div class="unit-desc">Weighted graph models, routing metrics, step-by-step Dijkstra execution table, Shortest Path Trees (SPT), FIB synthesis, and OSPF integration.</div>
+        <div class="unit-tags"><span class="unit-tag">Dijkstra</span><span class="unit-tag">SPT</span><span class="unit-tag">OSPF</span><span class="unit-tag">Complexity</span></div>
+      </a>
+
+      <a href="chapters/ch13-link-state-distance-vector.html" class="unit-card" style="--unit-color:rgba(192,132,252,.12)">
+        <div class="unit-num">Chapter 13</div>
+        <div class="unit-icon">🔁</div>
+        <div class="unit-title">Link-State &amp; Distance-Vector Routing</div>
+        <div class="unit-desc">Reliable flooding, LSDB synchronization, distributed Bellman-Ford recurrence, count-to-infinity problem, split horizon with poison reverse, and master comparison matrix.</div>
+        <div class="unit-tags"><span class="unit-tag">Link-State</span><span class="unit-tag">Bellman-Ford</span><span class="unit-tag">Poison Reverse</span><span class="unit-tag">RIB/FIB</span></div>
+      </a>
+
+      <a href="chapters/ch14-logical-addressing-ipv4.html" class="unit-card" style="--unit-color:rgba(192,132,252,.12)">
+        <div class="unit-num">Chapter 14</div>
+        <div class="unit-icon">🏷️</div>
+        <div class="unit-title">Logical Addressing &amp; IPv4</div>
+        <div class="unit-desc">32-bit binary arithmetic, CIDR prefix notation, subnet masks, network &amp; broadcast boundaries, VLSM subnetting numerical drills, classful legacy, and Longest Prefix Match (LPM).</div>
+        <div class="unit-tags"><span class="unit-tag">IPv4</span><span class="unit-tag">CIDR</span><span class="unit-tag">Subnetting</span><span class="unit-tag">LPM</span></div>
+      </a>
+
+      <a href="chapters/ch15-ipv4-internals.html" class="unit-card" style="--unit-color:rgba(192,132,252,.12)">
+        <div class="unit-num">Chapter 15</div>
+        <div class="unit-icon">📦</div>
+        <div class="unit-title">IPv4 Internals &amp; Datagram Processing</div>
+        <div class="unit-desc">20-byte base header layout, fragmentation offset calculation, MTU bottlenecks, TTL loops, Internet Checksum algorithm, and security options.</div>
+        <div class="unit-tags"><span class="unit-tag">IPv4 Header</span><span class="unit-tag">Fragmentation</span><span class="unit-tag">Checksum</span><span class="unit-tag">MTU</span></div>
+      </a>
+
+      <a href="chapters/ch16-ipv6.html" class="unit-card" style="--unit-color:rgba(192,132,252,.12)">
+        <div class="unit-num">Chapter 16</div>
+        <div class="unit-icon">🚀</div>
+        <div class="unit-title">IPv6 Architecture &amp; Protocols</div>
+        <div class="unit-desc">128-bit address space, streamlined 40-byte fixed header, extension header daisy chaining, SLAAC auto-configuration, EUI-64, and transition mechanisms.</div>
+        <div class="unit-tags"><span class="unit-tag">IPv6</span><span class="unit-tag">SLAAC</span><span class="unit-tag">EUI-64</span><span class="unit-tag">Dual-Stack</span></div>
+      </a>
+
+      <a href="chapters/ch17-address-mapping-icmp.html" class="unit-card" style="--unit-color:rgba(192,132,252,.12)">
+        <div class="unit-num">Chapter 17</div>
+        <div class="unit-icon">🔎</div>
+        <div class="unit-title">Address Mapping &amp; ICMP</div>
+        <div class="unit-desc">Dynamic ARP resolution, Gratuitous ARP, ARP spoofing and DAI, IPv6 NDP multicast, ICMP error architecture, PMTUD, traceroute TTL, and ping RTT.</div>
+        <div class="unit-tags"><span class="unit-tag">ARP</span><span class="unit-tag">ICMP</span><span class="unit-tag">NDP</span><span class="unit-tag">Traceroute</span></div>
+      </a>
+
+      <a href="chapters/ch18-routers-switches-firewalls.html" class="unit-card" style="--unit-color:rgba(192,132,252,.12)">
+        <div class="unit-num">Chapter 18</div>
+        <div class="unit-icon">🛡️</div>
+        <div class="unit-title">Routers, Switches &amp; Firewalls</div>
+        <div class="unit-desc">Layer-2 CAM self-learning, crossbar fabrics, HOL blocking, TCAM Longest Prefix Match, wire-speed L3 switching with SVIs, stateless ACLs, and stateful NGFWs.</div>
+        <div class="unit-tags"><span class="unit-tag">Routers</span><span class="unit-tag">Switches</span><span class="unit-tag">L3 Switch</span><span class="unit-tag">Firewalls</span></div>
+      </a>
+
     </div>
   </section>
 
@@ -425,6 +512,11 @@ body[data-phase="long_break"] { background-image:none !important; }
         <div class="group-letter">F</div>
         <div class="group-title">MAC & Ethernet</div>
         <div class="group-desc">Chapter 10: ALOHA, CSMA variants, controlled access, channelization, Ethernet frame, MAC table.</div>
+      </div>
+      <div class="group-card">
+        <div class="group-letter">G</div>
+        <div class="group-title">Network Layer &amp; Routing</div>
+        <div class="group-desc">Chapters 11–18: Network layer foundations, virtual circuits, Dijkstra, Link-State, Distance-Vector, IPv4 CIDR addressing, IPv6, ARP, ICMP, and Routers/Switches/Firewalls.</div>
       </div>
     </div>
   </section>

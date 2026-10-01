@@ -1,0 +1,2637 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<!-- ⚡ Arpit | CN MiniBook 2026 -->
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="Arpit">
+<meta name="description" content="Chapter 15: IPv4 Internals & Datagram Processing — CN MiniBook. In-depth analysis of the 32-bit IPv4 header, IHL scaling, DSCP/ECN, TTL decrement, 16-bit one's complement checksum calculation, MTU limits, step-by-step fragmentation & reassembly numericals, router forwarding pipeline, and end-to-end field mutation maps.">
+<title>Ch 15 — IPv4 Internals &amp; Datagram Processing | CN MiniBook 🌐 Arpit</title>
+<link rel="manifest" href="../manifest.json">
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/animations.css">
+<link rel="stylesheet" href="../assets/css/timer.css">
+<link rel="stylesheet" href="../assets/css/chapters.css">
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<!-- HEADER -->
+<header id="main-header">
+  <div class="header-left">
+    <button id="sidebar-toggle" class="icon-btn" title="Toggle Sidebar (S)">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </button>
+    <div class="brand-logo">
+      <div class="brand-icon">🌐</div>
+      <div class="brand-text"><span class="main">CN MiniBook</span><span class="sub">Computer Networks</span></div>
+    </div>
+  </div>
+  <span class="header-chapter-title">Ch 15 — IPv4 Internals &amp; Datagram Processing</span>
+  <div class="header-right">
+    <button id="search-btn" class="icon-btn" title="Search (Ctrl+K)">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.35-4.35"></path></svg>
+    </button>
+    <button id="tts-toggle" class="icon-btn" title="Read Aloud">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"></path></svg>
+    </button>
+    <button id="print-btn" title="Print / Save as PDF (Ctrl+P)" aria-label="Print"><svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg><span class="print-label">PDF</span></button>
+    <button id="reading-mode-btn" class="icon-btn" title="Reading Mode (F)" aria-pressed="false" aria-label="Toggle reading mode">📖</button>
+    <button id="theme-toggle" class="icon-btn" title="Toggle Theme (T)"></button>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<div id="sidebar-overlay"></div>
+<aside id="sidebar">
+  <nav class="sidebar-nav">
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Navigation</div>
+      <a href="../index.html" class="sidebar-link"><span class="link-icon">🏠</span>Home</a>
+      <a href="../progress.html" class="sidebar-link"><span class="link-icon">📊</span>Dashboard</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Chapter 15 — Sections</div>
+      <a href="#s15-stack" class="sidebar-link active"><span class="link-icon">⏳</span>15.1 IPv4 in the Stack</a>
+      <a href="#s15-model" class="sidebar-link"><span class="link-icon">✉️</span>15.2 Datagram Mental Model</a>
+      <a href="#s15-header" class="sidebar-link"><span class="link-icon">📋</span>15.3 Header at a Glance</a>
+      <a href="#s15-ihl" class="sidebar-link"><span class="link-icon">📐</span>15.4 Version, IHL &amp; Length</a>
+      <a href="#s15-dscp" class="sidebar-link"><span class="link-icon">🚦</span>15.5 DS Field &amp; ECN</a>
+      <a href="#s15-length" class="sidebar-link"><span class="link-icon">📏</span>15.6 Total Length &amp; Payload</a>
+      <a href="#s15-frag-fields" class="sidebar-link"><span class="link-icon">🧩</span>15.7 ID, Flags &amp; Offset</a>
+      <a href="#s15-ttl-proto" class="sidebar-link"><span class="link-icon">⏱️</span>15.8 TTL &amp; Protocol Fields</a>
+      <a href="#s15-checksum" class="sidebar-link"><span class="link-icon">🛡️</span>15.9 IPv4 Header Checksum</a>
+      <a href="#s15-addrs" class="sidebar-link"><span class="link-icon">🏷️</span>15.10 Source &amp; Dest IP</a>
+      <a href="#s15-options" class="sidebar-link"><span class="link-icon">⚙️</span>15.11 IPv4 Header Options</a>
+      <a href="#s15-mtu" class="sidebar-link"><span class="link-icon">🚧</span>15.12 MTU &amp; Fragmentation</a>
+      <a href="#s15-frag-process" class="sidebar-link"><span class="link-icon">✂️</span>15.13 Fragmentation Process</a>
+      <a href="#s15-frag-num" class="sidebar-link"><span class="link-icon">🔢</span>15.14 Fragmentation Numerical</a>
+      <a href="#s15-reassembly" class="sidebar-link"><span class="link-icon">🔄</span>15.15 Reassembly Logic</a>
+      <a href="#s15-forwarding" class="sidebar-link"><span class="link-icon">⚡</span>15.16 Router Forwarding Steps</a>
+      <a href="#s15-changes" class="sidebar-link"><span class="link-icon">📝</span>15.17 Header Changes in Flight</a>
+      <a href="#s15-traps" class="sidebar-link"><span class="link-icon">🪤</span>15.18 Exam Traps &amp; Summary</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label part-label part-i">Part I — Introduction</div>
+      <a href="ch01-fundamentals.html" class="sidebar-link"><span class="link-icon">📡</span>Ch 1 — Fundamentals</a>
+      <a href="ch02-types-topologies.html" class="sidebar-link"><span class="link-icon">🔗</span>Ch 2 — Types &amp; Topologies</a>
+      <a href="ch03-models-addressing.html" class="sidebar-link"><span class="link-icon">📦</span>Ch 3 — Models &amp; Addressing</a>
+      <a href="ch04-devices-sdn.html" class="sidebar-link"><span class="link-icon">🔌</span>Ch 4 — Devices &amp; SDN</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label part-label part-ii">Part II — Physical Layer</div>
+      <a href="ch05-physical-fundamentals.html" class="sidebar-link"><span class="link-icon">📶</span>Ch 5 — Physical Fundamentals</a>
+      <a href="ch06-media-signaling.html" class="sidebar-link"><span class="link-icon">🔌</span>Ch 6 — Media &amp; Line Coding</a>
+      <a href="ch07-modulation-switching.html" class="sidebar-link"><span class="link-icon">📻</span>Ch 7 — Modulation &amp; Switching</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label part-label part-iii">Part III — Data Link Layer</div>
+      <a href="ch08-dll-fundamentals.html" class="sidebar-link"><span class="link-icon">🔧</span>Ch 8 — DLL Fundamentals</a>
+      <a href="ch09-protocols-sliding.html" class="sidebar-link"><span class="link-icon">🔄</span>Ch 9 — Protocols &amp; Sliding Window</a>
+      <a href="ch10-mac-ethernet.html" class="sidebar-link"><span class="link-icon">🌐</span>Ch 10 — MAC &amp; Ethernet</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label part-label part-iv">Part IV — Network Layer</div>
+      <a href="ch11-network-layer-foundations.html" class="sidebar-link part-iv"><span class="link-icon">🗺️</span>Ch 11 — Network Layer Foundations</a>
+      <a href="ch12-shortest-path-routing.html" class="sidebar-link part-iv"><span class="link-icon">🧭</span>Ch 12 — Shortest Path Routing</a>
+      <a href="ch13-link-state-distance-vector.html" class="sidebar-link part-iv"><span class="link-icon">🔁</span>Ch 13 — Link-State &amp; Distance-Vector</a>
+      <a href="ch14-logical-addressing-ipv4.html" class="sidebar-link part-iv"><span class="link-icon">🏷️</span>Ch 14 — Logical Addressing &amp; IPv4</a>
+      <a href="ch15-ipv4-internals.html" class="sidebar-link active part-iv"><span class="link-icon">📦</span>Ch 15 — IPv4 Internals</a>
+      
+      <a href="ch17-address-mapping-icmp.html" class="sidebar-link part-iv"><span class="link-icon">🔎</span>Ch 17 — Address Mapping &amp; ICMP</a>
+      <a href="ch18-routers-switches-firewalls.html" class="sidebar-link part-iv"><span class="link-icon">🛡️</span>Ch 18 — Routers, Switches &amp; Firewalls</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">My Notes</div>
+      <div id="notes-sidebar-list"></div>
+    </div>
+    </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-brand-mark"><div class="mark">🌐</div><span>Arpit · CN MiniBook 2026</span></div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main id="main-content">
+<div class="content-inner">
+    <div class="chapter-hero">
+      <div class="chapter-part-banner part-iv"><span class="part-banner-badge">Part IV</span><span>Network Layer</span></div>
+<div class="hero-badge">
+        <span class="part-badge part-iv">Part IV · Network Layer</span>
+        <span class="weight-badge high">High Exam Weightage</span>
+        <span class="time-badge">⏱️ 36 min read</span>
+      </div>
+      <h1 class="chapter-title">IPv4 Internals &amp; Datagram Processing</h1>
+      <p class="chapter-desc">The internal engineering mechanics of the Internet Protocol version 4. Complete first-principles dissection of the 32-bit word header layout, IHL 4-byte scaling, DSCP priority classes, Total Length boundaries, 16-bit one's complement checksum calculation, Maximum Transmission Unit (MTU) mismatches, step-by-step fragmentation arithmetic with the 8-byte offset rule, destination reassembly, router forwarding pipelines, and header transformation in flight.</p>
+      <div class="hero-actions">
+        <button id="focus-toggle-btn" class="action-btn" title="Toggle University Exam Filter">
+          <span class="btn-icon">🎓</span><span class="btn-text">Filter: Uni Exam Focus</span>
+        </button>
+        <button id="bookmark-btn" class="action-btn" title="Bookmark Chapter">
+          <span class="btn-icon">🔖</span><span class="btn-text">Bookmark</span>
+        </button>
+        <button id="notes-toggle-btn" class="action-btn" title="Chapter Notes">
+          <span class="btn-icon">📝</span><span class="btn-text">Notes</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- OBJECTIVES & STUDY PATH -->
+    <div class="concept-card">
+      <h3>🎯 Learning Objectives</h3>
+      <ul>
+        <li><strong>Header Bit Layout:</strong> Map all 14 fields of the IPv4 header across its 32-bit word structure (20 bytes baseline to 60 bytes with options).</li>
+        <li><strong>Field Semantics:</strong> Understand why IHL is scaled by 4, how DSCP/ECN enable differentiated QoS, and how the Protocol field demultiplexes payload protocols.</li>
+        <li><strong>16-Bit Checksum Math:</strong> Execute step-by-step 16-bit one's complement addition and explain why the checksum must be updated at every single router hop.</li>
+        <li><strong>Fragmentation Arithmetic:</strong> Master the 8-byte Fragment Offset rule ($64$-bit block units), DF/MF flag bit logic, and fragment sizing across heterogeneous MTU links.</li>
+        <li><strong>Router Forwarding Pipeline:</strong> Trace the line-rate hardware steps executed by a router upon packet ingress (checksum verification, TTL decrement, TCAM LPM lookup, ARP resolution).</li>
+        <li><strong>Header Mutation Map:</strong> Differentiate with absolute certainty which header fields mutate during transit versus which remain strictly invariant end-to-end.</li>
+      </ul>
+    </div>
+
+    <!-- TABLE OF CONTENTS -->
+    
+  <!-- OFFICIAL UNIVERSITY SYLLABUS CALLOUT -->
+  <div class="uni-syllabus-callout">
+    <div class="uni-callout-title">🎓 Official University Syllabus — UNIT II</div>
+    <div><strong>Network Layer:</strong> Internet Protocol Version 4 (IPv4) datagram format, header fields (IHL, Total Length, Identification, Flags, Fragment Offset, TTL, Protocol, Checksum), MTU constraints, fragmentation and reassembly algorithms, and router packet processing.</div>
+  </div>
+
+  <!-- UNIVERSITY SYLLABUS FILTER SWITCH -->
+  <div class="uni-mode-toggle-card">
+    <div>
+      <div class="uni-mode-title">
+        <span>🎓</span> University Exam Focus Filter
+      </div>
+      <div class="uni-mode-desc">
+        Focus specifically on sections prescribed in Delhi University syllabus vs supplementary deep-dives.
+      </div>
+    </div>
+    <div class="uni-filter-switch">
+      <button class="uni-toggle-btn active" id="filter-all-btn" data-mode="all" onclick="ModeManager.apply('all')">📚 Show All Content</button>
+      <button class="uni-toggle-btn" id="filter-uni-btn" data-mode="uni" onclick="ModeManager.apply('uni')">🎓 Focus Uni Syllabus Only</button>
+    </div>
+  </div>
+
+  <div class="toc-card">
+      <div class="toc-header">
+        <div class="toc-part-tag part-iv">Part IV · Network Layer</div>
+        <div class="toc-title"><span>📑</span>Table of Contents</div>
+      </div>
+      <div class="toc-grid">
+        <a class="toc-item in-uni" href="#s15-stack"><span class="toc-num">15.1</span>IPv4 in the Stack <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s15-model"><span class="toc-num">15.2</span>Datagram Mental Model <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s15-header"><span class="toc-num">15.3</span>Header at a Glance <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s15-ihl"><span class="toc-num">15.4</span>Version, IHL &amp; Length <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s15-dscp"><span class="toc-num">15.5</span>DS Field &amp; ECN <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s15-length"><span class="toc-num">15.6</span>Total Length &amp; Payload <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s15-frag-fields"><span class="toc-num">15.7</span>ID, Flags &amp; Offset <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s15-ttl-proto"><span class="toc-num">15.8</span>TTL &amp; Protocol Fields <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s15-checksum"><span class="toc-num">15.9</span>IPv4 Header Checksum <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s15-addrs"><span class="toc-num">15.10</span>Source &amp; Dest IP <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s15-options"><span class="toc-num">15.11</span>IPv4 Header Options <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s15-mtu"><span class="toc-num">15.12</span>MTU &amp; Fragmentation <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s15-frag-process"><span class="toc-num">15.13</span>Fragmentation Process <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s15-frag-num"><span class="toc-num">15.14</span>Fragmentation Numerical <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s15-reassembly"><span class="toc-num">15.15</span>Reassembly Logic <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s15-forwarding"><span class="toc-num">15.16</span>Router Forwarding Steps <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s15-changes"><span class="toc-num">15.17</span>Header Changes in Flight <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s15-traps"><span class="toc-num">15.18</span>Exam Traps &amp; Summary <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      </div>
+    </div>
+
+
+    <!-- 15.1 Where IPv4 Fits in the Stack -->
+    <section id="s15-stack" class="section-in-uni content-section" data-chapter="15" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="IPv4 protocol stack Layer 3 best-effort connectionless datagram encapsulation de-encapsulation">
+      <div class="section-header">
+        <span class="section-number">15.1</span>
+        <h2>Where IPv4 Fits in the Stack <button class="bookmark-btn" data-id="s15-stack" data-label="Where IPv4 Fits in the Stack" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>Where IPv4 Fits in the Stack</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p>The <strong>Internet Protocol version 4 (IPv4)</strong>, defined in RFC 791, is the primary network-layer protocol of the TCP/IP suite that provides an <strong>unreliable, connectionless, best-effort datagram delivery service</strong> across heterogeneous packet-switched internetworks.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why It Exists: The "Hourglass" Waist of the Internet</h3>
+        <p>The global Internet succeeds because of the <strong>Thin Waist Architecture</strong>. Thousands of diverse physical link technologies exist at the bottom (Ethernet, Wi-Fi, 5G, Fiber, Satellite), and hundreds of application protocols exist at the top (HTTP/3, DNS, SSH, SMTP, RTP). IPv4 acts as the universal bridging layer: every higher-layer protocol encapsulates into IP, and every lower-layer link encapsulates IP.</p>
+      </div>
+
+      <div class="ascii-box">
+THE HOURGLASS ARCHITECTURE OF THE INTERNET:
+
+ Applications:    [ HTTP/3 ]  [ DNS ]  [ SSH ]  [ RTP ]  [ SMTP ]
+                        \         |        |        /
+ Transport:              [  TCP  ]      [  UDP  ]
+                              \             /
+ Network Layer:             +-----------------+
+                            |   IPv4 / IPv6   |  <=== THE NARROW WAIST!
+                            +-----------------+       (Universal Unifier)
+                              /             \
+ Data Link:              [ Ethernet ]   [ Wi-Fi (802.11) ]
+ Physical:               [ Fiber / Copper / Wireless ]
+      </div>
+
+      <div class="concept-card">
+        <h3>3. How It Works: The Three Service Guarantees (and Non-Guarantees)</h3>
+        <div class="concept-grid">
+          <div class="concept-card">
+            <h4>1. Connectionless Delivery</h4>
+            <p>No prior signaling or circuit setup occurs before transmission. Each datagram is treated as an independent information entity containing complete source and destination addresses.</p>
+          </div>
+          <div class="concept-card">
+            <h4>2. Unreliable Delivery</h4>
+            <p>IPv4 does <strong>not</strong> guarantee that a datagram will reach its destination. Packets may be corrupted, delayed, reordered, duplicated, or dropped due to buffer overflow.</p>
+          </div>
+          <div class="concept-card">
+            <h4>3. Best-Effort Delivery</h4>
+            <p>Routers apply their maximum reasonable effort to forward packets without actively discarding them, but provide zero quality-of-service (QoS) or bandwidth guarantees by default.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Responsibility</th>
+              <th>Handled by IPv4 (Layer 3)?</th>
+              <th>Where Handled Instead?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Hop-by-hop Routing</strong></td>
+              <td><span style="color: #22c55e; font-weight: bold;">YES</span></td>
+              <td>Network Layer (Forwarding Information Base lookups)</td>
+            </tr>
+            <tr>
+              <td><strong>Logical Addressing</strong></td>
+              <td><span style="color: #22c55e; font-weight: bold;">YES</span></td>
+              <td>Network Layer (32-bit IPv4 Addresses)</td>
+            </tr>
+            <tr>
+              <td><strong>Reliability / ACKs</strong></td>
+              <td><span style="color: #ef4444; font-weight: bold;">NO</span></td>
+              <td>Transport Layer (TCP Sequence numbers and ACKs)</td>
+            </tr>
+            <tr>
+              <td><strong>Flow / Congestion Control</strong></td>
+              <td><span style="color: #ef4444; font-weight: bold;">NO</span></td>
+              <td>Transport Layer (TCP Sliding Window &amp; Congestion Window)</td>
+            </tr>
+            <tr>
+              <td><strong>In-Order Sequencing</strong></td>
+              <td><span style="color: #ef4444; font-weight: bold;">NO</span></td>
+              <td>Transport Layer (TCP reassembly buffers)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="confusion-box">
+        <h3>4. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "Because IP is 'unreliable', it is broken or poorly designed."<br>
+        <strong>Reality:</strong> The unreliability of IP is an intentional, brilliant engineering design choice! By keeping Layer 3 simple, stateless, and lightweight, routers can switch billions of packets per second without maintaining connection state in memory. Reliability is implemented at the network endpoints by TCP (the End-to-End Principle).</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>5. University Exam &amp; GATE Tips</h3>
+        <p>Exam question: <em>"Explain the End-to-End Principle in the context of IPv4."</em><br>
+        Answer: Functions that can be completely and correctly implemented only with the help of the applications at the endpoints (such as error recovery, encryption, and duplicate suppression) should not be implemented in the core network. Hence, IP provides only best-effort delivery, leaving reliability to TCP.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Curated authoritative readings on the IP hourglass and protocol architecture.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc791" target="_blank" rel="noopener noreferrer">
+            📘 RFC 791 - Internet Protocol Specification
+            <small>DARPA Internet Program Protocol Specification defining the connectionless datagram model.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=PBWhzXjhUxE" target="_blank" rel="noopener noreferrer">
+            🎥 The IP Hourglass Architecture Explained
+            <small>MIT/Stanford lecture illustrating the design trade-offs behind the thin waist.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/ipv4" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on IP Best-Effort Service
+            <small>Conceptual questions testing the boundaries between Layer 3 and Layer 4 responsibilities.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 15.2 IPv4 Datagram: Mental Model -->
+    <section id="s15-model" class="section-in-uni content-section" data-chapter="15" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="IPv4 datagram architecture mental model header payload MTU router hop processing">
+      <div class="section-header">
+        <span class="section-number">15.2</span>
+        <h2>IPv4 Datagram: Mental Model <button class="bookmark-btn" data-id="s15-model" data-label="IPv4 Datagram: Mental Model" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>IPv4 Datagram: Mental Model</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p>An <strong>IPv4 Datagram</strong> is the protocol data unit (PDU) of the network layer, structured as a discrete packet comprising an <strong>IP Header</strong> (metadata containing control and addressing fields) followed immediately by the <strong>Payload</strong> (the user data or higher-layer transport segment).</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why It Exists: The Postal Envelope Analogy</h3>
+        <p>Think of an IP datagram as a sealed postal envelope:</p>
+        <ul>
+          <li>The <strong>Payload</strong> is the letter inside the envelope (the TCP segment or UDP message). The postal system does not open or inspect the letter.</li>
+          <li>The <strong>Header</strong> is the writing on the outside of the envelope: the recipient's address (Destination IP), the sender's return address (Source IP), postage instructions (DSCP/Priority), and handling directives (Time-to-Live, Fragmentation flags).</li>
+        </ul>
+      </div>
+
+      <div class="ascii-box">
+ANATOMY OF AN IP DATAGRAM:
++========================================================================+
+|                        IPv4 HEADER (Metadata)                          |
+|  [20 to 60 Bytes] : Version, IHL, Total Length, TTL, Protocol, Addrs...|
++========================================================================+
+|                        IPv4 PAYLOAD (Data)                             |
+|  [Transport Segment] : TCP Header + User Data / UDP / ICMP Message     |
+|  Variable Size: Up to 65,515 bytes (Bounded by 16-bit Total Length)   |
++========================================================================+
+      </div>
+
+      <div class="example-box">
+        <h3>3. Multi-Layer Encapsulation Pipeline</h3>
+        <p>When an application sends data across the Internet, encapsulation proceeds down the protocol stack:</p>
+        <ol>
+          <li><strong>Application Layer:</strong> Generates raw data (e.g., HTTP GET request of 450 bytes).</li>
+          <li><strong>Transport Layer:</strong> Prepends a 20-byte TCP header $\implies$ 470-byte TCP segment.</li>
+          <li><strong>Network Layer (IPv4):</strong> Prepends a 20-byte IPv4 header $\implies$ 490-byte IP datagram.</li>
+          <li><strong>Data Link Layer:</strong> Prepends a 14-byte Ethernet header and appends a 4-byte CRC trailer $\implies$ 508-byte Ethernet frame.</li>
+          <li><strong>Physical Layer:</strong> Converts the 508 bytes into electrical, optical, or radio pulses on the physical wire.</li>
+        </ol>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>OSI Layer</th>
+              <th>Protocol Data Unit (PDU) Name</th>
+              <th>Encapsulated Unit</th>
+              <th>Typical Header Size</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Layer 7 (Application)</strong></td>
+              <td>Message / Data</td>
+              <td>Raw User Content</td>
+              <td>Protocol specific</td>
+            </tr>
+            <tr>
+              <td><strong>Layer 4 (Transport)</strong></td>
+              <td>Segment (TCP) / Datagram (UDP)</td>
+              <td>Application Message</td>
+              <td>20B (TCP) / 8B (UDP)</td>
+            </tr>
+            <tr>
+              <td><strong>Layer 3 (Network)</strong></td>
+              <td><strong>Datagram / Packet</strong></td>
+              <td>Transport Segment</td>
+              <td><strong>20 to 60 Bytes</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Layer 2 (Data Link)</strong></td>
+              <td>Frame</td>
+              <td>Network Datagram</td>
+              <td>14B Header + 4B FCS</td>
+            </tr>
+            <tr>
+              <td><strong>Layer 1 (Physical)</strong></td>
+              <td>Bits / Symbols</td>
+              <td>Data Link Frame</td>
+              <td>Preamble + SFD (8B)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="confusion-box">
+        <h3>4. Common Confusion &amp; Terminology Traps</h3>
+        <p><strong>"Packet" vs "Datagram" vs "Frame":</strong><br>
+        Students frequently use these interchangeably. Technically:</p>
+        <ul>
+          <li><strong>Frame:</strong> Strictly Layer 2 (has MAC addresses, delimiter, and FCS trailer).</li>
+          <li><strong>Datagram:</strong> Strictly Layer 3 (connectionless IP packet with logical IP addresses).</li>
+          <li><strong>Segment:</strong> Strictly Layer 4 (TCP unit with port numbers and sequence numbers).</li>
+        </ul>
+      </div>
+
+      <div class="exam-tip">
+        <h3>5. University Exam &amp; GATE Tips</h3>
+        <p>Numerical questions frequently ask: <em>"An application generates 1000 bytes of data. Calculate the transmission overhead percentage when encapsulated in TCP, IPv4 (no options), and Ethernet."</em><br>
+        Calculation: Total header bytes = $20\text{B (TCP)} + 20\text{B (IP)} + 18\text{B (Ethernet)} = 58\text{ bytes}$. Total frame = $1058\text{ bytes}$. Overhead percentage = $(58 / 1058) \times 100\% = \mathbf{5.48\%}$.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Foundational materials on packet encapsulation and layered data units.</div>
+        <div class="resource-grid">
+          <a href="https://en.wikipedia.org/wiki/Encapsulation_(networking)" target="_blank" rel="noopener noreferrer">
+            📘 Protocol Data Unit Encapsulation Guide
+            <small>Comprehensive reference explaining header layering and protocol boundaries.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=3b_T4nx99DY" target="_blank" rel="noopener noreferrer">
+            🎥 Packet Encapsulation and De-encapsulation Animation
+            <small>Step-by-step visual animation tracking header additions down the stack.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/encapsulation" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on Encapsulation Overhead
+            <small>Quantitative numerical problems calculating bandwidth overhead across layers.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 15.3 IPv4 Header at a Glance -->
+    <section id="s15-header" class="section-in-uni content-section" data-chapter="15" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="IPv4 header format 20 to 60 bytes 32-bit words field layout wire representation">
+      <div class="section-header">
+        <span class="section-number">15.3</span>
+        <h2>IPv4 Header at a Glance <button class="bookmark-btn" data-id="s15-header" data-label="IPv4 Header at a Glance" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>IPv4 Header at a Glance</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p>The <strong>IPv4 Header</strong> is a structured 32-bit-aligned binary record consisting of <strong>14 distinct fields</strong>, organized into rows of 32 bits (4 bytes) each, with a minimum fixed base size of <strong>20 bytes</strong> (5 rows) and a maximum size of <strong>60 bytes</strong> (15 rows) when optional parameters are included.</p>
+      </div>
+
+      <div class="ascii-box">
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|Version|  IHL  |Type of Service|          Total Length         |  Row 1 (Bytes 0-3)
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|         Identification        |Flags|      Fragment Offset    |  Row 2 (Bytes 4-7)
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  Time to Live |    Protocol   |         Header Checksum       |  Row 3 (Bytes 8-11)
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                       Source IP Address                       |  Row 4 (Bytes 12-15)
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                    Destination IP Address                     |  Row 5 (Bytes 16-19)
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                    Options                    |    Padding    |  Row 6-15 (Optional,
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+            0-40 Bytes)
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Field Name</th>
+              <th>Bit Size</th>
+              <th>Byte Position</th>
+              <th>Primary Architectural Function</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Version</strong></td>
+              <td>4 bits</td>
+              <td>Byte 0 [Bits 0-3]</td>
+              <td>Identifies IP format (strictly <code>4</code> for IPv4: $0100_2$)</td>
+            </tr>
+            <tr>
+              <td><strong>IHL</strong></td>
+              <td>4 bits</td>
+              <td>Byte 0 [Bits 4-7]</td>
+              <td>Internet Header Length in 32-bit (4-byte) words (Min: 5, Max: 15)</td>
+            </tr>
+            <tr>
+              <td><strong>DS / ToS</strong></td>
+              <td>8 bits</td>
+              <td>Byte 1</td>
+              <td>6-bit DSCP (Quality of Service) + 2-bit ECN (Congestion Notification)</td>
+            </tr>
+            <tr>
+              <td><strong>Total Length</strong></td>
+              <td>16 bits</td>
+              <td>Bytes 2&ndash;3</td>
+              <td>Total datagram length (Header + Payload) in bytes (Max: 65,535B)</td>
+            </tr>
+            <tr>
+              <td><strong>Identification</strong></td>
+              <td>16 bits</td>
+              <td>Bytes 4&ndash;5</td>
+              <td>Unique sequence tag binding fragmented pieces to original datagram</td>
+            </tr>
+            <tr>
+              <td><strong>Flags</strong></td>
+              <td>3 bits</td>
+              <td>Byte 6 [Bits 0-2]</td>
+              <td>Bit 0: Reserved (0), Bit 1: DF (Don't Fragment), Bit 2: MF (More Fragments)</td>
+            </tr>
+            <tr>
+              <td><strong>Fragment Offset</strong></td>
+              <td>13 bits</td>
+              <td>Bytes 6&ndash;7 [Bits 3-15]</td>
+              <td>Offset of fragment payload in original datagram, measured in <strong>8-byte blocks</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Time to Live (TTL)</strong></td>
+              <td>8 bits</td>
+              <td>Byte 8</td>
+              <td>Hop counter decremented by 1 at each router; drops packet when 0</td>
+            </tr>
+            <tr>
+              <td><strong>Protocol</strong></td>
+              <td>8 bits</td>
+              <td>Byte 9</td>
+              <td>Demultiplexing code for higher-layer payload (1=ICMP, 6=TCP, 17=UDP, 89=OSPF)</td>
+            </tr>
+            <tr>
+              <td><strong>Header Checksum</strong></td>
+              <td>16 bits</td>
+              <td>Bytes 10&ndash;11</td>
+              <td>16-bit One's Complement error-detection checksum covering <strong>header only</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Source IP</strong></td>
+              <td>32 bits</td>
+              <td>Bytes 12&ndash;15</td>
+              <td>Originator's IPv4 address</td>
+            </tr>
+            <tr>
+              <td><strong>Destination IP</strong></td>
+              <td>32 bits</td>
+              <td>Bytes 16&ndash;19</td>
+              <td>Final recipient's IPv4 address</td>
+            </tr>
+            <tr>
+              <td><strong>Options &amp; Padding</strong></td>
+              <td>Variable (0&ndash;40B)</td>
+              <td>Bytes 20&ndash;59</td>
+              <td>Diagnostics, security, and source routing; padded to 32-bit boundary</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="confusion-box">
+        <h3>2. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "The IPv4 header checksum checks whether the user's data was corrupted during transit."<br>
+        <strong>Reality:</strong> Absolutely not! The IPv4 checksum covers <em>only the 20 to 60 bytes of the IP header</em>. The payload data is completely unchecked by IPv4! Payload integrity is delegated entirely to the Transport Layer (TCP/UDP checksums) or Data Link Layer (Ethernet CRC).</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>3. University Exam &amp; GATE Tips</h3>
+        <p>Examiners love asking students to sketch the IPv4 header from memory! Remember the 5 baseline rows:
+        Row 1: <code>Ver | IHL | ToS | Total Length</code><br>
+        Row 2: <code>Identification | Flags | Fragment Offset</code><br>
+        Row 3: <code>TTL | Protocol | Header Checksum</code><br>
+        Row 4: <code>Source IP Address</code><br>
+        Row 5: <code>Destination IP Address</code></p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Engineering references on the IPv4 header format and bit specifications.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc791#section-3.1" target="_blank" rel="noopener noreferrer">
+            📘 RFC 791 Section 3.1 - Internet Header Format
+            <small>The original authoritative specification of the 14 IPv4 header fields.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=0bT4q5SjXqE" target="_blank" rel="noopener noreferrer">
+            🎥 IPv4 Header Format Step-by-Step
+            <small>Clear blackboard walkthrough explaining the function and size of every field.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/ipv4-header" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on IPv4 Header Fields
+            <small>Practice questions calculating field positions, bit masks, and header offsets.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 15.4 Version, IHL & Header Length -->
+    <section id="s15-ihl" class="section-in-uni content-section" data-chapter="15" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="IPv4 Version field IHL Internet Header Length 4-byte multiplier minimum 20 bytes options">
+      <div class="section-header">
+        <span class="section-number">15.4</span>
+        <h2>Version, IHL &amp; Header Length <button class="bookmark-btn" data-id="s15-ihl" data-label="Version, IHL &amp; Header Length" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>Version, IHL & Header Length</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p>The first octet of an IPv4 datagram contains two 4-bit fields: the <strong>Version</strong> field (which identifies the protocol revision as 4) and the <strong>Internet Header Length (IHL)</strong>, which specifies the total length of the IPv4 header measured strictly in <strong>32-bit (4-byte) words</strong>.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why IHL Exists: Supporting Variable Header Sizes</h3>
+        <p>Because IPv4 supports optional header fields (such as Record Route and Timestamp), the header is not fixed in size. Routers need to know exactly where the header ends and where the user data payload begins. Rather than wasting 8 or 16 bits on a byte count, the designers used a 4-bit field with a <strong>scaling factor of 4</strong>.</p>
+      </div>
+
+      <div class="ascii-box">
+OCTET 0 OF IPv4 HEADER (8 BITS):
++-------------------------------+-------------------------------+
+|         VERSION (4 bits)      |           IHL (4 bits)        |
++-------------------------------+-------------------------------+
+<----------- 4 bits -----------> <----------- 4 bits ----------->
+ Value = 0100 (Decimal 4)         Value = Number of 32-bit Words
+                                  True Bytes = IHL * 4
+      </div>
+
+      <div class="example-box">
+        <h3>3. The Mathematical Scaling Formula</h3>
+        <p>Because IHL is a 4-bit unsigned integer ($b_3 b_2 b_1 b_0$), its decimal value ranges from 0 to 15 ($2^4 - 1$). The true header length in bytes is given by:</p>
+        <div class="math-block">
+          $$\text{Header Length in Bytes} = \text{IHL} \times 4$$
+        </div>
+        <p><strong>Minimum Value:</strong> Since the mandatory baseline header is 20 bytes, the minimum legal value of IHL is:</p>
+        <div class="math-block">
+          $$\text{IHL}_{\min} = \frac{20\text{ bytes}}{4} = \mathbf{5} \quad (0101_2)$$
+        </div>
+        <p><strong>Maximum Value:</strong> The maximum integer that can be stored in 4 bits is 15 ($1111_2$). Therefore:</p>
+        <div class="math-block">
+          $$\text{Header Length}_{\max} = 15 \times 4 = \mathbf{60\text{ bytes}}$$
+        </div>
+        <p><strong>Maximum Options Capacity:</strong> Since the base header is 20 bytes, the maximum size available for IPv4 options is $60 - 20 = \mathbf{40\text{ bytes}}$.</p>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>IHL Binary</th>
+              <th>IHL Decimal</th>
+              <th>Calculation ($\text{IHL} \times 4$)</th>
+              <th>Header Byte Size</th>
+              <th>Status / Usage</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>0000</code> to <code>0100</code></td>
+              <td>0 to 4</td>
+              <td>$0 \times 4$ to $4 \times 4 = 16\text{B}$</td>
+              <td>&lt; 20 Bytes</td>
+              <td><span style="color: #ef4444; font-weight: bold;">ILLEGAL</span> (Packet dropped immediately)</td>
+            </tr>
+            <tr>
+              <td><code>0101</code></td>
+              <td>5</td>
+              <td>$5 \times 4$</td>
+              <td><strong>20 Bytes</strong></td>
+              <td><strong>Standard Base Header</strong> (Zero options, 99.9% of traffic)</td>
+            </tr>
+            <tr>
+              <td><code>0110</code></td>
+              <td>6</td>
+              <td>$6 \times 4$</td>
+              <td>24 Bytes</td>
+              <td>Base Header + 4 Bytes of Options</td>
+            </tr>
+            <tr>
+              <td><code>1000</code></td>
+              <td>8</td>
+              <td>$8 \times 4$</td>
+              <td>32 Bytes</td>
+              <td>Base Header + 12 Bytes of Options</td>
+            </tr>
+            <tr>
+              <td><code>1111</code></td>
+              <td>15</td>
+              <td>$15 \times 4$</td>
+              <td><strong>60 Bytes</strong></td>
+              <td><strong>Maximum Possible Header</strong> (Base + 40B Options)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="confusion-box">
+        <h3>4. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "An IHL value of 10 means the header is 10 bytes long."<br>
+        <strong>Reality:</strong> No! IHL is <strong>never</strong> measured in bytes! An IHL of 10 means $10 \times 4 = \mathbf{40\text{ bytes}}$. Any student who forgets to multiply by 4 will lose 100% of the marks on this calculation.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>5. University Exam &amp; GATE Tips</h3>
+        <p>Classic GATE Question: <em>"In an IPv4 packet, the first byte in hexadecimal is <code>0x45</code>. What does this indicate?"</em><br>
+        Solution: Split <code>0x45</code> into two hex nibbles:
+        First nibble = <code>4</code> $\implies$ Version = <strong>IPv4</strong>.
+        Second nibble = <code>5</code> $\implies$ IHL = 5 words $\implies 5 \times 4 = \mathbf{20\text{ bytes}}$ (Standard header with no options).</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Engineering resources on IHL calculation and packet header inspection.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc791#page-11" target="_blank" rel="noopener noreferrer">
+            📘 RFC 791 - IHL Definition
+            <small>Specification of 4-bit Internet Header Length and 32-bit word alignment.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=k_K8R4c9K3s" target="_blank" rel="noopener noreferrer">
+            🎥 IPv4 IHL and Header Length Calculation Drill
+            <small>Short video tutorial practicing hex-to-byte IHL calculations for exams.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/ihl" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on IHL and Header Bytes
+            <small>Past competitive questions parsing first octet hex values and option lengths.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 15.5 DS Field / Differentiated Services & ECN -->
+    <section id="s15-dscp" class="section-in-uni content-section" data-chapter="15" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="DS field Differentiated Services DSCP Explicit Congestion Notification ECN ToS QoS">
+      <div class="section-header">
+        <span class="section-number">15.5</span>
+        <h2>DS Field / Differentiated Services &amp; ECN <button class="bookmark-btn" data-id="s15-dscp" data-label="DS Field / Differentiated Services &amp; ECN" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>DS Field / Differentiated Services & ECN</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p>The 8-bit second octet of the IPv4 header, originally designated in RFC 791 as the <strong>Type of Service (ToS)</strong> field, was modernized by RFC 2474 and RFC 3168 into the <strong>Differentiated Services (DiffServ / DS)</strong> field, comprising a 6-bit <strong>Differentiated Services Code Point (DSCP)</strong> for traffic classification and a 2-bit <strong>Explicit Congestion Notification (ECN)</strong> field.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why It Was Modernized</h3>
+        <p>The original RFC 791 ToS field (3-bit Precedence, 3-bit Delay/Throughput/Reliability flags) was rarely implemented by commercial routers. In modern high-speed networks, latency-sensitive real-time traffic (Voice over IP, video conferencing) must be prioritized over bulk background transfers (backups, file downloads). DiffServ re-engineered this byte into scalable per-hop behaviors (PHBs).</p>
+      </div>
+
+      <div class="ascii-box">
+OCTET 1: THE DIFFERENTIATED SERVICES BYTE (8 BITS)
+
+ 0   1   2   3   4   5       6       7
++---+---+---+---+---+---+   +-------+-------+
+|         DSCP          |   |      ECN      |
++---+---+---+---+---+---+   +-------+-------+
+<------- 6 bits ------->     <--- 2 bits --->
+ Differentiated Services     Explicit Congestion
+ Code Point (64 Classes)     Notification (RFC 3168)
+      </div>
+
+      <div class="example-box">
+        <h3>3. Deep-Dive: DSCP Traffic Classes (6 Bits)</h3>
+        <p>With 6 bits, DSCP defines $2^6 = 64$ distinct priority codepoints categorized into standardized Per-Hop Behaviors (PHBs):</p>
+        <div class="table-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Behavior Group</th>
+                <th>Binary / Decimal Value</th>
+                <th>Designated Application</th>
+                <th>Router Queuing Treatment</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Default Forwarding (DF)</strong></td>
+                <td><code>000000</code> (0)</td>
+                <td>Standard Best-Effort Web / Email</td>
+                <td>Standard First-In-First-Out (FIFO) queue</td>
+              </tr>
+              <tr>
+                <td><strong>Expedited Forwarding (EF)</strong></td>
+                <td><code>101110</code> (46)</td>
+                <td>Voice over IP (VoIP), Critical Audio</td>
+                <td>Strict Priority Queue (low latency, zero jitter)</td>
+              </tr>
+              <tr>
+                <td><strong>Assured Forwarding (AF)</strong></td>
+                <td>AF11 to AF43 (12 classes)</td>
+                <td>Enterprise Video, Interactive Data</td>
+                <td>Weighted Fair Queuing with drop precedences</td>
+              </tr>
+              <tr>
+                <td><strong>Network Control (CS6/CS7)</strong></td>
+                <td><code>110000</code> / <code>111000</code></td>
+                <td>Routing Protocols (BGP, OSPF)</td>
+                <td>Highest router control-plane priority</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <h3>4. Deep-Dive: Explicit Congestion Notification (ECN, 2 Bits)</h3>
+        <p>In classical IP networks, a router experiencing buffer saturation drops packets to signal congestion, forcing TCP to timeout and retransmit. <strong>ECN (RFC 3168)</strong> enables routers to signal impending buffer overflow <em>without dropping packets</em>:</p>
+        <div class="table-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>ECN Bits (Bits 6-7)</th>
+                <th>Codepoint Name</th>
+                <th>Meaning to Routers and Endpoints</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>00</code></td>
+                <td><strong>Not-ECT</strong></td>
+                <td>Endpoints do not support ECN (Router must drop if congested)</td>
+              </tr>
+              <tr>
+                <td><code>01</code></td>
+                <td><strong>ECT(1)</strong></td>
+                <td>Endpoints are ECN-Capable Transport (RFC 8311)</td>
+              </tr>
+              <tr>
+                <td><code>10</code></td>
+                <td><strong>ECT(0)</strong></td>
+                <td>Endpoints are ECN-Capable Transport</td>
+              </tr>
+              <tr>
+                <td><code>11</code></td>
+                <td><strong>CE (Congestion Experienced)</strong></td>
+                <td><strong>Router marks packet!</strong> Buffer is full, but packet is forwarded; receiver notifies sender to throttle back.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="confusion-box">
+        <h3>5. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "ECN eliminates packet loss across the entire Internet."<br>
+        <strong>Reality:</strong> ECN requires both endpoints (sender and receiver TCP stacks) <em>and</em> intermediate routers (Random Early Detection / RED queuing) to support it. If a buffer experiences an instantaneous sudden burst, even an ECN router must drop packets when physical memory is exhausted.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>6. University Exam &amp; GATE Tips</h3>
+        <p>Remember the bit partition: Out of the 8-bit DS field, exactly <strong>6 bits</strong> are for DSCP and <strong>2 bits</strong> are for ECN. If asked: <em>"How many priority classes can DSCP represent?"</em>, the answer is $2^6 = \mathbf{64}$.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Definitive IETF RFC standards for DiffServ and Explicit Congestion Notification.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc2474" target="_blank" rel="noopener noreferrer">
+            📘 RFC 2474 - Definition of the Differentiated Services Field
+            <small>The standard establishing 6-bit DSCP architecture in IPv4 and IPv6.</small>
+          </a>
+          <a href="https://datatracker.ietf.org/doc/html/rfc3168" target="_blank" rel="noopener noreferrer">
+            📘 RFC 3168 - The Addition of Explicit Congestion Notification
+            <small>Specification of 2-bit ECN codepoints and router CE marking mechanisms.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/dscp" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on DSCP and ToS
+            <small>Exam problems evaluating priority bits and quality of service header markings.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 15.6 Total Length & Payload Size -->
+    <section id="s15-length" class="section-in-uni content-section" data-chapter="15" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Total Length field 16 bits maximum 65535 bytes datagram payload calculation MTU limit">
+      <div class="section-header">
+        <span class="section-number">15.6</span>
+        <h2>Total Length &amp; Payload Size <button class="bookmark-btn" data-id="s15-length" data-label="Total Length &amp; Payload Size" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>Total Length & Payload Size</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p>The <strong>Total Length</strong> field is a 16-bit unsigned integer residing at Bytes 2 and 3 of the IPv4 header that defines the entire size of the datagram (including both the IPv4 header and user data payload) measured strictly in <strong>bytes</strong>.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why It Exists: Extracting Variable-Length Datagrams from Frames</h3>
+        <p>When an IP datagram is encapsulated into a Layer 2 Ethernet frame, Ethernet enforces a minimum frame payload of <strong>46 bytes</strong> (to satisfy the 64-byte CSMA/CD slot time). If an IP packet is only 28 bytes (e.g., a tiny TCP ACK), Ethernet appends 18 bytes of arbitrary zero-padding. Without the Total Length field, the receiving IP stack could not distinguish between valid payload data and Layer 2 padding!</p>
+      </div>
+
+      <div class="ascii-box">
+ETHERNET FRAME ENCAPSULATION:
++-------------------+-----------------------------------------+-------+
+| Ethernet Header   |           IPv4 Datagram                 |  FCS  |
+|     (14 Bytes)    |  [Header: 20B] [Tiny TCP ACK: 20B] = 40B|  (4B) |
++-------------------+-----------------------------------------+-------+
+                    <--- IP Total Length = 40 Bytes --------->
+                    <--- Ethernet Payload = 46 Bytes (6B Pad)->
+                    Result: Receiver reads exactly 40 bytes and
+                            silently ignores the 6 padding bytes!
+      </div>
+
+      <div class="example-box">
+        <h3>3. The Fundamental Payload Extraction Formula</h3>
+        <p>Given an IPv4 datagram with Total Length $L$ and Internet Header Length $\text{IHL}$:</p>
+        <div class="math-block">
+          $$\text{Header Length in Bytes} = \text{IHL} \times 4$$
+          $$\text{Payload Length in Bytes} = \text{Total Length} - (\text{IHL} \times 4)$$
+        </div>
+
+        <h4>Theoretical Limits:</h4>
+        <ul>
+          <li><strong>Maximum Total Length:</strong> With a 16-bit unsigned integer:
+            $$L_{\max} = 2^{16} - 1 = \mathbf{65,535\text{ bytes}}$$
+          </li>
+          <li><strong>Minimum Total Length:</strong> A datagram containing zero payload bytes and a standard header:
+            $$L_{\min} = 20\text{ bytes}$$
+          </li>
+          <li><strong>Maximum Payload Capacity:</strong> With a minimal 20-byte header:
+            $$\text{Payload}_{\max} = 65,535 - 20 = \mathbf{65,515\text{ bytes}}$$
+          </li>
+        </ul>
+      </div>
+
+      <div class="example-box">
+        <h3>4. Concrete Numerical Walkthrough</h3>
+        <p><strong>Problem:</strong> A network packet capture tool captures an IPv4 datagram. The header displays $\text{IHL} = 0110_2$ and $\text{Total Length} = 0x04B0$. Calculate:</p>
+        <ol>
+          <li>The header length in bytes.</li>
+          <li>The total length of the datagram in bytes.</li>
+          <li>The exact size of the user data payload.</li>
+        </ol>
+
+        <h4>Solution:</h4>
+        <ol>
+          <li>$\text{IHL} = 0110_2 = 6_{10}$.
+            $$\text{Header Length} = 6 \times 4 = \mathbf{24\text{ bytes}} \quad (\text{Includes 4 bytes of options})$$
+          </li>
+          <li>Convert hex Total Length $0x04B0$ to decimal:
+            $$0x04B0 = (4 \times 16^2) + (11 \times 16^1) + (0 \times 16^0) = 1024 + 176 + 0 = \mathbf{1200\text{ bytes}}$$
+          </li>
+          <li>Calculate payload size:
+            $$\text{Payload} = \text{Total Length} - \text{Header Length} = 1200 - 24 = \mathbf{1,176\text{ bytes}}$$
+          </li>
+        </ol>
+      </div>
+
+      <div class="confusion-box">
+        <h3>5. Common Confusion &amp; Traps</h3>
+        <p><strong>IHL Unit vs Total Length Unit:</strong><br>
+        Students constantly mix up units! Remember:</p>
+        <ul>
+          <li><strong>IHL is measured in 4-byte words</strong> (must multiply by 4 to get bytes).</li>
+          <li><strong>Total Length is measured in raw individual bytes</strong> (do NOT multiply by 4!).</li>
+        </ul>
+      </div>
+
+      <div class="exam-tip">
+        <h3>6. University Exam &amp; GATE Tips</h3>
+        <p>A classic exam trap: <em>"An IP packet has Total Length = 1200 and IHL = 5. How many data bytes does it carry?"</em><br>
+        Answer: $\text{Header} = 5 \times 4 = 20\text{ bytes}$. $\text{Payload} = 1200 - 20 = \mathbf{1180\text{ bytes}}$. Always subtract the header from total length!</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Engineering specifications on IP datagram lengths and frame padding.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc791#page-12" target="_blank" rel="noopener noreferrer">
+            📘 RFC 791 - Total Length Specification
+            <small>Formal definition of the 16-bit total length field and host minimum buffers.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=FjBfT4XoIeI" target="_blank" rel="noopener noreferrer">
+            🎥 Total Length and Payload Size Calculations
+            <small>Video tutorial solving university exam problems on packet length fields.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/total-length" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on IP Total Length
+            <small>Numerical problems extracting payload sizes and parsing Wireshark packet captures.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 15.7 Identification, Flags & Fragment Offset -->
+    <section id="s15-frag-fields" class="section-in-uni content-section" data-chapter="15" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Fragmentation fields Identification 16 bits Flags DF MF Fragment Offset 8-byte units">
+      <div class="section-header">
+        <span class="section-number">15.7</span>
+        <h2>Identification, Flags &amp; Fragment Offset <button class="bookmark-btn" data-id="s15-frag-fields" data-label="Identification, Flags &amp; Fragment Offset" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>Identification, Flags & Fragment Offset</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p>Row 2 of the IPv4 header (Bytes 4 through 7) contains a coordinated triad of fragmentation management fields: the 16-bit <strong>Identification</strong> field (which uniquely tags all fragments originating from the same parent datagram), the 3-bit <strong>Flags</strong> field (controlling fragmentation permissions and boundary indications), and the 13-bit <strong>Fragment Offset</strong> field (indicating the relative starting position of the fragment's payload measured strictly in <strong>8-byte units</strong>).</p>
+      </div>
+
+      <div class="ascii-box">
+ROW 2 OF THE IPv4 HEADER (32 BITS):
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|        Identification         |Flags|     Fragment Offset     |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+<---------- 16 bits -----------> < 3b> <---------- 13 bits ----->
+ Unique Tag per Original Packet   | | |  Offset = Byte_Pos / 8
+                                  | | +- Bit 2: MF (More Fragments)
+                                  | +--- Bit 1: DF (Don't Fragment)
+                                  +----- Bit 0: Reserved (Must be 0)
+      </div>
+
+      <div class="example-box">
+        <h3>2. Deep-Dive: The 3 Flag Bits</h3>
+        <div class="table-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Flag Bit</th>
+                <th>Name</th>
+                <th>Binary Value</th>
+                <th>Architectural Action / Significance</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Bit 0</strong></td>
+                <td>Reserved</td>
+                <td><code>0</code></td>
+                <td>Must always be 0 (formerly Evil Bit in RFC 3514 April Fools joke).</td>
+              </tr>
+              <tr>
+                <td><strong>Bit 1</strong></td>
+                <td><strong>DF (Don't Fragment)</strong></td>
+                <td><code>1</code></td>
+                <td><strong>Do Not Fragment:</strong> Routers must NOT fragment this packet. If MTU is exceeded, router <strong>drops packet</strong> and sends ICMP <em>"Fragmentation Needed and DF set"</em> (Type 3, Code 4). Used by Path MTU Discovery.</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td><code>0</code></td>
+                <td><strong>May Fragment:</strong> Intermediate routers are authorized to fragment.</td>
+              </tr>
+              <tr>
+                <td><strong>Bit 2</strong></td>
+                <td><strong>MF (More Fragments)</strong></td>
+                <td><code>1</code></td>
+                <td><strong>More Fragments Follow:</strong> This is a fragment, and it is <em>not</em> the final piece of the original datagram.</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td><code>0</code></td>
+                <td><strong>Last Fragment (or Unfragmented):</strong> Either the final fragment in a sequence, or a completely unfragmented packet.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <h3>3. The 8-Byte Offset Scaling Invariant</h3>
+        <p>Why is Fragment Offset only 13 bits when Total Length is 16 bits? A datagram can be up to 65,535 bytes, which requires 16 bits to address individual bytes. If the offset were 16 bits, the header would expand by another 3 bits. Instead, designers enforced the <strong>8-Byte Scaling Rule</strong>:</p>
+        <div class="math-block">
+          $$\text{Fragment Offset Field Value} = \frac{\text{Byte Position in Original Payload}}{8}$$
+          $$\text{Byte Position in Original Payload} = \text{Fragment Offset Field Value} \times 8$$
+        </div>
+        <p><strong>Crucial Consequence:</strong> Because the offset is scaled by 8, <strong>every intermediate fragment payload size (except possibly the final fragment) MUST be a multiple of 8 bytes!</strong> If an MTU allows 1485 bytes of payload, the router cannot send 1485 bytes; it must round down to the nearest multiple of 8 ($1480$ bytes).</p>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Fragment Condition</th>
+              <th>DF Flag</th>
+              <th>MF Flag</th>
+              <th>Fragment Offset</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Unfragmented Original Packet</strong></td>
+              <td>0 or 1</td>
+              <td><strong>0</strong></td>
+              <td><strong>0</strong></td>
+            </tr>
+            <tr>
+              <td><strong>First Fragment ($F_1$)</strong></td>
+              <td>0</td>
+              <td><strong>1</strong></td>
+              <td><strong>0</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Middle Fragment ($F_2 \dots F_{k-1}$)</strong></td>
+              <td>0</td>
+              <td><strong>1</strong></td>
+              <td><strong>&gt; 0</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Last Fragment ($F_k$)</strong></td>
+              <td>0</td>
+              <td><strong>0</strong></td>
+              <td><strong>&gt; 0</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="confusion-box">
+        <h3>4. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "If MF = 0, the packet is guaranteed to be an unfragmented packet."<br>
+        <strong>Reality:</strong> False! The <em>final fragment</em> of a fragmented packet also has $\text{MF} = 0$! To determine if a packet is truly unfragmented, you must inspect BOTH fields: an unfragmented packet has $\mathbf{\text{MF} = 0 \text{ AND } \text{Fragment Offset} = 0}$. A final fragment has $\mathbf{\text{MF} = 0 \text{ AND } \text{Fragment Offset} > 0}$.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>5. University Exam &amp; GATE Tips</h3>
+        <p>Standard GATE question: <em>"An IP fragment arrives with $\text{Offset} = 100$ and $\text{Total Length} = 420$ with $\text{IHL} = 5$. What are the starting and ending byte positions of this fragment's data in the original packet?"</em><br>
+        1. Starting Byte = $\text{Offset} \times 8 = 100 \times 8 = \mathbf{800}$.<br>
+        2. Header Bytes = $5 \times 4 = 20\text{ bytes}$. Payload = $420 - 20 = 400\text{ bytes}$.<br>
+        3. Ending Byte = $\text{Starting Byte} + \text{Payload} - 1 = 800 + 400 - 1 = \mathbf{1199}$. Bytes carried: <strong>800 through 1199</strong>!</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Foundational RFC standards on IP fragmentation fields and offset math.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc791#page-24" target="_blank" rel="noopener noreferrer">
+            📘 RFC 791 - Fragmentation and Reassembly
+            <small>Formal specification of Identification, DF/MF flags, and 8-byte offset arithmetic.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=F_fDkJN3R4w" target="_blank" rel="noopener noreferrer">
+            🎥 IP Fragmentation Flags and Offset Explained
+            <small>Visual explanation of why fragment offset is divided by 8.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/fragment-offset" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on Fragment Offset Calculations
+            <small>Over 40 solved exam problems finding byte ranges and parsing fragment headers.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 15.8 TTL and Protocol Fields -->
+    <section id="s15-ttl-proto" class="section-in-uni content-section" data-chapter="15" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Time to Live TTL hop count loop prevention Protocol field demultiplexing ICMP TCP UDP">
+      <div class="section-header">
+        <span class="section-number">15.8</span>
+        <h2>TTL and Protocol Fields <button class="bookmark-btn" data-id="s15-ttl-proto" data-label="TTL and Protocol Fields" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>TTL and Protocol Fields</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p>Row 3 of the IPv4 header begins with two essential control octets: the 8-bit <strong>Time to Live (TTL)</strong> field (an anti-loop hop counter decremented by each router) and the 8-bit <strong>Protocol</strong> field (a demultiplexing identifier indicating which higher-layer transport protocol payload follows the IP header).</p>
+      </div>
+
+      <div class="ascii-box">
+ROW 3, BYTES 8 AND 9 OF IPv4 HEADER:
++-------------------------------+-------------------------------+
+|     Time to Live (8 bits)     |       Protocol (8 bits)       |
++-------------------------------+-------------------------------+
+<----------- 8 bits -----------> <----------- 8 bits ----------->
+ Decremented by 1 per hop         Selects Transport Demux Engine
+ Drops packet when TTL reaches 0  6 = TCP, 17 = UDP, 1 = ICMP...
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why TTL Exists: Preventing Undead Looping Packets</h3>
+        <p>In any network undergoing routing convergence (such as a distance-vector count-to-infinity event or temporary transient loop), packets could circulate endlessly through the loop, consuming link bandwidth and router CPU cycles. TTL guarantees that every packet has a strictly finite lifespan:</p>
+        <ol>
+          <li>The source host initializes TTL to an operating-system-specific default (e.g., 64 on Linux, 128 on Windows, 255 on Cisco IOS).</li>
+          <li>Each intermediate router decrements TTL by <strong>at least 1</strong> before forwarding.</li>
+          <li>If a router receives a packet with $\text{TTL} \le 1$, the router <strong>discards the datagram</strong> and transmits an <strong>ICMP Time Exceeded (Type 11, Code 0)</strong> error message back to the source IP.</li>
+        </ol>
+      </div>
+
+      <div class="example-box">
+        <h3>3. Deep-Dive: How Traceroute Uses TTL</h3>
+        <p>The famous diagnostic tool <code>traceroute</code> (or <code>tracert</code> on Windows) is built directly upon intentional TTL expiration:</p>
+        <ol>
+          <li>Traceroute dispatches a probe packet with $\text{TTL} = 1$. The very first router ($R_1$) decrements TTL to 0, drops the packet, and returns an ICMP Time Exceeded message. Traceroute records $R_1$'s IP and round-trip time.</li>
+          <li>Traceroute dispatches probe 2 with $\text{TTL} = 2$. It passes through $R_1$ (TTL becomes 1) and expires at $R_2$ (TTL becomes 0). $R_2$ returns ICMP Time Exceeded.</li>
+          <li>This process increments $\text{TTL} = 3, 4, 5 \dots$ until the packet reaches the destination host, which returns an ICMP Port Unreachable or ICMP Echo Reply!</li>
+        </ol>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Protocol Field (Hex)</th>
+              <th>Protocol Decimal</th>
+              <th>Protocol Name</th>
+              <th>RFC Specification</th>
+              <th>Role / Demultiplexing Target</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>0x01</code></td>
+              <td><strong>1</strong></td>
+              <td><strong>ICMP</strong></td>
+              <td>RFC 792</td>
+              <td>Internet Control Message Protocol (Ping, Errors, Path MTU)</td>
+            </tr>
+            <tr>
+              <td><code>0x02</code></td>
+              <td><strong>2</strong></td>
+              <td><strong>IGMP</strong></td>
+              <td>RFC 1112</td>
+              <td>Internet Group Management Protocol (Multicast joins)</td>
+            </tr>
+            <tr>
+              <td><code>0x04</code></td>
+              <td><strong>4</strong></td>
+              <td><strong>IPv4</strong></td>
+              <td>RFC 2003</td>
+              <td>IP-in-IP Encapsulation (Tunneling)</td>
+            </tr>
+            <tr>
+              <td><code>0x06</code></td>
+              <td><strong>6</strong></td>
+              <td><strong>TCP</strong></td>
+              <td>RFC 793 / 9293</td>
+              <td>Transmission Control Protocol (Reliable byte-stream)</td>
+            </tr>
+            <tr>
+              <td><code>0x11</code></td>
+              <td><strong>17</strong></td>
+              <td><strong>UDP</strong></td>
+              <td>RFC 768</td>
+              <td>User Datagram Protocol (Low-overhead connectionless)</td>
+            </tr>
+            <tr>
+              <td><code>0x29</code></td>
+              <td><strong>41</strong></td>
+              <td><strong>IPv6</strong></td>
+              <td>RFC 2473</td>
+              <td>IPv6-in-IPv4 Tunneling (6to4 transition mechanisms)</td>
+            </tr>
+            <tr>
+              <td><code>0x32</code></td>
+              <td><strong>50</strong></td>
+              <td><strong>ESP</strong></td>
+              <td>RFC 4303</td>
+              <td>IPsec Encapsulating Security Payload (VPN encryption)</td>
+            </tr>
+            <tr>
+              <td><code>0x33</code></td>
+              <td><strong>51</strong></td>
+              <td><strong>AH</strong></td>
+              <td>RFC 4302</td>
+              <td>IPsec Authentication Header (Integrity verification)</td>
+            </tr>
+            <tr>
+              <td><code>0x59</code></td>
+              <td><strong>89</strong></td>
+              <td><strong>OSPF</strong></td>
+              <td>RFC 2328</td>
+              <td>Open Shortest Path First (Interior routing daemon)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="confusion-box">
+        <h3>4. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "TTL is measured in seconds, so a packet stays alive for 64 seconds."<br>
+        <strong>Reality:</strong> Historically (RFC 791), TTL stood for "Time to Live in seconds", and routers holding a packet for $>1$ second were supposed to decrement TTL by the elapsed seconds. In practice, modern routers forward packets in microseconds. <strong>TTL functions purely as a Hop Counter</strong>: it is decremented by exactly 1 at every router hop.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>5. University Exam &amp; GATE Tips</h3>
+        <p>Memorize the magic numbers: <strong>1 = ICMP, 6 = TCP, 17 = UDP, 89 = OSPF</strong>. In hexadecimal, $17_{10} = \mathbf{0x11}$. Multiple choice questions often give hex dump snippets and ask which transport protocol is carried; spotting <code>0x06</code> means TCP, and <code>0x11</code> means UDP.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Engineering resources on TTL mechanisms and IANA protocol registries.</div>
+        <div class="resource-grid">
+          <a href="https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml" target="_blank" rel="noopener noreferrer">
+            📘 IANA IPv4 Protocol Numbers Registry
+            <small>The authoritative global registry of all valid Protocol field decimal identifiers.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=PBWhzXjhUxE" target="_blank" rel="noopener noreferrer">
+            🎥 How Traceroute Works with TTL Animation
+            <small>Step-by-step visual demonstration of ICMP Time Exceeded probe dynamics.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/ttl" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on TTL and Protocol Numbers
+            <small>Past engineering questions calculating hop counts and Traceroute packet sequences.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 15.9 IPv4 Header Checksum -->
+    <section id="s15-checksum" class="section-in-uni content-section" data-chapter="15" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="IPv4 header checksum 16-bit one complement arithmetic router hop verification decrement">
+      <div class="section-header">
+        <span class="section-number">15.9</span>
+        <h2>IPv4 Header Checksum <button class="bookmark-btn" data-id="s15-checksum" data-label="IPv4 Header Checksum" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>IPv4 Header Checksum</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p>The <strong>IPv4 Header Checksum</strong> is a 16-bit error-detection field located at Bytes 10 and 11 of the header, calculated as the <strong>16-bit One's Complement of the One's Complement sum</strong> of all 16-bit words in the IPv4 header (with the checksum field itself initially set to zero during calculation).</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why It Must Be Recalculated at Every Router Hop</h3>
+        <p>Because every router must decrement the <strong>Time to Live (TTL)</strong> field by 1, the contents of the header change at every single forwarding hop! Therefore, <strong>every router along the transmission path must recompute and update the Header Checksum before transmitting the datagram onto the next physical link</strong>.</p>
+      </div>
+
+      <div class="ascii-box">
+SENDER CHECKSUM COMPUTATION:
+1. Divide the 20-byte header into ten 16-bit words: W0, W1, ... W9
+2. Set Checksum field (W5) = 0000 0000 0000 0000
+3. Sum all ten words using 16-bit One's Complement addition (wrap carry bits!)
+4. Invert all bits (One's Complement): Checksum = ~Sum
+5. Insert Checksum into Byte 10-11 of the transmitted header.
+
+RECEIVER CHECKSUM VERIFICATION:
+1. Divide received 20-byte header into ten 16-bit words (Checksum included!)
+2. Sum all ten words using 16-bit One's Complement addition.
+3. If Sum == 0xFFFF (All 1s), the header is VALID!
+4. If Sum != 0xFFFF, the header was corrupted! (Drop packet immediately!)
+      </div>
+
+      <div class="example-box">
+        <h3>3. Complete Step-by-Step Numerical Trace</h3>
+        <p>Consider a simple 4-word header fragment for clarity (the same logic extends to all 10 words):</p>
+        <ul>
+          <li>Word 1: <code>0x4500</code></li>
+          <li>Word 2: <code>0x003C</code></li>
+          <li>Word 3: <code>0x1C46</code></li>
+          <li>Word 4: <code>0x4000</code></li>
+        </ul>
+
+        <h4>Step 1: Perform 16-Bit Binary Addition</h4>
+        <div class="math-block">
+          $$\begin{array}{r@{\quad}l}
+          0x4500 & \\
+          +\ 0x003C & = 0x453C \\
+          +\ 0x1C46 & = 0x6182 \\
+          +\ 0x4000 & = \mathbf{0xA182}
+          \end{array}$$
+        </div>
+
+        <h4>Step 2: Handle Carry Bits (End-Around Carry)</h4>
+        <p>If the addition had produced a 17th carry bit (e.g. sum $> 0xFFFF$), that overflow carry bit must be added back into the least significant bit (LSB) of the sum.</p>
+
+        <h4>Step 3: Invert All Bits (One's Complement)</h4>
+        <div class="math-block">
+          $$\text{Sum} = 0xA182 = 1010\ 0001\ 1000\ 0010_2$$
+          $$\text{Checksum} = \sim \text{Sum} = 0101\ 1110\ 0111\ 1101_2 = \mathbf{0x5E7D}$$
+        </div>
+
+        <h4>Step 4: Receiver Verification</h4>
+        <p>The receiver sums all words, including the checksum:</p>
+        <div class="math-block">
+          $$0xA182 + 0x5E7D = \mathbf{0xFFFF} \quad (1111\ 1111\ 1111\ 1111_2)$$
+        </div>
+        <p>Inverting $0xFFFF$ yields $0x0000$. Verification passes!</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>4. Fast Incremental Checksum Update (RFC 1624)</h3>
+        <p>Routers do not sum all 10 header words from scratch at every hop. Because only TTL decrements by 1 (which changes word $W_4$), routers apply <strong>RFC 1624 Incremental Update</strong>:</p>
+        <div class="math-block">
+          $$C' = \sim (\sim C + \sim m + m')$$
+        </div>
+        <p>Where $C$ is the old checksum, $m$ is the old TTL word, and $m'$ is the new TTL word. This takes just two clock cycles in hardware!</p>
+      </div>
+
+      <div class="confusion-box">
+        <h3>5. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "IPv6 uses the exact same checksum algorithm as IPv4."<br>
+        <strong>Reality:</strong> IPv6 completely <strong>eliminated the header checksum</strong>! To maximize router forwarding speed at line rates, IPv6 designers removed the checksum entirely, relying on Layer 2 (Ethernet CRC) and Layer 4 (mandatory TCP/UDP checksums) to detect bit corruption.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>6. University Exam &amp; GATE Tips</h3>
+        <p>Exam question: <em>"Why does One's Complement addition require adding the carry bit back to the sum?"</em><br>
+        Answer: In one's complement arithmetic, an end-around carry represents the modular wrap-around property of arithmetic modulo $2^{16} - 1$. Adding the carry bit ensures that negative numbers (complements) sum to all ones ($0xFFFF$), which represents negative zero.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Foundational RFCs on Internet checksum math and incremental router updates.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc1071" target="_blank" rel="noopener noreferrer">
+            📘 RFC 1071 - Computing the Internet Checksum
+            <small>Classic tutorial by Braden, Borman, and Partridge on efficient 1's complement algorithms.</small>
+          </a>
+          <a href="https://datatracker.ietf.org/doc/html/rfc1624" target="_blank" rel="noopener noreferrer">
+            📘 RFC 1624 - Incremental Updating of the Internet Checksum
+            <small>The mathematical proof and equations for fast router TTL checksum updates.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/checksum" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on Internet Checksum Calculations
+            <small>Past engineering entrance questions working through 16-bit binary checksum additions.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 15.10 Source and Destination Addresses -->
+    <section id="s15-addrs" class="section-in-uni content-section" data-chapter="15" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Source IPv4 address Destination IPv4 address 32-bit identifiers invariant in transit">
+      <div class="section-header">
+        <span class="section-number">15.10</span>
+        <h2>Source and Destination Addresses <button class="bookmark-btn" data-id="s15-addrs" data-label="Source and Destination Addresses" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>Source and Destination Addresses</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p>Rows 4 and 5 of the IPv4 header contain two 32-bit logical addresses: the <strong>Source IP Address</strong> (Bytes 12&ndash;15), denoting the original sending network interface, and the <strong>Destination IP Address</strong> (Bytes 16&ndash;19), denoting the intended recipient network interface.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why They Exist: Global Topological Routing</h3>
+        <p>The 64 bits occupied by these two addresses provide the foundational routing compass of the global Internet. Core routers inspect the Destination IP to query their Forwarding Information Base (FIB) and advance the datagram across intermediate autonomous systems, while the destination host inspects the Source IP to deliver response traffic back to the originator.</p>
+      </div>
+
+      <div class="ascii-box">
+ROWS 4 & 5 OF IPv4 HEADER (64 BITS):
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                       Source IP Address                       |  Bytes 12-15
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                    Destination IP Address                     |  Bytes 16-19
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+<--------------------------- 32 bits --------------------------->
+ 4 Octets in Dotted-Decimal Notation (e.g. 198.51.100.25)
+      </div>
+
+      <div class="concept-card">
+        <h3>3. The End-to-End Address Invariant</h3>
+        <p>In standard, unmodified IP routing (as envisioned in RFC 791):</p>
+        <p><strong>Fundamental Invariant:</strong> The Source IP Address and Destination IP Address <strong>never change</strong> as the datagram traverses intermediate routers across the Internet! Routers rewrite Layer 2 MAC addresses at every hop, but leave Layer 3 IP addresses completely intact from source to destination.</p>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Routing Context</th>
+              <th>Source IP Behavior</th>
+              <th>Destination IP Behavior</th>
+              <th>Architectural Impact</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Standard Internet Routing</strong></td>
+              <td>Immutable (Unchanged)</td>
+              <td>Immutable (Unchanged)</td>
+              <td>Preserves End-to-End transparency</td>
+            </tr>
+            <tr>
+              <td><strong>SNAT (Source NAT / Masquerade)</strong></td>
+              <td><strong>Rewritten</strong> to Router Public IP</td>
+              <td>Immutable (Unchanged)</td>
+              <td>Hides private LAN clients behind 1 public IP</td>
+            </tr>
+            <tr>
+              <td><strong>DNAT (Port Forwarding / LB)</strong></td>
+              <td>Immutable (Unchanged)</td>
+              <td><strong>Rewritten</strong> to Internal Server IP</td>
+              <td>Directs inbound web traffic to private servers</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="confusion-box">
+        <h3>4. Common Confusion: Interfaces vs Devices</h3>
+        <p><strong>Fallacy:</strong> "A computer has an IP address."<br>
+        <strong>Reality:</strong> Technically, computers do not have IP addresses; <strong>network interfaces</strong> have IP addresses! If a laptop connects to Wi-Fi and plugs in an Ethernet cable simultaneously, it has two active interfaces, each with its own unique IP address. A multi-port router with 8 interfaces possesses at least 8 distinct IP addresses.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>5. University Exam &amp; GATE Tips</h3>
+        <p>Exam question: <em>"A packet is forwarded from Host A through 5 routers to Host B. How many times are the IP addresses changed, and how many times are the MAC addresses changed?"</em><br>
+        Answer: IP addresses change <strong>0 times</strong> (assuming no NAT). MAC addresses change <strong>5 times</strong> (rewritten at every router hop across 6 distinct physical links).</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Engineering resources on IP address fields and router forwarding invariants.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc791#page-13" target="_blank" rel="noopener noreferrer">
+            📘 RFC 791 - Addressing Sections
+            <small>Specification of source and destination address field formatting and semantics.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=7_-qWPNerVE" target="_blank" rel="noopener noreferrer">
+            🎥 IP Address Invariance Across Router Hops
+            <small>Packet tracing tutorial tracking Layer 2 MAC rewrites vs Layer 3 IP preservation.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/ip-forwarding" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on Source and Destination Addressing
+            <small>GATE exam problems evaluating packet header transformations across router hops.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 15.11 IPv4 Options & Header Variability -->
+    <section id="s15-options" class="section-in-uni content-section" data-chapter="15" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="IPv4 options Record Route Strict Source Routing Loose Source Routing Timestamp Padding">
+      <div class="section-header">
+        <span class="section-number">15.11</span>
+        <h2>IPv4 Options &amp; Header Variability <button class="bookmark-btn" data-id="s15-options" data-label="IPv4 Options &amp; Header Variability" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>IPv4 Options & Header Variability</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p><strong>IPv4 Options</strong> are variable-length optional control fields (Bytes 20 through 59 of the header) designed for network testing, diagnostics, security, and specialized routing, constrained to a maximum cumulative size of <strong>40 bytes</strong> and padded with zeros to ensure alignment on a 32-bit (4-byte) boundary.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why Options Exist &amp; Why Modern Routers Drop Them</h3>
+        <p>When IPv4 was conceived in 1981, designers added options to allow experimental network diagnostic features without changing the base protocol. However, in modern high-speed networks:</p>
+        <ul>
+          <li><strong>Slow-Path Processing:</strong> ASIC hardware TCAM forwarders are optimized for fixed 20-byte headers. Packets with options cannot be forwarded in hardware; they must be punted to the router's slow CPU software plane, causing severe latency spikes.</li>
+          <li><strong>Security Vulnerability:</strong> Attackers historically exploited source routing options to bypass firewalls and spoof internal trusted IP addresses. Consequently, <strong>almost all modern commercial Internet routers drop packets with IP options by default</strong>.</li>
+        </ul>
+      </div>
+
+      <div class="ascii-box">
+IPv4 OPTION STRUCTURE (Type-Length-Value / TLV):
++---------------+---------------+---------------------------------------+
+|  Option Type  | Option Length |             Option Data               |
+|    (1 Byte)   |    (1 Byte)   |           (Variable Bytes)            |
++---------------+---------------+---------------------------------------+
+|               Padding (Zeros to align total header to 32 bits)        |
++-----------------------------------------------------------------------+
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Option Name</th>
+              <th>Option Code</th>
+              <th>Format</th>
+              <th>Operational Function &amp; Limitation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>End of Option List (EOOL)</strong></td>
+              <td><code>0x00</code> (0)</td>
+              <td>Single byte</td>
+              <td>Marks the final termination of the options area.</td>
+            </tr>
+            <tr>
+              <td><strong>No Operation (NOP)</strong></td>
+              <td><code>0x01</code> (1)</td>
+              <td>Single byte</td>
+              <td>Used as 1-byte filler padding to align multi-byte options on 32-bit boundaries.</td>
+            </tr>
+            <tr>
+              <td><strong>Record Route (RR)</strong></td>
+              <td><code>0x07</code> (7)</td>
+              <td>TLV</td>
+              <td>Each router appends its own IP address. <strong>Capped at max 9 IP addresses</strong> because $9 \times 4\text{B} + 3\text{B overhead} = 39\text{ bytes} \le 40\text{ bytes}$!</td>
+            </tr>
+            <tr>
+              <td><strong>Strict Source Route (SSR)</strong></td>
+              <td><code>0x89</code> (137)</td>
+              <td>TLV</td>
+              <td>Sender prescribes the <em>exact sequence of routers</em> the packet must traverse. If a hop is not direct, packet is discarded.</td>
+            </tr>
+            <tr>
+              <td><strong>Loose Source Route (LSR)</strong></td>
+              <td><code>0x83</code> (131)</td>
+              <td>TLV</td>
+              <td>Sender specifies required milestone routers, but packet may traverse other intermediate hops between them.</td>
+            </tr>
+            <tr>
+              <td><strong>Timestamp</strong></td>
+              <td><code>0x44</code> (68)</td>
+              <td>TLV</td>
+              <td>Each router records its IP address and standard Universal Time (UTC) millisecond timestamp. Max 4 routers.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="confusion-box">
+        <h3>3. Common Confusion: Record Route vs Traceroute</h3>
+        <p><strong>Fallacy:</strong> "The <code>traceroute</code> command uses the IPv4 Record Route option."<br>
+        <strong>Reality:</strong> Traceroute does NOT use the Record Route option! Record Route is capped at only 9 hops (due to the 40-byte options limit), which is useless across modern Internet paths spanning 15 to 30 hops. Traceroute uses incrementing <strong>TTL expiration probes</strong>, which can track paths of arbitrary length.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>4. University Exam &amp; GATE Tips</h3>
+        <p>A classic GATE numerical: <em>"What is the maximum number of router IP addresses that can be recorded in an IPv4 Record Route option?"</em><br>
+        Calculation: Max options size = $60 - 20 = 40\text{ bytes}$. The Record Route header consumes 3 bytes (1 byte Code + 1 byte Length + 1 byte Pointer). Remaining bytes for IPs = $40 - 3 = 37\text{ bytes}$. Each IPv4 address requires 4 bytes. Number of IPs = $\lfloor 37 / 4 \rfloor = \mathbf{9\text{ IP addresses}}$.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Engineering RFC specifications on IPv4 options and security filters.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc791#page-15" target="_blank" rel="noopener noreferrer">
+            📘 RFC 791 - Option Definitions
+            <small>Formal specification of Source Routing, Record Route, and Timestamp formats.</small>
+          </a>
+          <a href="https://datatracker.ietf.org/doc/html/rfc7126" target="_blank" rel="noopener noreferrer">
+            📘 RFC 7126 - Filtering of IP Options in IPv4 Routers
+            <small>Best current operational practices explaining why modern firewalls drop IP options.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/ip-options" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on Record Route Capacity
+            <small>Past engineering questions deriving the 9-hop maximum limit for Record Route.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 15.12 MTU and Why Fragmentation Happens -->
+    <section id="s15-mtu" class="section-in-uni content-section" data-chapter="15" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Maximum Transmission Unit MTU link layer constraint Ethernet 1500 bytes router fragmentation">
+      <div class="section-header">
+        <span class="section-number">15.12</span>
+        <h2>MTU and Why Fragmentation Happens <button class="bookmark-btn" data-id="s15-mtu" data-label="MTU and Why Fragmentation Happens" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>MTU and Why Fragmentation Happens</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p>The <strong>Maximum Transmission Unit (MTU)</strong> is the maximum size (in bytes) of a Network Layer protocol data unit (IP datagram) that can be transmitted across a specific physical link without being broken into smaller pieces by Layer 2 framing constraints.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why Fragmentation Happens: Heterogeneous Link Technologies</h3>
+        <p>An end-to-end path across the Internet is not homogeneous; it traverses a patchwork of diverse physical link media (Ethernet, Wi-Fi, Fiber, Cellular, Point-to-Point WAN links). When a router receives an IP datagram of size $L$ on an ingress interface with high MTU, but must forward it out through an egress interface with a lower MTU ($L > \text{MTU}_{\text{egress}}$):</p>
+        <ul>
+          <li>If <strong>$\text{DF} = 0$</strong>: The router <strong>fragments</strong> the datagram into multiple smaller, valid IP packets that fit within the egress link's MTU.</li>
+          <li>If <strong>$\text{DF} = 1$</strong>: The router <strong>drops the datagram</strong> and sends an ICMP <em>"Destination Unreachable &ndash; Fragmentation Needed and DF set"</em> (Type 3, Code 4) message back to the source host.</li>
+        </ul>
+      </div>
+
+      <div class="ascii-box">
+HETEROGENEOUS LINK MTU BOTTLENECK:
+
+[Host A]                                [Router R1]                             [Host B]
+   |                                         |                                     |
+   | === (IP Datagram: 1500 Bytes) ========> |                                     |
+   |                                         | === (Egress MTU = 600 Bytes!) =====>|
+   |     Link 1: Standard Ethernet           |     Link 2: Constrained WAN Link    |
+   |     MTU = 1500 Bytes                    |     Packet cannot fit!              |
+   |                                         |     R1 must FRAGMENT into pieces:   |
+   |                                         |     Frag 1: 596B (20B Hdr + 576B)   |
+   |                                         |     Frag 2: 596B (20B Hdr + 576B)   |
+   |                                         |     Frag 3: 348B (20B Hdr + 328B)   |
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Physical Link Technology</th>
+              <th>Standard Layer 2 MTU (Bytes)</th>
+              <th>Engineering Justification / Constraints</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Standard Ethernet (IEEE 802.3)</strong></td>
+              <td><strong>1,500 Bytes</strong></td>
+              <td>Universal default standard for local area networks and Internet backbones.</td>
+            </tr>
+            <tr>
+              <td><strong>PPPoE (DSL Broadband)</strong></td>
+              <td><strong>1,492 Bytes</strong></td>
+              <td>1500B Ethernet minus 8 bytes of Point-to-Point Protocol over Ethernet overhead.</td>
+            </tr>
+            <tr>
+              <td><strong>Wi-Fi (IEEE 802.11)</strong></td>
+              <td><strong>2,272 Bytes</strong></td>
+              <td>Wireless frame body capacity (often clamped to 1500 for Ethernet compatibility).</td>
+            </tr>
+            <tr>
+              <td><strong>FDDI / Token Ring (Legacy)</strong></td>
+              <td><strong>4,352 / 4,464 Bytes</strong></td>
+              <td>High token-passing ring buffer limits.</td>
+            </tr>
+            <tr>
+              <td><strong>Ethernet Jumbo Frames</strong></td>
+              <td><strong>9,000 Bytes</strong></td>
+              <td>Used in data center storage networks (SANs) to minimize CPU interrupt overhead.</td>
+            </tr>
+            <tr>
+              <td><strong>IPv4 Minimum Reassembly Buffer</strong></td>
+              <td><strong>576 Bytes</strong></td>
+              <td>RFC 791 requirement: Every IPv4 host must be able to receive $\ge 576$ byte packets.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="confusion-box">
+        <h3>3. Common Confusion: MTU vs MSS</h3>
+        <p><strong>MTU vs Maximum Segment Size (MSS):</strong><br>
+        Students constantly confuse these two parameters:</p>
+        <ul>
+          <li><strong>MTU (Network Layer):</strong> Maximum total IP packet size ($\text{IP Header} + \text{TCP Header} + \text{Payload}$). Default = 1500 bytes.</li>
+          <li><strong>MSS (Transport Layer):</strong> Maximum TCP user data payload ($\text{MTU} - 20\text{B IP Header} - 20\text{B TCP Header}$). On standard Ethernet:
+            $$\text{MSS} = 1500 - 20 - 20 = \mathbf{1460\text{ bytes}}$$
+          </li>
+        </ul>
+      </div>
+
+      <div class="exam-tip">
+        <h3>4. University Exam &amp; GATE Tips</h3>
+        <p>When given an exam problem: <em>"Link MTU is 1500 bytes"</em>, remember that the 1500 bytes must include the <strong>20-byte IP header</strong>! The maximum payload a fragment can carry is $1500 - 20 = 1480$ bytes.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Authoritative documentation on link MTUs and Path MTU discovery.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc1191" target="_blank" rel="noopener noreferrer">
+            📘 RFC 1191 - Path MTU Discovery
+            <small>Technique for dynamically discovering path MTU to eliminate router fragmentation.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=PBWhzXjhUxE" target="_blank" rel="noopener noreferrer">
+            🎥 MTU, MSS, and IP Fragmentation Explained
+            <small>Visual explanation of MTU bottlenecks across Ethernet and DSL networks.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/mtu" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on MTU Bottlenecks
+            <small>Past entrance exam numericals on calculating fragment counts across heterogeneous links.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 15.13 IPv4 Fragmentation Process -->
+    <section id="s15-frag-process" class="section-in-uni content-section" data-chapter="15" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Fragmentation algorithm dividing payload fragment offset scaling 8-byte rule DF bit">
+      <div class="section-header">
+        <span class="section-number">15.13</span>
+        <h2>IPv4 Fragmentation Process <button class="bookmark-btn" data-id="s15-frag-process" data-label="IPv4 Fragmentation Process" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>IPv4 Fragmentation Process</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p><strong>IPv4 Fragmentation</strong> is an autonomous network-layer mechanism executed by intermediate routers (or the source host) that partitions an oversized datagram into multiple self-contained, smaller IP packets, each carrying a duplicate of the original IP header modified with slice-specific Identification, Flags, Fragment Offset, and Total Length values.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why Routers Must Copy Headers</h3>
+        <p>Because each fragment must travel independently across subsequent router hops as a fully autonomous Layer 3 datagram, each fragment requires its own complete IPv4 header. If headers were not duplicated, intermediate routers downstream would not know the Destination IP, TTL, or Protocol.</p>
+      </div>
+
+      <div class="ascii-box">
+ROUTER FRAGMENTATION PIPELINE:
+Original Datagram (Size L > MTU, DF = 0):
++-----------------------+-------------------------------------------------------+
+|  Original IP Header   |               Original Payload (P Bytes)              |
++-----------------------+-------------------------------------------------------+
+                                  |
+                                  V  (Calculates Max Chunk = floor((MTU - H)/8) * 8)
+Fragment 1:
++-----------------------+-------------------------------+
+| Copied Header (MF=1)  | Payload Chunk 1 (Offset = 0)  |  (Size <= MTU)
++-----------------------+-------------------------------+
+Fragment 2:
++-----------------------+-------------------------------+
+| Copied Header (MF=1)  | Payload Chunk 2 (Offset = O2) |  (Size <= MTU)
++-----------------------+-------------------------------+
+Fragment k (Last):
++-----------------------+-------------------------------+
+| Copied Header (MF=0)  | Final Payload Chunk (Offset Ok|  (Size <= MTU)
++-----------------------+-------------------------------+
+      </div>
+
+      <div class="example-box">
+        <h3>3. The 4-Step Algorithmic Derivation</h3>
+        <p>Let original packet have Total Length $L$, Header Length $H = \text{IHL} \times 4$, and egress link have $\text{MTU}$:</p>
+        <ol>
+          <li><strong>Step 1 (Original Payload):</strong> $P = L - H$.</li>
+          <li><strong>Step 2 (Maximum Payload Per Fragment):</strong> The maximum data bytes allowed is $\text{MTU} - H$. Because fragment offset is in 8-byte units, we must round down to the nearest multiple of 8:
+            $$D_{\max} = \left\lfloor \frac{\text{MTU} - H}{8} \right\rfloor \times 8$$
+          </li>
+          <li><strong>Step 3 (Number of Fragments):</strong>
+            $$k = \left\lceil \frac{P}{D_{\max}} \right\rceil$$
+          </li>
+          <li><strong>Step 4 (Field Adjustments for Fragment $i$):</strong>
+            <ul>
+              <li><strong>Identification:</strong> Copied identically from original datagram.</li>
+              <li><strong>Total Length:</strong> $H + \text{Data}_i$.</li>
+              <li><strong>More Fragments (MF):</strong> Set to <strong>1</strong> for all fragments except the final one ($i = k$), which inherits original MF (usually <strong>0</strong>).</li>
+              <li><strong>Fragment Offset:</strong>
+                $$\text{Offset}_i = \frac{\sum_{j=1}^{i-1} \text{Data}_j}{8}$$
+              </li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Field</th>
+              <th>Copied Unchanged from Original?</th>
+              <th>How Modified for Each Fragment</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Identification</strong></td>
+              <td><span style="color: #22c55e; font-weight: bold;">YES</span></td>
+              <td>Preserved identical so destination can group pieces together</td>
+            </tr>
+            <tr>
+              <td><strong>Source / Destination IP</strong></td>
+              <td><span style="color: #22c55e; font-weight: bold;">YES</span></td>
+              <td>Preserved identical for global routing</td>
+            </tr>
+            <tr>
+              <td><strong>Protocol</strong></td>
+              <td><span style="color: #22c55e; font-weight: bold;">YES</span></td>
+              <td>Preserved identical (e.g. 6 for TCP)</td>
+            </tr>
+            <tr>
+              <td><strong>Total Length</strong></td>
+              <td><span style="color: #ef4444; font-weight: bold;">NO</span></td>
+              <td>Updated to reflect the smaller fragment size ($H + \text{Payload}_i$)</td>
+            </tr>
+            <tr>
+              <td><strong>Flags (MF)</strong></td>
+              <td><span style="color: #ef4444; font-weight: bold;">NO</span></td>
+              <td>Set to <code>1</code> for non-final fragments; <code>0</code> for the last piece</td>
+            </tr>
+            <tr>
+              <td><strong>Fragment Offset</strong></td>
+              <td><span style="color: #ef4444; font-weight: bold;">NO</span></td>
+              <td>Updated to starting byte position divided by 8</td>
+            </tr>
+            <tr>
+              <td><strong>Header Checksum</strong></td>
+              <td><span style="color: #ef4444; font-weight: bold;">NO</span></td>
+              <td><strong>Recalculated completely</strong> because Total Length, MF, Offset, and TTL changed!</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="confusion-box">
+        <h3>4. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "Options in the original IP header are duplicated into all fragments."<br>
+        <strong>Reality:</strong> In RFC 791, each option has a 1-bit "Copied Flag". Security options are copied into all fragments, but Record Route and Timestamp options are <strong>copied into the first fragment ONLY</strong>! Copying Record Route into all fragments would cause route recording discrepancies.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>5. University Exam &amp; GATE Tips</h3>
+        <p>Always verify the multiple-of-8 rule! If an exam gives $\text{MTU} = 1500$ and $H = 20$, then $1500 - 20 = 1480$. Check if $1480$ is divisible by 8: $1480 / 8 = 185$ (Yes!). If $\text{MTU} = 600$, $600 - 20 = 580$. Is 580 divisible by 8? $580 / 8 = 72.5$ (No!). Round down to $72 \times 8 = \mathbf{576\text{ bytes}}$. Using 580 will result in 0 marks!</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Engineering resources on fragmentation algorithms and router buffer handling.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc791#page-25" target="_blank" rel="noopener noreferrer">
+            📘 RFC 791 - Fragmentation Procedure Pseudocode
+            <small>Authoritative flowchart and algorithmic pseudocode for fragmenting datagrams.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=PBWhzXjhUxE" target="_blank" rel="noopener noreferrer">
+            🎥 IP Fragmentation Step-by-Step Breakdown
+            <small>Clear animation illustrating how routers divide payloads and recalculate offsets.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/fragmentation" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on Fragmentation Algorithms
+            <small>Practice problem bank testing step sizes, flag transitions, and fragment numbers.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 15.14 Complete Fragmentation Numerical -->
+    <section id="s15-frag-num" class="section-in-uni content-section" data-chapter="15" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Step-by-step fragmentation numerical offset calculation MF flags Total Length packet breakdown">
+      <div class="section-header">
+        <span class="section-number">15.14</span>
+        <h2>Complete Fragmentation Numerical <button class="bookmark-btn" data-id="s15-frag-num" data-label="Complete Fragmentation Numerical" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>Complete Fragmentation Numerical</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. Complete End-to-End Problem Statement</h3>
+        <p><strong>Problem:</strong> An original IPv4 datagram has a <strong>Total Length of 4,000 bytes</strong> with $\text{IHL} = 5$ (20-byte baseline header, no options) and $\text{Identification} = 0xABCD$. The datagram arrives at a router and must cross a physical link with an $\text{MTU} = \mathbf{1,500\text{ bytes}}$. Fragmentation is permitted ($\text{DF} = 0$).</p>
+        <p><strong>Required Tasks:</strong></p>
+        <ol>
+          <li>Determine the total number of fragments produced.</li>
+          <li>For each fragment, calculate:
+            <ul>
+              <li>Data Payload Size (bytes)</li>
+              <li>Total Length field value</li>
+              <li>Flags (DF, MF)</li>
+              <li>Fragment Offset field value</li>
+              <li>Byte Range of original data payload carried</li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+
+      <div class="example-box">
+        <h3>2. Step-by-Step Mathematical Derivation</h3>
+        <ol>
+          <li><strong>Original Data Payload:</strong>
+            $$P = \text{Total Length} - \text{Header Length} = 4000 - 20 = \mathbf{3,980\text{ bytes}}$$
+            $$\text{Original Data Byte Indices: } 0 \text{ through } 3979$$
+          </li>
+          <li><strong>Maximum Payload per Fragment ($D_{\max}$):</strong>
+            $$\text{Max Raw Data Space} = \text{MTU} - H = 1500 - 20 = 1480\text{ bytes}$$
+            $$\text{Check Divisibility by 8: } \frac{1480}{8} = 185.0 \implies D_{\max} = \mathbf{1,480\text{ bytes}}$$
+          </li>
+          <li><strong>Partitioning the 3,980 Payload Bytes:</strong>
+            <ul>
+              <li>Fragment 1: Takes $1480$ bytes (Remaining: $3980 - 1480 = 2500$ bytes).</li>
+              <li>Fragment 2: Takes $1480$ bytes (Remaining: $2500 - 1480 = 1020$ bytes).</li>
+              <li>Fragment 3: Takes the remaining $1020$ bytes.</li>
+              <li>Total Fragments = $\mathbf{3\text{ fragments}}$.</li>
+            </ul>
+          </li>
+          <li><strong>Calculating Fragment Offset for Each Piece:</strong>
+            <ul>
+              <li>Fragment 1 starts at byte 0: $\text{Offset}_1 = 0 / 8 = \mathbf{0}$.</li>
+              <li>Fragment 2 starts at byte 1480: $\text{Offset}_2 = 1480 / 8 = \mathbf{185}$.</li>
+              <li>Fragment 3 starts at byte 2960: $\text{Offset}_3 = 2960 / 8 = \mathbf{370}$.</li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Fragment #</th>
+              <th>Identification</th>
+              <th>Data Payload</th>
+              <th>Header (IHL)</th>
+              <th>Total Length</th>
+              <th>DF Flag</th>
+              <th>MF Flag</th>
+              <th>Fragment Offset</th>
+              <th>Payload Byte Range</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Fragment 1</strong></td>
+              <td><code>0xABCD</code></td>
+              <td>1,480 bytes</td>
+              <td>20B ($\text{IHL}=5$)</td>
+              <td><strong>1,500</strong></td>
+              <td>0</td>
+              <td><strong>1</strong></td>
+              <td><strong>0</strong></td>
+              <td>Bytes 0 &ndash; 1479</td>
+            </tr>
+            <tr>
+              <td><strong>Fragment 2</strong></td>
+              <td><code>0xABCD</code></td>
+              <td>1,480 bytes</td>
+              <td>20B ($\text{IHL}=5$)</td>
+              <td><strong>1,500</strong></td>
+              <td>0</td>
+              <td><strong>1</strong></td>
+              <td><strong>185</strong></td>
+              <td>Bytes 1480 &ndash; 2959</td>
+            </tr>
+            <tr>
+              <td><strong>Fragment 3 (Last)</strong></td>
+              <td><code>0xABCD</code></td>
+              <td>1,020 bytes</td>
+              <td>20B ($\text{IHL}=5$)</td>
+              <td><strong>1,040</strong></td>
+              <td>0</td>
+              <td><strong>0</strong></td>
+              <td><strong>370</strong></td>
+              <td>Bytes 2960 &ndash; 3979</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="ascii-box">
+VISUAL PAYLOAD SLICE DIAGRAM:
+Original Data (3980 Bytes):
+[ 0 --------------------- 1479 ][ 1480 ------------------ 2959 ][ 2960 ------- 3979 ]
+<---------- 1480B ------------> <---------- 1480B ------------> <------- 1020B ------>
+       Fragment 1                      Fragment 2                    Fragment 3
+   Offset = 0, MF = 1             Offset = 185, MF = 1          Offset = 370, MF = 0
+ Total Length = 1500B            Total Length = 1500B          Total Length = 1040B
+      </div>
+
+      <div class="example-box">
+        <h3>3. Advanced Extension: Re-Fragmentation Across Lower MTU</h3>
+        <p>Suppose <strong>Fragment 2</strong> (Total Length 1500B, Offset 185) now encounters a third link with $\text{MTU} = \mathbf{800\text{ bytes}}$:</p>
+        <ul>
+          <li>Max payload per sub-fragment = $\lfloor (800 - 20)/8 \rfloor \times 8 = \lfloor 780/8 \rfloor \times 8 = 97 \times 8 = \mathbf{776\text{ bytes}}$.</li>
+          <li>Fragment 2 has 1480 data bytes: splits into Sub-fragment 2A ($776$ bytes) and Sub-fragment 2B ($1480 - 776 = 704$ bytes).</li>
+          <li><strong>Sub-fragment 2A:</strong> Payload = 776B, Total Length = 796B, $\text{MF} = 1$, $\text{Offset} = 185$ (starts at byte 1480).</li>
+          <li><strong>Sub-fragment 2B:</strong> Payload = 704B, Total Length = 724B, $\text{MF} = 1$ (inherits Fragment 2's MF!), $\text{Offset} = 185 + (776/8) = 185 + 97 = \mathbf{282}$ (starts at byte $1480 + 776 = 2256$).</li>
+          <li>Notice that sub-fragmentation does <strong>not</strong> re-assemble the original datagram; intermediate routers can split fragments arbitrarily!</li>
+        </ul>
+      </div>
+
+      <div class="confusion-box">
+        <h3>4. Common Confusion &amp; Traps</h3>
+        <p><strong>The Final Sub-Fragment MF Trap:</strong><br>
+        When Sub-fragment 2B is created, many students mistakenly set $\text{MF} = 0$ because it is "the last piece of Fragment 2." That is a fatal error! It is NOT the last piece of the original datagram (Fragment 3 is!). Sub-fragment 2B must inherit Fragment 2's $\text{MF} = 1$.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>5. University Exam &amp; GATE Tips</h3>
+        <p>To verify your answer on an exam:
+        1. Sum of all fragment payloads MUST equal the original payload ($1480 + 1480 + 1020 = 3980\text{ B}$).<br>
+        2. $\text{Final Offset} \times 8 + \text{Final Payload} = \text{Original Payload}$ ($370 \times 8 + 1020 = 2960 + 1020 = 3980\text{ B}$). This 5-second check guarantees 100% accuracy!</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Step-by-step video tutorials and solved university numerical problem banks.</div>
+        <div class="resource-grid">
+          <a href="https://gateoverflow.in/tag/ip-fragmentation" target="_blank" rel="noopener noreferrer">
+            📘 GATE Overflow: Master IP Fragmentation Question Bank
+            <small>Over 80 solved numerical problems on MTU splits, offsets, and header parsing.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=dmS1t1wqnE4" target="_blank" rel="noopener noreferrer">
+            🎥 IP Fragmentation Numerical Blackboard Walkthrough
+            <small>Step-by-step academic lecture deriving fragment tables from raw packet captures.</small>
+          </a>
+          <a href="https://www.geeksforgeeks.org/fragmentation-at-network-layer/" target="_blank" rel="noopener noreferrer">
+            📝 GeeksforGeeks: IP Fragmentation Numerical Tutorial
+            <small>Comprehensive guide with multiple worked examples across diverse MTU topologies.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 15.15 Reassembly Logic & Constraints -->
+    <section id="s15-reassembly" class="section-in-uni content-section" data-chapter="15" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Destination reassembly timer buffer overflow packet loss reassembly failure RFC 791">
+      <div class="section-header">
+        <span class="section-number">15.15</span>
+        <h2>Reassembly Logic &amp; Constraints <button class="bookmark-btn" data-id="s15-reassembly" data-label="Reassembly Logic &amp; Constraints" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>Reassembly Logic & Constraints</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p><strong>IPv4 Reassembly</strong> is the terminal protocol procedure executed exclusively by the <strong>ultimate destination host</strong>, which collects all arriving fragments sharing the same Identification, Source IP, Destination IP, and Protocol 4-tuple, places them into an in-memory reassembly buffer at their indicated offsets, and reconstructs the complete original datagram before delivering it to the transport layer.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why Intermediate Routers NEVER Reassemble</h3>
+        <p>Students frequently ask: <em>"If a router fragmented a packet, why does the next router with a larger MTU not glue it back together?"</em></p>
+        <ul>
+          <li><strong>Dynamic Multipath Routing:</strong> In a connectionless datagram network, Fragment 1 might travel via Path A (Denver &rarr; Chicago), while Fragment 2 travels via Path B (Dallas &rarr; Atlanta). An intermediate router might never see all fragments!</li>
+          <li><strong>Memory &amp; Latency Bottlenecks:</strong> Forcing routers to buffer fragments waiting for missing pieces would exhaust router RAM and introduce unacceptable transmission jitter at line rates.</li>
+        </ul>
+      </div>
+
+      <div class="ascii-box">
+DESTINATION REASSEMBLY BUFFER:
+Arrived:  Frag 1 (Offset 0, Len 1480, MF=1)    --> Placed in Buffer [0 - 1479]
+Arrived:  Frag 3 (Offset 370, Len 1020, MF=0)  --> Placed in Buffer [2960 - 3979]
+Missing:  Frag 2 (Delayed in transit!)          --> Buffer has a HOLE [1480 - 2959]
+
+Reassembly Timer Running (e.g. 30 Seconds)...
+If Frag 2 arrives before timer expires:
+  Hole is filled! Datagram is reassembled and passed to TCP/UDP stack!
+If Timer expires before Frag 2 arrives:
+  ALL cached fragments are DROPPED! ICMP Time Exceeded (Type 11, Code 1) sent!
+      </div>
+
+      <div class="example-box">
+        <h3>3. The Reassembly Buffer Algorithm (RFC 791 / RFC 815)</h3>
+        <p>The destination host maintains a list of incomplete datagrams identified by the 4-tuple:</p>
+        <div class="math-block">
+          $$\text{Reassembly Key} = (\text{Source IP}, \text{Destination IP}, \text{Protocol}, \text{Identification})$$
+        </div>
+        <p>The host tracks "holes" in the byte stream:</p>
+        <ol>
+          <li>Initially, a hole exists from byte 0 to $\infty$.</li>
+          <li>When fragment arrives with $\text{Start} = \text{Offset} \times 8$ and $\text{End} = \text{Start} + \text{Payload} - 1$, the host carves that segment out of the hole list.</li>
+          <li>If $\text{MF} = 0$, the upper boundary of the datagram is permanently fixed at $\text{End}$.</li>
+          <li>When the hole list becomes empty, the datagram is complete!</li>
+        </ol>
+      </div>
+
+      <div class="concept-card">
+        <h3>4. The Reassembly Timer &amp; Amplification Penalty</h3>
+        <ul>
+          <li><strong>Timer Expiration:</strong> Hosts run a reassembly timer (typically 15 to 60 seconds). If any single fragment is lost in transit, the host discards <em>all</em> received fragments for that datagram.</li>
+          <li><strong>Goodput Collapse:</strong> Because IP provides zero fragment retransmission, losing 1 fragment causes the sender's TCP to retransmit the <strong>entire</strong> original segment! Fragmenting a 4000-byte packet into 3 pieces means a 1% packet loss rate on the link translates to a ~3% failure rate for the entire datagram.</li>
+        </ul>
+      </div>
+
+      <div class="confusion-box">
+        <h3>5. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "If Fragment 2 is lost, the destination sends an ICMP NACK asking for Fragment 2."<br>
+        <strong>Reality:</strong> IP has no negative acknowledgments! The destination silently waits for the timer to expire, then deletes the incomplete buffer and may transmit an ICMP <em>"Time Exceeded &ndash; Fragment Reassembly Time Exceeded"</em> (Type 11, Code 1) back to the sender.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>6. University Exam &amp; GATE Tips</h3>
+        <p>Remember the ICMP Code distinction for Time Exceeded (Type 11):<br>
+        - <strong>Code 0:</strong> Time to Live (TTL) exceeded in transit (sent by an intermediate router).<br>
+        - <strong>Code 1:</strong> Fragment reassembly time exceeded (sent exclusively by the destination host!).</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Engineering RFC documentation on IP reassembly algorithms and memory protection.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc815" target="_blank" rel="noopener noreferrer">
+            📘 RFC 815 - IP Datagram Reassembly Algorithms
+            <small>David Clark's classic simplified hole-counting reassembly algorithm.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=kY31Kj8xV3k" target="_blank" rel="noopener noreferrer">
+            🎥 IP Datagram Reassembly and Hole Management
+            <small>Animated demonstration of destination buffers filling fragment holes.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/reassembly" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on Reassembly Logic
+            <small>Competitive exam questions evaluating reassembly timers and buffer requirements.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 15.16 Forwarding: What a Router Does to an IPv4 Packet -->
+    <section id="s15-forwarding" class="section-in-uni content-section" data-chapter="15" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Router packet processing TTL decrement checksum update route lookup ARP resolution">
+      <div class="section-header">
+        <span class="section-number">15.16</span>
+        <h2>Forwarding: What a Router Does to an IPv4 Packet <button class="bookmark-btn" data-id="s15-forwarding" data-label="Forwarding: What a Router Does to an IPv4 Packet" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>Forwarding: What a Router Does to an IPv4 Packet</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p><strong>IPv4 Forwarding (Data Plane Packet Processing)</strong> is the standardized sequence of hardware and microcode operations executed by a router's line-card Application-Specific Integrated Circuits (ASICs) upon receiving an IPv4 datagram to validate its integrity, verify hop life, query the Forwarding Information Base (FIB), and switch it to the correct egress interface.</p>
+      </div>
+
+      <div class="ascii-box">
+LINE-RATE ROUTER HARDWARE FORWARDING PIPELINE:
+
+[ Ingress Frame ] ===> [ 1. Strip Layer 2 Ethernet Frame & Check FCS ]
+                              |
+                              V
+                       [ 2. Verify IPv4 Header Checksum ] ===> Corrupted? ---> DROP!
+                              | (Valid)
+                              V
+                       [ 3. Decrement TTL by 1 ] ===> TTL == 0? ---> Send ICMP Type 11!
+                              | (TTL > 0)
+                              V
+                       [ 4. Query TCAM FIB (Longest Prefix Match) ]
+                              |
+                              V
+                       [ 5. Is Packet Size > Egress Link MTU? ]
+                              /               \
+                            YES                NO
+                            /                   \
+                   Check DF Flag:               Advance to Step 6
+                   DF=1: DROP & ICMP Type 3!     |
+                   DF=0: Fragment Packet!        |
+                            \                   /
+                             V                 V
+                       [ 6. Update IPv4 Header Checksum (RFC 1624) ]
+                              |
+                              V
+                       [ 7. ARP Lookup: Resolve Next-Hop MAC Address ]
+                              |
+                              V
+                       [ 8. Encapsulate in new Layer 2 Frame & Transmit onto Wire! ]
+      </div>
+
+      <div class="example-box">
+        <h3>2. The 8 Concrete Execution Steps</h3>
+        <ol>
+          <li><strong>Layer 2 De-encapsulation:</strong> The line card physical layer receives bits, verifies the Ethernet Frame Check Sequence (FCS/CRC). If invalid, drops frame. If valid, strips Ethernet header.</li>
+          <li><strong>Header Checksum Validation:</strong> Line card sums all 16-bit header words. If result $\ne 0xFFFF$, the packet was corrupted in transit; router <strong>silently drops</strong> the packet (no ICMP sent for checksum error to prevent broadcast storms).</li>
+          <li><strong>TTL Decrement &amp; Check:</strong> Router decrements $\text{TTL} = \text{TTL} - 1$. If new $\text{TTL} \le 0$, router drops packet and sends ICMP Time Exceeded (Type 11, Code 0) to source.</li>
+          <li><strong>FIB Route Lookup:</strong> Router queries its TCAM hardware using the Destination IP, executing <strong>Longest Prefix Matching (LPM)</strong> to identify egress port and next-hop IP.</li>
+          <li><strong>MTU &amp; Fragmentation Check:</strong> Router compares packet Total Length against egress interface MTU. If $L > \text{MTU}$ and $\text{DF} = 1$, drops packet and sends ICMP Type 3 Code 4. If $\text{DF} = 0$, fragments packet.</li>
+          <li><strong>Incremental Checksum Update:</strong> Because TTL decremented, router calculates new 16-bit checksum using fast RFC 1624 arithmetic.</li>
+          <li><strong>Layer 2 Next-Hop Resolution:</strong> Router queries its ARP cache to find the destination MAC address of the next-hop router. If missing, queues packet and sends ARP Request.</li>
+          <li><strong>Re-encapsulation &amp; Transmission:</strong> Router prepends a fresh Layer 2 header (Source MAC = Router egress MAC, Dest MAC = Next-hop MAC), appends new FCS, and fires packet onto egress wire.</li>
+        </ol>
+      </div>
+
+      <div class="confusion-box">
+        <h3>3. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "A router sends an ICMP error message when a packet fails the header checksum."<br>
+        <strong>Reality:</strong> Absolutely not! If the header checksum fails, the header is corrupted. The router <em>cannot trust the Source IP address</em> written on the envelope! Sending an ICMP message to a corrupted source IP might bombard an innocent bystander with traffic. Corrupted packets are <strong>silently discarded</strong>.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>4. University Exam &amp; GATE Tips</h3>
+        <p>Exam question: <em>"List the order of operations a router performs on an IP header."</em><br>
+        Always state: (1) Verify Checksum FIRST, (2) Decrement TTL SECOND, (3) FIB Route Lookup THIRD, (4) Update Checksum FOURTH. Never decrement TTL before checking the incoming checksum!</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Engineering RFC standards on router requirements and hardware forwarding.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc1812" target="_blank" rel="noopener noreferrer">
+            📘 RFC 1812 - Requirements for IP Version 4 Routers
+            <small>Section 5: Complete authoritative specification of router forwarding algorithms.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=iH-vN9iV2p8" target="_blank" rel="noopener noreferrer">
+            🎥 Inside a Router: Data Plane Forwarding Pipeline
+            <small>Visual explanation of line-card ASICs, TCAM LPM lookups, and TTL processing.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/router-forwarding" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on Router Forwarding Steps
+            <small>Multiple-choice questions testing order of operations during packet forwarding.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 15.17 End-to-End Header Changes -->
+    <section id="s15-changes" class="section-in-uni content-section" data-chapter="15" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Header mutation map what changes in transit TTL checksum MAC addresses IP invariant">
+      <div class="section-header">
+        <span class="section-number">15.17</span>
+        <h2>End-to-End Header Changes (Mutation Map) <button class="bookmark-btn" data-id="s15-changes" data-label="End-to-End Header Changes (Mutation Map)" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>End-to-End Header Changes (Mutation Map)</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. The Master Mutation Matrix</h3>
+        <p>As an IPv4 datagram journeys from source host across multiple intermediate autonomous routers to its final destination, some fields are modified at every hop, others are modified only under specific network conditions, and others remain strictly immutable.</p>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>IPv4 Header Field</th>
+              <th>Status at Router Hops</th>
+              <th>How / Why Field Changes</th>
+              <th>Frequency of Change</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Version</strong></td>
+              <td><span style="color: #22c55e; font-weight: bold;">IMMUTABLE</span></td>
+              <td>Never changes (always 4)</td>
+              <td>Never</td>
+            </tr>
+            <tr>
+              <td><strong>IHL</strong></td>
+              <td><span style="color: #22c55e; font-weight: bold;">IMMUTABLE</span></td>
+              <td>Remains fixed (unless router modifies options, which is rare)</td>
+              <td>Never in standard forwarding</td>
+            </tr>
+            <tr>
+              <td><strong>Type of Service / DSCP</strong></td>
+              <td><strong>CONDITIONAL</strong></td>
+              <td>Intermediate QoS boundary routers may remark DSCP priorities</td>
+              <td>Rare (Autonomous system boundaries)</td>
+            </tr>
+            <tr>
+              <td><strong>ECN (Bits 6-7)</strong></td>
+              <td><strong>CONDITIONAL</strong></td>
+              <td>A congested router rewrites ECN from <code>01/10</code> to <code>11</code> (Congestion Experienced)</td>
+              <td>Only under buffer congestion</td>
+            </tr>
+            <tr>
+              <td><strong>Total Length</strong></td>
+              <td><strong>CONDITIONAL</strong></td>
+              <td>Modified if an intermediate router fragments the datagram</td>
+              <td>Only upon fragmentation</td>
+            </tr>
+            <tr>
+              <td><strong>Identification</strong></td>
+              <td><span style="color: #22c55e; font-weight: bold;">IMMUTABLE</span></td>
+              <td>Preserved across all hops (replicated into fragments)</td>
+              <td>Never</td>
+            </tr>
+            <tr>
+              <td><strong>Flags (DF, MF)</strong></td>
+              <td><strong>CONDITIONAL</strong></td>
+              <td>MF is set to 1 on non-final fragments if router fragments packet</td>
+              <td>Only upon fragmentation</td>
+            </tr>
+            <tr>
+              <td><strong>Fragment Offset</strong></td>
+              <td><strong>CONDITIONAL</strong></td>
+              <td>Modified on fragments to reflect slice starting byte position</td>
+              <td>Only upon fragmentation</td>
+            </tr>
+            <tr>
+              <td><strong>Time to Live (TTL)</strong></td>
+              <td><span style="color: #ef4444; font-weight: bold;">ALWAYS MODIFIED</span></td>
+              <td><strong>Decremented by at least 1 at every single router hop</strong></td>
+              <td><strong>Every Hop</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Protocol</strong></td>
+              <td><span style="color: #22c55e; font-weight: bold;">IMMUTABLE</span></td>
+              <td>Never changes (identifies upper transport payload)</td>
+              <td>Never</td>
+            </tr>
+            <tr>
+              <td><strong>Header Checksum</strong></td>
+              <td><span style="color: #ef4444; font-weight: bold;">ALWAYS MODIFIED</span></td>
+              <td><strong>Recalculated at every router hop</strong> because TTL changed!</td>
+              <td><strong>Every Hop</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Source IP Address</strong></td>
+              <td><strong>IMMUTABLE*</strong></td>
+              <td>Preserved unchanged (*unless Network Address Translation / NAT rewrites it)</td>
+              <td>Never in standard routing</td>
+            </tr>
+            <tr>
+              <td><strong>Destination IP Address</strong></td>
+              <td><strong>IMMUTABLE*</strong></td>
+              <td>Preserved unchanged (*unless Destination NAT / DNAT rewrites it)</td>
+              <td>Never in standard routing</td>
+            </tr>
+            <tr>
+              <td><strong>Options</strong></td>
+              <td><strong>CONDITIONAL</strong></td>
+              <td>Record Route / Timestamp appends router IP if option is present</td>
+              <td>At each hop if option active</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="ascii-box">
+SUMMARY OF THE ROUTER HOP CONTRACT:
+Fields ALWAYS changed by an intermediate router in ordinary forwarding:
+  1. Time to Live (TTL): Decremented by 1
+  2. Header Checksum:    Recalculated to match new TTL
+
+Fields NEVER changed by an intermediate router in ordinary forwarding:
+  Version, IHL, Total Length, ID, Protocol, Source IP, Destination IP.
+      </div>
+
+      <div class="confusion-box">
+        <h3>2. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "Total Length changes at every router because the router modifies the packet."<br>
+        <strong>Reality:</strong> Total Length does NOT change at ordinary router hops! Decrementing TTL changes the <em>value</em> of an existing header byte, not the total byte count of the packet. Total Length changes <strong>only if fragmentation occurs</strong>.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>3. University Exam &amp; GATE Tips</h3>
+        <p>Standard GATE question: <em>"Which IPv4 header fields are guaranteed to be updated by an intermediate router during normal forwarding without fragmentation or options?"</em><br>
+        Answer: Exactly two fields: <strong>Time to Live (TTL)</strong> and <strong>Header Checksum</strong>.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Engineering resources on header field mutations and NAT edge behavior.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc1812#section-5.2.2" target="_blank" rel="noopener noreferrer">
+            📘 RFC 1812 Section 5.2.2 - IP Header Processing
+            <small>Authoritative standard mandating field inspection and modification rules.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=PBWhzXjhUxE" target="_blank" rel="noopener noreferrer">
+            🎥 What Happens to an IP Packet as it Travels the Internet
+            <small>Step-by-step visual animation tracking header field mutations across hops.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/ip-header-changes" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on Header Field Mutations
+            <small>Past entrance exam questions identifying invariant vs mutating fields.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 15.18 High-Yield Traps, Practice & Summary -->
+    <section id="s15-traps" class="section-in-uni content-section" data-chapter="15" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="IPv4 exam traps offset in 8-byte units DF bit ICMP fragmentation needed master summary">
+      <div class="section-header">
+        <span class="section-number">15.18</span>
+        <h2>High-Yield Traps, Practice &amp; Summary <button class="bookmark-btn" data-id="s15-traps" data-label="High-Yield Traps, Practice &amp; Summary" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>High-Yield Traps, Practice & Summary</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. The IPv4 Internals Trap Catalog</h3>
+        <p>This section documents the most deceptive conceptual traps and numerical grading pitfalls in university examinations and GATE.</p>
+      </div>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <h4>Trap 1: The "IHL $\times$ 4" Arithmetic Omission</h4>
+          <p><strong>The Trap:</strong> Stating that an IHL value of 5 means the header is 5 bytes.<br>
+          <strong>The Reality:</strong> IHL is strictly in 32-bit (4-byte) words. Header length is always $\text{IHL} \times 4$. An IHL of 5 means $5 \times 4 = \mathbf{20\text{ bytes}}$.</p>
+        </div>
+
+        <div class="concept-card">
+          <h4>Trap 2: The "Offset $\times$ 8" Scaling Omission</h4>
+          <p><strong>The Trap:</strong> Assuming Fragment Offset is a raw byte index.<br>
+          <strong>The Reality:</strong> Fragment Offset is measured in <strong>8-byte blocks</strong>. An offset of 100 means the payload begins at Byte $100 \times 8 = \mathbf{800}$.</p>
+        </div>
+
+        <div class="concept-card">
+          <h4>Trap 3: Checksum Scope Fallacy</h4>
+          <p><strong>The Trap:</strong> Claiming the IPv4 checksum validates user payload data.<br>
+          <strong>The Reality:</strong> The IPv4 checksum protects the <strong>IP header only</strong>. Payload data is checked by TCP/UDP or Ethernet CRC.</p>
+        </div>
+
+        <div class="concept-card">
+          <h4>Trap 4: Router Reassembly Fallacy</h4>
+          <p><strong>The Trap:</strong> Believing intermediate routers reassemble fragments.<br>
+          <strong>The Reality:</strong> Routers NEVER reassemble fragments in standard forwarding; reassembly occurs <strong>exclusively at the final destination host</strong>.</p>
+        </div>
+
+        <div class="concept-card">
+          <h4>Trap 5: DF=1 Drop Misconception</h4>
+          <p><strong>The Trap:</strong> Thinking a router ignores DF=1 if a packet is too large.<br>
+          <strong>The Reality:</strong> If $L > \text{MTU}$ and $\text{DF} = 1$, the router <strong>must discard the packet</strong> and return ICMP Type 3 Code 4.</p>
+        </div>
+
+        <div class="concept-card">
+          <h4>Trap 6: Checksum Error ICMP Fallacy</h4>
+          <p><strong>The Trap:</strong> Expecting an ICMP error when a checksum fails.<br>
+          <strong>The Reality:</strong> Corrupted headers are <strong>silently dropped</strong> with zero ICMP messages sent, because the Source IP cannot be trusted.</p>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <h3>2. Practice Problem: Three-Way Fragmentation Drill</h3>
+        <p><strong>Problem:</strong> An IP datagram has Total Length = 2000 bytes with $\text{IHL} = 5$. It encounters an egress link with $\text{MTU} = 700\text{ bytes}$. Calculate the Offset, MF flag, and Total Length for all fragments.</p>
+
+        <h4>Solution:</h4>
+        <ol>
+          <li>Payload = $2000 - 20 = 1980\text{ bytes}$.</li>
+          <li>Max data per fragment = $\lfloor (700 - 20)/8 \rfloor \times 8 = \lfloor 680/8 \rfloor \times 8 = 85 \times 8 = \mathbf{680\text{ bytes}}$.</li>
+          <li>Number of fragments: $1980 / 680 = 2.91 \implies \mathbf{3\text{ fragments}}$.
+            <ul>
+              <li>Fragment 1: 680 bytes of data. $\text{Offset} = 0 / 8 = \mathbf{0}$, $\text{MF} = \mathbf{1}$, $\text{Total Length} = 680 + 20 = \mathbf{700}$.</li>
+              <li>Fragment 2: 680 bytes of data. $\text{Offset} = 680 / 8 = \mathbf{85}$, $\text{MF} = \mathbf{1}$, $\text{Total Length} = 680 + 20 = \mathbf{700}$.</li>
+              <li>Fragment 3: $1980 - 1360 = 620$ bytes of data. $\text{Offset} = 1360 / 8 = \mathbf{170}$, $\text{MF} = \mathbf{0}$, $\text{Total Length} = 620 + 20 = \mathbf{640}$.</li>
+            </ul>
+          </li>
+          <li>Verification: $170 \times 8 + 620 = 1360 + 620 = 1980\text{ bytes}$. Verified!</li>
+        </ol>
+      </div>
+
+      <div class="concept-card">
+        <h3>3. Chapter Summary: Core Takeaways</h3>
+        <ul>
+          <li><strong>32-Bit Alignment:</strong> The IPv4 header is 20 to 60 bytes long, organized into 32-bit rows. IHL is scaled by 4; Total Length is in raw bytes ($L_{\max} = 65,535\text{B}$).</li>
+          <li><strong>Fragmentation:</strong> Controlled by 16-bit ID, Flags (DF, MF), and 13-bit Fragment Offset scaled by 8 bytes. Intermediate fragments must have payload sizes divisible by 8.</li>
+          <li><strong>Hop Control:</strong> TTL decrements at each hop, bounding packet lifespan and powering Traceroute via ICMP Time Exceeded (Type 11).</li>
+          <li><strong>Integrity:</strong> 16-bit One's Complement Header Checksum protects the header only and must be incrementally updated at every hop.</li>
+          <li><strong>Router Pipeline:</strong> Line-rate forwarding executes checksum validation $\to$ TTL decrement $\to$ LPM TCAM lookup $\to$ checksum update $\to$ Layer 2 rewrite.</li>
+        </ul>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Curated references and next chapter navigation.</div>
+        <div class="resource-grid">
+          <a href="ch14-logical-addressing-ipv4.html">
+            📘 Chapter 14: Logical Addressing &amp; IPv4
+            <small>Review 32-bit CIDR prefix math, subnetting, and Longest Prefix Match.</small>
+          </a>
+          <a href="ch16-ipv6.html">
+            📘 Chapter 16: IPv6 Architecture, Addressing &amp; Protocols
+            <small>Proceed to the 128-bit next-generation Internet Protocol and base header design.</small>
+          </a>
+          <a href="../index.html">
+            🏠 MiniBook Course Overview &amp; Syllabus
+            <small>View complete syllabus map, unit progress, and mock exam schedules.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+  <!-- PREV/NEXT NAV -->
+  <div class="prev-next">
+    <a href="ch14-logical-addressing-ipv4.html" class="nav-btn">&larr; Ch 14: Logical Addressing &amp; IPv4</a>
+    <a href="ch16-ipv6.html" class="nav-btn primary">Next: Ch 16 IPv6 Architecture &rarr;</a>
+  </div>
+
+</div>
+</main>
+
+<!-- FLOATING MODE PANEL -->
+<div id="mode-panel">
+  <button class="mode-btn active" data-mode="all">📚 All</button>
+  <button class="mode-btn uni-btn" data-mode="uni">🎓 Uni</button>
+  <button class="mode-btn gate-btn" data-mode="gate">⚡ GATE</button>
+  <button class="mode-btn adv-btn" data-mode="advanced">🔬 Adv</button>
+</div>
+
+<!-- TTS FLOATING PANEL -->
+<div id="tts-panel">
+  <div class="tts-controls">
+    <button class="tts-btn" id="tts-play" title="Play/Pause">▶</button>
+    <button class="tts-btn" id="tts-stop" title="Stop">⏹</button>
+    <div class="tts-speed"><span>Speed</span><input type="range" id="tts-rate" min="0.5" max="2" step="0.1" value="1"><span id="tts-rate-label">1.0x</span></div>
+  </div>
+  <div class="tts-voice"><select id="tts-voice-select"><option>Loading voices…</option></select></div>
+</div>
+
+<!-- SEARCH MODAL -->
+<div id="search-modal">
+  <div class="search-box">
+    <div class="search-input-wrap"><span class="s-icon">🔍</span><input id="search-input" type="text" placeholder="Search chapters, topics, protocols…" autocomplete="off"></div>
+    <div id="search-results"></div>
+    <div class="search-hint"><span><kbd>↵</kbd> to navigate</span><span><kbd>Esc</kbd> to close</span><span><kbd>Ctrl+K</kbd> to open</span></div>
+  </div>
+</div>
+
+<!-- MOBILE NAV -->
+<nav id="mobile-nav">
+  <button class="mobile-nav-btn" onclick="SidebarManager?.toggle()"><span class="icon">☰</span>Menu</button>
+  <a href="../index.html" class="mobile-nav-btn"><span class="icon">🏠</span>Home</a>
+  <a href="ch15-ipv4-internals.html" class="mobile-nav-btn active"><span class="icon">📖</span>Chapters</a>
+  <a href="../exams/mock-exam.html" class="mobile-nav-btn"><span class="icon">📝</span>Exams</a>
+  <button class="mobile-nav-btn" onclick="SearchManager?.open()"><span class="icon">🔍</span>Search</button>
+</nav>
+
+<div id="toast-container"></div>
+<script src="../assets/js/state.js"></script>
+<script src="../assets/js/core.js"></script>
+<script src="../assets/js/modes.js"></script>
+<script src="../assets/js/tts.js"></script>
+<script src="../assets/js/timer-settings.js"></script>
+<script src="../assets/js/timer.js"></script>
+<script src="../assets/js/timer-analytics.js"></script>
+<script src="../assets/js/timer-notifications.js"></script>
+<script src="../assets/js/timer-ui.js"></script>
+<script src="../assets/js/print.js"></script>
+<script src="../assets/js/notes.js"></script>
+<script src="../assets/js/glossary.js"></script>
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>

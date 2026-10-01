@@ -1,426 +1,698 @@
 /**
- * ⚡ Arpit | notes.js — CN MiniBook 2026
- * NotesManager: Inline text annotations, persistent via localStorage
- * Enhanced: sanitization, debounce, export/import, error boundaries, JSDoc
+ * Engineering Minibooks · Computer Networks
+ * notes.js — local, inline annotations with accessible editorial UI.
+ *
+ * Compatibility contract preserved:
+ *   window.NotesManager
+ *   NotesManager.init()
+ *   NotesManager.getAllNotes()
+ *   NotesManager.deleteNote()
+ *   NotesManager.exportNotes()
+ *   NotesManager.importNotes()
+ *
+ * Storage keys are preserved for existing notebooks.
  */
 'use strict';
 
 const NotesManager = (() => {
   const STORE_KEY = 'cn-notes-v1';
-  let notes = {};        // { noteId: { text, noteText, page, color, ts } }
+  const LEGACY_STORE_KEY = 'os-notes-v1';
+  const PAGE = location.pathname.split('/').pop() || 'index';
+
+  // Engineering Minibooks annotation palette: restrained, semantic, theme-safe.
+  const COLORS = [
+    { value: '#7A6035', label: 'Ochre' },
+    { value: '#5E654F', label: 'Olive' },
+    { value: '#536A7E', label: 'Mineral blue' },
+    { value: '#805F4B', label: 'Clay' },
+    { value: '#6C5A67', label: 'Dusty plum' }
+  ];
+
+  const LEGACY_COLOR_MAP = {
+    '#fbbf24': '#7A6035',
+    '#34d399': '#5E654F',
+    '#60a5fa': '#536A7E',
+    '#f87171': '#805F4B',
+    '#a78bfa': '#6C5A67'
+  };
+
+  let notes = {};
   let popover = null;
   let addBtn = null;
   let currentRange = null;
   let currentText = '';
+  let focusReturnEl = null;
+  let initialized = false;
+  let isMarking = false;
 
-  const COLORS = ['#fbbf24', '#34d399', '#60a5fa', '#f87171', '#a78bfa'];
-  const PAGE = location.pathname.split('/').pop() || 'index';
-
-  /* ── STORAGE ─────────────────────────────────────────────── */
-  function load() {
-    try { notes = JSON.parse(localStorage.getItem(STORE_KEY) || localStorage.getItem('os-notes-v1') || '{}'); } catch { notes = {}; }
+  function debounce(fn, wait = 300) {
+    let timeout = null;
+    return (...args) => {
+      window.clearTimeout(timeout);
+      timeout = window.setTimeout(() => fn(...args), wait);
+    };
   }
-  function save() {
-    try { localStorage.setItem(STORE_KEY, JSON.stringify(notes)); } catch(e) {
-      if (window.Toast) Toast.show('Note storage full!', 'error');
+
+  function normalizeColor(value) {
+    const input = String(value || '').trim().toLowerCase();
+    if (LEGACY_COLOR_MAP[input]) return LEGACY_COLOR_MAP[input];
+    const valid = COLORS.some((item) => item.value.toLowerCase() === input);
+    return valid ? value : COLORS[0].value;
+  }
+
+  function normalizeNote(raw) {
+    if (!raw || typeof raw !== 'object') return null;
+
+    const selectedText = String(raw.selectedText ?? raw.text ?? '').trim();
+    const noteText = String(raw.noteText ?? raw.note ?? '').trim();
+    const page = String(raw.page ?? '').trim();
+    if (!selectedText || !noteText || !page) return null;
+
+    const ts = Number.isFinite(Number(raw.ts)) ? Number(raw.ts) : Date.now();
+
+    return {
+      selectedText,
+      noteText,
+      color: normalizeColor(raw.color),
+      page,
+      ts
+    };
+  }
+
+  function normalizeCollection(input) {
+    const source = input && typeof input === 'object' && !Array.isArray(input) ? input : {};
+    const output = {};
+
+    Object.entries(source).forEach(([id, raw]) => {
+      const note = normalizeNote(raw);
+      if (note) output[String(id)] = note;
+    });
+
+    return output;
+  }
+
+  function load() {
+    try {
+      const current = localStorage.getItem(STORE_KEY);
+      const legacy = localStorage.getItem(LEGACY_STORE_KEY);
+      notes = normalizeCollection(JSON.parse(current || legacy || '{}'));
+
+      // Quietly migrate legacy values if the current store was absent.
+      if (!current && legacy && Object.keys(notes).length) {
+        localStorage.setItem(STORE_KEY, JSON.stringify(notes));
+      }
+    } catch (error) {
+      console.warn('NotesManager: unable to load notes.', error);
+      notes = {};
     }
   }
 
-  /* ── ID from text ────────────────────────────────────────── */
+  function save() {
+    try {
+      localStorage.setItem(STORE_KEY, JSON.stringify(notes));
+      return true;
+    } catch (error) {
+      console.error('NotesManager: unable to save notes.', error);
+      if (window.Toast) Toast.show('Notes could not be saved in browser storage.', 'error');
+      return false;
+    }
+  }
+
   function makeId(text) {
-    return 'n-' + [...text.slice(0,40)].reduce((a,c) => ((a<<5)-a)+c.charCodeAt(0)|0, 0).toString(36).replace('-','x');
+    // Preserve the original ID algorithm so existing notes remain addressable.
+    return 'n-' + [...String(text).slice(0, 40)]
+      .reduce((acc, char) => ((acc << 5) - acc) + char.charCodeAt(0) | 0, 0)
+      .toString(36)
+      .replace('-', 'x');
   }
 
-  /* ── Sanitization (prevent XSS) ──────────────────────────── */
-  function sanitizeHTML(str) {
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
+  function createElement(tag, props = {}, text = null) {
+    const el = document.createElement(tag);
+    Object.entries(props).forEach(([key, value]) => {
+      if (value == null) return;
+      if (key === 'className') el.className = value;
+      else if (key === 'textContent') el.textContent = value;
+      else if (key === 'style' && typeof value === 'object') Object.assign(el.style, value);
+      else if (key === 'dataset' && typeof value === 'object') {
+        Object.entries(value).forEach(([k, v]) => { el.dataset[k] = String(v); });
+      } else if (key in el) {
+        try { el[key] = value; } catch { el.setAttribute(key, String(value)); }
+      } else {
+        el.setAttribute(key, String(value));
+      }
+    });
+    if (text != null) el.textContent = text;
+    return el;
   }
 
-  /* ── Debounce utility (render once per burst) ────────────── */
-  function debounce(fn, wait = 300) {
-    let timeout;
-    return function(...args) {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => fn(...args), wait);
-    };
+  function toast(message, type = 'info') {
+    if (window.Toast?.show) window.Toast.show(message, type);
   }
-  const debouncedRenderMarks = debounce(() => renderAllNoteMarks(), 500);
 
-  /* ── SELECTION POPOVER ───────────────────────────────────── */
   function createAddBtn() {
-    addBtn = document.createElement('button');
-    addBtn.id = 'note-add-btn';
-    addBtn.innerHTML = '✏️ Add Note';
-    addBtn.setAttribute('aria-label', 'Add note to selection');
+    if (addBtn) return addBtn;
+    addBtn = createElement('button', {
+      id: 'note-add-btn',
+      type: 'button',
+      className: 'note-add-action',
+      'aria-label': 'Add a note to the selected text'
+    });
+    addBtn.textContent = 'Add note';
     document.body.appendChild(addBtn);
     addBtn.addEventListener('click', openNotePopover);
+    return addBtn;
   }
 
   function showAddBtn(rect) {
-    if (!addBtn) createAddBtn();
-    addBtn.style.top  = `${rect.top + window.scrollY - 44}px`;
-    addBtn.style.left = `${rect.left + rect.width/2}px`;
-    addBtn.classList.add('visible');
+    const button = createAddBtn();
+    const halfWidth = (button.offsetWidth || 96) / 2;
+    const center = rect.left + (rect.width / 2);
+    const left = Math.min(
+      Math.max(center, halfWidth + 12),
+      window.innerWidth - halfWidth - 12
+    );
+    const top = Math.max(rect.top + window.scrollY - 42, 12 + window.scrollY);
+
+    button.style.left = `${left}px`;
+    button.style.top = `${top}px`;
+    button.classList.add('visible');
   }
 
   function hideAddBtn() {
     addBtn?.classList.remove('visible');
   }
 
-  /* ── NOTE POPOVER ────────────────────────────────────────── */
-  function openNotePopover() {
+  function closePopover(options = {}) {
+    const { restoreFocus = true } = options;
     if (popover) popover.remove();
-    hideAddBtn();
-
-    const noteId = makeId(currentText);
-    const existing = notes[noteId];
-
-    popover = document.createElement('div');
-    popover.id = 'note-popover';
-    popover.innerHTML = `
-      <div class="note-pop-header">
-        <span>📝 Note</span>
-        <button id="note-pop-close" aria-label="Close">✕</button>
-      </div>
-      <div class="note-pop-quote">"${sanitizeHTML(currentText.slice(0, 80))}${currentText.length > 80 ? '…' : ''}"</div>
-      <textarea id="note-pop-text" placeholder="Write your note here…" rows="4">${sanitizeHTML(existing?.noteText || '')}</textarea>
-      <div class="note-pop-colors">
-        ${COLORS.map(c => `<button class="note-color-btn ${existing?.color===c?'active':''}" data-color="${c}" style="background:${c}" aria-label="Color ${c}"></button>`).join('')}
-      </div>
-      <div class="note-pop-actions">
-        <button id="note-pop-save" class="note-btn-primary">💾 Save</button>
-        ${existing ? `<button id="note-pop-delete" class="note-btn-danger">🗑 Delete</button>` : ''}
-      </div>
-    `;
-
-    // Position near selection
-    if (currentRange) {
-      const rect = currentRange.getBoundingClientRect();
-      popover.style.top  = `${rect.bottom + window.scrollY + 8}px`;
-      popover.style.left = `${Math.min(rect.left, window.innerWidth - 320)}px`;
-    }
-
-    document.body.appendChild(popover);
-
-    // Color picker
-    let selectedColor = existing?.color || COLORS[0];
-    popover.querySelectorAll('.note-color-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        popover.querySelectorAll('.note-color-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        selectedColor = btn.dataset.color;
-      });
-    });
-
-    document.getElementById('note-pop-close').addEventListener('click', closePopover);
-    document.getElementById('note-pop-save').addEventListener('click', () => {
-      const text = document.getElementById('note-pop-text').value.trim();
-      if (!text) { closePopover(); return; }
-      saveNote(noteId, currentText, text, selectedColor);
-      closePopover();
-    });
-    document.getElementById('note-pop-delete')?.addEventListener('click', () => {
-      deleteNote(noteId);
-      closePopover();
-    });
-
-    setTimeout(() => popover?.querySelector('textarea')?.focus(), 50);
-  }
-
-  function closePopover() {
-    popover?.remove();
     popover = null;
     currentRange = null;
     currentText = '';
+
+    if (restoreFocus && focusReturnEl?.isConnected) {
+      try { focusReturnEl.focus(); } catch { /* non-fatal */ }
+    }
+    focusReturnEl = null;
   }
 
-  /* ── SAVE / DELETE ───────────────────────────────────────── */
-  function saveNote(noteId, selectedText, noteText, color) {
-    try {
-      notes[noteId] = { selectedText, noteText: noteText.trim(), color, page: PAGE, ts: Date.now() };
-      save();
-      debouncedRenderMarks();
-      renderSidebarPanel();
-      if (window.Toast) Toast.show('📝 Note saved!', 'success');
-    } catch (e) {
-      console.error('saveNote error:', e);
-      if (window.Toast) Toast.show('❌ Failed to save note', 'error');
+  function placePopover(anchorRect, element) {
+    const margin = 12;
+    const gap = 8;
+    const width = Math.min(element.offsetWidth || 320, window.innerWidth - (margin * 2));
+    const height = element.offsetHeight || 220;
+
+    let left = anchorRect.left + window.scrollX;
+    let top = anchorRect.bottom + window.scrollY + gap;
+
+    left = Math.min(left, window.innerWidth + window.scrollX - width - margin);
+    left = Math.max(left, window.scrollX + margin);
+
+    const viewportBottom = window.scrollY + window.innerHeight - margin;
+    if (top + height > viewportBottom) {
+      const above = anchorRect.top + window.scrollY - height - gap;
+      if (above >= window.scrollY + margin) top = above;
     }
+
+    element.style.left = `${left}px`;
+    element.style.top = `${top}px`;
+  }
+
+  function buildColorPicker(selectedColor) {
+    const wrapper = createElement('div', {
+      className: 'note-pop-colors',
+      role: 'group',
+      'aria-label': 'Annotation colour'
+    });
+
+    let chosen = normalizeColor(selectedColor);
+    const buttons = [];
+
+    COLORS.forEach((color, index) => {
+      const button = createElement('button', {
+        type: 'button',
+        className: 'note-color-btn',
+        dataset: { color: color.value, label: color.label },
+        title: color.label,
+        'aria-label': `Use ${color.label} annotation colour`,
+        'aria-pressed': color.value === chosen ? 'true' : 'false'
+      });
+      button.style.backgroundColor = color.value;
+      if (color.value === chosen) button.classList.add('active');
+
+      button.addEventListener('click', () => {
+        chosen = color.value;
+        buttons.forEach((item) => {
+          const active = item.dataset.color === chosen;
+          item.classList.toggle('active', active);
+          item.setAttribute('aria-pressed', String(active));
+        });
+      });
+
+      buttons.push(button);
+      wrapper.appendChild(button);
+
+      if (index === 0) button.dataset.defaultOption = 'true';
+    });
+
+    return { element: wrapper, getValue: () => chosen };
+  }
+
+  function buildNotePopover({ noteId, note, quote, title, anchorRect }) {
+    const root = createElement('div', {
+      id: 'note-popover',
+      role: 'dialog',
+      'aria-modal': 'false',
+      'aria-labelledby': 'note-pop-title',
+      dataset: { noteId }
+    });
+
+    const header = createElement('div', { className: 'note-pop-header' });
+    const heading = createElement('span', { id: 'note-pop-title', className: 'note-pop-title' }, title);
+    const close = createElement('button', {
+      id: 'note-pop-close',
+      type: 'button',
+      className: 'icon-btn note-pop-close',
+      'aria-label': 'Close note editor'
+    }, '×');
+    header.append(heading, close);
+
+    const quoteEl = createElement('div', { className: 'note-pop-quote' });
+    quoteEl.textContent = `“${quote.slice(0, 120)}${quote.length > 120 ? '…' : ''}”`;
+
+    const label = createElement('label', { className: 'note-pop-label', htmlFor: 'note-pop-text' }, 'Your note');
+    const textarea = createElement('textarea', {
+      id: 'note-pop-text',
+      rows: 5,
+      placeholder: 'Write a short explanation, reminder, or connection…',
+      spellcheck: true,
+      autocomplete: 'off'
+    });
+    textarea.value = note?.noteText || '';
+
+    const colorPicker = buildColorPicker(note?.color);
+
+    const actions = createElement('div', { className: 'note-pop-actions' });
+    const saveButton = createElement('button', {
+      id: 'note-pop-save',
+      type: 'button',
+      className: 'note-btn-primary'
+    }, note ? 'Save changes' : 'Save note');
+    actions.appendChild(saveButton);
+
+    if (note) {
+      const deleteButton = createElement('button', {
+        id: 'note-pop-delete',
+        type: 'button',
+        className: 'note-btn-danger'
+      }, 'Delete');
+      actions.appendChild(deleteButton);
+      deleteButton.addEventListener('click', () => {
+        deleteNote(noteId);
+        closePopover();
+      });
+    }
+
+    root.append(header, quoteEl, label, textarea, colorPicker.element, actions);
+    document.body.appendChild(root);
+
+    close.addEventListener('click', () => closePopover());
+    saveButton.addEventListener('click', () => {
+      const value = textarea.value.trim();
+      if (!value) {
+        toast('Write a note before saving.', 'warning');
+        textarea.focus();
+        return;
+      }
+      saveNote(noteId, quote, value, colorPicker.getValue(), note?.page || PAGE);
+      closePopover();
+    });
+
+    root.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closePopover();
+      }
+      if (event.key === 'Enter' && (event.metaKey || event.ctrlKey) && event.target === textarea) {
+        event.preventDefault();
+        saveButton.click();
+      }
+    });
+
+    requestAnimationFrame(() => {
+      placePopover(anchorRect, root);
+      textarea.focus();
+    });
+
+    return root;
+  }
+
+  function openNotePopover() {
+    if (!currentText || !currentRange) return;
+    hideAddBtn();
+    closePopover({ restoreFocus: false });
+
+    const noteId = makeId(currentText);
+    const existing = notes[noteId];
+    focusReturnEl = addBtn;
+    buildNotePopover({
+      noteId,
+      note: existing,
+      quote: currentText,
+      title: existing ? 'Edit note' : 'Add note',
+      anchorRect: currentRange.getBoundingClientRect()
+    });
+  }
+
+  function openNotePopoverForExisting(noteId, markEl) {
+    const note = notes[noteId];
+    if (!note) return;
+
+    closePopover({ restoreFocus: false });
+    hideAddBtn();
+    focusReturnEl = markEl;
+    currentText = note.selectedText;
+    currentRange = null;
+
+    buildNotePopover({
+      noteId,
+      note,
+      quote: note.selectedText,
+      title: 'Edit note',
+      anchorRect: markEl.getBoundingClientRect()
+    });
+  }
+
+  function saveNote(noteId, selectedText, noteText, color, page = PAGE) {
+    const normalized = normalizeNote({ selectedText, noteText, color, page, ts: Date.now() });
+    if (!normalized) {
+      toast('The note could not be saved.', 'error');
+      return;
+    }
+
+    notes[noteId] = normalized;
+    if (!save()) return;
+
+    debouncedRenderMarks();
+    renderSidebarPanel();
+    window.dispatchEvent(new CustomEvent('cn:notes-changed', { detail: { noteId, action: 'save' } }));
+    toast('Note saved.', 'success');
   }
 
   function deleteNote(noteId) {
-    try {
-      delete notes[noteId];
-      save();
-      debouncedRenderMarks();
-      renderSidebarPanel();
-      if (window.Toast) Toast.show('🗑 Note deleted');
-    } catch (e) {
-      console.error('deleteNote error:', e);
-      if (window.Toast) Toast.show('❌ Failed to delete note', 'error');
-    }
+    if (!Object.prototype.hasOwnProperty.call(notes, noteId)) return;
+    delete notes[noteId];
+    if (!save()) return;
+
+    debouncedRenderMarks();
+    renderSidebarPanel();
+    window.dispatchEvent(new CustomEvent('cn:notes-changed', { detail: { noteId, action: 'delete' } }));
+    toast('Note deleted.', 'info');
   }
 
-  /* ── MARK ANNOTATED TEXT ─────────────────────────────────── */
-  let isMarking = false;
+  function shouldSkipElement(element) {
+    if (!element || element.nodeType !== Node.ELEMENT_NODE) return true;
+    if (element.closest('#sidebar, #main-header, #note-popover, #note-add-btn, script, style, textarea, input, select, button, a')) return true;
+    if (element.closest('.glossary-tooltip, .glossary-term')) return true;
+    if (element.closest('[contenteditable="true"], [data-no-annotate], .note-mark')) return true;
+    return false;
+  }
+
   function renderAllNoteMarks() {
-    if (isMarking) return; // Guard: skip if already rendering
+    if (isMarking) return;
+    const main = document.getElementById('main-content');
+    if (!main) return;
+
+    isMarking = true;
     try {
-      isMarking = true;
-      // Remove existing marks
-      document.querySelectorAll('.note-mark').forEach(el => {
-        const parent = el.parentNode;
+      document.querySelectorAll('.note-mark').forEach((mark) => {
+        const parent = mark.parentNode;
         if (parent) {
-          parent.replaceChild(document.createTextNode(el.textContent), el);
+          parent.replaceChild(document.createTextNode(mark.textContent || ''), mark);
           parent.normalize();
         }
       });
-
-      const main = document.getElementById('main-content');
-      if (!main) return;
 
       Object.entries(notes).forEach(([noteId, note]) => {
         if (note.page !== PAGE) return;
         markText(main, note.selectedText, noteId, note.color, note.noteText);
       });
-    } catch (e) {
-      console.error('renderAllNoteMarks error:', e);
+    } catch (error) {
+      console.error('NotesManager: render marks failed.', error);
     } finally {
       isMarking = false;
     }
   }
 
   function markText(container, searchText, noteId, color, noteText) {
-    if (!searchText || searchText.length < 3) return;
+    const query = String(searchText || '').trim();
+    if (query.length < 3) return;
+
     try {
       const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
       const nodes = [];
       while (walker.nextNode()) nodes.push(walker.currentNode);
 
       for (const node of nodes) {
-        if (!node.textContent) continue;
-        const idx = node.textContent.indexOf(searchText);
-        if (idx === -1) continue;
-        // Skip if already inside a mark
-        if (node.parentElement?.classList.contains('note-mark')) continue;
-        // Skip sidebar/header/popovers
-        if (node.parentElement?.closest('#sidebar,#main-header,#note-popover')) continue;
+        const parent = node.parentElement;
+        if (!parent || shouldSkipElement(parent)) continue;
 
-        const before = document.createTextNode(node.textContent.slice(0, idx));
-        const mark   = document.createElement('mark');
-        mark.className = 'note-mark';
-        mark.textContent = searchText;
-        mark.style.setProperty('--note-color', color);
-        mark.dataset.noteId = noteId;
-        mark.title = `📝 ${noteText}`;
-        mark.setAttribute('tabindex', '0');
-        mark.setAttribute('aria-label', `Note: ${noteText}`);
-        const after = document.createTextNode(node.textContent.slice(idx + searchText.length));
+        const content = node.textContent || '';
+        const index = content.indexOf(query);
+        if (index === -1) continue;
 
-        if (node.parentNode) {
-          node.parentNode.insertBefore(before, node);
-          node.parentNode.insertBefore(mark, node);
-          node.parentNode.insertBefore(after, node);
-          node.parentNode.removeChild(node);
-        }
+        const fragment = document.createDocumentFragment();
+        if (index > 0) fragment.appendChild(document.createTextNode(content.slice(0, index)));
 
-        // Click to edit
-        mark.addEventListener('click', e => {
-          currentText = searchText;
-          openNotePopoverForExisting(noteId, mark);
+        const mark = createElement('mark', {
+          className: 'note-mark',
+          dataset: { noteId },
+          title: `Note: ${noteText}`,
+          tabIndex: 0,
+          'aria-label': `Annotated text. Note: ${noteText}`
         });
-        break; // Only mark first occurrence
+        mark.textContent = query;
+        mark.style.setProperty('--note-color', color);
+        mark.style.borderBottomColor = color;
+        mark.style.backgroundColor = `color-mix(in srgb, ${color} 18%, transparent)`;
+
+        const remainder = content.slice(index + query.length);
+        fragment.appendChild(mark);
+        if (remainder) fragment.appendChild(document.createTextNode(remainder));
+
+        node.parentNode.replaceChild(fragment, node);
+
+        const open = (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          openNotePopoverForExisting(noteId, mark);
+        };
+        mark.addEventListener('click', open);
+        mark.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter' || event.key === ' ') open(event);
+        });
+        break;
       }
-    } catch (e) {
-      console.error('markText error:', e);
+    } catch (error) {
+      console.error('NotesManager: markText failed.', error);
     }
   }
 
-  function openNotePopoverForExisting(noteId, markEl) {
-    if (popover) popover.remove();
-    const note = notes[noteId];
-    if (!note) return;
-    currentText = note.selectedText;
-    currentRange = null;
+  const debouncedRenderMarks = debounce(renderAllNoteMarks, 450);
 
-    popover = document.createElement('div');
-    popover.id = 'note-popover';
-    const rect = markEl.getBoundingClientRect();
-    popover.style.top  = `${rect.bottom + window.scrollY + 8}px`;
-    popover.style.left = `${Math.min(rect.left, window.innerWidth - 320)}px`;
-
-    popover.innerHTML = `
-      <div class="note-pop-header">
-        <span>📝 Edit Note</span>
-        <button id="note-pop-close" aria-label="Close">✕</button>
-      </div>
-      <div class="note-pop-quote">"${sanitizeHTML(note.selectedText.slice(0,80))}${note.selectedText.length>80?'…':''}"</div>
-      <textarea id="note-pop-text" rows="4">${sanitizeHTML(note.noteText)}</textarea>
-      <div class="note-pop-colors">
-        ${COLORS.map(c => `<button class="note-color-btn ${note.color===c?'active':''}" data-color="${c}" style="background:${c}"></button>`).join('')}
-      </div>
-      <div class="note-pop-actions">
-        <button id="note-pop-save" class="note-btn-primary">💾 Save</button>
-        <button id="note-pop-delete" class="note-btn-danger">🗑 Delete</button>
-      </div>
-    `;
-    document.body.appendChild(popover);
-
-    let selectedColor = note.color;
-    popover.querySelectorAll('.note-color-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        popover.querySelectorAll('.note-color-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        selectedColor = btn.dataset.color;
-      });
-    });
-
-    document.getElementById('note-pop-close').addEventListener('click', closePopover);
-    document.getElementById('note-pop-save').addEventListener('click', () => {
-      const text = document.getElementById('note-pop-text').value.trim();
-      if (!text) { closePopover(); return; }
-      saveNote(noteId, note.selectedText, text, selectedColor);
-      closePopover();
-    });
-    document.getElementById('note-pop-delete').addEventListener('click', () => {
-      deleteNote(noteId);
-      closePopover();
-    });
-    setTimeout(() => popover?.querySelector('textarea')?.focus(), 50);
+  function cssEscape(value) {
+    if (window.CSS?.escape) return window.CSS.escape(String(value));
+    return String(value).replace(/[^a-zA-Z0-9_-]/g, (char) => `\\${char.charCodeAt(0).toString(16)} `);
   }
 
-  /* ── SIDEBAR PANEL ───────────────────────────────────────── */
   function renderSidebarPanel() {
     const panel = document.getElementById('notes-sidebar-list');
     if (!panel) return;
-    const pageNotes = Object.entries(notes).filter(([,n]) => n.page === PAGE);
+
+    panel.replaceChildren();
+    const pageNotes = Object.entries(notes)
+      .filter(([, note]) => note.page === PAGE)
+      .sort((a, b) => b[1].ts - a[1].ts);
+
     if (!pageNotes.length) {
-      panel.innerHTML = '<p class="text-xs text-muted" style="padding:8px 12px">No notes on this page yet.</p>';
+      const empty = createElement('p', { className: 'text-xs text-muted' }, 'No notes on this page yet.');
+      empty.style.padding = '8px 12px';
+      panel.appendChild(empty);
       return;
     }
-    panel.innerHTML = pageNotes
-      .sort((a,b) => b[1].ts - a[1].ts)
-      .map(([id, n]) => `
-        <div class="note-sidebar-item" data-id="${id}">
-          <div class="note-sidebar-color" style="background:${n.color}"></div>
-          <div class="note-sidebar-body">
-            <div class="note-sidebar-quote">"${n.selectedText.slice(0,40)}${n.selectedText.length>40?'…':''}"</div>
-            <div class="note-sidebar-text">${n.noteText.slice(0,60)}${n.noteText.length>60?'…':''}</div>
-          </div>
-        </div>
-      `).join('');
+
+    pageNotes.forEach(([id, note]) => {
+      const item = createElement('div', {
+        className: 'note-sidebar-item',
+        dataset: { id },
+        role: 'button',
+        tabIndex: 0,
+        'aria-label': `Open note: ${note.noteText}`
+      });
+
+      const swatch = createElement('div', { className: 'note-sidebar-color' });
+      swatch.style.backgroundColor = note.color;
+
+      const body = createElement('div', { className: 'note-sidebar-body' });
+      const quote = createElement('div', { className: 'note-sidebar-quote' });
+      quote.textContent = `“${note.selectedText.slice(0, 52)}${note.selectedText.length > 52 ? '…' : ''}”`;
+      const noteText = createElement('div', { className: 'note-sidebar-text' });
+      noteText.textContent = `${note.noteText.slice(0, 72)}${note.noteText.length > 72 ? '…' : ''}`;
+      body.append(quote, noteText);
+      item.append(swatch, body);
+
+      const openFromSidebar = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        const mark = document.querySelector(`.note-mark[data-note-id="${cssEscape(id)}"]`);
+        if (mark) {
+          mark.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          window.setTimeout(() => openNotePopoverForExisting(id, mark), 180);
+        } else {
+          toast('The original highlighted text could not be located on this page.', 'warning');
+        }
+      };
+
+      item.addEventListener('click', openFromSidebar);
+      item.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') openFromSidebar(event);
+      });
+      panel.appendChild(item);
+    });
   }
 
-  /* ── GLOBAL NOTES PAGE (for progress.html) ───────────────── */
-  /**
-   * Get all notes for current page or all pages
-   * @returns {Object} notes object { noteId: { selectedText, noteText, color, page, ts } }
-   */
-  function getAllNotes() { return notes; }
+  function getAllNotes() {
+    return { ...notes };
+  }
 
-  /**
-   * Export notes to JSON file (standalone backup)
-   */
   function exportNotes() {
     try {
-      const blob = new Blob([JSON.stringify(notes, null, 2)], { type: 'application/json' });
-      const url  = URL.createObjectURL(blob);
-      const a    = document.createElement('a');
-      a.href = url;
-      a.download = `cn-notes-backup-${new Date().toISOString().slice(0,10)}.json`;
-      a.click();
+      const payload = {
+        format: 'engineering-minibooks-notes',
+        version: 1,
+        exportedAt: new Date().toISOString(),
+        notes
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = `cn-notes-backup-${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
       URL.revokeObjectURL(url);
-      if (window.Toast) Toast.show('📥 Notes exported!', 'success');
-    } catch (e) {
-      console.error('exportNotes error:', e);
-      if (window.Toast) Toast.show('❌ Export failed', 'error');
+      toast('Notes exported.', 'success');
+    } catch (error) {
+      console.error('NotesManager: export failed.', error);
+      toast('Notes export failed.', 'error');
     }
   }
 
-  /**
-   * Import notes from JSON file
-   */
   function importNotes() {
     try {
       const input = document.createElement('input');
       input.type = 'file';
-      input.accept = '.json';
-      input.onchange = (e) => {
-        const file = e.target.files[0];
+      input.accept = '.json,application/json';
+      input.addEventListener('change', () => {
+        const file = input.files?.[0];
         if (!file) return;
+
         const reader = new FileReader();
-        reader.onload = (ev) => {
+        reader.onload = () => {
           try {
-            const imported = JSON.parse(ev.target.result);
-            notes = { ...notes, ...imported }; // Merge
-            save();
+            const parsed = JSON.parse(String(reader.result || '{}'));
+            const incoming = parsed?.notes && typeof parsed.notes === 'object' ? parsed.notes : parsed;
+            const normalized = normalizeCollection(incoming);
+            if (!Object.keys(normalized).length) throw new Error('No valid notes found');
+
+            notes = { ...notes, ...normalized };
+            if (!save()) return;
             renderSidebarPanel();
             debouncedRenderMarks();
-            if (window.Toast) Toast.show('📤 Notes imported!', 'success');
-          } catch (err) {
-            if (window.Toast) Toast.show('❌ Invalid file!', 'error');
+            window.dispatchEvent(new CustomEvent('cn:notes-changed', { detail: { action: 'import' } }));
+            toast('Notes imported.', 'success');
+          } catch (error) {
+            console.error('NotesManager: import validation failed.', error);
+            toast('The selected file is not a valid notes backup.', 'error');
           }
         };
+        reader.onerror = () => toast('Could not read the selected file.', 'error');
         reader.readAsText(file);
-      };
+      }, { once: true });
       input.click();
-    } catch (e) {
-      console.error('importNotes error:', e);
+    } catch (error) {
+      console.error('NotesManager: import failed.', error);
     }
   }
 
-  /* ── SELECTION LISTENER ──────────────────────────────────── */
+  function isInsideMainContent(range) {
+    if (!range) return false;
+    const node = range.commonAncestorContainer;
+    if (node?.nodeType === Node.ELEMENT_NODE) return Boolean(node.closest('#main-content'));
+    return Boolean(node?.parentElement?.closest('#main-content'));
+  }
+
   function initSelectionListener() {
-    document.addEventListener('mouseup', e => {
-      // Ignore if clicking inside popover or note btn
-      if (e.target.closest('#note-popover, #note-add-btn')) return;
+    document.addEventListener('mouseup', (event) => {
+      if (event.target.closest?.('#note-popover, #note-add-btn, .note-mark')) return;
 
-      const sel = window.getSelection();
-      if (!sel || sel.isCollapsed) { hideAddBtn(); return; }
-
-      const text = sel.toString().trim();
-      if (text.length < 3 || text.length > 500) { hideAddBtn(); return; }
-
-      // Must be inside main content
-      const range = sel.getRangeAt(0);
-      if (!range.commonAncestorContainer.closest?.('#main-content') &&
-          !range.commonAncestorContainer.parentElement?.closest('#main-content')) {
-        hideAddBtn(); return;
+      const selection = window.getSelection();
+      if (!selection || selection.isCollapsed || selection.rangeCount === 0) {
+        hideAddBtn();
+        return;
       }
 
-      currentText  = text;
+      const text = selection.toString().trim();
+      if (text.length < 3 || text.length > 500) {
+        hideAddBtn();
+        return;
+      }
+
+      const range = selection.getRangeAt(0);
+      if (!isInsideMainContent(range)) {
+        hideAddBtn();
+        return;
+      }
+
+      currentText = text;
       currentRange = range.cloneRange();
       showAddBtn(range.getBoundingClientRect());
     });
 
-    // Close popover on outside click
-    document.addEventListener('mousedown', e => {
-      if (!e.target.closest('#note-popover, #note-add-btn, .note-mark')) {
+    document.addEventListener('mousedown', (event) => {
+      if (event.target.closest?.('#note-popover, #note-add-btn, .note-mark')) return;
+      closePopover({ restoreFocus: false });
+      if (!event.target.closest?.('#main-content')) hideAddBtn();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        const hadPopover = Boolean(popover);
         closePopover();
-        if (!e.target.closest('#main-content')) hideAddBtn();
+        hideAddBtn();
+        if (hadPopover) event.stopPropagation();
       }
     });
 
-    // Close on Escape
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') { closePopover(); hideAddBtn(); }
+    window.addEventListener('resize', () => {
+      hideAddBtn();
+      if (popover) {
+        const anchor = document.querySelector(`.note-mark[data-note-id="${cssEscape(popover.dataset?.noteId || '')}"]`);
+        if (anchor) placePopover(anchor.getBoundingClientRect(), popover);
+      }
     });
   }
 
-  /* ── INIT ────────────────────────────────────────────────── */
-  /**
-   * Initialize NotesManager: load from storage, set up listeners, render marks
-   */
   function init() {
+    if (initialized) return;
+    initialized = true;
     try {
       load();
       initSelectionListener();
       renderAllNoteMarks();
       renderSidebarPanel();
-    } catch (e) {
-      console.error('NotesManager init error:', e);
+    } catch (error) {
+      console.error('NotesManager: initialization failed.', error);
     }
   }
 

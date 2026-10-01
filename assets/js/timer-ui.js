@@ -21,21 +21,17 @@ window.PomoUI = (() => {
     if (ring) ring.style.strokeDasharray = CIRCUMFERENCE;
   }
 
-  function _setRingProgress(fraction, phase) {
+  function _setRingProgress(fraction) {
     const ring = $('ring-progress');
     if (!ring) return;
     ring.style.strokeDashoffset = CIRCUMFERENCE * (1 - Math.max(0, Math.min(1, fraction)));
-    const color = phase === 'work' ? 'var(--accent)'
-                : phase === 'short_break' ? 'var(--green)'
-                : 'var(--teal)';
-    ring.style.stroke = color;
   }
 
   // ── Phase helpers ─────────────────────────────────────────────────────────
   function _phaseLabel(phase, sessions) {
-    if (phase === 'work')        return `⏰ FOCUS · #${sessions + 1}`;
-    if (phase === 'short_break') return '☕ SHORT BREAK';
-    return '🌿 LONG BREAK';
+    if (phase === 'work')        return `FOCUS · #${sessions + 1}`;
+    if (phase === 'short_break') return 'SHORT BREAK';
+    return 'LONG BREAK';
   }
 
   // ── Session dots (progress toward long break) ─────────────────────────────
@@ -68,13 +64,14 @@ window.PomoUI = (() => {
     }
 
     // Ring
-    _setRingProgress(fraction, state.phase);
+    _setRingProgress(fraction);
 
     // Start/pause button
     const btn = $('pomo-start');
     if (btn) {
-      btn.textContent = state.running ? '⏸ Pause' : '▶ Start';
+      btn.textContent = state.running ? 'Pause' : 'Start';
       btn.setAttribute('aria-label', state.running ? 'Pause timer' : 'Start timer');
+      btn.setAttribute('aria-pressed', state.running ? 'true' : 'false');
       btn.dataset.running = state.running ? '1' : '';
     }
 
@@ -85,9 +82,8 @@ window.PomoUI = (() => {
     document.body.dataset.phase = state.phase;
 
     // Tab / document title
-    const icon  = state.phase === 'work' ? '⏰' : '☕';
-    const pause = state.running ? '' : '⏸ ';
-    document.title = `${pause}${fmt(state.remaining)} ${icon} Pomodoro`;
+    if (!PomoUI._baseTitle) PomoUI._baseTitle = document.title;
+    document.title = state.running ? `${fmt(state.remaining)} · ${PomoUI._baseTitle}` : PomoUI._baseTitle;
 
     // ARIA live timer (update every 60s to avoid spam)
     const liveEl = $('pomo-time-live');
@@ -103,7 +99,7 @@ window.PomoUI = (() => {
     const streakEl = $('pomo-streak');
     if (goalText) goalText.textContent = `${stats.today} / ${stats.goal} sessions`;
     if (goalFill) goalFill.style.width = `${stats.goalProgress * 100}%`;
-    if (streakEl) streakEl.textContent = `🔥 ${stats.streak.current}`;
+    if (streakEl) streakEl.textContent = String(stats.streak.current);
   }
 
   // ── Toast system ──────────────────────────────────────────────────────────
@@ -253,21 +249,36 @@ window.PomoUI = (() => {
     const chart = $('week-chart');
     if (chart && stats.week) {
       const maxVal = Math.max(...stats.week.map(d => d.count), 1);
-      chart.innerHTML = stats.week.map(({ label, count }) => {
+      chart.replaceChildren();
+      const todayKey = new Date();
+      const y = todayKey.getFullYear();
+      const m = String(todayKey.getMonth() + 1).padStart(2, '0');
+      const d = String(todayKey.getDate()).padStart(2, '0');
+      const today = `${y}-${m}-${d}`;
+      stats.week.forEach(({ date, label, count }) => {
         const pct = Math.round((count / maxVal) * 100);
-        const isToday = label === new Date().toLocaleDateString('en', { weekday: 'short' });
-        return `
-          <div class="week-bar-wrap">
-            <div class="week-bar-col">
-              <div class="week-bar ${isToday ? 'week-bar-today' : ''}"
-                   style="height:${pct}%"
-                   title="${count} session${count !== 1 ? 's' : ''}">
-                ${count > 0 ? `<span class="week-bar-count">${count}</span>` : ''}
-              </div>
-            </div>
-            <div class="week-day ${isToday ? 'week-day-today' : ''}">${label}</div>
-          </div>`;
-      }).join('');
+        const isToday = date === today;
+        const wrap = document.createElement('div');
+        wrap.className = 'week-bar-wrap';
+        const col = document.createElement('div');
+        col.className = 'week-bar-col';
+        const bar = document.createElement('div');
+        bar.className = `week-bar${isToday ? ' week-bar-today' : ''}`;
+        bar.style.height = `${pct}%`;
+        bar.title = `${count} session${count !== 1 ? 's' : ''}`;
+        if (count > 0) {
+          const countEl = document.createElement('span');
+          countEl.className = 'week-bar-count';
+          countEl.textContent = String(count);
+          bar.appendChild(countEl);
+        }
+        col.appendChild(bar);
+        const day = document.createElement('div');
+        day.className = `week-day${isToday ? ' week-day-today' : ''}`;
+        day.textContent = label;
+        wrap.append(col, day);
+        chart.appendChild(wrap);
+      });
     }
 
     // Goal ring
@@ -278,7 +289,7 @@ window.PomoUI = (() => {
       const r   = 28;
       const circ = 2 * Math.PI * r;
       goalRing.style.strokeDasharray  = circ;
-      goalRing.style.strokeDashoffset = circ * (1 - stats.goalProgress);
+      goalRing.style.strokeDashoffset = circ * (1 - Math.max(0, Math.min(1, Number(stats.goalProgress) || 0)));
     }
   }
 
@@ -333,9 +344,9 @@ window.PomoUI = (() => {
 
     PomoBus.on('timer:phase_change', state => {
       _render(state);
-      const msg = state.phase === 'work'        ? '⏰ Back to work!'
-                : state.phase === 'short_break' ? '☕ Short break!'
-                :                                 '🌿 Long break — you earned it!';
+      const msg = state.phase === 'work'
+        ? 'Back to work'
+        : state.phase === 'short_break' ? 'Short break' : 'Long break — you earned it';
       showToast(msg, state.phase === 'work' ? 'info' : 'success');
     });
 
@@ -363,14 +374,16 @@ window.PomoUI = (() => {
     const toggleBtn = document.createElement('button');
     // ── Button lives on WIDGET (not card) so it stays visible when card is hidden
     toggleBtn.id = 'pomo-collapse-btn';
-    toggleBtn.title = 'Collapse / Expand timer';
+    toggleBtn.type = 'button';
+    toggleBtn.title = 'Collapse or expand timer';
+    toggleBtn.setAttribute('aria-controls', 'pomo-card');
     toggleBtn.style.cssText = [
       'position:absolute;top:-14px;left:50%;transform:translateX(-50%)',
       'width:40px;height:20px;border-radius:99px',
-      'background:var(--surface,#141416);border:1px solid rgba(255,255,255,.15)',
-      'color:var(--text-muted,#77758a);font-size:10px;cursor:pointer',
+      'background:var(--em-surface-1,#fefdfc);border:1px solid var(--em-border,#d6d3cb)',
+      'color:var(--em-text-secondary,#5f615c);font-size:10px;cursor:pointer',
       'display:flex;align-items:center;justify-content:center',
-      'box-shadow:0 2px 8px rgba(0,0,0,.5);z-index:20;transition:all .2s',
+      'box-shadow:0 2px 8px rgba(37,38,36,.10);z-index:20;transition:all 160ms ease',
       'pointer-events:all'
     ].join(';');
 
@@ -379,7 +392,8 @@ window.PomoUI = (() => {
     widget.style.overflow = 'visible';
     widget.appendChild(toggleBtn); // ← on WIDGET, not card
 
-    // Inject one-time collapsed styles
+    // Inject one-time collapsed-state styles. Geometry remains local to this widget
+    // and relies on the shared semantic colour tokens.
     if (!document.getElementById('pomo-collapse-style')) {
       const st = document.createElement('style');
       st.id = 'pomo-collapse-style';
@@ -387,17 +401,20 @@ window.PomoUI = (() => {
         #pomodoro.pomo-collapsed #pomo-card { display: none !important; }
         #pomodoro.pomo-collapsed {
           width: auto !important; min-width: unset !important;
-          padding: 8px 16px !important;
-          background: var(--bg-elevated, #1c1c21) !important;
-          border: 1px solid rgba(255,255,255,.12) !important;
-          border-radius: 99px !important;
-          cursor: pointer;
+          padding: 8px 14px !important;
+          background: var(--em-surface-1, #fff) !important;
+          border: 1px solid var(--em-border, #d6d3cb) !important;
+          border-radius: 999px !important;
+          color: var(--em-text, #252624) !important;
+          box-shadow: 0 10px 28px rgba(0,0,0,.12) !important;
         }
-        #pomo-pill-time { display: none; font-family: monospace; font-size: 13px;
-          color: var(--accent, #7c3aed); font-weight: 700; letter-spacing: .05em; white-space: nowrap; }
+        #pomo-pill-time { display: none; font-family: var(--font-mono, monospace); font-size: 13px;
+          color: var(--em-accent, #46645f); font-weight: 650; letter-spacing: .04em; white-space: nowrap; }
         #pomodoro.pomo-collapsed #pomo-pill-time { display: inline !important; }
-        #pomo-collapse-btn { transition: transform .2s; }
+        #pomo-collapse-btn { transition: transform 160ms ease, background-color 160ms ease, border-color 160ms ease; }
+        #pomo-collapse-btn:focus-visible { outline: 2px solid var(--em-accent, #46645f); outline-offset: 2px; }
         #pomodoro.pomo-collapsed #pomo-collapse-btn { transform: translateX(-50%) rotate(180deg); }
+        @media (prefers-reduced-motion: reduce) { #pomo-collapse-btn { transition: none !important; } }
       `;
       document.head.appendChild(st);
     }
@@ -413,8 +430,9 @@ window.PomoUI = (() => {
     function applyState() {
       widget.classList.toggle('pomo-collapsed', collapsed);
       toggleBtn.title = collapsed ? 'Expand timer' : 'Collapse timer';
+      toggleBtn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
       const st = window.PomoTimer?.getState();
-      if (pill) pill.textContent = st ? `⏰ ${fmt(st.remaining)}` : '⏰ 25:00';
+      if (pill) pill.textContent = st ? fmt(st.remaining) : '25:00';
       localStorage.setItem(CKEY, collapsed ? '1' : '0');
     }
 
@@ -431,7 +449,7 @@ window.PomoUI = (() => {
 
     // Update pill time on tick
     PomoBus.on('timer:tick', (state) => {
-      if (pill && collapsed) pill.textContent = `📍 ${fmt(state.remaining)}`;
+      if (pill && collapsed) pill.textContent = fmt(state.remaining);
     });
 
     applyState();

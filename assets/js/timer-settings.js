@@ -44,7 +44,17 @@ window.PomoSettings = (() => {
     };
   }
 
+  function _canUseStorage() {
+    try {
+      const probe = '__pomo_settings_probe__';
+      localStorage.setItem(probe, '1');
+      localStorage.removeItem(probe);
+      return true;
+    } catch (_) { return false; }
+  }
+
   function load() {
+    if (!_canUseStorage()) { _s = { ...DEFAULTS }; return; }
     try {
       const saved = _safeParse(localStorage.getItem(KEY) || '{}');
       _s = _normalizeSettings(saved);
@@ -54,7 +64,9 @@ window.PomoSettings = (() => {
   function save() {
     _s = _normalizeSettings(_s);
     try { localStorage.setItem(KEY, JSON.stringify(_s)); } catch (_) {}
-    if (typeof PomoBus !== 'undefined' && PomoBus?.emit) PomoBus.emit('settings:changed', { ..._s });
+    if (typeof window.PomoBus !== 'undefined' && window.PomoBus?.emit) {
+      window.PomoBus.emit('settings:changed', { ..._s });
+    }
   }
 
   function get(key) {

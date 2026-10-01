@@ -4,7 +4,7 @@
 <!-- ⚡ Arpit | CN MiniBook 2026 -->
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="author" content="Arpit">
-<meta name="description" content="Chapter 1: Network Fundamentals — CN MiniBook. Definitions, goals, components, protocols, standards, encapsulation, terminology.">
+<meta name="description" content="Chapter 1: Network Fundamentals — CN MiniBook. Definitions, goals, 4 network elements, 5 components of data communication, criteria, protocols, standards, encapsulation, latency math.">
 <title>Ch 1 — Network Fundamentals | CN MiniBook 🌐 Arpit</title>
 <link rel="manifest" href="../manifest.json">
 <link rel="stylesheet" href="../assets/css/main.css">
@@ -52,14 +52,14 @@
     </div>
     <div class="sidebar-section">
       <div class="sidebar-section-label">Chapter 1 — Sections</div>
-      <a href="#s-definition" class="sidebar-link active"><span class="link-icon">📌</span>1.1 What is a Computer Network? <span class="uni-syllabus-badge">🎓 Uni: Overview & Importance</span></a>
-      <a href="#s-components" class="sidebar-link"><span class="link-icon">🔩</span>1.2 Basic Network Components <span class="uni-syllabus-badge">🎓 Uni: 5 Components</span></a>
-      <a href="#s-criteria" class="sidebar-link"><span class="link-icon">📊</span>1.3 Network Criteria</a>
-      <a href="#s-protocols" class="sidebar-link"><span class="link-icon">📜</span>1.4 Protocols and Standards</a>
-      <a href="#s-encapsulation" class="sidebar-link"><span class="link-icon">📦</span>1.5 Encapsulation & Decapsulation</a>
-      <a href="#s-terminology" class="sidebar-link"><span class="link-icon">📖</span>1.6 Networking Terminology</a>
+      <a href="#s-definition" class="sidebar-link active"><span class="link-icon">📌</span>1.1 What is a Computer Network? <span class="uni-syllabus-badge">🎓 Uni: Overview</span></a>
+      <a href="#s-components" class="sidebar-link"><span class="link-icon">🔩</span>1.2 Five Components of Data Comm <span class="uni-syllabus-badge">🎓 Uni: 5 Components</span></a>
+      <a href="#s-criteria" class="sidebar-link"><span class="link-icon">📊</span>1.3 Network Criteria <span class="uni-syllabus-badge">🎓 Uni: Criteria</span></a>
+      <a href="#s-protocols" class="sidebar-link"><span class="link-icon">📜</span>1.4 Protocols &amp; Standards <span class="uni-syllabus-badge">🎓 Uni: Standards</span></a>
+      <a href="#s-encapsulation" class="sidebar-link"><span class="link-icon">📦</span>1.5 Encapsulation &amp; Decapsulation <span class="uni-syllabus-badge">🎓 Uni: Layering</span></a>
+      <a href="#s-terminology" class="sidebar-link"><span class="link-icon">📖</span>1.6 Networking Terminology <span class="uni-syllabus-badge">🎓 Uni: Metrics</span></a>
     </div>
-                <div class="sidebar-section">
+    <div class="sidebar-section">
       <div class="sidebar-section-label part-label part-i">Part I — Introduction</div>
       <a href="ch01-fundamentals.html" class="sidebar-link active part-i"><span class="link-icon">📡</span>Ch 1 — Fundamentals</a>
       <a href="ch02-types-topologies.html" class="sidebar-link"><span class="link-icon">🔗</span>Ch 2 — Types &amp; Topologies</a>
@@ -78,6 +78,18 @@
       <a href="ch09-protocols-sliding.html" class="sidebar-link"><span class="link-icon">🔄</span>Ch 9 — Protocols &amp; Sliding Window</a>
       <a href="ch10-mac-ethernet.html" class="sidebar-link"><span class="link-icon">🌐</span>Ch 10 — MAC &amp; Ethernet</a>
     </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label part-label part-iv">Part IV — Network Layer</div>
+      <a href="ch11-network-layer-foundations.html" class="sidebar-link"><span class="link-icon">🗺️</span>Ch 11 — Network Layer Foundations</a>
+      <a href="ch12-shortest-path-routing.html" class="sidebar-link"><span class="link-icon">🧭</span>Ch 12 — Shortest Path Routing</a>
+      <a href="ch13-link-state-distance-vector.html" class="sidebar-link part-iv"><span class="link-icon">🔁</span>Ch 13 — Link-State &amp; Distance-Vector</a>
+      <a href="ch14-logical-addressing-ipv4.html" class="sidebar-link part-iv"><span class="link-icon">🏷️</span>Ch 14 — Logical Addressing &amp; IPv4</a>
+      <a href="ch15-ipv4-internals.html" class="sidebar-link part-iv"><span class="link-icon">📦</span>Ch 15 — IPv4 Internals</a>
+      
+      <a href="ch17-address-mapping-icmp.html" class="sidebar-link part-iv"><span class="link-icon">🔎</span>Ch 17 — Address Mapping &amp; ICMP</a>
+      <a href="ch18-routers-switches-firewalls.html" class="sidebar-link part-iv"><span class="link-icon">🛡️</span>Ch 18 — Routers, Switches &amp; Firewalls</a>
+    </div>
+
     <div class="sidebar-section">
       <div class="sidebar-section-label">My Notes</div>
       <div id="notes-sidebar-list"></div>
@@ -98,17 +110,17 @@
       <a href="../index.html">Home</a><span>›</span><span>Part I — Introduction</span><span>›</span><span style="color:var(--tx-primary)">Chapter 1</span>
     </div>
     <div class="chapter-num">📡 Chapter 1 · Part I — Introduction</div>
-        <div class="chapter-part-banner part-i">
+    <div class="chapter-part-banner part-i">
       <span class="part-banner-badge">Part I</span>
       <span>Introduction to Computer Networks</span>
     </div>
-    <h1 class="chapter-title">Computer Network Fundamentals</h1>
+    <h1 class="chapter-title">Computer Network Fundamentals — Foundations</h1>
     <div class="chapter-meta">
-      <span class="chapter-meta-item" style="background:var(--uni-bg-hd); border-color:var(--uni-b-hd); color:var(--uni-text); font-weight:700;">🎓 Uni Syllabus: Overview & Importance</span>
+      <span class="chapter-meta-item" style="background:var(--uni-bg-hd); border-color:var(--uni-b-hd); color:var(--uni-text); font-weight:700;">🎓 Uni Syllabus: Overview &amp; Importance</span>
       <span class="chapter-meta-item">📖 ~35 min read</span>
       <span class="chapter-meta-item">🎯 6 Sections</span>
-      <span class="chapter-meta-item">📝 Group A</span>
-      <span class="chapter-meta-item">⚡ Exam Weight: Medium</span>
+      <span class="chapter-meta-item">📝 Mid-Sem: Core</span>
+      <span class="chapter-meta-item">⚡ Exam Priority: Core</span>
     </div>
   </div>
 
@@ -118,7 +130,7 @@
     <div><strong>Introduction to Computer Networks:</strong> Overview of computer networks and their importance, communication components, criteria, protocols, standards, and encapsulation.</div>
   </div>
 
-    <!-- UNIVERSITY SYLLABUS FILTER SWITCH -->
+  <!-- UNIVERSITY SYLLABUS FILTER SWITCH -->
   <div class="uni-mode-toggle-card">
     <div>
       <div style="font-weight:700; font-size:0.95rem; color:var(--tx-primary); display:flex; align-items:center; gap:0.4rem;">
@@ -135,16 +147,16 @@
   </div>
 
   <!-- TABLE OF CONTENTS -->
-  <div class="toc-card reveal">
+  <div class="toc-card">
     <div class="toc-part-tag part-i">Part I · Introduction to Computer Networks</div>
-    <h3>📋 Table of Contents</h3>
-    <div class="toc-list">
+    <div class="toc-title"><span>📑</span>Table of Contents</div>
+    <div class="toc-grid">
       <a href="#s-definition" class="toc-item in-uni"><span class="toc-num">1.1</span>What is a Computer Network? <span class="toc-uni-tag">🎓 Uni Core</span></a>
-      <a href="#s-components" class="toc-item in-uni"><span class="toc-num">1.2</span>Basic Network Components <span class="toc-uni-tag">🎓 Uni Core</span></a>
-      <a href="#s-criteria" class="toc-item in-uni"><span class="toc-num">1.3</span>Network Criteria <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-components" class="toc-item in-uni"><span class="toc-num">1.2</span>Five Components of Data Communication <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-criteria" class="toc-item in-uni"><span class="toc-num">1.3</span>Network Criteria (Performance, Reliability, Security) <span class="toc-uni-tag">🎓 Uni Core</span></a>
       <a href="#s-protocols" class="toc-item in-uni"><span class="toc-num">1.4</span>Protocols and Standards <span class="toc-uni-tag">🎓 Uni Core</span></a>
-      <a href="#s-encapsulation" class="toc-item in-uni"><span class="toc-num">1.5</span>Encapsulation & Decapsulation <span class="toc-uni-tag">🎓 Uni Core</span></a>
-      <a href="#s-terminology" class="toc-item in-uni"><span class="toc-num">1.6</span>Networking Terminology <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-encapsulation" class="toc-item in-uni"><span class="toc-num">1.5</span>Encapsulation &amp; Decapsulation <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-terminology" class="toc-item in-uni"><span class="toc-num">1.6</span>Networking Terminology &amp; Latency Deep Dive <span class="toc-uni-tag">🎓 Uni Core</span></a>
     </div>
   </div>
 
@@ -153,21 +165,34 @@
     <span class="callout-icon">🎯</span>
     <div><strong>After studying this chapter you will be able to:</strong>
       <ul style="margin:6px 0 0;padding-left:18px">
-        <li>Define a computer network and explain why networks are important</li>
-        <li>Identify the five basic components of data communication</li>
-        <li>Distinguish between performance, reliability, and security as network criteria</li>
-        <li>Explain what a protocol is and differentiate between de jure and de facto standards</li>
-        <li>Trace the encapsulation and decapsulation process through the protocol stack</li>
-        <li>Define and distinguish key networking terms: bandwidth, throughput, latency, jitter, RTT</li>
+        <li>Define a computer network and distinguish end devices, intermediary devices, links, and protocols.</li>
+        <li>Identify the five basic components of data communication and distinguish simplex, half-duplex, and full-duplex transmission.</li>
+        <li>Evaluate network performance, reliability, and security criteria using engineering metrics.</li>
+        <li>Explain protocol syntax, semantics, and timing, and differentiate <em>de jure</em> from <em>de facto</em> standards.</li>
+        <li>Trace the encapsulation and decapsulation PDU process through the protocol stack.</li>
+        <li>Calculate total packet latency ($d_{\text{trans}} + d_{\text{prop}} + d_{\text{queue}} + d_{\text{proc}}$) and distinguish bandwidth, throughput, jitter, and RTT.</li>
       </ul>
     </div>
   </div>
 
+  <!-- STUDY PATH -->
+  <div class="study-path">
+    <strong>🧭 How to study this chapter (First-Principles Progression):</strong>
+    <div class="path">
+      <span>1. Network Idea &amp; 4 Pillars</span> → 
+      <span>2. 5 Communication Components</span> → 
+      <span>3. Evaluation Criteria</span> → 
+      <span>4. Protocols &amp; Standards</span> → 
+      <span>5. Layer Encapsulation</span> → 
+      <span>6. Latency &amp; Metrics</span>
+    </div>
+    <div style="margin-top:.65rem;color:var(--tx-muted);font-size:.84rem"><strong>Exam Lens:</strong> Sections 1.1 to 1.6 are classified as <code>data-midsem="core"</code> for the University Unit I Mid-Sem exam.</div>
+  </div>
 
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 1.1 — WHAT IS A COMPUTER NETWORK? -->
 <!-- ═══════════════════════════════════════════════════════ -->
-<section id="s-definition" data-search-section="What is a computer network definition importance goals resource sharing communication reliability scalability performance cost" class="section-in-uni  ">
+<section id="s-definition" data-midsem="core" data-exam-priority="core" data-search-section="What is a computer network definition importance goals resource sharing communication reliability scalability performance cost end devices intermediary devices hosts communication links protocols ARPANET" class="section-in-uni content-section">
   <div class="section-heading">
     <h2 class="prose">1.1 What is a Computer Network?
       <button class="bookmark-btn" data-id="s-definition" data-label="1.1 What is a Computer Network?" title="Bookmark">🔖</button>
@@ -175,307 +200,535 @@
   </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Overview of computer networks and their importance</strong></span>
+    <span>Prescribed syllabus topic: <strong>Overview of computer networks and their importance</strong></span>
   </div>
 
-
   <div class="prose">
-
+    <!-- 1. DEFINITION -->
     <div class="def-box">
       <div class="def-term">Computer Network — Definition</div>
-      A <strong>computer network</strong> is a collection of two or more interconnected computing devices (computers, printers, servers, smartphones, IoT sensors, etc.) that can exchange data and share resources through communication links and established protocols.
+      A <strong>computer network</strong> is an interconnected collection of autonomous computing devices (computers, servers, smartphones, IoT sensors, network printers) that communicate with each other over physical or wireless transmission media using established communication protocols to exchange data and share hardware/software resources.
     </div>
 
-    <p>Think of a computer network like a postal system. Just as the postal system connects houses (devices) through roads (links) using agreed-upon rules (addresses, stamps, ZIP codes — i.e., protocols), a computer network connects computing devices through communication media using networking protocols.</p>
-
-    <h3>Why Are Computer Networks Important?</h3>
-
-    <p>Before networks existed, every computer was a standalone island. If you wanted to share a file, you physically carried it on a floppy disk. Networks transformed computing by enabling:</p>
+    <!-- 2. WHY IT EXISTS -->
+    <h3>Why Do Computer Networks Exist?</h3>
+    <p>Before computer networking, computers functioned as isolated information silos. Moving data required physically transporting storage media (such as punch cards, magnetic tapes, or floppy disks)—an inefficient, error-prone manual process known historically as <em>"sneakernet."</em></p>
+    <p>Networks were created to solve fundamental collaboration, economic, and operational challenges:</p>
 
     <div class="mode-uni">
-      <div class="mode-badge uni">🎓 University</div>
-
-      <h4>Goals of Computer Networking</h4>
-
+      <div class="mode-badge uni">🎓 University Core</div>
+      <h4>The 6 Primary Goals of Computer Networking</h4>
       <table class="data-table reveal">
         <thead>
-          <tr><th>Goal</th><th>What It Means</th><th>Real-World Example</th></tr>
+          <tr><th>Goal</th><th>Engineering Meaning</th><th>Real-World Example</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>Resource Sharing</strong></td>
-            <td>Hardware, software, and data can be shared across the network, reducing duplication and cost</td>
-            <td>100 employees sharing 5 network printers instead of each having one; shared database servers</td>
+            <td><strong>1. Resource Sharing</strong></td>
+            <td>Hardware peripherals, storage volumes, and application software are pooled across users to eliminate redundant purchases.</td>
+            <td>50 workstations sharing 2 high-capacity laser printers; an entire company accessing a centralized Oracle SQL database.</td>
           </tr>
           <tr>
-            <td><strong>Communication</strong></td>
-            <td>Enables people and programs to exchange information instantly regardless of physical distance</td>
-            <td>Email, video conferencing, instant messaging, VoIP calls</td>
+            <td><strong>2. Seamless Communication</strong></td>
+            <td>Enables instant bidirectional exchange of information regardless of geographical distance.</td>
+            <td>VoIP calling, video conferencing (Zoom/Teams), email (SMTP), real-time collaborative code editing.</td>
           </tr>
           <tr>
-            <td><strong>Reliability</strong></td>
-            <td>Critical data and services can be replicated across multiple machines; if one fails, another takes over</td>
-            <td>Cloud storage (Google Drive stores your data on multiple servers); RAID; failover clusters</td>
+            <td><strong>3. High Reliability &amp; Redundancy</strong></td>
+            <td>Critical data and services are replicated across multiple autonomous nodes. If one machine fails, alternate nodes maintain uptime.</td>
+            <td>RAID storage arrays, DNS root server replication, Google Cloud failover instances, Content Delivery Networks (CDNs).</td>
           </tr>
           <tr>
-            <td><strong>Scalability</strong></td>
-            <td>Networks can grow incrementally — add new devices without redesigning the entire system</td>
-            <td>Adding a new employee's laptop to an existing office network; scaling cloud servers on demand</td>
+            <td><strong>4. Incremental Scalability</strong></td>
+            <td>System processing power and storage capacity can be scaled up incrementally by attaching additional nodes without redesigning the architecture.</td>
+            <td>Connecting new employee laptops to an office VLAN; adding Kubernetes cluster worker nodes during traffic spikes.</td>
           </tr>
           <tr>
-            <td><strong>Performance</strong></td>
-            <td>Distributing workload across multiple machines improves speed and response time</td>
-            <td>Load balancing across web servers; distributed computing (MapReduce, SETI@home)</td>
+            <td><strong>5. Distributed Performance</strong></td>
+            <td>Computationally intensive workloads can be divided and executed concurrently across multiple networked nodes.</td>
+            <td>Distributed rendering farms, Apache Hadoop / Spark big data processing, financial risk modeling.</td>
           </tr>
           <tr>
-            <td><strong>Cost Reduction</strong></td>
-            <td>Sharing expensive resources (printers, storage, internet connection) reduces per-user cost</td>
-            <td>One high-speed internet connection shared by an entire office via a router + switch</td>
+            <td><strong>6. Cost Reduction</strong></td>
+            <td>Sharing expensive infrastructure (such as enterprise optical links or cloud GPU instances) dramatically lowers per-user operating costs.</td>
+            <td>Consolidating individual cellular data cards into a shared gigabit fiber internet gateway for an entire university campus.</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <div class="callout tip">
-      <span class="callout-icon">💡</span>
-      <div><strong>MCQ Memory Trick:</strong> Remember the goals as <strong>"R-C-R-S-P-C"</strong> → Resource sharing, Communication, Reliability, Scalability, Performance, Cost. If an MCQ says "Which is NOT a goal of networking?" — any option that doesn't fit these six categories is your answer.</div>
+    <!-- 3. HOW IT WORKS — THE 4 FOUNDATIONAL PILLARS -->
+    <h3>How a Network Works: The 4 Foundational Elements</h3>
+    <p>Every computer network—from a home Wi-Fi setup to the global Internet—is built from four fundamental building blocks:</p>
+
+    <div class="def-box">
+      <div class="def-term">The 4 Foundational Network Elements</div>
+      <ol style="margin:6px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:8px">
+        <li><strong>End Devices (Hosts):</strong> Devices that form the interface between the human user and the communication network. They are either the <em>source (originator)</em> or <em>destination (consumer)</em> of data. Examples include desktop PCs, laptops, smartphones, database servers, web servers, IP cameras, and smart sensors.</li>
+        <li><strong>Intermediary Devices:</strong> Devices that connect individual hosts to the network, interconnect different network segments, and manage the flow of data across the infrastructure. They regenerate signals, maintain transmission pathways, filter traffic, and route packets. Examples include Layer-2 switches, Layer-3 routers, wireless access points (APs), and hardware firewalls.</li>
+        <li><strong>Communication Links (Transmission Media):</strong> The physical or unguided transmission channel providing the pathway over which electromagnetic or optical signals travel. Examples include copper twisted-pair cables (Cat6 UTP), coaxial cable, optical fiber, and wireless radio frequency (RF) spectrum.</li>
+        <li><strong>Protocols:</strong> The predefined rulebooks and technical specifications that govern how data is formatted, addressed, transmitted, received, and interpreted across all communicating devices.</li>
+      </ol>
     </div>
 
-    <h3>A Brief Historical Context</h3>
+    <!-- 4. DIAGRAM -->
+    <h3>Structural Architecture Diagram</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">Network Architecture: Hosts, Intermediary Devices &amp; Links</span></div>
+      <pre><code>
+  [ HOST A ] (Workstation)
+      │  (Cat6 UTP Link)
+      ▼
+ ┌───────────────┐
+ │ Layer-2 Switch│ ◄── [Intermediary Device: Local Forwarding]
+ └───────┬───────┘
+         │  (Gigabit Fiber Link)
+         ▼
+ ┌───────────────┐
+ │ Layer-3 Router│ ◄── [Intermediary Device: Path Selection &amp; Routing]
+ └───────┬───────┘
+         │  (WAN Fiber / Internet Backbone)
+         ▼
+ ┌───────────────┐
+ │ Layer-3 Router│ ◄── [Remote Gateway]
+ └───────┬───────┘
+         │
+ ┌───────┴───────┐
+ │ Layer-2 Switch│
+ └───────┬───────┘
+         │  (Cat6 UTP Link)
+         ▼
+  [ HOST B ] (Web / Database Server)
 
-    <p>The idea of connecting computers began in the late 1960s with <strong>ARPANET</strong> (1969), funded by the U.S. Department of Defense's ARPA. ARPANET connected four university computers and demonstrated that packet-switched networking was viable. This evolved into the Internet we use today.</p>
+  * PROTOCOLS (HTTP, TCP, IP, Ethernet) coordinate data formatting at every stage.
+      </code></pre>
+    </div>
 
-    <p>Key milestones:</p>
+    <!-- 5. CONCRETE EXAMPLE -->
+    <p><strong>Real-World Concrete Example:</strong> When you open a browser on your laptop (an <strong>End Device</strong>) to fetch a lecture slide from your college portal, your data travels over Wi-Fi radio waves (an <strong>Unguided Link</strong>) to an Access Point and Switch (<strong>Intermediary Devices</strong>), traverses a campus fiber optic backbone (a <strong>Guided Link</strong>) through a firewall and router (<strong>Intermediary Devices</strong>), using HTTPS over TCP/IP (<strong>Protocols</strong>), before arriving at the college storage server (an <strong>End Device</strong>).</p>
+
+    <!-- 6. IMPORTANT PROPERTIES & HISTORICAL PROGRESSION -->
+    <h3>Historical Progression: From ARPANET to the Modern Internet</h3>
+    <p>Understanding how networking evolved prevents confusion regarding why certain protocols and standards exist today:</p>
     <ul>
-      <li><strong>1969</strong> — ARPANET: first packet-switched network (4 nodes)</li>
-      <li><strong>1974</strong> — Vint Cerf & Bob Kahn propose TCP/IP</li>
-      <li><strong>1983</strong> — ARPANET switches to TCP/IP (birth of the modern Internet)</li>
-      <li><strong>1991</strong> — World Wide Web invented by Tim Berners-Lee at CERN</li>
-      <li><strong>Today</strong> — Billions of devices connected via the Internet</li>
+      <li><strong>1969 — ARPANET:</strong> Funded by the U.S. Department of Defense's Advanced Research Projects Agency (DARPA), ARPANET connected four university computer nodes (UCLA, Stanford Research Institute, UC Santa Barbara, and University of Utah). It served as the world's first operational large-scale <strong>packet-switched</strong> network.</li>
+      <li><strong>1974 — Invention of TCP/IP:</strong> Computer scientists Vint Cerf and Bob Kahn published the landmark paper describing the Transmission Control Protocol (TCP), establishing an open architecture for internetworking disparate networks.</li>
+      <li><strong>January 1, 1983 — Flag Day:</strong> ARPANET officially phased out its original Network Control Program (NCP) and mandated TCP/IP as its standard protocol suite. This date is widely celebrated as the official birth of the modern Internet.</li>
+      <li><strong>1991 — World Wide Web (WWW):</strong> Tim Berners-Lee invented the World Wide Web at CERN, developing HTML, HTTP, and URLs, transforming the Internet from a research tool into a universal public communication medium.</li>
+      <li><strong>Present Day:</strong> An open, decentralized global network of over 30 billion interconnected computing and IoT devices.</li>
     </ul>
+
+    <!-- 7. ADVANTAGES & LIMITATIONS -->
+    <h4>Advantages vs. Inherent Challenges of Networking</h4>
+    <table class="data-table reveal">
+      <thead>
+        <tr><th>Advantages</th><th>Engineering Challenges / Limitations</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Centralized data management and instantaneous backups</td><td>Security exposure: malware propagation, DDoS attacks, unauthorized access</td></tr>
+        <tr><td>Cost sharing of expensive computing power and storage</td><td>Single point of failure risks if intermediary devices lack redundancy</td></tr>
+        <tr><td>Enables distributed computing and global remote work</td><td>Installation, cabling, and ongoing administrative complexity</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 8. COMMON CONFUSION & TRAPS -->
+    <div class="callout danger">
+      <span class="callout-icon">⚠️</span>
+      <div><strong>Common MCQ Trap 1: Circuit Switching vs. Packet Switching:</strong>
+        <br>"ARPANET was built using circuit switching." — <strong>FALSE</strong>. The legacy telephone network (PSTN) used circuit switching (dedicating a continuous physical line for the entire call). ARPANET pioneered <strong>packet switching</strong>, breaking data into independent datagrams routed dynamically.
+      </div>
+    </div>
 
     <div class="callout danger">
       <span class="callout-icon">⚠️</span>
-      <div><strong>Common MCQ Trap:</strong> "ARPANET used circuit switching." — <strong>FALSE</strong>. ARPANET was the first major <em>packet-switched</em> network. Circuit switching was used by the telephone system (PSTN). Don't confuse the two.</div>
+      <div><strong>Common MCQ Trap 2: Internet vs. World Wide Web (WWW):</strong>
+        <br>The Internet and the Web are <strong>NOT synonymous</strong>. The <strong>Internet</strong> is the massive underlying physical and logical network infrastructure (routers, cables, IP addresses). The <strong>World Wide Web</strong> is simply one popular distributed application service running <em>on top of</em> the Internet using the HTTP/HTTPS protocol.
+      </div>
     </div>
 
+    <!-- 9. EXAM / MCQ POINTS -->
+    <div class="callout tip">
+      <span class="callout-icon">💡</span>
+      <div><strong>Exam Memory Mnemonic:</strong> Remember the 6 goals of computer networking using <strong>"R-C-R-S-P-C"</strong> → <strong>R</strong>esource sharing, <strong>C</strong>ommunication, <strong>R</strong>eliability, <strong>S</strong>calability, <strong>P</strong>erformance, <strong>C</strong>ost reduction.</div>
+    </div>
+
+    <div class="mcq reveal">
+      <strong>University / GATE Practice Question:</strong> Which of the following devices is classified as an <em>intermediary device</em> rather than an <em>end device (host)</em>?
+      <br>(a) Network File Server &nbsp;&nbsp; (b) IP Security Camera &nbsp;&nbsp; (c) Layer-2 Ethernet Switch &nbsp;&nbsp; (d) Network Laser Printer
+      <details style="margin-top:0.6rem">
+        <summary><strong>View Answer &amp; Explanation</strong></summary>
+        <div style="margin-top:0.4rem">
+          <strong>Correct Answer: (c) Layer-2 Ethernet Switch.</strong>
+          <br><em>Explanation:</em> Servers, IP cameras, and network printers are all <strong>end devices (hosts)</strong> because they generate or consume data. A switch is an <strong>intermediary device</strong> whose sole purpose is to forward and filter frames between other communicating devices.
+        </div>
+      </details>
+    </div>
+
+    <!-- 10. CURATED REFERENCES -->
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Consult the textbook for syllabus proofs, industry documentation for modern standards, and video lectures for visual mastery.</div>
+      <div class="resource-grid">
+        <a href="https://www.mheducation.com/highered/product/data-communications-and-networking-with-tcp-ip-protocol-suite-forouzan.html" target="_blank" rel="noopener noreferrer">
+          📘 Forouzan — Data Communications &amp; Networking, Ch. 1
+          <small>Standard university textbook reference</small>
+        </a>
+        <a href="https://www.ibm.com/think/topics/networking" target="_blank" rel="noopener noreferrer">
+          🌐 IBM — What is Computer Networking?
+          <small>Authoritative overview of enterprise network components</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=VwN91x5i25g" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — What Is a Computer Network?
+          <small>Clear visual lecture on network fundamentals</small>
+        </a>
+      </div>
+    </div>
   </div>
 </section>
 <hr class="section-hr">
 
-
 <!-- ═══════════════════════════════════════════════════════ -->
-<!-- SECTION 1.2 — BASIC NETWORK COMPONENTS -->
+<!-- SECTION 1.2 — FIVE COMPONENTS OF DATA COMMUNICATION -->
 <!-- ═══════════════════════════════════════════════════════ -->
-<section id="s-components" data-search-section="network components sender receiver message medium protocol data communication model five components" class="section-in-uni  ">
+<section id="s-components" data-midsem="core" data-exam-priority="core" data-search-section="Five components of data communication sender receiver message transmission medium protocol simplex half-duplex full-duplex data flow direction" class="section-in-uni content-section">
   <div class="section-heading">
-    <h2 class="prose">1.2 Basic Network Components
-      <button class="bookmark-btn" data-id="s-components" data-label="1.2 Basic Network Components" title="Bookmark">🔖</button>
+    <h2 class="prose">1.2 Five Components of Data Communication
+      <button class="bookmark-btn" data-id="s-components" data-label="1.2 Five Components of Data Communication" title="Bookmark">🔖</button>
     </h2>
   </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Overview of computer networks (5 Components of Data Communication)</strong></span>
+    <span>Prescribed syllabus topic: <strong>Communication components (The 5 Components of Data Communication)</strong></span>
   </div>
 
-
   <div class="prose">
+    <!-- CRITICAL WARNING: CONCEPTUAL VS HARDWARE -->
+    <div class="callout danger">
+      <span class="callout-icon">⚠️</span>
+      <div><strong>Critical Conceptual Distinction:</strong>
+        <br>Do <strong>NOT</strong> confuse the <strong>Five Components of Data Communication</strong> (Sender, Receiver, Message, Medium, Protocol) with physical networking hardware (such as routers, switches, network interface cards, or firewalls).
+        <br>The five components represent the <em>theoretical model</em> required for any communication process to occur, whether between two humans speaking, two sensors on an I2C bus, or two servers across the Internet.
+      </div>
+    </div>
 
-    <p>Every act of data communication involves <strong>five fundamental components</strong>. These are sometimes called the <em>Five Components of Data Communication</em> (Forouzan).</p>
-
+    <!-- 1. DEFINITION & THE 5 COMPONENTS -->
     <div class="def-box">
-      <div class="def-term">The Five Components of Data Communication</div>
-      <ol>
-        <li><strong>Sender (Source)</strong> — The device that generates and sends the data (e.g., a computer, phone, IoT sensor)</li>
-        <li><strong>Receiver (Destination)</strong> — The device that receives the data (e.g., a server, printer, another computer)</li>
-        <li><strong>Message</strong> — The data being communicated (e.g., a text file, video stream, email, web page)</li>
-        <li><strong>Transmission Medium</strong> — The physical path through which the message travels (e.g., copper wire, fiber optic cable, wireless radio waves)</li>
-        <li><strong>Protocol</strong> — The set of rules governing the communication (e.g., HTTP, TCP/IP, Ethernet)</li>
+      <div class="def-term">The 5 Components of Data Communication (Forouzan Model)</div>
+      Data communication is the exchange of data between two devices via some form of transmission medium. It strictly requires five components:
+      <ol style="margin:8px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:6px">
+        <li><strong>1. Sender (Transmitter / Source):</strong> The device that creates and sends the data message (e.g., workstation, mobile phone, video camera).</li>
+        <li><strong>2. Receiver (Sink / Destination):</strong> The device that receives the transmitted message (e.g., server, printer, monitor, receiver terminal).</li>
+        <li><strong>3. Message (Payload):</strong> The information or data communicated. Can exist as text, numbers, pictures, audio, video, or raw binary telemetry.</li>
+        <li><strong>4. Transmission Medium (Channel / Physical Path):</strong> The physical pathway over which the message travels from sender to receiver (e.g., twisted-pair cable, coaxial cable, fiber optic cable, radio waves).</li>
+        <li><strong>5. Protocol:</strong> A set of formal rules that govern data communication. It represents an agreement between the communicating devices. Without a protocol, two devices may be physically connected but cannot communicate (like two humans who speak different languages).</li>
       </ol>
     </div>
 
-    <h3>Data Communication Model Diagram</h3>
-
+    <!-- 3. HOW IT WORKS & DIAGRAM -->
+    <h3>Data Communication Model</h3>
     <div class="code-block">
-      <div class="code-header"><span class="code-lang">Data Communication Model</span></div>
+      <div class="code-header"><span class="code-lang">Data Communication Architecture</span></div>
       <pre><code>
-  ┌──────────┐                                    ┌──────────┐
-  │          │         Transmission Medium         │          │
-  │  SENDER  │ ═══════════════════════════════════ │ RECEIVER │
-  │ (Source) │  ← guided (cable) or unguided →     │  (Dest)  │
-  │          │         (wireless, satellite)       │          │
-  └──────────┘                                    └──────────┘
-       │                                                │
-       │  Sends MESSAGE                   Receives MESSAGE
-       │  using PROTOCOL                  using PROTOCOL
-       │                                                │
-       └── Both sender and receiver must agree on ──────┘
-           the SAME protocol for communication
-           to succeed.
+                ┌──────────────────────────────────────────────┐
+                │                   PROTOCOL                   │
+                │        (Rules governing communication)       │
+                └──────────────────────┬───────────────────────┘
+                                       │
+        ┌──────────┐                   │                  ┌──────────┐
+        │          │          Transmission Medium         │          │
+        │  SENDER  │ ═══════════════════════════════════► │ RECEIVER │
+        │ (Source) │      Guided Cable or Unguided RF     │  (Dest)  │
+        │          │ ◄─────────────────────────────────── │          │
+        └────┬─────┘                                      └────┬─────┘
+             │                                                 │
+             └─────────────► [ MESSAGE / DATA ] ───────────────┘
+                                (Payload)
       </code></pre>
     </div>
 
-    <p><strong>Analogy:</strong> Imagine two people talking on the phone:</p>
+    <!-- 5. ANALOGY & EXAMPLE -->
+    <p><strong>Intuitive Analogy:</strong> Think of a telephone conversation between two people:</p>
     <ul>
-      <li><strong>Sender</strong> = Person A (speaking)</li>
-      <li><strong>Receiver</strong> = Person B (listening)</li>
-      <li><strong>Message</strong> = The conversation content</li>
-      <li><strong>Medium</strong> = The telephone network (wires, cell towers)</li>
-      <li><strong>Protocol</strong> = Speaking the same language (English, Hindi), taking turns, saying "hello" first</li>
+      <li><strong>Sender:</strong> Person A speaking into the handset microphone.</li>
+      <li><strong>Receiver:</strong> Person B listening through the handset speaker.</li>
+      <li><strong>Message:</strong> The ideas, words, and facts spoken during the call.</li>
+      <li><strong>Medium:</strong> The physical copper phone lines, fiber trunks, and cellular radio waves.</li>
+      <li><strong>Protocol:</strong> The shared language (e.g., English), taking turns speaking without interrupting, saying "Hello" to establish connection, and saying "Goodbye" to terminate.</li>
     </ul>
 
-    <div class="callout tip">
-      <span class="callout-icon">💡</span>
-      <div><strong>Key Insight:</strong> Without a <em>protocol</em>, the sender and receiver cannot understand each other — even if the medium works perfectly. Protocols define the <strong>format</strong>, <strong>order</strong>, and <strong>actions taken</strong> during communication. We will study protocols in great detail throughout this book.</div>
+    <!-- 6. DATA FLOW DIRECTIONS (SIMPLEX, HALF-DUPLEX, FULL-DUPLEX) -->
+    <h3>Data Flow Directions: Simplex, Half-Duplex, Full-Duplex</h3>
+    <p>Communication between two devices can take place in three directional modes:</p>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">Transmission Modes: Signal Direction Comparison</span></div>
+      <pre><code>
+  SIMPLEX:        [ Device A ] ──────────────► [ Device B ]   (One-way only)
+
+  HALF-DUPLEX:    [ Device A ] ──────────────► [ Device B ]   (Time 1: A sends to B)
+                  [ Device A ] ◄────────────── [ Device B ]   (Time 2: B sends to A)
+
+  FULL-DUPLEX:    [ Device A ] ═══════════════ [ Device B ]   (Simultaneous bidirectional)
+                               ◄─────────────►
+      </code></pre>
     </div>
-
-    <h3>Data Flow Directions</h3>
-
-    <p>Communication between two devices can happen in three modes:</p>
 
     <table class="data-table reveal">
       <thead>
-        <tr><th>Mode</th><th>Direction</th><th>Description</th><th>Example</th></tr>
+        <tr><th>Mode</th><th>Directionality</th><th>Channel Capacity Utilization</th><th>Real-World Examples</th></tr>
       </thead>
       <tbody>
         <tr>
           <td><strong>Simplex</strong></td>
-          <td>A → B (one way only)</td>
-          <td>Only one device can send; the other can only receive. Unidirectional.</td>
-          <td>Keyboard → Computer; TV broadcast</td>
+          <td>Unidirectional only. One device transmits; the other can only receive.</td>
+          <td>100% of the channel capacity is dedicated in one single direction.</td>
+          <td>Computer keyboard $\rightarrow$ CPU; traditional television broadcast; GPS satellite transmission to car receiver.</td>
         </tr>
         <tr>
           <td><strong>Half-Duplex</strong></td>
-          <td>A ⇄ B (alternating)</td>
-          <td>Both devices can send and receive, but <em>not at the same time</em>. They take turns.</td>
-          <td>Walkie-talkie ("Over!")</td>
+          <td>Bidirectional, but only <strong>one direction at a time</strong>. Devices take turns.</td>
+          <td>Entire channel capacity is shared temporally between both directions.</td>
+          <td>Walkie-talkie (push-to-talk button, saying "Over"); legacy hub-based Ethernet (CSMA/CD); Wi-Fi radio channels.</td>
         </tr>
         <tr>
           <td><strong>Full-Duplex</strong></td>
-          <td>A ⇆ B (simultaneous)</td>
-          <td>Both devices can send and receive <em>simultaneously</em>.</td>
-          <td>Telephone call; modern Ethernet</td>
+          <td>Simultaneous bidirectional communication. Both devices can send and receive concurrently.</td>
+          <td>Channel capacity is divided (via frequency division or separate physical wire pairs for TX and RX).</td>
+          <td>Landline/cellular telephone conversation; modern switched Ethernet (100BASE-TX / 1000BASE-T using separate wire pairs).</td>
         </tr>
       </tbody>
     </table>
 
+    <!-- 7. ADVANTAGES & LIMITATIONS -->
+    <h4>Trade-offs of Transmission Modes</h4>
+    <ul>
+      <li><strong>Simplex:</strong> Zero risk of packet collisions and maximum bandwidth for one-way streams, but provides zero feedback, flow control, or error acknowledgment.</li>
+      <li><strong>Half-Duplex:</strong> Allows two-way interaction over a single inexpensive communication channel, but introduces turnaround latency and requires collision detection/avoidance protocols (CSMA/CD or CSMA/CA).</li>
+      <li><strong>Full-Duplex:</strong> Maximizes throughput, eliminates line turnaround delays, and prevents collisions on dedicated point-to-point links, but requires dual circuits, hybrid coils, or frequency division multiplexing.</li>
+    </ul>
+
+    <!-- 8. COMMON CONFUSION & TRAPS -->
     <div class="callout danger">
       <span class="callout-icon">⚠️</span>
-      <div><strong>MCQ Trap:</strong> "Ethernet uses half-duplex communication." — This was true for old <em>hub-based</em> Ethernet (shared medium, CSMA/CD). Modern <em>switch-based</em> Ethernet operates in <strong>full-duplex</strong>. The answer depends on the context given in the question.</div>
+      <div><strong>MCQ Exam Trap: "Is Ethernet Simplex, Half-Duplex, or Full-Duplex?"</strong>
+        <br>The answer depends on whether a <strong>hub</strong> or a <strong>switch</strong> is used:
+        <ul style="margin:4px 0 0;padding-left:18px">
+          <li><strong>Old Hub-based Ethernet (10BASE5 / 10BASE-T Hub):</strong> Operates in <strong>Half-Duplex</strong> because all devices share one collision domain and rely on CSMA/CD.</li>
+          <li><strong>Modern Switch-based Ethernet:</strong> Operates in <strong>Full-Duplex</strong> because switches provide dedicated micro-segmented point-to-point links with separate transmit (TX) and receive (RX) wire pairs.</li>
+        </ul>
+      </div>
     </div>
 
+    <!-- 9. EXAM / MCQ POINTS -->
+    <div class="mcq reveal">
+      <strong>GATE Practice Question:</strong> In a data communication system, what occurs if the sender and receiver have established a perfect physical medium, but do not share a common protocol?
+      <br>(a) The data transfer rate drops by 50% &nbsp;&nbsp; (b) Communication fails completely &nbsp;&nbsp; (c) The connection falls back to simplex &nbsp;&nbsp; (d) Data is transmitted with parity errors
+      <details style="margin-top:0.6rem">
+        <summary><strong>View Answer &amp; Explanation</strong></summary>
+        <div style="margin-top:0.4rem">
+          <strong>Correct Answer: (b) Communication fails completely.</strong>
+          <br><em>Explanation:</em> A protocol provides the syntax, semantics, and synchronization required to interpret raw bits. Without an agreed protocol, the receiver cannot determine frame boundaries, character encoding, or packet structure, making communication impossible.
+        </div>
+      </details>
+    </div>
+
+    <!-- 10. CURATED REFERENCES -->
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Consult these primary references for standard textbook definitions and lecture breakdowns.</div>
+      <div class="resource-grid">
+        <a href="https://www.mheducation.com/highered/product/data-communications-and-networking-with-tcp-ip-protocol-suite-forouzan.html" target="_blank" rel="noopener noreferrer">
+          📘 Forouzan — Ch. 1, Data Communications
+          <small>The definitive five-component model</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=EBTP0mpCGBM" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — Components of a Computer Network
+          <small>Detailed lecture on nodes, channels, and protocols</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=ly8ikWtAY7s" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — Data Flow: Simplex, Half &amp; Full Duplex
+          <small>Interactive breakdown of data transmission modes</small>
+        </a>
+      </div>
+    </div>
   </div>
 </section>
 <hr class="section-hr">
 
-
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 1.3 — NETWORK CRITERIA -->
 <!-- ═══════════════════════════════════════════════════════ -->
-<section id="s-criteria" data-search-section="network criteria performance reliability security throughput latency delay transit time response time" class="section-in-uni  ">
+<section id="s-criteria" data-midsem="core" data-exam-priority="core" data-search-section="network criteria performance reliability security throughput latency delay transit time response time MTTF MTTR availability CIA triad" class="section-in-uni content-section">
   <div class="section-heading">
-    <h2 class="prose">1.3 Network Criteria
+    <h2 class="prose">1.3 Network Criteria (Performance, Reliability, Security)
       <button class="bookmark-btn" data-id="s-criteria" data-label="1.3 Network Criteria" title="Bookmark">🔖</button>
     </h2>
   </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Overview of computer networks (Performance, Reliability, Security Criteria)</strong></span>
+    <span>Prescribed syllabus topic: <strong>Network criteria (Performance, Reliability, Security)</strong></span>
   </div>
 
-
   <div class="prose">
+    <!-- 1. DEFINITION & PURPOSE -->
+    <div class="def-box">
+      <div class="def-term">Network Criteria — Definition</div>
+      <strong>Network Criteria</strong> are the objective, quantitative, and qualitative benchmarks used to measure, evaluate, and verify the overall quality, operational fitness, and service delivery of a computer network.
+    </div>
 
-    <p>A network must meet certain criteria to be considered effective. Forouzan identifies three primary criteria:</p>
+    <!-- 2. WHY IT EXISTS -->
+    <p>Why do we need network criteria? Building a network is not enough; network architects and telecom operators must ensure the network meets contractual <strong>Service Level Agreements (SLAs)</strong>. In standard networking literature (Forouzan), network criteria are grouped into three primary pillars: <strong>Performance</strong>, <strong>Reliability</strong>, and <strong>Security</strong>.</p>
 
-    <h3>1. Performance</h3>
+    <!-- 3. HOW IT WORKS — THE 3 PILLARS -->
+    <h3>The Three Pillars of Network Evaluation</h3>
 
-    <p>Performance is measured by several metrics:</p>
-
+    <!-- PILLAR 1: PERFORMANCE -->
+    <h4>1. Performance</h4>
+    <p>Performance reflects how fast and efficiently data is delivered across the network. It is evaluated through four interconnected metrics:</p>
     <table class="data-table reveal">
       <thead>
-        <tr><th>Metric</th><th>Definition</th><th>Unit</th><th>Desired</th></tr>
+        <tr><th>Metric</th><th>Definition</th><th>Measurement Unit</th><th>Ideal Direction</th></tr>
       </thead>
       <tbody>
         <tr>
           <td><strong>Throughput</strong></td>
-          <td>The actual rate at which data is successfully delivered over the network</td>
+          <td>The actual rate at which user data is successfully transferred across a link per unit time.</td>
           <td>bps, Kbps, Mbps, Gbps</td>
           <td>Higher is better</td>
         </tr>
         <tr>
+          <td><strong>Bandwidth</strong></td>
+          <td>The maximum theoretical carrying capacity or bit rate limit of the network channel.</td>
+          <td>bps, Mbps, Gbps</td>
+          <td>Higher is better</td>
+        </tr>
+        <tr>
           <td><strong>Latency (Delay)</strong></td>
-          <td>Total time for a message to travel from sender to receiver</td>
-          <td>ms, seconds</td>
+          <td>The total time required for a complete packet to travel from source to destination.</td>
+          <td>Milliseconds (ms), $\mu\text{s}$</td>
           <td>Lower is better</td>
         </tr>
         <tr>
           <td><strong>Jitter</strong></td>
-          <td>Variation in delay between successive packets</td>
-          <td>ms</td>
+          <td>The statistical variation in packet arrival delay (delay variation).</td>
+          <td>Milliseconds (ms)</td>
           <td>Lower is better</td>
-        </tr>
-        <tr>
-          <td><strong>Bandwidth</strong></td>
-          <td>Maximum capacity of the link (theoretical upper limit)</td>
-          <td>bps, Mbps, Gbps</td>
-          <td>Higher is better</td>
         </tr>
       </tbody>
     </table>
 
-    <p>Performance depends on: number of users, type of transmission medium, hardware capabilities, and software efficiency.</p>
-
-    <div class="callout tip">
-      <span class="callout-icon">💡</span>
-      <div><strong>Bandwidth vs Throughput:</strong> Think of bandwidth as the width of a highway (maximum cars it <em>could</em> carry), and throughput as the actual number of cars currently passing through. Throughput ≤ Bandwidth always. Factors like congestion, errors, and protocol overhead reduce throughput below bandwidth.</div>
-    </div>
-
-    <h3>2. Reliability</h3>
-
-    <p>Reliability measures how dependable the network is:</p>
+    <p>Performance also distinguishes between two operational intervals:</p>
     <ul>
-      <li><strong>Frequency of failure</strong> — How often does the network go down?</li>
-      <li><strong>Recovery time</strong> — How quickly does it recover after failure?</li>
-      <li><strong>Robustness</strong> — Can it handle catastrophic events (link failure, device crash)?</li>
+      <li><strong>Transit Time:</strong> The elapsed time required for a message to travel from the sender to the receiver.</li>
+      <li><strong>Response Time:</strong> The total elapsed time between an inquiry/request being sent and the first response being received by the client (includes processing delay at the server).</li>
     </ul>
 
-    <p>Reliability is improved through <strong>redundancy</strong> (backup links, duplicate servers), <strong>fault tolerance</strong> (automatic failover), and <strong>error detection/correction</strong> mechanisms (which we will study in detail in the Data Link Layer chapters).</p>
-
-    <h3>3. Security</h3>
-
-    <p>Network security encompasses three core goals (the <strong>CIA Triad</strong>):</p>
-
-    <div class="def-box">
-      <div class="def-term">CIA Triad of Network Security</div>
-      <ul>
-        <li><strong>Confidentiality</strong> — Only authorized parties can access the data (achieved via encryption)</li>
-        <li><strong>Integrity</strong> — Data is not altered during transmission (achieved via checksums, hash functions)</li>
-        <li><strong>Availability</strong> — The network and its services are accessible when needed (achieved via redundancy, DDoS protection)</li>
-      </ul>
-    </div>
-
-    <p>Additionally, security involves:</p>
+    <!-- PILLAR 2: RELIABILITY -->
+    <h4>2. Reliability</h4>
+    <p>Reliability measures the dependability and consistency of network service. It is quantified through three operational parameters:</p>
     <ul>
-      <li><strong>Authentication</strong> — Verifying the identity of communicating parties</li>
-      <li><strong>Non-repudiation</strong> — Ensuring that a sender cannot deny having sent a message</li>
-      <li><strong>Access Control</strong> — Restricting who can use what resources</li>
+      <li><strong>Frequency of Failure:</strong> How often network links, switches, or routers crash during a designated period.</li>
+      <li><strong>Recovery Time (MTTR — Mean Time To Repair):</strong> How quickly the network restores normal operation following a component outage (via automatic routing reconvergence or backup links).</li>
+      <li><strong>Catastrophe Robustness:</strong> How well the network survives catastrophic events (such as power blackouts, physical fiber cuts, or earthquake damage) through geographic diversity and secondary power backups.</li>
     </ul>
 
+    <div class="formula-box">
+      <div class="formula-label">Network Availability Formula</div>
+      $$\text{Availability} = \frac{\text{MTTF}}{\text{MTTF} + \text{MTTR}} \times 100\%$$
+      <br><em>Where:</em> <strong>MTTF</strong> = Mean Time To Failure, <strong>MTTR</strong> = Mean Time To Repair.
+      <br>Enterprise networks aim for <strong>"Five Nines" (99.999% availability)</strong>, permitting less than <strong>5.26 minutes</strong> of downtime per year.
+    </div>
+
+    <!-- PILLAR 3: SECURITY -->
+    <h4>3. Security</h4>
+    <p>Security measures how effectively the network protects data and resources from unauthorized access, malicious modification, and service denial. It is governed by the classic <strong>CIA Triad</strong>:</p>
+    <ul>
+      <li><strong>Confidentiality:</strong> Ensuring that data in transit cannot be read by unauthorized eavesdroppers (achieved via TLS/IPSec encryption).</li>
+      <li><strong>Integrity:</strong> Protecting data from unauthorized modification, truncation, or tampering while traversing links (achieved via cryptographic checksums and digital signatures).</li>
+      <li><strong>Availability:</strong> Ensuring authorized users have uninterrupted access to network services (achieved via firewalls, DDoS scrubbing centers, and load balancers).</li>
+    </ul>
+
+    <!-- 4. DIAGRAM -->
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">Network Criteria Triangle</span></div>
+      <pre><code>
+                        ┌─────────────────────────┐
+                        │    NETWORK CRITERIA     │
+                        └────────────┬────────────┘
+            ┌────────────────────────┼────────────────────────┐
+            ▼                        ▼                        ▼
+  ┌───────────────────┐    ┌───────────────────┐    ┌───────────────────┐
+  │    PERFORMANCE    │    │    RELIABILITY    │    │     SECURITY      │
+  ├───────────────────┤    ├───────────────────┤    ├───────────────────┤
+  │ • Throughput      │    │ • Failure rate    │    │ • Confidentiality │
+  │ • Bandwidth       │    │ • Recovery (MTTR) │    │ • Integrity       │
+  │ • Latency / Delay │    │ • Robustness      │    │ • Availability    │
+  │ • Jitter          │    │ • Availability %  │    │ • Access Policies │
+  └───────────────────┘    └───────────────────┘    └───────────────────┘
+      </code></pre>
+    </div>
+
+    <!-- 7. ADVANTAGES & ENGINEERING TRADE-OFFS -->
+    <h4>Engineering Trade-offs Among Criteria</h4>
+    <p>Network design involves balancing these three criteria against cost:</p>
+    <ul>
+      <li><strong>Security vs. Performance:</strong> Adding 256-bit encryption, deep packet inspection (DPI), and multi-layer firewalls increases processing delay, slightly reducing throughput.</li>
+      <li><strong>Reliability vs. Cost:</strong> Achieving 99.999% reliability requires purchasing redundant switches, dual ISP fiber drops, and uninterruptible power systems (UPS), which significantly increases capital expenditure.</li>
+    </ul>
+
+    <!-- 8. COMMON CONFUSION & TRAPS -->
     <div class="callout danger">
       <span class="callout-icon">⚠️</span>
-      <div><strong>MCQ Trap:</strong> Don't confuse "network criteria" with "goals of networking." Goals (from 1.1) describe <em>why</em> we build networks. Criteria describe <em>how we evaluate</em> whether a network is good. An MCQ might mix these up.</div>
+      <div><strong>Critical MCQ Trap: "Network Goals" vs. "Network Criteria":</strong>
+        <br>Exam questions deliberately mix these two concepts:
+        <ul style="margin:4px 0 0;padding-left:18px">
+          <li><strong>Goals of Networking (Why we build networks):</strong> Resource sharing, cost reduction, communication, collaborative workload.</li>
+          <li><strong>Criteria of Networking (How we evaluate networks):</strong> Performance, Reliability, Security.</li>
+        </ul>
+        If asked: <em>"Which of the following is NOT a network criterion?"</em> $\rightarrow$ Resource Sharing is a <strong>Goal</strong>, not a criterion!
+      </div>
     </div>
 
+    <!-- 9. EXAM / MCQ POINTS -->
+    <div class="mcq reveal">
+      <strong>University / GATE Question:</strong> Which network metric evaluates the time elapsed between a client sending an inquiry and receiving the first byte of the response?
+      <br>(a) Transit Time &nbsp;&nbsp; (b) Response Time &nbsp;&nbsp; (c) Propagation Time &nbsp;&nbsp; (d) Jitter
+      <details style="margin-top:0.6rem">
+        <summary><strong>View Answer &amp; Explanation</strong></summary>
+        <div style="margin-top:0.4rem">
+          <strong>Correct Answer: (b) Response Time.</strong>
+          <br><em>Explanation:</em> Transit time measures one-way travel from sender to receiver. Response time measures the complete round trip: transit time of request + server processing delay + transit time of response.
+        </div>
+      </details>
+    </div>
+
+    <!-- 10. CURATED REFERENCES -->
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Explore these authoritative guides on performance modeling and reliability engineering.</div>
+      <div class="resource-grid">
+        <a href="https://www.mheducation.com/highered/product/data-communications-and-networking-with-tcp-ip-protocol-suite-forouzan.html" target="_blank" rel="noopener noreferrer">
+          📘 Forouzan — Ch. 1, Network Criteria
+          <small>Textbook definition of Performance, Reliability, and Security</small>
+        </a>
+        <a href="https://www.cloudflare.com/en-gb/learning/performance/glossary/what-is-latency/" target="_blank" rel="noopener noreferrer">
+          🌐 Cloudflare — What is Latency?
+          <small>Authoritative industry guide distinguishing latency, bandwidth, and throughput</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=5AVuUgEJu1E" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — Network Performance Criteria
+          <small>Clear breakdown of performance parameters and transit time</small>
+        </a>
+      </div>
+    </div>
   </div>
 </section>
 <hr class="section-hr">
 
-
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 1.4 — PROTOCOLS AND STANDARDS -->
 <!-- ═══════════════════════════════════════════════════════ -->
-<section id="s-protocols" data-search-section="protocol standards de jure de facto ISO IEEE ITU IETF RFC protocol stack rules syntax semantics timing" class="section-in-uni  ">
+<section id="s-protocols" data-midsem="core" data-exam-priority="core" data-search-section="protocol standards de jure de facto ISO IEEE ITU IETF RFC RFC 9293 RFC 9110 syntax semantics timing standards organizations" class="section-in-uni content-section">
   <div class="section-heading">
     <h2 class="prose">1.4 Protocols and Standards
       <button class="bookmark-btn" data-id="s-protocols" data-label="1.4 Protocols and Standards" title="Bookmark">🔖</button>
@@ -483,476 +736,576 @@
   </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Overview of computer networks (Protocols, De Facto & De Jure Standards)</strong></span>
+    <span>Prescribed syllabus topic: <strong>Protocols and standards (De Jure, De Facto, Standards Organizations)</strong></span>
   </div>
 
-
   <div class="prose">
-
-    <h3>What is a Protocol?</h3>
-
+    <!-- 1. DEFINITION -->
     <div class="def-box">
-      <div class="def-term">Protocol — Formal Definition</div>
-      A <strong>protocol</strong> is a set of rules that governs data communication. It defines the <strong>format</strong>, <strong>order of messages</strong> sent and received, and the <strong>actions taken</strong> upon message transmission and receipt.
+      <div class="def-term">Protocol &amp; Standard — Definitions</div>
+      A <strong>Protocol</strong> is a set of formal rules and conventions that govern how devices exchange data across a network. It specifies <em>what</em> is communicated, <em>how</em> it is communicated, and <em>when</em> it is communicated.<br><br>
+      A <strong>Standard</strong> is an agreed-upon, documented technical specification or model that provides rules, guidelines, or characteristics for activities or their results, ensuring multi-vendor interoperability.
     </div>
 
-    <p><strong>Human Analogy:</strong> When you meet someone, you follow a protocol:</p>
-    <ol>
-      <li>You say "Hello" (→ connection request)</li>
-      <li>They say "Hello" back (→ connection accepted / ACK)</li>
-      <li>You have a conversation (→ data transfer)</li>
-      <li>You say "Goodbye" (→ connection termination)</li>
-    </ol>
-    <p>If someone speaks a language you don't understand, communication fails — just like if two computers use incompatible protocols.</p>
-
-    <h4>Three Key Elements of a Protocol</h4>
+    <!-- 3. HOW IT WORKS — SYNTAX, SEMANTICS, TIMING -->
+    <h3>The Three Key Elements of a Protocol</h3>
+    <p>Every communication protocol consists of three essential elements:</p>
 
     <table class="data-table reveal">
       <thead>
-        <tr><th>Element</th><th>What It Defines</th><th>Example</th></tr>
+        <tr><th>Element</th><th>What It Defines</th><th>Concrete Networking Example</th></tr>
       </thead>
       <tbody>
         <tr>
-          <td><strong>Syntax</strong></td>
-          <td>The <em>structure or format</em> of the data — how data is arranged in fields, headers, bit patterns</td>
-          <td>An IP packet header has source IP in bytes 12–15 and destination IP in bytes 16–19</td>
+          <td><strong>1. Syntax</strong></td>
+          <td>The <strong>structure or format</strong> of the data, meaning the order in which bits and fields are arranged within the message.</td>
+          <td>An IPv4 packet header dictates that the first 4 bits MUST represent the Version field, the next 4 bits represent the Internet Header Length (IHL), followed by Type of Service.</td>
         </tr>
         <tr>
-          <td><strong>Semantics</strong></td>
-          <td>The <em>meaning</em> of each field and what action to take based on it</td>
-          <td>If the TTL field reaches 0, discard the packet and send ICMP error</td>
+          <td><strong>2. Semantics</strong></td>
+          <td>The <strong>meaning of each section of bits</strong>, defining how a particular pattern is interpreted and what action must be taken.</td>
+          <td>In a TCP header, if the SYN flag bit is set to <code>1</code> and ACK is <code>0</code>, it semantically signals a request to initiate a new connection. An address field indicates where to forward.</td>
         </tr>
         <tr>
-          <td><strong>Timing</strong></td>
-          <td>The <em>speed</em> at which data is sent and the <em>order</em> of communication (when to send, how long to wait)</td>
-          <td>A sender waits 200ms for an ACK before retransmitting; data rate of 100 Mbps</td>
+          <td><strong>3. Timing</strong></td>
+          <td>Refers to two characteristics: <strong>when</strong> data should be sent and <strong>how fast</strong> it can be sent (speed matching and sequencing).</td>
+          <td>If a 1 Gbps server transmits data to a 10 Mbps embedded controller without flow control, the controller's buffer overflows. Timing protocols (e.g., TCP sliding window) regulate transmission speed.</td>
         </tr>
       </tbody>
     </table>
 
-    <div class="callout tip">
-      <span class="callout-icon">💡</span>
-      <div><strong>MCQ Memory Trick:</strong> Protocol = <strong>S-S-T</strong> (Syntax, Semantics, Timing). If an MCQ asks "Which is NOT an element of a protocol?" — anything other than these three is the answer.</div>
-    </div>
-
-    <h3>What Are Standards?</h3>
-
-    <p>Standards are <strong>agreed-upon rules</strong> that ensure interoperability between products from different manufacturers. Without standards, a Cisco router might not communicate with a Juniper switch.</p>
-
-    <h4>Types of Standards</h4>
+    <!-- 4. STANDARDS: DE JURE VS DE FACTO -->
+    <h3>Standards: De Jure vs. De Facto</h3>
+    <p>Standards ensure that equipment manufactured by competing vendors can interoperate seamlessly. Standards are classified into two broad legal and procedural categories:</p>
 
     <table class="data-table reveal">
       <thead>
-        <tr><th>Type</th><th>Definition</th><th>How Created</th><th>Example</th></tr>
+        <tr><th>Category</th><th>Etymology &amp; Meaning</th><th>Development Process</th><th>Real-World Networking Examples</th></tr>
       </thead>
       <tbody>
         <tr>
-          <td><strong>De Jure</strong> (by law)</td>
-          <td>Official standards created by recognized organizations through a formal process</td>
-          <td>Committees, public review, voting</td>
-          <td>OSI model (ISO), IEEE 802.3 Ethernet, ITU-T V.34 modem</td>
+          <td><strong>De Jure Standard</strong></td>
+          <td><em>"By law"</em> or formal regulation. Officially recognized standard established by an accredited standards organization.</td>
+          <td>Formally drafted by committees, subjected to open public review, revisions, and official ratification voting.</td>
+          <td>OSI 7-Layer Reference Model (ISO/IEC 7498-1); IEEE 802.3 Ethernet; IEEE 802.11 Wi-Fi; ITU-T V.90 modem standard.</td>
         </tr>
         <tr>
-          <td><strong>De Facto</strong> (by fact/practice)</td>
-          <td>Standards that became dominant through market adoption, not through formal approval</td>
-          <td>Market dominance, widespread use</td>
-          <td>TCP/IP (initially not formal, became universal), HTTP, Microsoft Windows API</td>
+          <td><strong>De Facto Standard</strong></td>
+          <td><em>"By fact"</em> or by convention. Standards that became dominant through widespread market adoption and practical usage.</td>
+          <td>Originally proprietary or experimental; widely deployed without initial formal approval by an international standards treaty.</td>
+          <td>Original TCP/IP protocol suite (became dominant through UNIX and ARPANET deployment); HTTP/1.0; early IBM PC architecture.</td>
         </tr>
       </tbody>
     </table>
 
-    <h4>Major Standards Organizations</h4>
-
+    <!-- 5. STANDARDS ORGANIZATIONS -->
+    <h3>Major International Standards Organizations</h3>
     <table class="data-table reveal">
       <thead>
-        <tr><th>Organization</th><th>Full Name</th><th>Scope</th><th>Key Standards</th></tr>
+        <tr><th>Organization</th><th>Full Name</th><th>Scope of Authority</th><th>Notable Standards</th></tr>
       </thead>
       <tbody>
         <tr>
           <td><strong>ISO</strong></td>
           <td>International Organization for Standardization</td>
-          <td>Global, multi-industry</td>
-          <td>OSI reference model, ISO 8802</td>
+          <td>Global voluntary standards across all industries.</td>
+          <td>OSI Reference Model (<strong>ISO/IEC 7498-1</strong>); HDLC protocol.</td>
         </tr>
         <tr>
           <td><strong>IEEE</strong></td>
           <td>Institute of Electrical and Electronics Engineers</td>
-          <td>Electrical/networking standards</td>
-          <td>802.3 (Ethernet), 802.11 (Wi-Fi), 802.15 (Bluetooth)</td>
+          <td>Electrical, electronics, and computing standards.</td>
+          <td><strong>IEEE 802.3</strong> (Ethernet); <strong>IEEE 802.11</strong> (Wi-Fi); <strong>IEEE 802.15</strong> (Bluetooth/WPAN).</td>
         </tr>
         <tr>
           <td><strong>ITU-T</strong></td>
-          <td>International Telecommunication Union — Telecom Sector</td>
-          <td>Telecommunications</td>
-          <td>V-series (modems), H.264 (video), X.25</td>
+          <td>International Telecommunication Union - Telecom Sector</td>
+          <td>United Nations specialized agency for telecom standards.</td>
+          <td>V-series modem standards (V.34, V.90); X.25 packet network; G-series fiber transmission standards.</td>
         </tr>
         <tr>
           <td><strong>IETF</strong></td>
           <td>Internet Engineering Task Force</td>
-          <td>Internet protocols</td>
-          <td>TCP (RFC 793), IP (RFC 791), HTTP (RFC 2616), DNS</td>
+          <td>Open international community specifying Internet protocols.</td>
+          <td>TCP, IP, HTTP, DNS, BGP published as <strong>RFCs (Request for Comments)</strong>.</td>
         </tr>
       </tbody>
     </table>
 
+    <!-- 6. MODERN RFC SPECIFICATIONS -->
+    <h3>RFC Standards: Modern Standards vs. Historical References</h3>
+    <p>The IETF publishes Internet protocol specifications in the <strong>RFC (Request for Comments)</strong> document series. Not all RFCs are standards; only those on the official <em>Standards Track</em> become Internet Standards.</p>
+
     <div class="callout info">
       <span class="callout-icon">📌</span>
-      <div><strong>RFC (Request for Comments):</strong> IETF publishes Internet standards as numbered RFC documents. Despite the humble name, RFCs are the definitive specifications for Internet protocols. For example, TCP is defined in RFC 793, IP in RFC 791.</div>
+      <div><strong>Crucial Modern RFC Update (Curriculum Precision):</strong>
+        <br>Many older textbooks cite outdated RFCs. As a modern engineering student, you must know both the historical origins and active standards:
+        <ul style="margin:6px 0 0;padding-left:18px">
+          <li><strong>TCP (Transmission Control Protocol):</strong> Originally specified in historical RFC 793 (1981). In August 2022, the IETF published <strong>RFC 9293</strong>, which officially obsoleted RFC 793 and consolidated 40 years of TCP updates into the active standard.</li>
+          <li><strong>HTTP (Hypertext Transfer Protocol):</strong> Originally specified in RFC 1945 (HTTP/1.0) and RFC 2616 (HTTP/1.1). In June 2022, the IETF released <strong>RFC 9110</strong> (HTTP Semantics), which formally obsoleted RFC 2616 and RFC 7230–7235.</li>
+        </ul>
+      </div>
     </div>
 
+    <!-- 8. COMMON CONFUSION & TRAPS -->
     <div class="callout danger">
       <span class="callout-icon">⚠️</span>
-      <div><strong>MCQ Trap:</strong> "TCP/IP is a de jure standard." — This is <strong>debatable</strong>. TCP/IP started as a de facto standard (widely adopted without formal ISO approval). Today, IETF publishes its specifications as RFCs (which are formal standards in the Internet world). Many exams still categorize TCP/IP as <em>de facto</em>. Read the question context carefully.</div>
+      <div><strong>Exam Precision: Is TCP/IP De Facto or De Jure?</strong>
+        <br>Introductory university textbooks often classify TCP/IP as a <strong>de facto</strong> standard because it achieved universal global adoption through commercial market dominance rather than being created by the ISO treaty body.
+        <br>However, today TCP/IP protocols are formally standardized through the <strong>IETF RFC standards process</strong>. In university exams, follow your syllabus textbook (often labeled <em>de facto</em>), but note that it carries formal standards-track standing today.
+      </div>
     </div>
 
+    <!-- 9. EXAM / MCQ POINTS -->
+    <div class="callout tip">
+      <span class="callout-icon">💡</span>
+      <div><strong>Memory Trick:</strong> The three elements of a protocol spell <strong>"S-S-T"</strong> → <strong>S</strong>yntax (How it looks), <strong>S</strong>emantics (What it means), <strong>T</strong>iming (When and how fast it travels).</div>
+    </div>
+
+    <div class="mcq reveal">
+      <strong>GATE Practice Question:</strong> Which element of a network protocol is responsible for speed matching between a high-speed transmitter and a low-speed receiver?
+      <br>(a) Syntax &nbsp;&nbsp; (b) Semantics &nbsp;&nbsp; (c) Timing &nbsp;&nbsp; (d) Framing
+      <details style="margin-top:0.6rem">
+        <summary><strong>View Answer &amp; Explanation</strong></summary>
+        <div style="margin-top:0.4rem">
+          <strong>Correct Answer: (c) Timing.</strong>
+          <br><em>Explanation:</em> Timing defines both when data is transmitted and the speed at which it flows, implementing flow control to prevent buffer overrun at the receiver.
+        </div>
+      </details>
+    </div>
+
+    <!-- 10. CURATED REFERENCES -->
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Primary documentation from the RFC Editor and international standards bodies.</div>
+      <div class="resource-grid">
+        <a href="https://www.mheducation.com/highered/product/data-communications-and-networking-with-tcp-ip-protocol-suite-forouzan.html" target="_blank" rel="noopener noreferrer">
+          📘 Forouzan — Ch. 1, Protocols and Standards
+          <small>Syntax, semantics, timing, and standards bodies</small>
+        </a>
+        <a href="https://www.rfc-editor.org/info/rfc9293" target="_blank" rel="noopener noreferrer">
+          📜 IETF RFC 9293 — TCP Specification
+          <small>Current standards-track TCP specification (obsoletes RFC 793)</small>
+        </a>
+        <a href="https://www.rfc-editor.org/info/rfc9110" target="_blank" rel="noopener noreferrer">
+          📜 IETF RFC 9110 — HTTP Semantics
+          <small>Current HTTP standard specification (obsoletes RFC 2616)</small>
+        </a>
+      </div>
+    </div>
   </div>
 </section>
 <hr class="section-hr">
 
-
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- SECTION 1.5 — ENCAPSULATION & DECAPSULATION -->
 <!-- ═══════════════════════════════════════════════════════ -->
-<section id="s-encapsulation" data-search-section="encapsulation decapsulation PDU protocol data unit header trailer data segment packet frame bits layering" class="section-in-uni  ">
+<section id="s-encapsulation" data-midsem="core" data-exam-priority="core" data-search-section="encapsulation decapsulation PDU protocol data unit header trailer data segment packet frame bits layering Ethernet FCS CRC" class="section-in-uni content-section">
   <div class="section-heading">
-    <h2 class="prose">1.5 Encapsulation & Decapsulation
+    <h2 class="prose">1.5 Encapsulation &amp; Decapsulation
       <button class="bookmark-btn" data-id="s-encapsulation" data-label="1.5 Encapsulation & Decapsulation" title="Bookmark">🔖</button>
     </h2>
   </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Overview of computer networks (Protocol Data Units & Encapsulation)</strong></span>
+    <span>Prescribed syllabus topic: <strong>Layering and encapsulation concepts</strong></span>
   </div>
 
-
   <div class="prose">
-
-    <p>As data moves down the protocol stack at the sender, each layer adds its own control information (header and sometimes trailer) to the data received from the layer above. This process is called <strong>encapsulation</strong>. At the receiver, the reverse process — <strong>decapsulation</strong> — strips off headers/trailers as data moves up.</p>
-
+    <!-- 1. DEFINITION -->
     <div class="def-box">
-      <div class="def-term">Encapsulation</div>
-      The process of wrapping data with protocol information (headers/trailers) at each layer of the protocol stack before transmission. Each layer treats the data from the layer above as its <strong>payload</strong> and adds its own header.
+      <div class="def-term">Encapsulation &amp; Decapsulation — Definitions</div>
+      <strong>Encapsulation</strong> is the process wherein each layer of the sending protocol stack prepends protocol control information (a <strong>header</strong>, and at the Data Link layer, a <strong>trailer</strong>) to the data unit received from the layer above, transforming it into a layer-specific <strong>Protocol Data Unit (PDU)</strong>.<br><br>
+      <strong>Decapsulation</strong> is the reverse process at the receiving host, where each layer inspects, strips its corresponding header/trailer, and passes the unwrapped payload up to the next higher layer.
     </div>
 
-    <div class="def-box">
-      <div class="def-term">Decapsulation</div>
-      The reverse process at the receiver: each layer removes its corresponding header/trailer and passes the remaining payload up to the next layer.
-    </div>
+    <!-- 2. WHY IT EXISTS -->
+    <h3>Why Does Encapsulation Exist?</h3>
+    <p>Encapsulation provides <strong>modularity and separation of concerns</strong>. Intermediate network devices (such as routers and switches) do not need to understand application data. A Layer-2 Ethernet switch only examines the MAC header; a Layer-3 router only inspects the IP header. The actual user message remains untouched inside the payload.</p>
 
-    <h3>Protocol Data Units (PDUs) at Each Layer</h3>
-
-    <p>The data unit at each layer has a specific name:</p>
+    <!-- 3. HOW IT WORKS & PDU MAPPING -->
+    <h3>PDU Names Across the Protocol Stack</h3>
+    <p>As user data travels down the protocol stack at the transmitting host, each layer assigns a unique technical name to its PDU:</p>
 
     <table class="data-table reveal">
       <thead>
-        <tr><th>Layer</th><th>PDU Name</th><th>What's Added</th></tr>
+        <tr><th>Layer Level</th><th>OSI / TCP-IP Layer</th><th>PDU Technical Name</th><th>Control Information Added</th><th>Key Addressing Added</th></tr>
       </thead>
       <tbody>
-        <tr><td><strong>Application / Presentation / Session</strong></td><td><strong>Data (Message)</strong></td><td>Application-specific formatting</td></tr>
-        <tr><td><strong>Transport</strong></td><td><strong>Segment</strong> (TCP) / <strong>Datagram</strong> (UDP)</td><td>Transport header (port numbers, sequence numbers)</td></tr>
-        <tr><td><strong>Network</strong></td><td><strong>Packet</strong></td><td>Network header (source/destination IP addresses)</td></tr>
-        <tr><td><strong>Data Link</strong></td><td><strong>Frame</strong></td><td>DLL header (MAC addresses) + <strong>Trailer</strong> (FCS/CRC)</td></tr>
-        <tr><td><strong>Physical</strong></td><td><strong>Bits</strong></td><td>Converts frame to electrical/optical/radio signals</td></tr>
+        <tr>
+          <td>Layer 7 / 5</td>
+          <td><strong>Application Layer</strong></td>
+          <td><strong>Data / Message</strong></td>
+          <td>Application headers (HTTP, SMTP, DNS)</td>
+          <td>User authentication, request method</td>
+        </tr>
+        <tr>
+          <td>Layer 4</td>
+          <td><strong>Transport Layer</strong></td>
+          <td><strong>Segment</strong> (TCP) / <strong>Datagram</strong> (UDP)</td>
+          <td>Transport Header ($H_4$)</td>
+          <td>Source &amp; Destination <strong>Port Numbers</strong> (Process IDs)</td>
+        </tr>
+        <tr>
+          <td>Layer 3</td>
+          <td><strong>Network Layer</strong></td>
+          <td><strong>Packet</strong> (or Datagram)</td>
+          <td>Network Header ($H_3$)</td>
+          <td>Source &amp; Destination <strong>Logical / IP Addresses</strong></td>
+        </tr>
+        <tr>
+          <td>Layer 2</td>
+          <td><strong>Data Link Layer</strong></td>
+          <td><strong>Frame</strong></td>
+          <td>DLL Header ($H_2$) <strong>AND Trailer ($T_2$)</strong></td>
+          <td>Source &amp; Destination <strong>Physical / MAC Addresses</strong> + FCS</td>
+        </tr>
+        <tr>
+          <td>Layer 1</td>
+          <td><strong>Physical Layer</strong></td>
+          <td><strong>Bits</strong></td>
+          <td>Preamble / Start Frame Delimiter</td>
+          <td>Signal encodings (voltages, light pulses, RF)</td>
+        </tr>
       </tbody>
     </table>
 
-    <h3>Encapsulation Flow Diagram</h3>
-
+    <!-- 4. DIAGRAM -->
+    <h3>Encapsulation &amp; Decapsulation Flow Diagram</h3>
     <div class="code-block">
-      <div class="code-header"><span class="code-lang">Encapsulation at Sender (Top → Bottom)</span></div>
+      <div class="code-header"><span class="code-lang">Encapsulation Downwards / Decapsulation Upwards</span></div>
       <pre><code>
-  Application Layer:    ┌────────────────────────────┐
-                        │        DATA (Message)       │
-                        └────────────────────────────┘
-                                    ↓ encapsulate
-  Transport Layer:      ┌────┬───────────────────────┐
-                        │ TH │       DATA              │
-                        └────┴───────────────────────┘
-                        └──── Segment ───────────────┘
-                                    ↓ encapsulate
-  Network Layer:        ┌────┬────┬──────────────────┐
-                        │ NH │ TH │      DATA          │
-                        └────┴────┴──────────────────┘
-                        └──── Packet ────────────────┘
-                                    ↓ encapsulate
-  Data Link Layer:      ┌─────┬────┬────┬──────┬─────┐
-                        │ DLH │ NH │ TH │ DATA │ DLT │
-                        └─────┴────┴────┴──────┴─────┘
-                        └──── Frame ─────────────────┘
-                                    ↓ convert
-  Physical Layer:       1 0 1 1 0 1 0 0 1 1 0 1 ...
-                        └──── Bits (signals) ────────┘
-
-  Key: TH = Transport Header, NH = Network Header
-       DLH = Data Link Header, DLT = Data Link Trailer
+  SENDER (Host A)                                      RECEIVER (Host B)
+  ═══════════════                                      ═════════════════
+  ┌──────────────────────────────────────────────┐
+  │              APPLICATION DATA                │ ◄── APPLICATION LAYER
+  └──────────────────────┬───────────────────────┘     (Decapsulate Data)
+                         ▼
+  ┌──────────┬───────────────────────────────────┐
+  │ Header 4 │         APPLICATION DATA          │ ◄── TRANSPORT LAYER
+  └────┬─────┴───────────────────────────────────┘     (Strip TCP Header)
+       │  [ Transport Segment ]
+       ▼
+  ┌──────────┬──────────┬────────────────────────┐
+  │ Header 3 │ Header 4 │    APPLICATION DATA    │ ◄── NETWORK LAYER
+  └────┬─────┴──────────┴────────────────────────┘     (Strip IP Header)
+       │  [ Network Packet ]
+       ▼
+  ┌──────────┬──────────┬──────────┬─────────────┬──────────┐
+  │ Header 2 │ Header 3 │ Header 4 │ APPL DATA   │Trailer 2 │ ◄── DATA LINK LAYER
+  └────┬─────┴──────────┴──────────┴─────────────┴────┬─────┘     (Verify FCS &amp; Strip)
+       │  [ Data Link Frame ]                         │
+       ▼                                              ▲
+  ┌─────────────────────────────────────────────────────────┐
+  │  0 1 1 0 1 0 0 1 1 1 0 1 0 0 0 1 1 0 1 1 0 1 0 1 1 1 0  │ ◄── PHYSICAL LAYER
+  └──────────────────────────┬──────────────────────────────┘     (Bits over medium)
+                             │
+                             ▼  [ Transmission Medium ]
       </code></pre>
     </div>
 
-    <p><strong>Analogy:</strong> Encapsulation is like putting a letter in nested envelopes:</p>
-    <ol>
-      <li>You write a letter (data)</li>
-      <li>Put it in a small envelope labeled "From: Port 443, To: Port 80" (transport header)</li>
-      <li>Put that in a larger envelope labeled "From: 192.168.1.5, To: 8.8.8.8" (network header)</li>
-      <li>Put that in a package labeled "From: AA:BB:CC:DD:EE:FF, To: 11:22:33:44:55:66" with a seal (data link header + trailer)</li>
-      <li>The delivery truck carries the physical package (physical layer)</li>
-    </ol>
+    <!-- 6. CURRICULUM TRAILER NUANCE -->
+    <h3>Why Does the Data Link Layer Add a Trailer?</h3>
+    <p>In the simplified Ethernet/OSI model used in university curricula, the <strong>Data Link layer is unique in adding both a header AND a trailer</strong>.</p>
+    <ul>
+      <li><strong>The Trailer Contents:</strong> The trailer contains the <strong>Frame Check Sequence (FCS)</strong>, typically calculated using a 32-bit <strong>Cyclic Redundancy Check (CRC-32)</strong> algorithm.</li>
+      <li><strong>Why at the end?</strong> As the sending network interface card (NIC) serializes the frame bits onto the physical cable, it computes the CRC value incrementally across all header and payload bytes. Appending the FCS at the tail allows the sender to transmit immediately without buffering the entire frame to insert a checksum at the front.</li>
+      <li><strong>Verification at Receiver:</strong> The receiving NIC recomputes the CRC on the incoming bitstream. If the calculated checksum matches the trailer FCS, the frame is intact; if any bit was corrupted by noise, the frame is silently dropped.</li>
+    </ul>
 
-    <p>At each hop along the way, only the outermost envelope is opened and replaced (the Data Link frame changes at every router), while the inner envelopes remain sealed until the final destination.</p>
-
+    <!-- 8. COMMON CONFUSION & TRAPS -->
     <div class="callout danger">
       <span class="callout-icon">⚠️</span>
-      <div><strong>Critical MCQ Concept:</strong> Only the <strong>Data Link Layer adds both a header AND a trailer</strong> (the trailer contains the FCS/CRC for error detection). All other layers add only headers. If an MCQ asks "Which layer adds a trailer?" → Data Link Layer.</div>
+      <div><strong>Critical Exam Question: "Which layer adds a trailer?"</strong>
+        <br>For standard university and GATE multiple-choice questions, the expected answer is always the <strong>Data Link Layer</strong>.
+        <br><em>Advanced note:</em> In specialized security protocols such as IPSec ESP (Encapsulating Security Payload), transport-level trailers are also used for padding and authentication data; but in the standard 7-layer OSI curriculum, only Data Link adds the FCS trailer.
+      </div>
     </div>
 
+    <!-- 9. EXAM / MCQ POINTS -->
     <div class="callout tip">
       <span class="callout-icon">💡</span>
-      <div><strong>How to Remember PDU Names:</strong> <strong>"Don't Seem People Fear Bits"</strong> → Data, Segment, Packet, Frame, Bits (top to bottom).</div>
+      <div><strong>How to Remember PDU Names (Top to Bottom):</strong>
+        <br>Remember the mnemonic: <strong>"Don't Spill Paint From Buckets"</strong>
+        <br>$\rightarrow$ <strong>D</strong>ata (App) $\rightarrow$ <strong>S</strong>egment (Trans) $\rightarrow$ <strong>P</strong>acket (Net) $\rightarrow$ <strong>F</strong>rame (DLL) $\rightarrow$ <strong>B</strong>its (Phys).
+      </div>
     </div>
 
+    <div class="mcq reveal">
+      <strong>University / GATE Question:</strong> During the decapsulation process at a receiving host, which layer strips the IP header and what PDU does it pass up to the next layer?
+      <br>(a) Transport layer strips IP header; passes Data &nbsp;&nbsp; (b) Network layer strips IP header; passes Segment
+      <br>(c) Data Link layer strips MAC header; passes Packet &nbsp;&nbsp; (d) Network layer strips IP header; passes Frame
+      <details style="margin-top:0.6rem">
+        <summary><strong>View Answer &amp; Explanation</strong></summary>
+        <div style="margin-top:0.4rem">
+          <strong>Correct Answer: (b) Network layer strips IP header; passes Segment.</strong>
+          <br><em>Explanation:</em> The Network Layer (Layer 3) receives the Packet from the Data Link layer, processes and strips the Network (IP) Header ($H_3$), and passes the unwrapped payload—the Transport <strong>Segment</strong>—up to the Transport Layer.
+        </div>
+      </details>
+    </div>
+
+    <!-- 10. CURATED REFERENCES -->
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Primary textbook chapters and enterprise documentation on layered encapsulation.</div>
+      <div class="resource-grid">
+        <a href="https://www.mheducation.com/highered/product/data-communications-and-networking-with-tcp-ip-protocol-suite-forouzan.html" target="_blank" rel="noopener noreferrer">
+          📘 Forouzan — Ch. 1, Encapsulation &amp; Layering
+          <small>Standard textbook treatment of PDU transformations</small>
+        </a>
+        <a href="https://www.cisco.com/c/en/us/td/docs/ios/12_4/interface/configuration/guide/inb_tun.html" target="_blank" rel="noopener noreferrer">
+          🌐 Cisco — Encapsulation Principles
+          <small>Authoritative industry explanation of protocol wrapping</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=LANW3m7Bgkw" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — Encapsulation &amp; Decapsulation
+          <small>Visual animation of packet headers traversing protocol stacks</small>
+        </a>
+      </div>
+    </div>
   </div>
 </section>
 <hr class="section-hr">
 
-
 <!-- ═══════════════════════════════════════════════════════ -->
-<!-- SECTION 1.6 — NETWORKING TERMINOLOGY -->
+<!-- SECTION 1.6 — NETWORKING TERMINOLOGY & LATENCY DEEP DIVE -->
 <!-- ═══════════════════════════════════════════════════════ -->
-<section id="s-terminology" data-search-section="networking terminology node host link packet frame segment datagram bandwidth throughput latency jitter RTT round trip time hop delay propagation transmission queuing processing" class="section-in-uni  ">
+<section id="s-terminology" data-midsem="core" data-exam-priority="core" data-search-section="networking terminology node host link packet frame segment datagram bandwidth throughput goodput latency jitter RTT round trip time hop delay propagation transmission queuing processing latency formula" class="section-in-uni content-section">
   <div class="section-heading">
-    <h2 class="prose">1.6 Networking Terminology
+    <h2 class="prose">1.6 Networking Terminology &amp; Latency Deep Dive
       <button class="bookmark-btn" data-id="s-terminology" data-label="1.6 Networking Terminology" title="Bookmark">🔖</button>
     </h2>
   </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Overview of computer networks (Bandwidth, Throughput, Latency, Jitter, RTT)</strong></span>
+    <span>Prescribed syllabus topic: <strong>Overview of networking terms (Bandwidth, Throughput, Latency, Jitter, RTT)</strong></span>
   </div>
 
-
   <div class="prose">
+    <p>This section establishes the precise quantitative and architectural vocabulary used throughout all subsequent networking units. University and GATE examinations frequently construct numerical problems and trick questions testing the exact boundaries between these terms.</p>
 
-    <p>This section defines the essential vocabulary you'll encounter throughout the entire course. Understanding these terms precisely is critical for MCQs that test subtle differences between similar-sounding concepts.</p>
-
-    <h3>Network Elements</h3>
-
+    <!-- 1. NETWORK ELEMENTS: NODE VS HOST VS LINK -->
+    <h3>1. Network Elements: Node vs. Host vs. Link</h3>
     <div class="def-box">
       <div class="def-term">Node</div>
-      Any device connected to the network that can send, receive, or forward data. Includes computers, routers, switches, printers, and servers.
+      Any addressable physical device connected to a network capable of creating, receiving, or forwarding data. This includes end-user computers, smartphones, servers, network printers, Layer-2 switches, Layer-3 routers, and hardware firewalls.
     </div>
 
     <div class="def-box">
-      <div class="def-term">Host</div>
-      A node that is a <strong>source or destination</strong> of data — typically a computer, server, or smartphone. Unlike a router (which forwards data for others), a host generates or consumes data. <strong>Every host is a node, but not every node is a host</strong> (a router is a node but not a host in the traditional sense).
+      <div class="def-term">Host (End System)</div>
+      A specialized node that serves as the <strong>originator (source) or ultimate consumer (destination)</strong> of network data. Hosts run end-user applications.
+      <br><br>
+      <strong>Key Rule:</strong> <em>Every host is a node, but not every node is a host.</em> A router or core switch is a network node, but because it merely forwards packets on behalf of other devices, it is not a host in standard architectural taxonomy.
     </div>
 
     <div class="def-box">
-      <div class="def-term">Link (Communication Link)</div>
-      The physical or logical communication path between two nodes. Can be <strong>point-to-point</strong> (dedicated connection between exactly two devices) or <strong>multipoint/shared</strong> (multiple devices share the same link).
+      <div class="def-term">Link (Communication Channel)</div>
+      The physical or logical communication channel connecting adjacent nodes.
+      <ul>
+        <li><strong>Point-to-Point Link:</strong> A dedicated channel between exactly two devices (e.g., a serial leased line, or a direct Ethernet cable between a PC and switch).</li>
+        <li><strong>Multipoint (Shared) Link:</strong> A shared channel where multiple devices share the same physical transmission capacity (e.g., legacy coaxial bus, Wi-Fi radio airwaves).</li>
+      </ul>
     </div>
 
-    <h3>Data Units</h3>
-
-    <table class="data-table reveal">
-      <thead>
-        <tr><th>Term</th><th>Layer</th><th>Definition</th></tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Packet</strong></td>
-          <td>Network (Layer 3)</td>
-          <td>A unit of data at the network layer. Contains a network header (with IP addresses) and the payload (transport segment). Sometimes used generically for any chunk of data.</td>
-        </tr>
-        <tr>
-          <td><strong>Frame</strong></td>
-          <td>Data Link (Layer 2)</td>
-          <td>A unit of data at the data link layer. Contains a DLL header (MAC addresses), the payload (network packet), and a trailer (FCS).</td>
-        </tr>
-        <tr>
-          <td><strong>Segment</strong></td>
-          <td>Transport (Layer 4)</td>
-          <td>A unit of data at the transport layer when using TCP. Contains a TCP header (with port numbers, sequence numbers) and application data.</td>
-        </tr>
-        <tr>
-          <td><strong>Datagram</strong></td>
-          <td>Transport (L4) / Network (L3)</td>
-          <td>Can refer to a UDP segment at Layer 4, or a network-layer packet in connectionless (datagram) networks. Context-dependent!</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="callout danger">
-      <span class="callout-icon">⚠️</span>
-      <div><strong>MCQ Trap:</strong> "Datagram" is used at <em>two different layers</em> depending on context:
-        <ul style="margin:4px 0 0;padding-left:18px">
-          <li>At the <strong>Transport layer</strong>: a UDP data unit is called a datagram (or user datagram)</li>
-          <li>At the <strong>Network layer</strong>: in a connectionless network, packets are called datagrams</li>
-        </ul>
-        If the MCQ doesn't specify the layer, look for context clues like "UDP" (transport) or "IP" (network).
-      </div>
-    </div>
-
-    <h3>Performance Metrics — Deep Dive</h3>
-
+    <!-- 2. BANDWIDTH VS THROUGHPUT VS GOODPUT -->
+    <h3>2. Bandwidth vs. Throughput vs. Goodput</h3>
     <div class="def-box">
-      <div class="def-term">Bandwidth</div>
-      The <strong>maximum rate</strong> at which data can be transferred over a network link, measured in <strong>bits per second (bps)</strong>. Think of it as the "width of the pipe." A 100 Mbps Ethernet link has a bandwidth of 100 million bits per second. <br><br>
-      <strong>Note:</strong> In analog communication, bandwidth means the range of frequencies (in Hz). In digital networking, it typically means data rate capacity (in bps). MCQs may test this distinction.
+      <div class="def-term">Bandwidth — The Dual Meaning</div>
+      <ul>
+        <li><strong>In Digital Networking:</strong> The maximum theoretical data transfer rate of a link, measured in <strong>bits per second (bps, Mbps, Gbps)</strong>. It defines the maximum capacity of the "pipe."</li>
+        <li><strong>In Analog Communications:</strong> The width of the frequency range that a transmission channel can pass without severe attenuation, measured in <strong>Hertz (Hz)</strong> ($\Delta f = f_{\text{high}} - f_{\text{low}}$).</li>
+      </ul>
+      <em>Connection:</em> By Shannon's and Nyquist's theorems, a channel's digital bandwidth in bps is directly proportional to its analog bandwidth in Hz.
     </div>
 
     <div class="def-box">
-      <div class="def-term">Throughput</div>
-      The <strong>actual rate</strong> of successful data delivery over the network, measured in bps. Always ≤ bandwidth due to congestion, protocol overhead, errors, and sharing. If a 100 Mbps link is congested and only delivering 60 Mbps to users, the throughput is 60 Mbps.
+      <div class="def-term">Throughput &amp; Goodput</div>
+      <ul>
+        <li><strong>Throughput:</strong> The actual measured rate of data successfully transferred across a link per second. It is always less than or equal to bandwidth ($T \le B$) due to protocol overhead, buffer queuing, packet collisions, and transmission errors.</li>
+        <li><strong>Goodput:</strong> The rate of <em>useful application-level payload</em> delivered to the user, strictly excluding protocol headers, retransmitted lost packets, and framing overhead.</li>
+      </ul>
+      $$\text{Goodput} &lt; \text{Throughput} \le \text{Bandwidth}$$
     </div>
 
-    <div class="def-box">
-      <div class="def-term">Latency (Delay)</div>
-      The total time taken for a data unit to travel from source to destination. Latency has four components:
-    </div>
+    <!-- 3. LATENCY & THE 4 DELAY COMPONENTS -->
+    <h3>3. Total Packet Latency (Delay) Mathematical Breakdown</h3>
+    <p>Total packet latency is the total elapsed time required for a packet to travel from the sender to the destination application. Total delay is composed of four distinct components:</p>
 
     <div class="formula-box">
-      <div class="formula-label">Total Latency Formula</div>
-      <strong>Latency = Propagation Delay + Transmission Delay + Queuing Delay + Processing Delay</strong>
+      <div class="formula-label">The Total Latency Equation</div>
+      $$D_{\text{total}} = d_{\text{trans}} + d_{\text{prop}} + d_{\text{queue}} + d_{\text{proc}}$$
     </div>
 
     <table class="data-table reveal">
       <thead>
-        <tr><th>Component</th><th>Definition</th><th>Formula</th><th>Depends On</th></tr>
+        <tr><th>Delay Component</th><th>Physical Meaning</th><th>Mathematical Formula</th><th>Governing Factors</th></tr>
       </thead>
       <tbody>
         <tr>
-          <td><strong>Propagation Delay</strong></td>
-          <td>Time for a signal (bit) to travel from sender to receiver through the medium</td>
-          <td>d<sub>prop</sub> = Distance / Propagation Speed</td>
-          <td>Distance, medium type (speed of light in fiber ≈ 2×10⁸ m/s)</td>
+          <td><strong>1. Transmission Delay ($d_{\text{trans}}$)</strong></td>
+          <td>Time required to push all the packet's bits onto the physical transmission medium.</td>
+          <td>$$d_{\text{trans}} = \frac{L}{R}$$</td>
+          <td>$L$ = Packet length (bits)<br>$R$ = Link transmission rate / Bandwidth (bps)</td>
         </tr>
         <tr>
-          <td><strong>Transmission Delay</strong></td>
-          <td>Time to push all bits of a packet onto the link</td>
-          <td>d<sub>trans</sub> = Packet Size / Bandwidth</td>
-          <td>Packet size, link bandwidth</td>
+          <td><strong>2. Propagation Delay ($d_{\text{prop}}$)</strong></td>
+          <td>Time required for a single bit to physically travel through the medium from sender to receiver.</td>
+          <td>$$d_{\text{prop}} = \frac{d}{s}$$</td>
+          <td>$d$ = Physical distance (meters)<br>$s$ = Propagation speed ($s \approx 2 \times 10^8\text{ m/s}$ in copper/fiber)</td>
         </tr>
         <tr>
-          <td><strong>Queuing Delay</strong></td>
-          <td>Time spent waiting in router/switch queues before processing</td>
-          <td>Variable (depends on congestion)</td>
-          <td>Network traffic, queue length</td>
+          <td><strong>3. Queuing Delay ($d_{\text{queue}}$)</strong></td>
+          <td>Time the packet spends waiting in router buffer queues before being serviced.</td>
+          <td>Statistical / Dynamic</td>
+          <td>Network traffic congestion, arrival rate, buffer capacity.</td>
         </tr>
         <tr>
-          <td><strong>Processing Delay</strong></td>
-          <td>Time for a router/switch to examine the packet header and decide where to forward it</td>
-          <td>Typically very small (microseconds)</td>
-          <td>Router CPU speed, lookup table size</td>
+          <td><strong>4. Processing Delay ($d_{\text{proc}}$)</strong></td>
+          <td>Time taken by router CPU to inspect packet header, verify checksum, and consult routing table.</td>
+          <td>Fixed per router ($\sim \mu\text{s}$)</td>
+          <td>Router processor clock speed, switching fabric architecture.</td>
         </tr>
       </tbody>
     </table>
 
+    <!-- 4. WORKED NUMERICAL EXAMPLE -->
     <div class="mode-gate">
-      <div class="mode-badge gate">⚡ Competitive Exam</div>
-      <h4>Worked Example: Latency Calculation</h4>
-      <p><strong>Problem:</strong> A 1,500-byte packet is sent over a 10 Mbps link. The distance between sender and receiver is 2,000 km. The propagation speed is 2 × 10⁸ m/s. Assume queuing and processing delays are negligible. Calculate the total latency.</p>
+      <div class="mode-badge gate">⚡ GATE / University Solved Numerical</div>
+      <h4>Worked Example: End-to-End Latency Calculation</h4>
+      <p><strong>Problem:</strong> A host sends a <strong>1,500-byte packet</strong> over a point-to-point fiber optic link with a bandwidth of <strong>100 Mbps</strong>. The physical distance between the sender and receiver is <strong>2,000 km</strong>. The signal propagation speed in optical fiber is $2 \times 10^8\text{ m/s}$. Assume queuing and processing delays are negligible. Calculate:</p>
+      <ol style="margin:4px 0 0;padding-left:18px">
+        <li>Transmission delay ($d_{\text{trans}}$)</li>
+        <li>Propagation delay ($d_{\text{prop}}$)</li>
+        <li>Total end-to-end latency ($D_{\text{total}}$)</li>
+      </ol>
 
-      <p><strong>Solution:</strong></p>
+      <p style="margin-top:0.8rem"><strong>Step-by-Step Solution:</strong></p>
       <ul>
-        <li>Transmission delay = Packet size / Bandwidth = (1500 × 8 bits) / (10 × 10⁶ bps) = 12,000 / 10,000,000 = <strong>1.2 ms</strong></li>
-        <li>Propagation delay = Distance / Speed = (2,000 × 10³ m) / (2 × 10⁸ m/s) = 2,000,000 / 200,000,000 = <strong>10 ms</strong></li>
-        <li>Total latency = 1.2 + 10 = <strong>11.2 ms</strong></li>
+        <li><strong>Step 1: Convert units to bits and meters</strong>
+          <br>Packet size $L = 1500\text{ bytes} \times 8\text{ bits/byte} = 12,000\text{ bits}$.
+          <br>Bandwidth $R = 100\text{ Mbps} = 100 \times 10^6\text{ bps}$.
+          <br>Distance $d = 2000\text{ km} = 2,000 \times 10^3\text{ m} = 2 \times 10^6\text{ m}$.
+          <br>Propagation speed $s = 2 \times 10^8\text{ m/s}$.
+        </li>
+        <li><strong>Step 2: Calculate Transmission Delay ($d_{\text{trans}}$)</strong>
+          $$d_{\text{trans}} = \frac{L}{R} = \frac{12,000\text{ bits}}{100 \times 10^6\text{ bps}} = 0.00012\text{ seconds} = \mathbf{0.12\text{ ms}}$$
+        </li>
+        <li><strong>Step 3: Calculate Propagation Delay ($d_{\text{prop}}$)</strong>
+          $$d_{\text{prop}} = \frac{d}{s} = \frac{2 \times 10^6\text{ m}}{2 \times 10^8\text{ m/s}} = 0.01\text{ seconds} = \mathbf{10\text{ ms}}$$
+        </li>
+        <li><strong>Step 4: Calculate Total Latency</strong>
+          $$D_{\text{total}} = d_{\text{trans}} + d_{\text{prop}} = 0.12\text{ ms} + 10.0\text{ ms} = \mathbf{10.12\text{ ms}}$$
+        </li>
       </ul>
 
       <div class="callout tip">
         <span class="callout-icon">💡</span>
-        <div><strong>Notice:</strong> For long-distance, low-bandwidth links, propagation delay dominates. For short-distance, high-bandwidth links, transmission delay may dominate. MCQs often test which component is more significant in a given scenario.</div>
+        <div><strong>Key Engineering Observation:</strong> In long-distance transcontinental fiber links, <strong>propagation delay dominates</strong> ($10\text{ ms} \gg 0.12\text{ ms}$). Upgrading the link from 100 Mbps to 1 Gbps reduces transmission delay to $0.012\text{ ms}$, but the total latency remains $\approx 10.01\text{ ms}$. Bandwidth upgrades do not overcome the speed of light!</div>
       </div>
     </div>
 
+    <!-- 5. JITTER, RTT, AND HOP -->
+    <h3>4. Jitter, RTT, and Hop</h3>
     <div class="def-box">
-      <div class="def-term">Jitter</div>
-      The <strong>variation in delay</strong> between successive packets. If Packet 1 takes 20ms and Packet 2 takes 45ms and Packet 3 takes 18ms, the jitter is the variation: 25ms, 27ms. High jitter is especially problematic for real-time applications (VoIP, video streaming) because packets arrive at irregular intervals, causing choppy audio/video.
+      <div class="def-term">Jitter (Packet Delay Variation — PDV)</div>
+      <strong>Jitter</strong> is the statistical variation in packet transit delay across a sequence of packets belonging to the same flow.
+      <br><em>Why it matters:</em> If Packet 1 arrives with 20 ms delay, Packet 2 arrives with 45 ms delay, and Packet 3 arrives with 15 ms delay, real-time applications (such as VoIP calls or video streaming) suffer from choppy audio and video stutter. Receiving endpoints use <strong>jitter buffers</strong> to smooth out packet playback.
     </div>
 
     <div class="def-box">
       <div class="def-term">RTT (Round-Trip Time)</div>
-      The time for a signal to travel from sender to receiver <strong>and back</strong>. RTT = 2 × one-way propagation delay (approximately, ignoring processing). RTT is used in many protocol calculations, especially for Stop-and-Wait, TCP congestion control, and timeout values.
+      <strong>Round-Trip Time</strong> is the total elapsed time required for a data packet to travel from the sender to the destination PLUS the time for the acknowledgment (ACK) to travel back.
+      <br><br>
+      <strong>Scientific Nuance:</strong> In real networks, $\text{RTT}$ comprises transmission, propagation, queuing, and processing delays across both forward and reverse paths:
+      $$\text{RTT} = (d_{\text{trans}} + d_{\text{prop}} + d_{\text{queue}} + d_{\text{proc}})_{\text{forward}} + (d_{\text{trans}} + d_{\text{prop}} + d_{\text{queue}} + d_{\text{proc}})_{\text{reverse}}$$
+      Only in idealized zero-payload physics calculations can one approximate $\text{RTT} \approx 2 \times d_{\text{prop}}$.
     </div>
 
     <div class="def-box">
       <div class="def-term">Hop</div>
-      A <strong>hop</strong> is one segment of the path between source and destination. When a packet passes through a router, it completes one hop. If a packet traverses 5 routers between source and destination, the path has 5 hops.
+      A <strong>hop</strong> represents one intermediate forwarding step along the path between source and destination. When a packet passes through a router, it executes one hop. Hop counts are used as routing distance metrics in algorithms like Distance Vector Routing (RIP).
     </div>
 
-    <h3>Quick Comparison: Bandwidth vs Throughput vs Latency</h3>
-
+    <!-- 6. GRAND SUMMARY MATRIX -->
+    <h3>Performance Terminology Master Matrix</h3>
     <table class="data-table reveal">
       <thead>
-        <tr><th>Aspect</th><th>Bandwidth</th><th>Throughput</th><th>Latency</th></tr>
+        <tr><th>Concept</th><th>Primary Question Answered</th><th>Unit</th><th>Dependent Upon</th></tr>
       </thead>
       <tbody>
-        <tr>
-          <td><strong>What it measures</strong></td>
-          <td>Maximum capacity</td>
-          <td>Actual delivery rate</td>
-          <td>Time delay</td>
-        </tr>
-        <tr>
-          <td><strong>Unit</strong></td>
-          <td>bps</td>
-          <td>bps</td>
-          <td>seconds (ms)</td>
-        </tr>
-        <tr>
-          <td><strong>Analogy</strong></td>
-          <td>Width of highway</td>
-          <td>Cars actually passing</td>
-          <td>Travel time from A to B</td>
-        </tr>
-        <tr>
-          <td><strong>Relationship</strong></td>
-          <td>Upper limit</td>
-          <td>≤ Bandwidth</td>
-          <td>Independent of bandwidth</td>
-        </tr>
-        <tr>
-          <td><strong>Want it to be</strong></td>
-          <td>High</td>
-          <td>High</td>
-          <td>Low</td>
-        </tr>
+        <tr><td><strong>Bandwidth</strong></td><td>How wide is the pipe?</td><td>bps</td><td>Physical link medium and hardware modulation</td></tr>
+        <tr><td><strong>Throughput</strong></td><td>How much data is actually flowing?</td><td>bps</td><td>Congestion, window size, protocol overhead ($T \le B$)</td></tr>
+        <tr><td><strong>Latency</strong></td><td>How long does one packet take?</td><td>ms</td><td>Distance, packet size, queue lengths, router speeds</td></tr>
+        <tr><td><strong>Jitter</strong></td><td>How consistent is the packet arrival time?</td><td>ms</td><td>Queue dynamics and route fluctuations</td></tr>
+        <tr><td><strong>RTT</strong></td><td>How long does a full round-trip handshake take?</td><td>ms</td><td>Round-trip propagation, transmission, and processing</td></tr>
       </tbody>
     </table>
 
+    <!-- 8. COMMON CONFUSION & TRAPS -->
     <div class="callout danger">
       <span class="callout-icon">⚠️</span>
-      <div><strong>Common Misconception:</strong> "Higher bandwidth means lower latency." — <strong>FALSE</strong>. A satellite link can have very high bandwidth (Gbps) but very high latency (500+ ms RTT due to distance). Bandwidth and latency are independent properties. A link can be high-bandwidth-high-latency, low-bandwidth-low-latency, or any combination.</div>
-    </div>
-
-    <h3>Section Recap</h3>
-
-    <div class="callout info">
-      <span class="callout-icon">📌</span>
-      <div><strong>Key takeaways from Chapter 1:</strong>
-        <ul style="margin:4px 0 0;padding-left:18px">
-          <li>A network connects devices to share resources and communicate via protocols</li>
-          <li>5 components: Sender, Receiver, Message, Medium, Protocol</li>
-          <li>3 data flow modes: Simplex, Half-duplex, Full-duplex</li>
-          <li>3 network criteria: Performance, Reliability, Security</li>
-          <li>Protocol elements: Syntax, Semantics, Timing</li>
-          <li>Standards: De Jure (formal) vs De Facto (market adoption)</li>
-          <li>Encapsulation adds headers top-down; decapsulation removes them bottom-up</li>
-          <li>PDUs: Data → Segment → Packet → Frame → Bits</li>
-          <li>Latency = Propagation + Transmission + Queuing + Processing</li>
-          <li>Bandwidth ≠ Throughput; Bandwidth ≠ inverse of Latency</li>
-        </ul>
+      <div><strong>Common Misconception: "Higher bandwidth reduces latency."</strong>
+        <br><strong>FALSE.</strong> Bandwidth and propagation latency are independent physical properties. A geostationary satellite link can provide massive bandwidth (e.g., 500 Mbps), but still has high propagation latency ($\approx 250\text{ ms}$ one way, $500\text{ ms}$ RTT) due to the 36,000 km orbital altitude. Bandwidth increases transmission speed ($L/R$), but does NOT accelerate the speed of light.
       </div>
     </div>
 
+    <!-- 9. EXAM / MCQ POINTS -->
+    <div class="mcq reveal">
+      <strong>GATE Practice Question:</strong> If a link's physical distance is doubled while keeping packet size and transmission rate constant, which delay component increases by a factor of 2?
+      <br>(a) Transmission Delay ($d_{\text{trans}}$) &nbsp;&nbsp; (b) Propagation Delay ($d_{\text{prop}}$)
+      <br>(c) Processing Delay ($d_{\text{proc}}$) &nbsp;&nbsp; (d) Queuing Delay ($d_{\text{queue}}$)
+      <details style="margin-top:0.6rem">
+        <summary><strong>View Answer &amp; Explanation</strong></summary>
+        <div style="margin-top:0.4rem">
+          <strong>Correct Answer: (b) Propagation Delay ($d_{\text{prop}}$).</strong>
+          <br><em>Explanation:</em> Propagation delay $d_{\text{prop}} = \frac{d}{s}$. Since it is directly proportional to distance $d$, doubling the distance doubles propagation delay. Transmission delay $d_{\text{trans}} = \frac{L}{R}$ depends only on packet length and bandwidth, completely independent of distance.
+        </div>
+      </details>
+    </div>
+
+    <!-- 10. CURATED REFERENCES -->
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Consult these primary references for latency proofs and mathematical problem sets.</div>
+      <div class="resource-grid">
+        <a href="https://www.mheducation.com/highered/product/data-communications-and-networking-with-tcp-ip-protocol-suite-forouzan.html" target="_blank" rel="noopener noreferrer">
+          📘 Forouzan — Ch. 3, Transmission Impairments &amp; Performance
+          <small>Standard textbook formulas for delay, throughput, and bandwidth</small>
+        </a>
+        <a href="https://www.cloudflare.com/en-gb/learning/performance/glossary/what-is-latency/" target="_blank" rel="noopener noreferrer">
+          🌐 Cloudflare — Latency, Bandwidth &amp; Throughput
+          <small>Authoritative modern latency breakdown</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=5AVuUgEJu1E" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — Transmission Delay vs. Propagation Delay
+          <small>Step-by-step solved numericals for university and GATE</small>
+        </a>
+      </div>
+    </div>
   </div>
 </section>
 <hr class="section-hr">
 
+  <!-- CHAPTER RECAP CALLOUT -->
+  <div class="callout info" style="margin:2rem 0;">
+    <span class="callout-icon">📌</span>
+    <div><strong>Chapter 1 Summary Checklist:</strong>
+      <ul style="margin:6px 0 0;padding-left:18px">
+        <li><strong>Network Elements:</strong> End devices (hosts) generate/consume data; intermediary devices (switches, routers) forward and filter; links transmit signals; protocols govern rules.</li>
+        <li><strong>5 Data Comm Components:</strong> Sender, Receiver, Message, Medium, Protocol. Do not confuse with physical hardware!</li>
+        <li><strong>Data Flow Modes:</strong> Simplex (unidirectional), Half-Duplex (alternating bidirectional), Full-Duplex (simultaneous bidirectional).</li>
+        <li><strong>3 Network Criteria:</strong> Performance (throughput, latency, jitter), Reliability (MTTF, MTTR, availability), Security (Confidentiality, Integrity, Availability).</li>
+        <li><strong>Protocols &amp; Standards:</strong> Syntax (structure), Semantics (meaning), Timing (speed/sequencing). <em>De jure</em> (formal) vs. <em>de facto</em> (market adoption). TCP is RFC 9293; HTTP is RFC 9110.</li>
+        <li><strong>Encapsulation:</strong> Data $\rightarrow$ Segment (Transport) $\rightarrow$ Packet (Network) $\rightarrow$ Frame (Data Link with trailer FCS) $\rightarrow$ Bits (Physical).</li>
+        <li><strong>Latency Formula:</strong> $D = d_{\text{trans}} (L/R) + d_{\text{prop}} (d/s) + d_{\text{queue}} + d_{\text{proc}}$. Bandwidth $\ne$ Throughput; Bandwidth does not alter propagation speed.</li>
+      </ul>
+    </div>
+  </div>
 
   <!-- PREV/NEXT NAV -->
   <div class="prev-next">
     <a href="../index.html" class="nav-btn">← Home</a>
-    <a href="ch02-types-topologies.html" class="nav-btn primary">Next: Types & Topologies →</a>
+    <a href="ch02-types-topologies.html" class="nav-btn primary">Next: Ch 2 — Types &amp; Topologies →</a>
   </div>
 
 </div>

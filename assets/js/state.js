@@ -4,13 +4,42 @@
 (() => {
   const KEY      = 'cn-minibook-state';
   const NUDGE_KEY= 'cn-minibook-backup-nudge';
-  let state = {
-    theme: 'auto', sidebarOpen: window.innerWidth > 768,
-    checklist: {}, bookmarks: [], highlights: [], fontSize: 16,
-    mcqResults: {},    // { questionId: { correct: bool, ts } }
-    readProgress: {},  // { 'unit1.html': 85, 'unit2.html': 42 } — percent scrolled
+  const DEFAULT_STATE = {
+    theme: 'auto',
+    sidebarOpen: typeof window !== 'undefined' ? window.innerWidth > 768 : true,
+    checklist: {},
+    bookmarks: [],
+    highlights: [],
+    fontSize: 16,
+    mcqResults: {},
+    readProgress: {},
     readingMode: false
   };
+
+  let state = clone(DEFAULT_STATE);
+
+  function clone(value) {
+    return JSON.parse(JSON.stringify(value));
+  }
+
+  function normalizeTheme(value) {
+    return ['auto', 'light', 'dark', 'paper'].includes(value) ? value : 'auto';
+  }
+
+  function normalizeState(candidate) {
+    const next = { ...clone(DEFAULT_STATE), ...(candidate && typeof candidate === 'object' ? candidate : {}) };
+    next.theme = normalizeTheme(next.theme);
+    next.sidebarOpen = Boolean(next.sidebarOpen);
+    next.checklist = next.checklist && typeof next.checklist === 'object' ? next.checklist : {};
+    next.bookmarks = Array.isArray(next.bookmarks) ? next.bookmarks : [];
+    next.highlights = Array.isArray(next.highlights) ? next.highlights : [];
+    next.mcqResults = next.mcqResults && typeof next.mcqResults === 'object' ? next.mcqResults : {};
+    next.readProgress = next.readProgress && typeof next.readProgress === 'object' ? next.readProgress : {};
+    next.readingMode = Boolean(next.readingMode);
+    const numericFont = Number(next.fontSize);
+    next.fontSize = Number.isFinite(numericFont) ? Math.min(22, Math.max(14, Math.round(numericFont))) : 16;
+    return next;
+  }
 
   function safeGet(key) {
     try { return localStorage.getItem(key); } catch (e) { console.warn('safeGet failed', e); return null; }
@@ -22,20 +51,27 @@
   function init() {
     try {
       const saved = safeGet(KEY) || safeGet('os-minibook-state');
-      if (saved) state = { ...state, ...JSON.parse(saved) };
+      if (saved) {
+        try { state = normalizeState(JSON.parse(saved)); }
+        catch (e) { console.warn('Ignoring invalid saved state:', e); state = clone(DEFAULT_STATE); }
+      }
 
       // Migrate legacy keys
       ['cn-theme','cn-sidebar','cn-bookmarks','os-theme','os-sidebar','os-bookmarks'].forEach(k => {
         const v = safeGet(k);
         if (!v) return;
-        if (k.endsWith('theme'))     state.theme = v;
-        if (k.endsWith('sidebar'))   state.sidebarOpen = v === 'open';
+        if (k.endsWith('theme')) state.theme = normalizeTheme(v);
+        if (k.endsWith('sidebar')) state.sidebarOpen = v === 'open' || v === 'true';
         if (k.endsWith('bookmarks')) {
-          try { state.bookmarks = JSON.parse(v); } catch { state.bookmarks = []; }
+          try {
+            const parsed = JSON.parse(v);
+            if (Array.isArray(parsed)) state.bookmarks = parsed;
+          } catch (e) { /* ignore malformed legacy value */ }
         }
         try { localStorage.removeItem(k); } catch(e){}
       });
 
+      state = normalizeState(state);
       save();
       _checkBackupNudge();
     } catch (e) { console.warn('State init error', e); }
@@ -43,18 +79,22 @@
 
   function save() {
     try {
+      state = normalizeState(state);
       const json = JSON.stringify(state);
       if (json.length > 4_500_000) {
-        window.Toast?.show && window.Toast.show('⚠️ Storage nearly full — please export your data!', 'error');
+        window.Toast?.show?.('Storage is nearly full. Export your data soon.', 'error');
       }
-      safeSet(KEY, json);
+      if (!safeSet(KEY, json)) {
+        window.Toast?.show?.('Browser storage is unavailable. Export your data to keep a backup.', 'error');
+      }
     } catch (e) {
-      window.Toast?.show && window.Toast.show('💾 Storage full! Export your data now.', 'error');
+      console.warn('State save failed:', e);
+      window.Toast?.show?.('Could not save local state. Export your data now.', 'error');
     }
   }
 
   function get(k) { return state[k]; }
-  function set(k, v) { state[k] = v; save(); }
+  function set(k, v) { state[k] = v; save(); return state[k]; }
 
   /* MCQ */
   function setMCQResult(id, correct) {
@@ -71,9 +111,11 @@
 
   /* Read progress */
   function setReadProgress(page, pct) {
-    if (!state.readProgress) state.readProgress = {};
-    if ((state.readProgress[page] || 0) < pct) {
-      state.readProgress[page] = pct;
+    const key = String(page || '').trim();
+    const value = Math.min(100, Math.max(0, Number(pct) || 0));
+    if (!key) return;
+    if (state.readProgress[key] === undefined || state.readProgress[key] < value) {
+      state.readProgress[key] = Math.round(value);
       save();
     }
   }
@@ -84,7 +126,7 @@
     const last  = parseInt(safeGet(NUDGE_KEY) || '0', 10);
     const now   = Date.now();
     const seven = 7 * 24 * 60 * 60 * 1000;
-    if (now - last > seven && Object.keys(state.bookmarks || {}).length > 0) {
+    if (now - last > seven && Array.isArray(state.bookmarks) && state.bookmarks.length > 0) {
       setTimeout(() => {
         window.Toast?.show && window.Toast.show('💾 It\'s been 7 days — export your notes & bookmarks for safekeeping!', 'info');
         safeSet(NUDGE_KEY, String(now));
@@ -94,7 +136,11 @@
 
   function exportData() {
     const notesData = safeGet('cn-notes-v1') || safeGet('os-notes-v1');
-    const fullExport = { state, notes: notesData ? JSON.parse(notesData) : {} };
+    let notes = {};
+    if (notesData) {
+      try { notes = JSON.parse(notesData); } catch (e) { notes = {}; }
+    }
+    const fullExport = { state: normalizeState(state), notes };
     const blob = new Blob([JSON.stringify(fullExport, null, 2)], { type: 'application/json' });
     const url  = URL.createObjectURL(blob);
     const a    = document.createElement('a');
@@ -115,10 +161,10 @@
         try {
           const parsed = JSON.parse(ev.target.result);
           if (parsed.state) {
-            state = { ...state, ...parsed.state };
+            state = normalizeState({ ...state, ...parsed.state });
             if (parsed.notes) safeSet('cn-notes-v1', JSON.stringify(parsed.notes));
           } else {
-            state = { ...state, ...parsed };
+            state = normalizeState({ ...state, ...parsed });
           }
           save(); location.reload();
         } catch (err) { window.Toast?.show && window.Toast.show('❌ Invalid backup file!', 'error'); }

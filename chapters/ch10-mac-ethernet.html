@@ -5,7 +5,7 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="author" content="Arpit">
 <meta name="description" content="Chapter 10: MAC Protocols & Ethernet — CN MiniBook. Pure/Slotted ALOHA, CSMA/CD, CSMA/CA, RTS/CTS, Hidden/Exposed terminals, CDMA, IEEE 802.3 frame structure.">
-<title>Ch 10 — MAC Protocols & Ethernet | CN MiniBook 🌐 Arpit</title>
+<title>Ch 10 — MAC Protocols &amp; Ethernet | CN MiniBook 🌐 Arpit</title>
 <link rel="manifest" href="../manifest.json">
 <link rel="stylesheet" href="../assets/css/main.css">
 <link rel="stylesheet" href="../assets/css/components.css">
@@ -27,7 +27,7 @@
       <div class="brand-text"><span class="main">CN MiniBook</span><span class="sub">Computer Networks</span></div>
     </div>
   </div>
-  <span class="header-chapter-title">Ch 10 — MAC & Ethernet</span>
+  <span class="header-chapter-title">Ch 10 — MAC &amp; Ethernet</span>
   <div class="header-right">
     <button id="search-btn" class="icon-btn" title="Search (Ctrl+K)">
       <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.35-4.35"></path></svg>
@@ -35,7 +35,7 @@
     <button id="tts-toggle" class="icon-btn" title="Read Aloud">
       <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"></path></svg>
     </button>
-    <button id="print-btn" title="Print / Save as PDF (Ctrl+P)" aria-label="Print"><svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="flex-shrink:0"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg><span class="print-label">PDF</span></button>
+    <button id="print-btn" title="Print / Save as PDF (Ctrl+P)" aria-label="Print"><svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg><span class="print-label">PDF</span></button>
     <button id="reading-mode-btn" class="icon-btn" title="Reading Mode (F)" aria-pressed="false" aria-label="Toggle reading mode">📖</button>
     <button id="theme-toggle" class="icon-btn" title="Toggle Theme (T)"></button>
   </div>
@@ -59,18 +59,18 @@
       <a href="#s-1-persistent" class="sidebar-link"><span class="link-icon">1️⃣</span>10.5 1-Persistent CSMA</a>
       <a href="#s-non-persistent" class="sidebar-link"><span class="link-icon">🎲</span>10.6 Non-Persistent CSMA</a>
       <a href="#s-p-persistent" class="sidebar-link"><span class="link-icon">📈</span>10.7 p-Persistent CSMA</a>
-      <a href="#s-csma-cd" class="sidebar-link"><span class="link-icon">💥</span>10.8 CSMA/CD & Min Frame</a>
-      <a href="#s-csma-ca" class="sidebar-link"><span class="link-icon">🛡️</span>10.9 CSMA/CA & RTS/CTS</a>
-      <a href="#s-hidden-exposed" class="sidebar-link"><span class="link-icon">👻</span>10.10 Hidden & Exposed Terminals</a>
+      <a href="#s-csma-cd" class="sidebar-link"><span class="link-icon">💥</span>10.8 CSMA/CD &amp; Min Frame</a>
+      <a href="#s-csma-ca" class="sidebar-link"><span class="link-icon">🛡️</span>10.9 CSMA/CA &amp; RTS/CTS</a>
+      <a href="#s-hidden-exposed" class="sidebar-link"><span class="link-icon">👻</span>10.10 Hidden &amp; Exposed Terminals</a>
       <a href="#s-cd-vs-ca" class="sidebar-link"><span class="link-icon">⚖️</span>10.11 CSMA/CD vs CSMA/CA</a>
       <a href="#s-controlled-access" class="sidebar-link"><span class="link-icon">🎟️</span>10.12 Controlled Access</a>
-      <a href="#s-channelization" class="sidebar-link"><span class="link-icon">🔢</span>10.13 CDMA & Orthogonality</a>
+      <a href="#s-channelization" class="sidebar-link"><span class="link-icon">🔢</span>10.13 CDMA &amp; Orthogonality</a>
       <a href="#s-ethernet-basics" class="sidebar-link"><span class="link-icon">🌐</span>10.14 Ethernet Evolution</a>
       <a href="#s-mac-address" class="sidebar-link"><span class="link-icon">🏷️</span>10.15 MAC Addressing</a>
       <a href="#s-ethernet-frame" class="sidebar-link"><span class="link-icon">📦</span>10.16 Ethernet Frame Structure</a>
-      <a href="#s-summary-ch10" class="sidebar-link"><span class="link-icon">🏁</span>10.17 Summary & Exam Traps</a>
+      <a href="#s-summary-ch10" class="sidebar-link"><span class="link-icon">🏁</span>10.17 Summary &amp; Exam Traps</a>
     </div>
-                <div class="sidebar-section">
+    <div class="sidebar-section">
       <div class="sidebar-section-label part-label part-i">Part I — Introduction</div>
       <a href="ch01-fundamentals.html" class="sidebar-link"><span class="link-icon">📡</span>Ch 1 — Fundamentals</a>
       <a href="ch02-types-topologies.html" class="sidebar-link"><span class="link-icon">🔗</span>Ch 2 — Types &amp; Topologies</a>
@@ -90,6 +90,18 @@
       <a href="ch10-mac-ethernet.html" class="sidebar-link active part-iii"><span class="link-icon">🌐</span>Ch 10 — MAC &amp; Ethernet</a>
     </div>
     <div class="sidebar-section">
+      <div class="sidebar-section-label part-label part-iv">Part IV — Network Layer</div>
+      <a href="ch11-network-layer-foundations.html" class="sidebar-link"><span class="link-icon">🗺️</span>Ch 11 — Network Layer Foundations</a>
+      <a href="ch12-shortest-path-routing.html" class="sidebar-link"><span class="link-icon">🧭</span>Ch 12 — Shortest Path Routing</a>
+      <a href="ch13-link-state-distance-vector.html" class="sidebar-link part-iv"><span class="link-icon">🔁</span>Ch 13 — Link-State &amp; Distance-Vector</a>
+      <a href="ch14-logical-addressing-ipv4.html" class="sidebar-link part-iv"><span class="link-icon">🏷️</span>Ch 14 — Logical Addressing &amp; IPv4</a>
+      <a href="ch15-ipv4-internals.html" class="sidebar-link part-iv"><span class="link-icon">📦</span>Ch 15 — IPv4 Internals</a>
+      
+      <a href="ch17-address-mapping-icmp.html" class="sidebar-link part-iv"><span class="link-icon">🔎</span>Ch 17 — Address Mapping &amp; ICMP</a>
+      <a href="ch18-routers-switches-firewalls.html" class="sidebar-link part-iv"><span class="link-icon">🛡️</span>Ch 18 — Routers, Switches &amp; Firewalls</a>
+    </div>
+
+    <div class="sidebar-section">
       <div class="sidebar-section-label">My Notes</div>
       <div id="notes-sidebar-list"></div>
     </div>
@@ -106,37 +118,37 @@
   <!-- CHAPTER HERO -->
   <div class="chapter-hero">
     <div class="chapter-breadcrumb">
-      <a href="../index.html">Home</a><span>›</span><span>Part III — Data Link Layer</span><span>›</span><span style="color:var(--tx-primary)">Chapter 10</span>
+      <a href="../index.html">Home</a><span>›</span><span>Part III — Data Link Layer</span><span>›</span><span>Chapter 10</span>
     </div>
     <div class="chapter-num">🌐 Chapter 10 · Part III — Data Link Layer</div>
-        <div class="chapter-part-banner part-iii">
+    <div class="chapter-part-banner part-iii">
       <span class="part-banner-badge">Part III</span>
       <span>Data Link Layer</span>
     </div>
-    <h1 class="chapter-title">Medium Access Control & Ethernet</h1>
+    <h1 class="chapter-title">Medium Access Control &amp; Ethernet</h1>
     <div class="chapter-meta">
-      <span class="chapter-meta-item" style="background:var(--uni-bg-hd); border-color:var(--uni-b-hd); color:var(--uni-text); font-weight:700;">🎓 Uni Unit II: MAC Protocols</span>
+      <span class="chapter-meta-item">🎓 Uni Unit II: MAC Protocols</span>
       <span>⏱️ 60 min read</span>
       <span>📚 17 Sections</span>
-      <span>🎓 Complete Multiple Access & LAN Engineering</span>
-      <span>⚡ ALOHA, CSMA/CD, CSMA/CA, CDMA & 802.3 Frame</span>
+      <span>🎓 Complete Multiple Access &amp; LAN Engineering</span>
+      <span>⚡ ALOHA, CSMA/CD, CSMA/CA, CDMA &amp; 802.3 Frame</span>
     </div>
   </div>
 
   <!-- UNIVERSITY SYLLABUS CALLOUT -->
   <div class="uni-syllabus-callout">
     <div class="uni-callout-title">🎓 Official University Syllabus — UNIT II</div>
-    <div><strong>Data Link Layer:</strong> MAC Protocols — Random Access (ALOHA, CSMA, CSMA/CD, CSMA/CA), Controlled Access, Channelization, and IEEE 802.3 Ethernet standard.</div>
+    <div><strong>Data Link Layer:</strong> MAC Protocols — Random Access (ALOHA, CSMA, CSMA/CD, CSMA/CA), Controlled Access (Reservation, Polling, Token Passing), Channelization (FDMA, TDMA, CDMA), and IEEE 802.3 Ethernet Standard.</div>
   </div>
 
-    <!-- UNIVERSITY SYLLABUS FILTER SWITCH -->
+  <!-- UNIVERSITY SYLLABUS FILTER SWITCH -->
   <div class="uni-mode-toggle-card">
     <div>
-      <div style="font-weight:700; font-size:0.95rem; color:var(--tx-primary); display:flex; align-items:center; gap:0.4rem;">
+      <div class="uni-mode-title">
         <span>🎓</span> University Exam Focus Filter
       </div>
-      <div style="font-size:0.8rem; color:var(--tx-muted); margin-top:0.2rem;">
-        Focus specifically on sections prescribed in Delhi University syllabus vs supplementary deep-dives.
+      <div class="uni-mode-desc">
+        Focus specifically on sections prescribed in University syllabus vs supplementary deep-dives.
       </div>
     </div>
     <div class="uni-filter-switch">
@@ -157,650 +169,1633 @@
       <a href="#s-1-persistent" class="toc-item in-uni"><span class="toc-num">10.5</span>1-Persistent CSMA <span class="toc-uni-tag">🎓 Uni Core</span></a>
       <a href="#s-non-persistent" class="toc-item in-uni"><span class="toc-num">10.6</span>Non-Persistent CSMA <span class="toc-uni-tag">🎓 Uni Core</span></a>
       <a href="#s-p-persistent" class="toc-item in-uni"><span class="toc-num">10.7</span>p-Persistent CSMA <span class="toc-uni-tag">🎓 Uni Core</span></a>
-      <a href="#s-csma-cd" class="toc-item in-uni"><span class="toc-num">10.8</span>CSMA/CD & Min Frame Size <span class="toc-uni-tag">🎓 Uni Core</span></a>
-      <a href="#s-csma-ca" class="toc-item in-uni"><span class="toc-num">10.9</span>CSMA/CA & RTS/CTS <span class="toc-uni-tag">🎓 Uni Core</span></a>
-      <a href="#s-hidden-exposed" class="toc-item in-uni"><span class="toc-num">10.10</span>Hidden & Exposed Terminals <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-csma-cd" class="toc-item in-uni"><span class="toc-num">10.8</span>CSMA/CD &amp; Min Frame Size <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-csma-ca" class="toc-item in-uni"><span class="toc-num">10.9</span>CSMA/CA &amp; RTS/CTS <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-hidden-exposed" class="toc-item in-uni"><span class="toc-num">10.10</span>Hidden &amp; Exposed Terminals <span class="toc-uni-tag">🎓 Uni Core</span></a>
       <a href="#s-cd-vs-ca" class="toc-item in-uni"><span class="toc-num">10.11</span>CSMA/CD vs CSMA/CA <span class="toc-uni-tag">🎓 Uni Core</span></a>
       <a href="#s-controlled-access" class="toc-item in-uni"><span class="toc-num">10.12</span>Controlled Access Protocols <span class="toc-uni-tag">🎓 Uni Core</span></a>
-      <a href="#s-channelization" class="toc-item in-uni"><span class="toc-num">10.13</span>CDMA & Orthogonality <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-channelization" class="toc-item in-uni"><span class="toc-num">10.13</span>CDMA &amp; Orthogonality <span class="toc-uni-tag">🎓 Uni Core</span></a>
       <a href="#s-ethernet-basics" class="toc-item in-uni"><span class="toc-num">10.14</span>Ethernet Evolution <span class="toc-uni-tag">🎓 Uni Core</span></a>
       <a href="#s-mac-address" class="toc-item in-uni"><span class="toc-num">10.15</span>MAC Addressing <span class="toc-uni-tag">🎓 Uni Core</span></a>
       <a href="#s-ethernet-frame" class="toc-item in-uni"><span class="toc-num">10.16</span>Ethernet Frame Structure <span class="toc-uni-tag">🎓 Uni Core</span></a>
-      <a href="#s-summary-ch10" class="toc-item in-uni"><span class="toc-num">10.17</span>Summary & Exam Traps <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-summary-ch10" class="toc-item in-uni"><span class="toc-num">10.17</span>Summary &amp; Exam Traps <span class="toc-uni-tag">🎓 Uni Core</span></a>
     </div>
   </div>
 
-  <!-- SECTION 10.1: MAC SUBLAYER ROLE -->
-  <section id="s-mac-need" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 10.1</div>
-      <h2 class="section-title">The MAC Sublayer & Channel Allocation Problem <span class="uni-syllabus-badge">🎓 Uni Unit II: MAC Protocols</span></h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>UNIT II Data link layer: MAC Protocols (The MAC Sublayer & Channel Allocation Problem)</strong></span>
-  </div>
-
-
-    <p>Network links are divided into two fundamental topologies: <strong>Point-to-Point links</strong> (dedicated connection between exactly two endpoints, e.g., PPP) and <strong>Broadcast / Multiaccess links</strong> (multiple nodes share a single common transmission medium, e.g., Ethernet bus, Wi-Fi radio airwaves).</p>
-
-    <div class="def-box">
-      <div class="def-term">The Medium Access Control (MAC) Sublayer</div>
-      <p class="def-body">When two or more machines transmit signals simultaneously onto a shared multiaccess broadcast medium, their electrical or radio signals physically collide and garble one another, resulting in total data loss. The lower half of OSI Layer 2—the <strong>Medium Access Control (MAC) sublayer</strong>—provides protocols to arbitrate access and determine who transmits next on the shared channel.</p>
-    </div>
-
-    <h3>Taxonomy of Multiple Access Protocols</h3>
-    <div class="diagram-box">
-      <div class="diagram-title">Figure 10.1: Classification of Multiple Access Protocols</div>
-      <pre>
-                        MULTIPLE ACCESS PROTOCOLS
-                                   |
-         +-------------------------+-------------------------+
-         |                         |                         |
-   RANDOM ACCESS            CONTROLLED ACCESS         CHANNELIZATION
-   (Contention)             (Collision-Free)          (Dedicated Slots)
-         |                         |                         |
-   • Pure ALOHA             • Reservation             • FDMA (Frequency)
-   • Slotted ALOHA          • Polling                 • TDMA (Time)
-   • CSMA (1-P, Non-P, p-P) • Token Passing           • CDMA (Code)
-   • CSMA/CD (Ethernet)
-   • CSMA/CA (Wi-Fi)
-      </pre>
-    </div>
-  </section>
-  <hr class="section-hr">
-
-  <!-- SECTION 10.2: PURE ALOHA -->
-  <section id="s-pure-aloha" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 10.2</div>
-      <h2 class="section-title">Pure ALOHA Protocol (Maximum Throughput: 18.4%) <span class="uni-syllabus-badge">🎓 Uni Unit II: ALOHA</span></h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>UNIT II Data link layer: MAC Protocols (Pure ALOHA Protocol & 18.4% Throughput Analysis)</strong></span>
-  </div>
-
-
-    <p>Invented in 1970 by Norman Abramson at the University of Hawaii to connect island campuses via ground-based radio, <strong>Pure ALOHA</strong> is the grandfather of all random access protocols.</p>
-
-    <div class="def-box">
-      <div class="def-term">Pure ALOHA Transmission Rule</div>
-      <p class="def-body"><strong>Whenever a station has a frame to transmit, it transmits immediately!</strong> Stations never sense the channel before sending. If a collision occurs, the sender waits a random backoff time and retransmits.</p>
-    </div>
-
-    <h3>The Vulnerable Time of Pure ALOHA</h3>
-    <p>Let $T_{\text{fr}}$ be the frame transmission time. If Station A begins transmitting at time $t_0$, any other station that begins transmitting between $t_0 - T_{\text{fr}}$ and $t_0 + T_{\text{fr}}$ will collide with Station A!</p>
-
-    <div class="formula-box">
-      <div class="formula-title">Pure ALOHA Vulnerable Period & Throughput (GATE Formula)</div>
-      <div class="formula-math">\text{Vulnerable Period } = 2 \times T_{\text{fr}}</div>
-      <div class="formula-math">S = G \cdot e^{-2G}</div>
-      <div class="formula-vars">
-        • $G$ = Traffic offered load (average number of frames generated per frame time $T_{\text{fr}}$)<br>
-        • $S$ = Throughput (rate of successfully delivered frames)<br>
-        • Maximum throughput occurs at $G = 0.5$:<br>
-        $$S_{\max} = 0.5 \cdot e^{-1} = \frac{1}{2e} \approx \mathbf{0.184} = \mathbf{18.4\%}$$
-      </div>
-    </div>
-  </section>
-  <hr class="section-hr">
-
-  <!-- SECTION 10.3: SLOTTED ALOHA -->
-  <section id="s-slotted-aloha" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 10.3</div>
-      <h2 class="section-title">Slotted ALOHA (Maximum Throughput: 36.8%)</h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>UNIT II Data link layer: MAC Protocols (Slotted ALOHA Protocol & 36.8% Throughput Analysis)</strong></span>
-  </div>
-
-
-    <p>In 1972, Roberts doubled the capacity of ALOHA by introducing a shared clock that divides time into discrete synchronized <strong>time slots of length $T_{\text{fr}}$</strong>.</p>
-
-    <div class="def-box">
-      <div class="def-term">Slotted ALOHA Rule</div>
-      <p class="def-body">A station is <strong>only allowed to transmit at the beginning of a time slot</strong>. If a frame arrives in the middle of a slot, it must wait until the start of the next slot. This halves the collision window!</p>
-    </div>
-
-    <div class="formula-box">
-      <div class="formula-title">Slotted ALOHA Vulnerable Period & Throughput</div>
-      <div class="formula-math">\text{Vulnerable Period } = 1 \times T_{\text{fr}}</div>
-      <div class="formula-math">S = G \cdot e^{-G}</div>
-      <div class="formula-vars">
-        • Maximum throughput occurs at $G = 1.0$:<br>
-        $$S_{\max} = 1.0 \cdot e^{-1} = \frac{1}{e} \approx \mathbf{0.368} = \mathbf{36.8\%}$$
-        👉 <strong>Slotted ALOHA exactly DOUBLES the throughput of Pure ALOHA!</strong>
-      </div>
-    </div>
-  </section>
-  <hr class="section-hr">
-
-  <!-- SECTION 10.4: CSMA INTRO -->
-  <section id="s-csma-intro" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 10.4</div>
-      <h2 class="section-title">Carrier Sense Multiple Access (CSMA) Fundamentals <span class="uni-syllabus-badge">🎓 Uni Unit II: CSMA</span></h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>UNIT II Data link layer: MAC Protocols (Carrier Sense Multiple Access — CSMA Fundamentals)</strong></span>
-  </div>
-
-
-    <p>ALOHA is fundamentally wasteful because stations broadcast blindly without checking if someone else is already talking. <strong>CSMA</strong> introduces a civilized rule: <strong>"Listen before you speak" (Carrier Sensing)</strong>.</p>
-
-    <div class="callout warning">
-      <div class="callout-title">⚠️ Why Do Collisions Still Occur in CSMA? (Propagation Delay)</div>
-      <p>If Station A senses the channel as idle and starts transmitting, its electrical signal takes time $T_p$ to travel down the wire to Station B. If Station B senses the channel during that brief propagation window, the wire still appears idle! Station B begins transmitting, and the two wavefronts collide in the middle of the cable!</p>
-    </div>
-  </section>
-  <hr class="section-hr">
-
-  <!-- SECTION 10.5: 1-PERSISTENT -->
-  <section id="s-1-persistent" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 10.5</div>
-      <h2 class="section-title">1-Persistent CSMA</h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>UNIT II Data link layer: MAC Protocols (1-Persistent CSMA)</strong></span>
-  </div>
-
-
-    <div class="def-box">
-      <div class="def-term">1-Persistent CSMA Rules</div>
-      <p class="def-body">
-        1. Sense the channel.<br>
-        2. <strong>If channel is IDLE:</strong> Transmit immediately with probability <strong>1.0</strong>.<br>
-        3. <strong>If channel is BUSY:</strong> Continuously monitor and listen to the wire. The very instant the channel becomes idle, <strong>transmit immediately!</strong><br>
-        • <em>Flaw:</em> If two or more stations were both patiently listening while a third station was talking, both will pounce on the wire the instant it goes quiet $\implies$ <strong>Guaranteed collision!</strong>
-      </p>
-    </div>
-  </section>
-  <hr class="section-hr">
-
-  <!-- SECTION 10.6: NON-PERSISTENT -->
-  <section id="s-non-persistent" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 10.6</div>
-      <h2 class="section-title">Non-Persistent CSMA</h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>UNIT II Data link layer: MAC Protocols (Non-Persistent CSMA)</strong></span>
-  </div>
-
-
-    <div class="def-box">
-      <div class="def-term">Non-Persistent CSMA Rules</div>
-      <p class="def-body">
-        1. Sense the channel.<br>
-        2. <strong>If channel is IDLE:</strong> Transmit immediately.<br>
-        3. <strong>If channel is BUSY:</strong> Do NOT continuously monitor the line! Wait a <strong>random amount of time</strong> and then sense the channel again.<br>
-        • <em>Benefit:</em> Dramatically reduces collisions because waiting stations wake up at different random times.<br>
-        • <em>Drawback:</em> Increases idle channel delay; the line may sit idle while stations are asleep.
-      </p>
-    </div>
-  </section>
-  <hr class="section-hr">
-
-  <!-- SECTION 10.7: P-PERSISTENT -->
-  <section id="s-p-persistent" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 10.7</div>
-      <h2 class="section-title">p-Persistent CSMA</h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>UNIT II Data link layer: MAC Protocols (p-Persistent CSMA)</strong></span>
-  </div>
-
-
-    <div class="def-box">
-      <div class="def-term">p-Persistent CSMA (Used in Slotted Channels)</div>
-      <p class="def-body">
-        When the channel becomes idle, the station transmits with probability $p$, and defers transmission to the next time slot with probability $(1 - p)$. Strikes an optimal balance between collision rate and idle latency.
-      </p>
-    </div>
-  </section>
-  <hr class="section-hr">
-
-  <!-- SECTION 10.8: CSMA/CD -->
-  <section id="s-csma-cd" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 10.8</div>
-      <h2 class="section-title">CSMA/CD (Collision Detection) & Minimum Frame Size (IEEE 802.3) <span class="uni-syllabus-badge">🎓 Uni Unit II: CSMA/CD</span></h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>UNIT II Data link layer: MAC Protocols (CSMA/CD — Collision Detection & IEEE 802.3 Ethernet)</strong></span>
-  </div>
-
-
-    <p>In standard CSMA, when a collision occurs, both stations blindly finish transmitting their entire multi-kilobyte frames, wasting channel time. <strong>CSMA/CD</strong> introduces: <strong>"Listen while you speak" (Collision Detection)</strong>.</p>
-
-    <div class="def-box">
-      <div class="def-term">CSMA/CD Protocol Steps</div>
-      <p class="def-body">
-        1. <strong>Listen Before Talk:</strong> Sense carrier. Wait until idle.<br>
-        2. <strong>Listen While Talk:</strong> Monitor the voltage on the wire while transmitting. If the observed voltage exceeds normal levels, a <strong>Collision is Detected!</strong><br>
-        3. <strong>Abort & Jam:</strong> Instantly stop frame transmission and blast a <strong>32-bit Jam Signal</strong> so all other nodes detect the collision.<br>
-        4. <strong>Binary Exponential Backoff:</strong> After collision number $i$, pick a random integer $k$ from range $[0, 2^i - 1]$ (capped at $i = 10$). Wait $k \times \text{Slot Time}$ before attempting to retransmit. Discard frame after 16 failed attempts.
-      </p>
-    </div>
-
-    <h3>The Fundamental Minimum Frame Size Theorem (High-Yield GATE Proof)</h3>
-    <p>For a station to detect a collision, it <strong>must still be actively transmitting when the reflected collision signal returns to it</strong>! If a frame is too small, transmission finishes before the collision wavefront returns, and the sender mistakenly assumes the frame was delivered safely!</p>
-
-    <div class="formula-box">
-      <div class="formula-title">CSMA/CD Minimum Frame Size Formula</div>
-      <div class="formula-math">T_{\text{fr}} \ge 2 \times T_p</div>
-      <div class="formula-math">\frac{L_{\min}}{B} \ge 2 \times \frac{d}{v} \implies L_{\min} = 2 \times T_p \times B</div>
-      <div class="formula-vars">
-        • $L_{\min}$ = Minimum frame size in bits<br>
-        • $B$ = Channel bandwidth (bps)<br>
-        • $T_p$ = Maximum propagation delay between the two farthest nodes ($d/v$)<br>
-        • In standard 10 Mbps Ethernet over 2.5 km coaxial: $2T_p \approx 51.2\ \mu\text{s} \implies L_{\min} = 51.2\ \mu\text{s} \times 10\text{ Mbps} = \mathbf{512\text{ bits}} = \mathbf{64\text{ bytes}}$!
-      </div>
-    </div>
-  </section>
-  <hr class="section-hr">
-
-  <!-- SECTION 10.9: CSMA/CA -->
-  <section id="s-csma-ca" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 10.9</div>
-      <h2 class="section-title">CSMA/CA (Collision Avoidance) & RTS/CTS (IEEE 802.11 Wi-Fi) <span class="uni-syllabus-badge">🎓 Uni Unit II: CSMA/CA</span></h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>UNIT II Data link layer: MAC Protocols (CSMA/CA — Collision Avoidance & IEEE 802.11 Wi-Fi)</strong></span>
-  </div>
-
-
-    <div class="callout danger">
-      <div class="callout-title">⚠️ Why CSMA/CD Is Impossible in Wireless Wi-Fi!</div>
-      <p>In wireless communication, a transmitting antenna radiates high power locally, drowning out faint incoming radio signals by a factor of 100,000 to 1 ($50\text{ dB}$ difference). A station <strong>cannot hear incoming collisions while it is shouting into the air</strong>! Therefore, Wi-Fi must use <strong>Collision Avoidance (CSMA/CA)</strong>.</p>
-    </div>
-
-    <h3>The Four Pillars of CSMA/CA</h3>
-    <ul>
-      <li><strong>Inter-Frame Space (IFS):</strong> When the channel is idle, stations must pause for an IFS duration (SIFS &lt; PIFS &lt; DIFS) before transmitting. Highest priority traffic (ACKs) uses the shortest gap (SIFS).</li>
-      <li><strong>Contention Window Backoff:</strong> Stations select a random backoff countdown even if the channel is idle.</li>
-      <li><strong>RTS / CTS Handshake:</strong> Sender transmits a short <strong>Request to Send (RTS)</strong> frame. Receiver replies with a <strong>Clear to Send (CTS)</strong> broadcast frame before bulk data is sent.</li>
-      <li><strong>Network Allocation Vector (NAV):</strong> Every frame carries a duration field. All listening nodes set a software timer (NAV) and go to sleep for that duration, avoiding collisions!</li>
-    </ul>
-  </section>
-  <hr class="section-hr">
-
-  <!-- SECTION 10.10: HIDDEN AND EXPOSED TERMINALS -->
-  <section id="s-hidden-exposed" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 10.10</div>
-      <h2 class="section-title">The Hidden and Exposed Terminal Problems</h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>UNIT II Data link layer: MAC Protocols (Hidden & Exposed Terminal Problems in Wireless MAC)</strong></span>
-  </div>
-
-
-    <div class="diagram-box">
-      <div class="diagram-title">Figure 10.2: The Hidden Terminal Problem</div>
-      <pre>
-       [ Node A ] --------> [ Node B (AP) ] <-------- [ Node C ]
-     Radio Range of A:       In Range of A & C       Radio Range of C:
-      Covers B, NOT C                                 Covers B, NOT A
-
-   • Node A wants to send to B. Senses medium -> Sees idle (can't hear C!).
-   • Node C wants to send to B. Senses medium -> Sees idle (can't hear A!).
-   • BOTH transmit simultaneously! -> COLLISION AT RECEIVER B! 💥
-   👉 Solved by RTS/CTS: Node B broadcasts CTS, which Node C hears and backs off!
-      </pre>
-    </div>
-
-    <div class="diagram-box">
-      <div class="diagram-title">Figure 10.3: The Exposed Terminal Problem</div>
-      <pre>
-       [ Node A ] <======== [ Node B ]    [ Node C ] ========> [ Node D ]
-                             (B sends to A) (C wants to send to D)
-
-   • Node C hears B transmitting to A. C falsely assumes the medium is busy.
-   • C defers transmission to D unnecessarily, even though D is far away from B!
-   👉 Wastes wireless capacity. Solved by directional antennas or RTS/CTS.
-      </pre>
-    </div>
-  </section>
-  <hr class="section-hr">
-
-  <!-- SECTION 10.11: CD VS CA COMPARISON -->
-  <section id="s-cd-vs-ca" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 10.11</div>
-      <h2 class="section-title">Master Comparison: CSMA/CD vs CSMA/CA</h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>UNIT II Data link layer: MAC Protocols (Master Comparison: CSMA/CD vs CSMA/CA)</strong></span>
-  </div>
-
-
-    <div class="table-wrap">
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>Feature</th>
-            <th>CSMA/CD (IEEE 802.3)</th>
-            <th>CSMA/CA (IEEE 802.11)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Physical Medium</strong></td>
-            <td>Wired (Coaxial cable, Twisted pair)</td>
-            <td>Wireless (Radio frequency waves)</td>
-          </tr>
-          <tr>
-            <td><strong>Collision Philosophy</strong></td>
-            <td><strong>Detects</strong> collisions during transmission.</td>
-            <td><strong>Avoids</strong> collisions before transmission.</td>
-          </tr>
-          <tr>
-            <td><strong>Action on Collision</strong></td>
-            <td>Aborts immediately; transmits Jam signal.</td>
-            <td>Cannot detect in flight; discovers loss by missing ACK.</td>
-          </tr>
-          <tr>
-            <td><strong>Explicit ACKs?</strong></td>
-            <td>❌ No (Wired channel has low error rate).</td>
-            <td>✅ <strong>Yes (Mandatory ACK for every frame)</strong>.</td>
-          </tr>
-          <tr>
-            <td><strong>Minimum Frame Size</strong></td>
-            <td>Strictly enforced (64 bytes in Ethernet).</td>
-            <td>No minimum frame size restriction.</td>
-          </tr>
-          <tr>
-            <td><strong>Handshake Overhead</strong></td>
-            <td>Zero handshake; transmits immediately.</td>
-            <td>High (DIFS, backoff slots, RTS/CTS, SIFS, ACK).</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-  <hr class="section-hr">
-
-  <!-- SECTION 10.12: CONTROLLED ACCESS -->
-  <section id="s-controlled-access" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 10.12</div>
-      <h2 class="section-title">Controlled Access Protocols (Collision-Free)</h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>UNIT II Data link layer: MAC Protocols (Controlled Access Protocols — Reservation, Polling & Token Passing)</strong></span>
-  </div>
-
-
-    <p>In <strong>Controlled Access</strong>, stations consult one another to determine who has permission to transmit. <strong>Collisions are 100% eliminated!</strong></p>
-    <ul>
-      <li><strong>Reservation:</strong> Time is divided into intervals. Stations make reservations during a contention-free reservation mini-slot before sending data.</li>
-      <li><strong>Polling:</strong> A designated Primary Station polls secondary stations in turn. <em>Poll:</em> "Do you have data to send?" <em>Select:</em> "I have data for you." (Downside: single point of failure at primary controller).</li>
-      <li><strong>Token Passing (IEEE 802.5 Token Ring / 802.4 Token Bus):</strong> A special control frame called the <strong>Token</strong> circulates around the logical ring. Only the station currently holding the token has permission to transmit data frames! Provides guaranteed, deterministic latency.</li>
-    </ul>
-  </section>
-  <hr class="section-hr">
-
-  <!-- SECTION 10.13: CHANNELIZATION CDMA -->
-  <section id="s-channelization" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 10.13</div>
-      <h2 class="section-title">Channelization: CDMA & Orthogonal Chip Codes</h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>UNIT II Data link layer: MAC Protocols (Channelization Protocols — FDMA, TDMA, CDMA)</strong></span>
-  </div>
-
-
-    <p><strong>Code Division Multiple Access (CDMA)</strong> allows all stations to transmit simultaneously across the <strong>exact same frequency band at the exact same time</strong> without collision!</p>
-
-    <div class="def-box">
-      <div class="def-term">Orthogonal Code Theory</div>
-      <p class="def-body">
-        Each station is assigned a unique $m$-bit code sequence called a <strong>Chip Sequence</strong> ($C$). The codes are mathematically <strong>orthogonal</strong>:<br>
-        • Inner product of any code with itself = 1: $C_i \cdot C_i = 1$<br>
-        • Inner product of any code with a different code = 0: $C_i \cdot C_j = 0\ (i \ne j)$
-      </p>
-    </div>
-
-    <div class="callout tip">
-      <div class="callout-title">📝 Worked Numerical 10.1 (CDMA Transmission & Decoding)</div>
-      <p>Assign 4-bit chip codes (using $+1$ and $-1$):<br>
-      • Station A: $C_A = (-1, -1, +1, +1)$<br>
-      • Station B: $C_B = (-1, +1, -1, +1)$<br><br>
-      Notice $C_A \cdot C_B = (+1) + (-1) + (-1) + (+1) = 0$ (Orthogonal!).<br>
-      If Station A sends bit 1 ($+C_A$) and Station B sends bit 0 ($-C_B$):<br>
-      Transmitted Composite Signal $S = C_A - C_B = (-1, -1, +1, +1) - (-1, +1, -1, +1) = \mathbf{(0, -2, +2, 0)}$.<br><br>
-      <strong>Receiver recovers Station A's data:</strong><br>
-      Compute inner product of $S$ with $C_A$ divided by 4:<br>
-      $\text{Result} = \frac{0(-1) + (-2)(-1) + 2(1) + 0(1)}{4} = \frac{0 + 2 + 2 + 0}{4} = \frac{4}{4} = \mathbf{+1\ (Bit\ 1)}$!<br>
-      Station B's transmission was completely cancelled out by the dot product!</p>
-    </div>
-  </section>
-  <hr class="section-hr">
-
-  <!-- SECTION 10.14: ETHERNET EVOLUTION -->
-  <section id="s-ethernet-basics" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 10.14</div>
-      <h2 class="section-title">Ethernet Evolution & Standards (IEEE 802.3)</h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>UNIT II Data link layer: MAC Protocols (Ethernet Standards: 10Base-T, Fast Ethernet, Gigabit Ethernet)</strong></span>
-  </div>
-
-
-    <p>Invented in 1973 by Robert Metcalfe at Xerox PARC, Ethernet evolved from a 2.94 Mbps experimental bus to become the universal LAN standard of the planet.</p>
-
-    <div class="table-wrap">
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>Generation</th>
-            <th>Speed</th>
-            <th>Standard Cable & Spec</th>
-            <th>Signaling & Topology</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Standard Ethernet</strong></td>
-            <td>10 Mbps</td>
-            <td>10Base-5 (Thick coax), 10Base-2 (Thin coax), 10Base-T (Cat 3 UTP)</td>
-            <td>Manchester line code, half-duplex CSMA/CD bus.</td>
-          </tr>
-          <tr>
-            <td><strong>Fast Ethernet</strong></td>
-            <td>100 Mbps</td>
-            <td>100Base-TX (Cat 5 UTP), 100Base-FX (Fiber)</td>
-            <td>4B/5B + MLT-3 line code, switched star topology.</td>
-          </tr>
-          <tr>
-            <td><strong>Gigabit Ethernet</strong></td>
-            <td>1000 Mbps (1 Gbps)</td>
-            <td>1000Base-T (Cat 5e UTP, 4 pairs simultaneous), 1000Base-SX/LX (Fiber)</td>
-            <td>PAM-5 line coding, full-duplex switches (CSMA/CD obsolete).</td>
-          </tr>
-          <tr>
-            <td><strong>10G / 100G Ethernet</strong></td>
-            <td>10 Gbps to 100 Gbps</td>
-            <td>10GBase-T (Cat 6a), Optical Fiber (single/multi-mode)</td>
-            <td>Full-duplex dedicated point-to-point links only.</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-  <hr class="section-hr">
-
-  <!-- SECTION 10.15: MAC ADDRESSING -->
-  <section id="s-mac-address" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 10.15</div>
-      <h2 class="section-title">Physical (MAC) Addressing Deep Dive</h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>UNIT II Data link layer: MAC Protocols (Physical MAC 48-bit Addressing & OUI Architecture)</strong></span>
-  </div>
-
-
-    <div class="diagram-box">
-      <div class="diagram-title">Figure 10.4: 48-bit MAC Address Architecture</div>
-      <pre>
-   |================ 24 Bits ================|================ 24 Bits ================|
-   | OUI (Organizationally Unique Identifier) | Device NIC Serial Number (Vendor Assigned) |
-   |=========================================|=========================================|
-     ^                                         Example: 00:1A:2B:3C:4D:5E
-     |-> Bit 0 (I/G Bit): 0 = Unicast, 1 = Multicast/Broadcast
-     |-> Bit 1 (U/L Bit): 0 = Globally Unique (IEEE), 1 = Locally Administered
-      </pre>
-    </div>
-
-    <ul>
-      <li><strong>Unicast Address:</strong> First byte ends in an even hex digit (least significant bit is 0). Sent to one specific device.</li>
-      <li><strong>Multicast Address:</strong> First byte ends in an odd hex digit (e.g., <code>01:00:5E:...</code>). Heard by an interested group of devices.</li>
-      <li><strong>Broadcast Address:</strong> All 48 bits set to 1: <code>FF:FF:FF:FF:FF:FF</code>. Delivered to every host on the broadcast domain.</li>
-    </ul>
-  </section>
-  <hr class="section-hr">
-
-  <!-- SECTION 10.16: ETHERNET FRAME STRUCTURE -->
-  <section id="s-ethernet-frame" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 10.16</div>
-      <h2 class="section-title">IEEE 802.3 Ethernet Frame Structure</h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>UNIT II Data link layer: MAC Protocols (IEEE 802.3 Ethernet Frame Structure & Fields)</strong></span>
-  </div>
-
-
-    <div class="diagram-box">
-      <div class="diagram-title">Figure 10.5: Standard Ethernet Frame Fields (Bytes)</div>
-      <pre>
-   +----------+-------+----------+----------+------------+-----------------+---------+
-   | Preamble |  SFD  | Dest MAC | Src MAC  | Type/Length| Data (Payload)  |   FCS   |
-   |  7 Bytes | 1 Byte|  6 Bytes |  6 Bytes |   2 Bytes  | 46 - 1500 Bytes | 4 Bytes |
-   +----------+-------+----------+----------+------------+-----------------+---------+
-   |<--- Physical Layer --->|<----------------- Data Link Layer Frame ---------------->|
-                            |<--- Minimum Frame: 64 Bytes --->|
-                            |<--------------- Maximum Frame: 1518 Bytes -------------->|
-      </pre>
-    </div>
-
-    <div class="table-wrap">
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>Field</th>
-            <th>Size</th>
-            <th>Function & Specifications</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Preamble</strong></td>
-            <td>7 Bytes</td>
-            <td>Alternating pattern <code>10101010...</code> for receiver clock synchronization.</td>
-          </tr>
-          <tr>
-            <td><strong>SFD (Start Frame Delimiter)</strong></td>
-            <td>1 Byte</td>
-            <td>Exact pattern <code>10101011</code>; the ending pair of consecutive $1\text{s}$ alerts the receiver that data starts immediately next.</td>
-          </tr>
-          <tr>
-            <td><strong>Destination MAC</strong></td>
-            <td>6 Bytes</td>
-            <td>48-bit hardware address of recipient.</td>
-          </tr>
-          <tr>
-            <td><strong>Source MAC</strong></td>
-            <td>6 Bytes</td>
-            <td>48-bit hardware address of sender.</td>
-          </tr>
-          <tr>
-            <td><strong>Type / Length</strong></td>
-            <td>2 Bytes</td>
-            <td>If $\ge 1536$ ($0x0600$): <strong>EtherType</strong> (e.g., $0x0800$ for IPv4, $0x0806$ for ARP). If $\le 1500$: Length field.</td>
-          </tr>
-          <tr>
-            <td><strong>Data Payload (MTU)</strong></td>
-            <td><strong>46 to 1500 Bytes</strong></td>
-            <td>Carries the Layer 3 IP packet. Minimum 46 bytes required to guarantee 64-byte frame length; padded with zeros if smaller!</td>
-          </tr>
-          <tr>
-            <td><strong>FCS (Frame Check Sequence)</strong></td>
-            <td>4 Bytes</td>
-            <td>32-bit CRC checksum.</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-  <hr class="section-hr">
-
-  <!-- SECTION 10.17: SUMMARY & EXAM TRAPS -->
-  <section id="s-summary-ch10" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 10.17</div>
-      <h2 class="section-title">Chapter Summary & High-Yield Exam Traps</h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>UNIT II Data link layer: MAC Protocols (Chapter Revision & Exam Traps)</strong></span>
-  </div>
-
-
-    <div class="callout tip">
-      <div class="callout-title">⚡ High-Yield Rapid Review Points</div>
+  <!-- LEARNING OBJECTIVES CALLOUT -->
+  <div class="callout info">
+    <span class="callout-icon">🎯</span>
+    <div><strong>After studying this chapter you will be able to:</strong>
       <ul>
-        <li><strong>Pure ALOHA:</strong> Max throughput = $18.4\%$ ($1/(2e)$) at $G = 0.5$. Vulnerable period = $2T_{\text{fr}}$.</li>
-        <li><strong>Slotted ALOHA:</strong> Max throughput = $36.8\%$ ($1/e$) at $G = 1.0$. Vulnerable period = $1T_{\text{fr}}$.</li>
-        <li><strong>CSMA/CD:</strong> Wired Ethernet. Minimum frame size $L_{\min} = 2 \times T_p \times B$. Slot time = 64 bytes. Binary backoff $[0, 2^i - 1]$.</li>
-        <li><strong>CSMA/CA:</strong> Wireless Wi-Fi. Uses IFS, Contention window, RTS/CTS, and NAV. Solves hidden terminals.</li>
-        <li><strong>CDMA:</strong> Uses orthogonal chip codes. $C_i \cdot C_j = 0$ for $i \ne j$.</li>
-        <li><strong>Ethernet Frame:</strong> Min size = 64 bytes; Max size = 1518 bytes. Payload = 46 to 1500 bytes (MTU). FCS = 4 bytes CRC-32.</li>
+        <li>Deconstruct the multiaccess channel allocation problem and distinguish the MAC sublayer from the LLC sublayer under IEEE 802 standards.</li>
+        <li>Derive the vulnerable time and Poisson throughput equations for Pure ALOHA ($S = G e^{-2G}$, $S_{\max} = 18.4\%$) and Slotted ALOHA ($S = G e^{-G}$, $S_{\max} = 36.8\%$).</li>
+        <li>Compare carrier-sensing strategies (1-Persistent, Non-Persistent, $p$-Persistent) and evaluate their trade-offs under varying channel loads.</li>
+        <li>Prove mathematically why CSMA/CD enforces a minimum frame size $L_{\min} = 2 R T_p$ ($64\ \text{bytes}$ on standard $10\text{ Mbps}$ Ethernet) and trace Binary Exponential Backoff.</li>
+        <li>Explain why CSMA/CD is physically impossible in wireless Wi-Fi and how CSMA/CA with RTS/CTS solves the Hidden and Exposed Terminal anomalies.</li>
+        <li>Decode multi-user CDMA transmissions using orthogonal Walsh chip sequences and analyze the complete IEEE 802.3 Ethernet frame structure.</li>
       </ul>
     </div>
+  </div>
 
-    <!-- CHAPTER PROGRESS CHECK -->
-    <div class="def-box" style="margin-top:2rem; border-color:var(--accent);">
-      <div class="def-term">🎯 End of Chapter Self-Check</div>
-      <p class="def-body">
-        Verify your mastery before moving to the Examination System:<br>
-        1. Derive the minimum frame size formula for CSMA/CD and explain why Ethernet requires at least 64 bytes.<br>
-        2. Differentiate between Pure ALOHA and Slotted ALOHA in terms of vulnerable period and maximum throughput.<br>
-        3. Explain the Hidden Terminal and Exposed Terminal problems with diagrams and how RTS/CTS resolves them.<br>
-        4. In CDMA, if two stations have chip sequences $(+1, +1)$ and $(+1, -1)$, show that they are orthogonal.<br>
-        5. Describe all fields in an IEEE 802.3 Ethernet frame and explain why padding is necessary.
-      </p>
+  <!-- STUDY PATH -->
+  <div class="study-path">
+    <strong>🧭 How to study this chapter (Random Access to Ethernet Engineering):</strong>
+    <div class="path">
+      <span>1. Multiaccess Taxonomy &amp; ALOHA Math</span> → 
+      <span>2. CSMA Variants &amp; CSMA/CD Proof</span> → 
+      <span>3. Wireless MAC (CSMA/CA &amp; Hidden/Exposed)</span> → 
+      <span>4. Controlled Access &amp; CDMA Orthogonality</span> → 
+      <span>5. Ethernet Evolution &amp; 802.3 Frame Fields</span>
     </div>
-  </section>
-  <hr class="section-hr">
+    <div><strong>Exam Lens:</strong> Sections 10.2–10.3 (ALOHA Poisson Derivations), 10.8 (CSMA/CD $L_{\min} \ge 2 R T_p$ Proof), 10.10 (Hidden/Exposed Terminals), 10.13 (CDMA Walsh Code Math), and 10.16 (Ethernet Frame Structure &amp; 46-byte Minimum Payload) are the highest-yield topics in university and competitive examinations, marked <code>data-midsem="core"</code>.</div>
+  </div>
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 10.1: MAC SUBLAYER ROLE -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-mac-need" class="section-in-uni content-section" data-chapter="10" data-part="III" data-unit="II" data-midsem="core" data-exam-priority="core" data-search-section="MAC sublayer Medium Access Control channel allocation broadcast multiaccess collision domain LLC IEEE 802">
+  <div class="section-heading">
+    <h2 class="prose">10.1 The MAC Sublayer &amp; Channel Allocation Problem
+      <button class="bookmark-btn" data-id="s-mac-need" data-label="10.1 MAC Sublayer Role" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Data Link Layer: Medium Access Control (MAC) Sublayer &amp; Channel Allocation Problem</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Medium Access Control (MAC) Sublayer — First-Principles Definition</div>
+      <p>The <strong>Medium Access Control (MAC) Sublayer</strong> is the lower sublayer of the OSI Data Link Layer (Layer 2). It provides protocols and arbitration mechanisms that determine which node is authorized to transmit onto a <strong>shared, broadcast physical communication medium</strong> when multiple contending stations have data ready to send.</p>
+    </div>
+
+    <h3>1. Why the MAC Sublayer Exists: Point-to-Point vs Broadcast Links</h3>
+    <p>In Chapter 8 and Chapter 9, we examined <strong>point-to-point links</strong> (such as dedicated leased lines or dial-up connections) where exactly two nodes share a private wire. On point-to-point links, medium arbitration is unnecessary—the sender transmits whenever it wants.</p>
+    <p>However, Local Area Networks (LANs) and wireless networks (such as Ethernet coaxial buses, Wi-Fi radio airwaves, and satellite channels) utilize <strong>broadcast / multiaccess channels</strong> where dozens or hundreds of independent stations share a single physical transmission medium. If two or more stations transmit electromagnetic signals simultaneously, the signals physically superimpose and corrupt each other at all receivers—an event known as a <strong>Collision</strong>. Upon collision, all overlapping frames are garbled into unreadable noise, destroying useful throughput.</p>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 10.1: IEEE 802 Division of Data Link Layer into LLC and MAC</div>
+      <pre>
+   +-------------------------------------------------------------+
+   |                OSI Layer 3: Network Layer (IP)              |
+   +-------------------------------------------------------------+
+                                  |
+   +-------------------------------------------------------------+
+   |  OSI LAYER 2: DATA LINK LAYER                               |
+   |                                                             |
+   |  +-------------------------------------------------------+  |
+   |  | Logical Link Control (LLC) Sublayer (IEEE 802.2)      |  |
+   |  | - Flow control, error handling, multiplexing to L3    |  |
+   |  | - Protocol independent of physical transmission media |  |
+   |  +-------------------------------------------------------+  |
+   |                              |                              |
+   |  +-------------------------------------------------------+  |
+   |  | Medium Access Control (MAC) Sublayer                  |  |
+   |  | - Channel arbitration, framing, physical addressing   |  |
+   |  | - IEEE 802.3 (Ethernet), 802.11 (Wi-Fi), 802.15 (BT)   |  |
+   |  +-------------------------------------------------------+  |
+   +-------------------------------------------------------------+
+                                  |
+   +-------------------------------------------------------------+
+   |                OSI Layer 1: Physical Layer                  |
+   +-------------------------------------------------------------+
+      </pre>
+    </div>
+
+    <h3>2. Taxonomy of Multiple Access Protocols</h3>
+    <p>Computer scientists categorize medium access protocols into three fundamental families:</p>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Underlying Philosophy</th>
+          <th>Prominent Protocols</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1. Random Access (Contention)</strong></td>
+          <td>Stations transmit autonomously without central coordination. Collisions are tolerated, detected, and resolved via randomized backoff.</td>
+          <td>Pure ALOHA, Slotted ALOHA, CSMA, CSMA/CD (Ethernet), CSMA/CA (Wi-Fi).</td>
+        </tr>
+        <tr>
+          <td><strong>2. Controlled Access</strong></td>
+          <td>Stations consult one another or a central master to determine transmission rights. Guaranteed collision-free operation.</td>
+          <td>Reservation, Polling (Primary/Secondary), Token Passing (Token Ring, FDDI).</td>
+        </tr>
+        <tr>
+          <td><strong>3. Channelization (Partitioning)</strong></td>
+          <td>The physical channel capacity (bandwidth, time, or orthogonal code space) is mathematically partitioned among stations.</td>
+          <td>FDMA (Frequency Division), TDMA (Time Division), CDMA (Code Division).</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout tip">
+      <div class="callout-title">⚡ Exam &amp; GATE Distinction</div>
+      <p>Remember that the IEEE 802 committee split the Data Link Layer into <strong>two distinct sublayers</strong>:
+      1. <strong>LLC (Logical Link Control - IEEE 802.2):</strong> Common interface to Layer 3, framing, and optional flow control.
+      2. <strong>MAC (Medium Access Control):</strong> Media-dependent framing, 48-bit MAC addressing, and multiaccess arbitration.</p>
+    </div>
+
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Foundational texts on the MAC sublayer and channel allocation theory.</div>
+      <div class="resource-grid">
+        <a href="https://www.pearson.com/en-gb/subject-catalog/p/computer-networks-global-edition/P200000005535/9781292498621" target="_blank" rel="noopener noreferrer">
+          📘 Tanenbaum &amp; Wetherall — Chapter 4 The Medium Access Control Sublayer
+          <small>The classic channel allocation problem and static vs dynamic allocation.</small>
+        </a>
+        <a href="https://www.mheducation.com/highered/product/data-communications-and-networking-with-tcp-ip-protocol-suite-forouzan.html" target="_blank" rel="noopener noreferrer">
+          📘 Forouzan — Chapter 12 Multiple Access
+          <small>Classification into Random, Controlled, and Channelization protocols.</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=PyLlYQXuxvs" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — Multiple Access Protocols
+          <small>Video overview of MAC sublayer responsibilities and taxonomy.</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 10.2: PURE ALOHA -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-pure-aloha" class="section-in-uni content-section" data-chapter="10" data-part="III" data-unit="II" data-midsem="core" data-exam-priority="core" data-search-section="Pure ALOHA protocol vulnerable time 2Tfr Poisson distribution throughput S = G e^(-2G) max 18.4% Norman Abramson">
+  <div class="section-heading">
+    <h2 class="prose">10.2 Pure ALOHA Protocol &amp; Vulnerability Window
+      <button class="bookmark-btn" data-id="s-pure-aloha" data-label="10.2 Pure ALOHA" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Random Access Protocols: Pure ALOHA Protocol, Vulnerable Time &amp; Throughput Derivation</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Pure ALOHA Protocol — First-Principles Definition</div>
+      <p>Invented in 1970 by Norman Abramson at the University of Hawaii, <strong>Pure ALOHA</strong> is an unslotted, completely uncoordinated random access protocol. The fundamental rule of Pure ALOHA is delightfully simple: <strong>Whenever any station has a frame ready to transmit, it transmits immediately onto the shared channel.</strong></p>
+    </div>
+
+    <h3>1. Collision Handling &amp; Random Backoff</h3>
+    <p>Because there is no carrier sensing, collisions are frequent. If another station transmits while a frame is in transit, the signals collide and are destroyed. The sender detects collision either by listening to its own broadcast or by waiting for an ACK. If a collision occurs, the station waits a <strong>random backoff time</strong> before attempting retransmission, preventing perpetual synchronized collisions.</p>
+
+    <h3>2. The Vulnerable Time of Pure ALOHA ($2T_{\text{fr}}$)</h3>
+    <p>Let all frames have a constant transmission time equal to $T_{\text{fr}}$ seconds. Suppose Station A begins transmitting a frame at time $t_0$.</p>
+    <ul>
+      <li>If any other station transmitted a frame between $t_0 - T_{\text{fr}}$ and $t_0$, the tail end of that previous frame will collide with the beginning of Station A's frame.</li>
+      <li>If any other station begins transmitting between $t_0$ and $t_0 + T_{\text{fr}}$, the leading edge of that new frame will collide with the tail of Station A's frame.</li>
+    </ul>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 10.2: Pure ALOHA Vulnerable Window of Duration $2T_{\text{fr}}$</div>
+      <pre>
+   Station A Frame:                      |==================|
+                                         t0                 t0 + Tfr
+   Colliding Frame (starts earlier):  |==========|
+                                      t0 - Tfr + e
+   Colliding Frame (starts later):                        |==========|
+                                                          t0 + Tfr - e
+   +-------------------------------------+------------------+
+   |<----------- Tfr ------------------->|<------ Tfr ----->|
+   |<------------------ Vulnerable Time = 2 * Tfr --------->|
+      </pre>
+    </div>
+
+    <div class="formula-box">
+      <div class="formula-title">Vulnerable Time of Pure ALOHA</div>
+      <div class="formula-math">T_{\text{vuln}}(\text{Pure ALOHA}) = 2 \times T_{\text{fr}}</div>
+    </div>
+
+    <h3>3. Mathematical Derivation of Pure ALOHA Throughput ($S$)</h3>
+    <p>Let:</p>
+    <ul>
+      <li>$S$ = Throughput (average number of successful frame deliveries per frame transmission time $T_{\text{fr}}$).</li>
+      <li>$G$ = Offered load (total average number of frames generated per frame time, including both original transmissions and retransmissions).</li>
+    </ul>
+    <p>Assuming frame generation follows a Poisson distribution with mean $G$ per frame time, the probability of generating exactly $k$ frames in a time interval of duration $t$ is:</p>
+    $$P(k) = \frac{(G \cdot \frac{t}{T_{\text{fr}}})^k e^{-(G \cdot \frac{t}{T_{\text{fr}}})}}{k!}$$
+
+    <p>For a frame to be successfully transmitted without collision, <strong>zero other frames ($k=0$)</strong> must be generated during the entire vulnerable interval $t = 2T_{\text{fr}}$:</p>
+    $$P(0) = e^{-G \cdot \frac{2T_{\text{fr}}}{T_{\text{fr}}}} = e^{-2G}$$
+
+    <p>Throughput $S$ is simply the offered load $G$ multiplied by the probability of zero collision $P(0)$:</p>
+    <div class="formula-box">
+      <div class="formula-title">Pure ALOHA Throughput Equation</div>
+      <div class="formula-math">S = G \cdot e^{-2G}</div>
+    </div>
+
+    <h3>4. Calculus Derivation of Maximum Pure ALOHA Throughput</h3>
+    <p>To find the maximum throughput, we differentiate $S$ with respect to $G$ and set the derivative to zero:</p>
+    $$\frac{dS}{dG} = e^{-2G} + G(-2)e^{-2G} = e^{-2G}(1 - 2G) = 0$$
+    <p>Since $e^{-2G} \ne 0$, we have:</p>
+    $$1 - 2G = 0 \implies \mathbf{G = 0.5 = \frac{1}{2}}$$
+
+    <p>Substituting $G = 0.5$ back into the throughput equation:</p>
+    <div class="formula-box">
+      <div class="formula-title">Maximum Theoretical Efficiency of Pure ALOHA</div>
+      <div class="formula-math">S_{\max} = 0.5 \cdot e^{-2(0.5)} = 0.5 \cdot e^{-1} = \frac{1}{2e} \approx \frac{1}{2 \times 2.71828} \approx \mathbf{0.184 = 18.4\%}</div>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">⚠️ The ALOHA Collapse Phenomenon</div>
+      <p>If the offered load $G$ increases beyond $0.5$ (stations keep retransmitting aggressively), throughput collapses toward zero ($S \to 0$) because almost every transmission suffers a collision. The channel spends 100% of its time carrying garbage noise.</p>
+    </div>
+
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Foundational papers and textbook derivations of Pure ALOHA.</div>
+      <div class="resource-grid">
+        <a href="https://www.pearson.com/en-gb/subject-catalog/p/computer-networks-global-edition/P200000005535/9781292498621" target="_blank" rel="noopener noreferrer">
+          📘 Tanenbaum &amp; Wetherall — Section 4.2.1 Pure ALOHA
+          <small>Complete calculus derivation and Poisson arrival model.</small>
+        </a>
+        <a href="https://www.mheducation.com/highered/product/data-communications-and-networking-with-tcp-ip-protocol-suite-forouzan.html" target="_blank" rel="noopener noreferrer">
+          📘 Forouzan — Section 12.1.1 ALOHA
+          <small>Vulnerable time diagrams and backoff procedure.</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=PyLlYQXuxvs" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — Pure ALOHA Throughput
+          <small>Video walkthrough of Poisson distribution and 18.4% maximum.</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 10.3: SLOTTED ALOHA -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-slotted-aloha" class="section-in-uni content-section" data-chapter="10" data-part="III" data-unit="II" data-midsem="core" data-exam-priority="core" data-search-section="Slotted ALOHA protocol vulnerable time Tfr time synchronization clock throughput S = G e^(-G) max 36.8%">
+  <div class="section-heading">
+    <h2 class="prose">10.3 Slotted ALOHA Protocol &amp; Time Synchronization
+      <button class="bookmark-btn" data-id="s-slotted-aloha" data-label="10.3 Slotted ALOHA" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Random Access Protocols: Slotted ALOHA Protocol, Time Slots &amp; Throughput Doubling</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Slotted ALOHA Protocol — First-Principles Definition</div>
+      <p>Proposed by Lawrence Roberts in 1972, <strong>Slotted ALOHA</strong> introduces a discrete time structure to the shared channel. Continuous time is partitioned into uniform intervals called <strong>slots</strong>, each of duration equal to one frame transmission time ($T_{\text{slot}} = T_{\text{fr}}$). A station is strictly forbidden from transmitting whenever it wants; it <strong>must synchronize and wait until the beginning of the next discrete time slot</strong> before sending its frame.</p>
+    </div>
+
+    <h3>1. Why Slotted ALOHA Cuts Vulnerability in Half</h3>
+    <p>In Pure ALOHA, a frame that began even one microsecond before another caused a total collision. In Slotted ALOHA, because all stations must align their transmissions with slot boundaries, a frame transmission either:
+    1. Completely collides with another frame if both start at the <em>same</em> slot boundary, OR
+    2. Does not collide at all if no other station chose that slot!</p>
+    <p>Partial overlap is mathematically eliminated! As a result, the vulnerable window is reduced from $2T_{\text{fr}}$ down to exactly <strong>$T_{\text{fr}}$</strong>.</p>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 10.3: Slotted ALOHA Channel with Discrete Boundaries</div>
+      <pre>
+   Slot 1          Slot 2          Slot 3          Slot 4          Slot 5
+  |------- Tfr ---|------- Tfr ---|------- Tfr ---|------- Tfr ---|------- Tfr ---|
+  [ Station A ]   [  Station B ]                   [ Station A ]
+                  [  Station C ]                   [ Station D ]
+  (SUCCESS!       (COLLISION! 💥   (IDLE SLOT -    (COLLISION! 💥  (SUCCESS!
+   No other node   Both started at  Channel unused) Both started at  Only 1 node)
+   in this slot)   same boundary)                   same boundary)
+      </pre>
+    </div>
+
+    <div class="formula-box">
+      <div class="formula-title">Vulnerable Time of Slotted ALOHA</div>
+      <div class="formula-math">T_{\text{vuln}}(\text{Slotted ALOHA}) = T_{\text{fr}}</div>
+    </div>
+
+    <h3>2. Mathematical Derivation of Slotted ALOHA Throughput</h3>
+    <p>For a slot to contain a successful transmission, exactly one frame must be generated during the preceding slot interval ($k=1$), or the current slot must experience zero competing frames ($k=0$ competing frames during vulnerable window of duration $T_{\text{fr}}$):</p>
+    $$P(0) = e^{-G \cdot \frac{T_{\text{fr}}}{T_{\text{fr}}}} = e^{-G}$$
+
+    <p>Multiplying by the offered load $G$ gives the Slotted ALOHA throughput formula:</p>
+    <div class="formula-box">
+      <div class="formula-title">Slotted ALOHA Throughput Equation</div>
+      <div class="formula-math">S = G \cdot e^{-G}</div>
+    </div>
+
+    <h3>3. Maximum Efficiency Calculation</h3>
+    <p>Differentiating $S$ with respect to $G$:</p>
+    $$\frac{dS}{dG} = e^{-G} - G e^{-G} = e^{-G}(1 - G) = 0 \implies \mathbf{G = 1.0}$$
+
+    <p>Substituting $G = 1.0$ into the throughput equation:</p>
+    <div class="formula-box">
+      <div class="formula-title">Maximum Theoretical Efficiency of Slotted ALOHA</div>
+      <div class="formula-math">S_{\max} = 1.0 \cdot e^{-1} = \frac{1}{e} \approx \frac{1}{2.71828} \approx \mathbf{0.368 = 36.8\%}</div>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title">💡 The Major Breakthrough: Throughput Exactly Doubled!</div>
+      <p>Slotted ALOHA achieves <strong>$36.8\%$ maximum efficiency</strong>, exactly <strong>double</strong> the $18.4\%$ maximum of Pure ALOHA! The cost paid for this doubling is the engineering complexity of maintaining precise global clock synchronization across all distributed stations.</p>
+    </div>
+
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Classic references on Slotted ALOHA and slot synchronization.</div>
+      <div class="resource-grid">
+        <a href="https://www.pearson.com/en-gb/subject-catalog/p/computer-networks-global-edition/P200000005535/9781292498621" target="_blank" rel="noopener noreferrer">
+          📘 Tanenbaum &amp; Wetherall — Section 4.2.2 Slotted ALOHA
+          <small>Discrete time analysis and comparison curve of Pure vs Slotted ALOHA.</small>
+        </a>
+        <a href="https://www.mheducation.com/highered/product/data-communications-and-networking-with-tcp-ip-protocol-suite-forouzan.html" target="_blank" rel="noopener noreferrer">
+          📘 Forouzan — Section 12.1.2 Slotted ALOHA
+          <small>Detailed slot timing diagrams and collision states.</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=PyLlYQXuxvs" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — Slotted ALOHA Throughput
+          <small>Video calculus derivation of G = 1.0 and 36.8% efficiency.</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 10.4: CSMA FUNDAMENTALS -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-csma-intro" class="section-in-uni content-section" data-chapter="10" data-part="III" data-unit="II" data-midsem="core" data-exam-priority="core" data-search-section="CSMA Carrier Sense Multiple Access listen before talk carrier sensing propagation delay collision vulnerability window">
+  <div class="section-heading">
+    <h2 class="prose">10.4 Carrier Sense Multiple Access (CSMA) Fundamentals
+      <button class="bookmark-btn" data-id="s-csma-intro" data-label="10.4 CSMA Fundamentals" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Carrier Sense Multiple Access (CSMA): Carrier Sensing Principles &amp; Propagation Delay Impact</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Carrier Sense Multiple Access (CSMA) — First-Principles Definition</div>
+      <p><strong>Carrier Sense Multiple Access (CSMA)</strong> is a family of contention-based MAC protocols based on the polite human communication principle: <strong>"Listen Before You Talk."</strong> Before transmitting a frame, a station senses the physical wire to detect whether another station's carrier signal is present. If the medium is sensed busy, the station defers its transmission; only when the medium is sensed idle is the station permitted to transmit.</p>
+    </div>
+
+    <h3>1. Why Carrier Sensing Massively Outperforms ALOHA</h3>
+    <p>In ALOHA, stations transmit blindly, unaware that another node may already be halfway through transmitting a frame. Carrier sensing eliminates this blind overlap by verifying that the air or wire is clear before releasing energy.</p>
+
+    <h3>2. Why Collisions Still Occur in CSMA: The Propagation Delay Trap</h3>
+    <p>Students frequently ask: <em>"If every station listens before talking, how can collisions ever occur?"</em><br>
+    The answer lies in <strong>non-zero signal propagation delay ($T_p$)</strong>:</p>
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 10.4: Collision in CSMA Due to Propagation Delay ($T_p$)</div>
+      <pre>
+   Station A                                                          Station B
+   [ t = 0 ] Starts sending Frame...
+   Medium is busy near A.
+   Signal travels rightward ====>
+                                        [ t = Tp - 1 microsec ]
+                                        Station B wants to send data.
+                                        Station B senses the carrier!
+                                        Signal from A hasn't reached B yet!
+                                        B senses IDLE!
+                                        Station B starts transmitting! <====
+   [ COLLISION IN THE MIDDLE! 💥 ]
+   Signals collide and produce garbled noise!
+      </pre>
+    </div>
+
+    <h3>3. The CSMA Vulnerability Window ($T_p$)</h3>
+    <p>The vulnerable period in CSMA is equal to the <strong>maximum propagation delay between the two farthest nodes ($T_p = d/v$)</strong>. The smaller the propagation delay compared to frame transmission time ($a = T_p / T_t \to 0$), the closer CSMA throughput approaches 100%.</p>
+
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Classic literature on carrier-sensing mechanics and propagation limits.</div>
+      <div class="resource-grid">
+        <a href="https://www.pearson.com/en-gb/subject-catalog/p/computer-networks-global-edition/P200000005535/9781292498621" target="_blank" rel="noopener noreferrer">
+          📘 Tanenbaum &amp; Wetherall — Section 4.2.3 CSMA
+          <small>Analysis of carrier sensing and persistence strategies.</small>
+        </a>
+        <a href="https://www.mheducation.com/highered/product/data-communications-and-networking-with-tcp-ip-protocol-suite-forouzan.html" target="_blank" rel="noopener noreferrer">
+          📘 Forouzan — Section 12.1.3 CSMA
+          <small>Vulnerable time and persistence algorithm comparisons.</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=PyLlYQXuxvs" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — CSMA Principles
+          <small>Video breakdown of carrier sensing and propagation delay.</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 10.5: 1-PERSISTENT CSMA -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-1-persistent" class="section-in-uni content-section" data-chapter="10" data-part="III" data-unit="II" data-midsem="core" data-exam-priority="core" data-search-section="1-Persistent CSMA greedy continuous sensing probability 1 collision under heavy load">
+  <div class="section-heading">
+    <h2 class="prose">10.5 1-Persistent CSMA (Greedy Strategy)
+      <button class="bookmark-btn" data-id="s-1-persistent" data-label="10.5 1-Persistent CSMA" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>CSMA Variants: 1-Persistent CSMA Algorithm &amp; Heavy-Load Collision Flaw</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">1-Persistent CSMA — First-Principles Definition</div>
+      <p>In <strong>1-Persistent CSMA</strong>, when a station has a frame ready to transmit:
+      1. It senses the communication medium.
+      2. If the medium is <strong>busy</strong>, the station <strong>continuously listens (persists)</strong> without backing off.
+      3. The instant the medium becomes <strong>idle</strong>, the station transmits immediately with <strong>probability $p = 1.0$ (100% certainty)</strong>.</p>
+    </div>
+
+    <h3>1. Operational State Machine</h3>
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 10.5: 1-Persistent CSMA Flowchart Logic</div>
+      <pre>
+   [ Packet Ready ] ---> Sense Medium
+                            |
+            +---------------+---------------+
+            |                               |
+       (Medium IDLE)                  (Medium BUSY)
+            |                               |
+     Transmit Frame!                 Continuously Listen
+     (Probability = 1.0)             until idle...
+                                            |
+                                     (Turns IDLE!)
+                                            |
+                                     Transmit Instantly!
+      </pre>
+    </div>
+
+    <h3>2. The Heavy-Load Vulnerability of 1-Persistent CSMA</h3>
+    <div class="callout danger">
+      <div class="callout-title">💥 The Inevitable Post-Transmission Collision</div>
+      <p>Suppose Station A is actively transmitting. While Station A is transmitting, both Station B and Station C generate frames. Both sense the wire, discover it is busy, and patiently listen. The exact microsecond Station A finishes and the wire turns idle, <strong>BOTH Station B and Station C transmit simultaneously (with probability 1.0)!</strong> A collision between B and C is 100% guaranteed!</p>
+    </div>
+
+    <h3>3. Summary of Characteristics</h3>
+    <ul>
+      <li><strong>Advantage:</strong> Minimal idle delay under light network traffic—as soon as the line is free, transmission occurs without artificial pauses.</li>
+      <li><strong>Limitation:</strong> High collision rate under moderate to heavy traffic loads due to simultaneous transmissions by waiting stations.</li>
+    </ul>
+
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Textbook comparisons of 1-persistent carrier sensing.</div>
+      <div class="resource-grid">
+        <a href="https://www.pearson.com/en-gb/subject-catalog/p/computer-networks-global-edition/P200000005535/9781292498621" target="_blank" rel="noopener noreferrer">
+          📘 Tanenbaum &amp; Wetherall — Section 4.2.3
+          <small>Throughput curves of 1-persistent vs non-persistent CSMA.</small>
+        </a>
+        <a href="https://www.mheducation.com/highered/product/data-communications-and-networking-with-tcp-ip-protocol-suite-forouzan.html" target="_blank" rel="noopener noreferrer">
+          📘 Forouzan — Section 12.1.3 Persistence Strategies
+          <small>Step-by-step algorithmic flowchart of 1-persistent sensing.</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=PyLlYQXuxvs" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — 1-Persistent CSMA
+          <small>Video walkthrough of heavy-load collision guarantee.</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 10.6: NON-PERSISTENT CSMA -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-non-persistent" class="section-in-uni content-section" data-chapter="10" data-part="III" data-unit="II" data-midsem="core" data-exam-priority="core" data-search-section="Non-Persistent CSMA random backoff delay low collision idle channel latency">
+  <div class="section-heading">
+    <h2 class="prose">10.6 Non-Persistent CSMA (Patient Strategy)
+      <button class="bookmark-btn" data-id="s-non-persistent" data-label="10.6 Non-Persistent CSMA" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>CSMA Variants: Non-Persistent CSMA Algorithm &amp; Idle Latency Trade-Off</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Non-Persistent CSMA — First-Principles Definition</div>
+      <p>In <strong>Non-Persistent CSMA</strong>, a station behaves less aggressively to prevent the post-transmission collision of 1-persistent CSMA:
+      1. Sense the communication medium.
+      2. If the medium is <strong>idle</strong>, transmit immediately.
+      3. If the medium is <strong>busy</strong>, the station <strong>does NOT continuously listen</strong>! Instead, it aborts sensing, waits for an independent <strong>random duration of time</strong>, and then senses the line again.</p>
+    </div>
+
+    <h3>1. Operational State Machine</h3>
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 10.6: Non-Persistent CSMA Flowchart Logic</div>
+      <pre>
+   [ Packet Ready ] ---> Sense Medium
+                            |
+            +---------------+---------------+
+            |                               |
+       (Medium IDLE)                  (Medium BUSY)
+            |                               |
+     Transmit Frame!                 WAIT RANDOM BACKOFF TIME (T_backoff)
+                                            |
+                                     Re-sense medium after timer expires!
+      </pre>
+    </div>
+
+    <h3>2. Why Non-Persistent Reduces Collisions</h3>
+    <p>Referring back to the scenario where Station A is transmitting while B and C queue frames: In Non-Persistent CSMA, when B and C sense the line busy, both pick <strong>different random backoff intervals</strong> (e.g., B waits 12 ms, C waits 34 ms). When A finishes, the line is idle, but neither station is actively watching! Station B's timer expires first at 12 ms, senses the now-idle line, and transmits safely without colliding with C!</p>
+
+    <h3>3. The Trade-Off: Idle Channel Wasted Latency</h3>
+    <ul>
+      <li><strong>Advantage:</strong> Much higher throughput under heavy network loads because collisions between waiting stations are drastically reduced.</li>
+      <li><strong>Disadvantage:</strong> Under light traffic, the channel may sit completely empty and idle while stations are needlessly waiting for random backoff timers to expire, introducing artificial latency.</li>
+    </ul>
+
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Comparative throughput analyses of persistent vs non-persistent algorithms.</div>
+      <div class="resource-grid">
+        <a href="https://www.pearson.com/en-gb/subject-catalog/p/computer-networks-global-edition/P200000005535/9781292498621" target="_blank" rel="noopener noreferrer">
+          📘 Tanenbaum &amp; Wetherall — Section 4.2.3 Non-Persistent CSMA
+          <small>Mathematical throughput comparison across traffic densities.</small>
+        </a>
+        <a href="https://www.mheducation.com/highered/product/data-communications-and-networking-with-tcp-ip-protocol-suite-forouzan.html" target="_blank" rel="noopener noreferrer">
+          📘 Forouzan — Section 12.1.3 Non-Persistent Flowchart
+          <small>Algorithmic steps and random backoff distribution.</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=PyLlYQXuxvs" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — Non-Persistent CSMA
+          <small>Video walkthrough of backoff timers and collision reduction.</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 10.7: P-PERSISTENT CSMA -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-p-persistent" class="section-in-uni content-section" data-chapter="10" data-part="III" data-unit="II" data-midsem="core" data-exam-priority="core" data-search-section="p-Persistent CSMA probability p slotted channel defer 1-p balance contention">
+  <div class="section-heading">
+    <h2 class="prose">10.7 p-Persistent CSMA (Compromise Strategy)
+      <button class="bookmark-btn" data-id="s-p-persistent" data-label="10.7 p-Persistent CSMA" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>CSMA Variants: p-Persistent CSMA Algorithm &amp; Optimal Probability Tuning</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">p-Persistent CSMA — First-Principles Definition</div>
+      <p>Used on slotted channels, <strong>$p$-Persistent CSMA</strong> provides a statistical compromise between the greediness of 1-persistent and the slowness of non-persistent CSMA. When a station finds the line <strong>idle</strong>, it transmits with probability <strong>$p$</strong>, and defers transmission to the next time slot with probability <strong>$q = 1 - p$</strong>.</p>
+    </div>
+
+    <h3>1. Operational State Machine</h3>
+    <ol>
+      <li>Sense the communication channel.</li>
+      <li>If <strong>busy</strong>, persist (continuously listen) until the line becomes idle.</li>
+      <li>When the channel becomes <strong>idle</strong>:
+        <ul>
+          <li>Transmit the frame with probability $p$.</li>
+          <li>With probability $1 - p$, wait for the next time slot (duration $\tau = T_p$).</li>
+        </ul>
+      </li>
+      <li>At the next time slot:
+        <ul>
+          <li>If the channel is still idle, repeat the test (transmit with probability $p$, defer with $1-p$).</li>
+          <li>If the channel has become busy (another station transmitted), assume a collision or preemption, and initiate a random backoff countdown.</li>
+        </ul>
+      </li>
+    </ol>
+
+    <h3>2. Tuning the Probability Parameter $p$</h3>
+    <p>If $N$ stations have frames waiting to transmit when the medium turns idle, the expected number of stations attempting transmission in the first slot is $N \times p$.</p>
+    <div class="formula-box">
+      <div class="formula-title">Optimal Parameter Rule</div>
+      <div class="formula-math">N \times p \le 1.0 \implies p \le \frac{1}{N}</div>
+      <div class="formula-vars">
+        • If $p$ is chosen too large ($p \to 1$): Multiple stations transmit simultaneously, collapsing into the high collision rate of 1-persistent CSMA.<br>
+        • If $p$ is chosen too small ($p \to 0$): Slots pass completely empty while stations repeatedly defer, wasting channel capacity.
+      </div>
+    </div>
+
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Mathematical optimization of the p-persistent parameter.</div>
+      <div class="resource-grid">
+        <a href="https://www.pearson.com/en-gb/subject-catalog/p/computer-networks-global-edition/P200000005535/9781292498621" target="_blank" rel="noopener noreferrer">
+          📘 Tanenbaum &amp; Wetherall — Section 4.2.3 p-Persistent CSMA
+          <small>Probability equations and throughput vs delay trade-offs.</small>
+        </a>
+        <a href="https://www.mheducation.com/highered/product/data-communications-and-networking-with-tcp-ip-protocol-suite-forouzan.html" target="_blank" rel="noopener noreferrer">
+          📘 Forouzan — Section 12.1.3 p-Persistent Strategy
+          <small>Detailed flowchart of the probability decision loop.</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=PyLlYQXuxvs" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — p-Persistent CSMA
+          <small>Video walkthrough of optimal p-tuning.</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 10.8: CSMA/CD & MIN FRAME SIZE -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-csma-cd" class="section-in-uni content-section" data-chapter="10" data-part="III" data-unit="II" data-midsem="core" data-exam-priority="core" data-search-section="CSMA CD Carrier Sense Multiple Access Collision Detection 1-persistent binary exponential backoff jam signal minimum frame size">= 2 R Tp jam signal binary exponential backoff">
+  <div class="section-heading">
+    <h2 class="prose">10.8 CSMA/CD &amp; The Minimum Frame Size Proof (IEEE 802.3)
+      <button class="bookmark-btn" data-id="s-csma-cd" data-label="10.8 CSMA/CD & Min Frame" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>CSMA/CD: Collision Detection, Binary Exponential Backoff &amp; Minimum Frame Size Derivation ($L_{\min} = 2 R T_p$)</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">CSMA/CD (Collision Detection) — First-Principles Definition</div>
+      <p><strong>Carrier Sense Multiple Access with Collision Detection (CSMA/CD)</strong> enhances standard CSMA with the principle: <strong>"Listen While You Speak."</strong> A transmitting station continuously monitors the electrical voltage on the physical wire while it transmits. If the voltage doubles or exceeds normal thresholds (indicating superimposed signals), the station immediately aborts transmission, broadcasts a 32-bit <strong>Jam Signal</strong> to alert all nodes, and executes <strong>Binary Exponential Backoff</strong>.</p>
+    </div>
+
+    <h3>1. Why CSMA/CD Revolutionized Ethernet</h3>
+    <p>In standard CSMA, when two stations collide, they blindly transmit their entire 1500-byte frames to completion, locking the shared cable in a useless state for milliseconds. CSMA/CD detects the collision within microseconds, aborting transmission immediately and freeing the cable for subsequent attempts.</p>
+
+    <h3>2. The Minimum Frame Size Theorem ($L_{\min} \ge 2 R T_p$)</h3>
+    <div class="callout danger">
+      <div class="callout-title">⚠️ The Worst-Case Collision Detection Requirement</div>
+      <p>For a station to detect that its own frame suffered a collision, <strong>the station must still be actively transmitting bits when the reflected collision wavefront arrives back at its transmitter!</strong> If a frame is too short, transmission finishes before the collision echo returns; the sender mistakenly assumes the frame was delivered safely, corrupting higher-layer state!</p>
+    </div>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 10.8: Worst-Case Round-Trip Collision Timeline</div>
+      <pre>
+   Station A (Far Left)                               Station B (Far Right)
+   [ t = 0 ] Starts transmitting Frame...             Distance = d, Delay = Tp
+   Signal propagates rightward ====>
+                                                      [ t = Tp - e ] (Just before signal arrives)
+                                                      Station B senses medium -> IDLE!
+                                                      Station B starts transmitting! <====
+                                                      [ COLLISION AT B! 💥 ]
+   Collision noise wavefront travels leftward <====
+   [ t = 2 * Tp - e ]
+   Collision wavefront finally reaches Station A!
+   
+   👉 CRITICAL INVARIANT:
+      Station A MUST still be actively transmitting at time t = 2 * Tp!
+      Therefore: Transmission Time (Tfr) >= 2 * Propagation Delay (Tp)!
+      </pre>
+    </div>
+
+    <h3>3. Mathematical Derivation of Minimum Frame Size</h3>
+    <p>Let:</p>
+    <ul>
+      <li>$T_{\text{fr}} = \frac{L}{R}$ = Frame transmission time (seconds)</li>
+      <li>$T_p = \frac{d}{v}$ = One-way propagation delay between farthest nodes (seconds)</li>
+      <li>$R$ = Transmission rate / Bandwidth (bps)</li>
+      <li>$L$ = Length of frame (bits)</li>
+    </ul>
+
+    <div class="formula-box">
+      <div class="formula-title">The Fundamental CSMA/CD Minimum Frame Equation</div>
+      <div class="formula-math">T_{\text{fr}} \ge 2 \times T_p</div>
+      <div class="formula-math">\frac{L_{\min}}{R} \ge 2 \times T_p \implies \mathbf{L_{\min} = 2 \times R \times T_p = 2 \times R \times \frac{d}{v}}</div>
+      <div class="formula-vars">
+        • $2T_p$ is known as the <strong>Slot Time</strong> ($\tau$) of the Ethernet network.<br>
+        • Any frame shorter than $L_{\min}$ that collides is called a <strong>Runt Frame</strong> (discarded by receivers).
+      </div>
+    </div>
+
+    <h3>4. Numerical Derivation of Standard Ethernet 64-Byte (512-Bit) Minimum</h3>
+    <div class="worked-example">
+      <div class="example-title">📝 Worked Derivation — Why Classic Ethernet Enforces 64 Bytes</div>
+      <p>In the original IEEE 802.3 10 Mbps standard, maximum network span through repeaters was $d = 2500\text{ m}$ ($2.5\text{ km}$) with signal velocity $v \approx 2 \times 10^8\text{ m/s}$, plus repeater delay budgets. Total round-trip propagation delay was bounded by $2T_p \approx 51.2\ \mu\text{s}$.</p>
+      $$L_{\min} = R \times 2T_p = (10 \times 10^6\text{ bps}) \times (51.2 \times 10^{-6}\text{ s}) = \mathbf{512\text{ bits}} = \mathbf{64\text{ bytes}}!$$
+      <p><strong>Conclusion:</strong> Every standard Ethernet frame must be at least <strong>64 bytes</strong>. If payload data is less than 46 bytes, the MAC layer automatically adds <strong>Padding Bits</strong> to reach the 64-byte threshold!</p>
+    </div>
+
+    <h3>5. Binary Exponential Backoff (BEB) Algorithm</h3>
+    <p>After collision number $k$ (where $k \le 10$):</p>
+    <ol>
+      <li>The station chooses a random integer $r$ uniformly from the contention range:
+        $$r \in [0, \; 2^k - 1]$$
+      </li>
+      <li>The station waits $r \times \text{Slot Time}$ ($r \times 51.2\ \mu\text{s}$) before attempting retransmission.</li>
+      <li>After 10 collisions, the range freezes at $[0, 1023]$ ($k$ is capped at 10).</li>
+      <li>After <strong>16 consecutive failed attempts</strong>, the MAC sublayer gives up, drops the frame, and reports an unrecoverable link error to higher layers.</li>
+    </ol>
+
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Foundational papers and textbook proofs of the 64-byte minimum frame size.</div>
+      <div class="resource-grid">
+        <a href="https://www.pearson.com/en-gb/subject-catalog/p/computer-networks-global-edition/P200000005535/9781292498621" target="_blank" rel="noopener noreferrer">
+          📘 Tanenbaum &amp; Wetherall — Section 4.3 Ethernet
+          <small>The complete 2*Tp slot time and binary exponential backoff derivation.</small>
+        </a>
+        <a href="https://www.mheducation.com/highered/product/data-communications-and-networking-with-tcp-ip-protocol-suite-forouzan.html" target="_blank" rel="noopener noreferrer">
+          📘 Forouzan — Section 12.1.4 CSMA/CD
+          <small>Minimum frame size numericals and flowchart.</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=PyLlYQXuxvs" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — CSMA/CD &amp; Minimum Frame Size
+          <small>Video proof of Lmin = 2*R*Tp and 64 bytes.</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 10.9: CSMA/CA & RTS/CTS -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-csma-ca" class="section-in-uni content-section" data-chapter="10" data-part="III" data-unit="II" data-midsem="core" data-exam-priority="core" data-search-section="CSMA/CA Collision Avoidance IEEE 802.11 Wi-Fi RTS CTS Request to Send Clear to Send NAV Network Allocation Vector SIFS DIFS">
+  <div class="section-heading">
+    <h2 class="prose">10.9 CSMA/CA &amp; RTS/CTS for Wireless LANs (IEEE 802.11)
+      <button class="bookmark-btn" data-id="s-csma-ca" data-label="10.9 CSMA/CA & RTS/CTS" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>CSMA/CA: Collision Avoidance, RTS/CTS Handshake &amp; Network Allocation Vector (NAV)</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">CSMA/CA (Collision Avoidance) — First-Principles Definition</div>
+      <p><strong>Carrier Sense Multiple Access with Collision Avoidance (CSMA/CA)</strong> is the MAC protocol specified in IEEE 802.11 (Wi-Fi). Because wireless stations cannot detect collisions while transmitting, CSMA/CA focuses on <strong>proactively avoiding collisions</strong> before data transmission through: (1) Inter-Frame Space (IFS) gaps, (2) Mandatory randomized backoff, (3) Explicit <strong>RTS/CTS</strong> reservation handshakes, and (4) Virtual carrier sensing via the <strong>Network Allocation Vector (NAV)</strong>.</p>
+    </div>
+
+    <h3>1. Why Collision Detection (CD) Is Physically Impossible in Wireless</h3>
+    <div class="callout danger">
+      <div class="callout-title">⚠️ The 50 dB Dynamic Range Problem</div>
+      <p>In wired copper coaxial cables, signal attenuation over 100 meters is modest (~3 dB). A station can easily detect when another node's signal superimposes on the wire.<br>
+      In wireless radio, signals follow the <strong>Inverse Square Law ($1/d^2$ or $1/d^4$)</strong>. A station's own transmitter blasts radio energy locally at $+20\text{ dBm}$ (100 mW), while incoming signals from a distant station arrive at $-70\text{ dBm}$ (0.0001 mW)—a power difference of <strong>100,000 to 1</strong>!<br>
+      A wireless radio <strong>cannot hear a faint incoming transmission while its own transmitter is screaming at maximum power</strong>! Therefore, Collision Detection (CD) cannot work in RF airwaves.</p>
+    </div>
+
+    <h3>2. The Four Pillars of CSMA/CA</h3>
+    <ul>
+      <li><strong>1. Inter-Frame Space (IFS):</strong> Before transmitting, even if the medium is sensed idle, stations must defer for a designated quiet interval. Different IFS durations establish traffic priorities:
+        <ul>
+          <li><strong>SIFS (Short IFS):</strong> Shortest gap; reserved for highest priority control frames (ACKs, CTS).</li>
+          <li><strong>PIFS (PCF IFS):</strong> Medium gap; used by Access Point for contention-free polling.</li>
+          <li><strong>DIFS (Distributed IFS):</strong> Longest gap; used for standard asynchronous data frames.</li>
+        </ul>
+      </li>
+      <li><strong>2. Contention Window (Random Backoff):</strong> Even after DIFS expires, stations must count down a randomized slot backoff before transmitting.</li>
+      <li><strong>3. RTS / CTS 4-Way Handshake:</strong>
+        <ol>
+          <li>Sender transmits a short <strong>Request to Send (RTS)</strong> control frame (20 bytes).</li>
+          <li>Receiver replies with a <strong>Clear to Send (CTS)</strong> frame (14 bytes) that echoes the reservation duration.</li>
+          <li>Sender transmits the large bulk data frame.</li>
+          <li>Receiver returns an explicit <strong>ACK frame</strong> upon successful CRC check.</li>
+        </ol>
+      </li>
+      <li><strong>4. Network Allocation Vector (NAV) &amp; Virtual Carrier Sensing:</strong> The RTS and CTS frames carry a <strong>Duration field</strong> specifying how many microseconds the upcoming data exchange will occupy. All neighboring stations overhearing the RTS or CTS set an internal countdown timer called the <strong>NAV</strong>. While NAV $> 0$, stations treat the medium as virtually busy and refrain from transmitting!</li>
+    </ul>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 10.9: The Complete 802.11 CSMA/CA RTS/CTS Sequence</div>
+      <pre>
+    SENDER                     RECEIVER                   ALL OTHER NODES
+      |                           |                              |
+      |-- (Wait DIFS + Backoff)   |                              |
+      |                           |                              |
+      |====== RTS (Duration) ====>|                              |
+      |                           |                              |-- (Overhear RTS: Set NAV!)
+      |                  (Wait SIFS)                             |    [ NAV Timer Running ]
+      |                           |                              |    [ Defer transmission ]
+      |<===== CTS (Duration) =====|                              |
+      |                           |                              |-- (Overhear CTS: Refresh NAV!)
+      |                  (Wait SIFS)                             |    [ NAV Timer Running ]
+      |                           |                              |
+      |====== DATA FRAME ========>|                              |
+      |                           |                              |
+      |                  (Wait SIFS)                             |
+      |<===== ACK Frame ==========|                              |
+      |                           |                              |
+      v                           v                              v-- (NAV Expires -> Idle)
+      </pre>
+    </div>
+
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Primary texts on 802.11 wireless MAC and collision avoidance.</div>
+      <div class="resource-grid">
+        <a href="https://www.pearson.com/en-us/subject-catalog/p/computer-networking/P200000009493" target="_blank" rel="noopener noreferrer">
+          📘 Kurose &amp; Ross — Section 7.3.2 802.11 MAC
+          <small>Detailed breakdown of SIFS, DIFS, RTS/CTS, and NAV.</small>
+        </a>
+        <a href="https://www.mheducation.com/highered/product/data-communications-and-networking-with-tcp-ip-protocol-suite-forouzan.html" target="_blank" rel="noopener noreferrer">
+          📘 Forouzan — Section 12.1.5 CSMA/CA
+          <small>Timing diagrams and exchange states in wireless LANs.</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=PyLlYQXuxvs" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — CSMA/CA &amp; RTS/CTS
+          <small>Video lecture on virtual carrier sensing and NAV.</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 10.10: HIDDEN AND EXPOSED TERMINALS -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-hidden-exposed" class="section-in-uni content-section" data-chapter="10" data-part="III" data-unit="II" data-midsem="core" data-exam-priority="core" data-search-section="Hidden terminal problem exposed terminal problem wireless MAC RTS CTS collision avoidance transmission range">
+  <div class="section-heading">
+    <h2 class="prose">10.10 The Hidden and Exposed Terminal Problems
+      <button class="bookmark-btn" data-id="s-hidden-exposed" data-label="10.10 Hidden & Exposed Terminals" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Wireless MAC Anomalies: The Hidden &amp; Exposed Terminal Problems and RTS/CTS Resolution</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Wireless Spatial Anomalies — First-Principles Definition</div>
+      <p>Unlike wired broadcast buses where every station hears every other station, wireless signals attenuate with distance. The <strong>Hidden Terminal Problem</strong> occurs when two senders cannot hear each other but both transmit to a common receiver, causing collisions. The <strong>Exposed Terminal Problem</strong> occurs when a sender unnecessarily defers transmission to an independent node because it overhears an unrelated transmission.</p>
+    </div>
+
+    <h3>1. The Hidden Terminal Problem Walkthrough</h3>
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 10.10A: The Hidden Terminal Topology</div>
+      <pre>
+    [ Station A ]                [ Station B (AP) ]                [ Station C ]
+   |<--- Range A --->|                                     |<--- Range C --->|
+   (Can reach B, NOT C)       (In range of both A and C)   (Can reach B, NOT A)
+      </pre>
+    </div>
+    <ol>
+      <li><strong>Physical Situation:</strong> Node A and Node C are both within radio range of Access Point B, but A and C are out of range of each other (separated by distance or a concrete wall). A is "hidden" from C, and C is "hidden" from A.</li>
+      <li><strong>The Failure:</strong>
+        <ul>
+          <li>Station A wants to send data to B. Senses medium $\to$ hears silence $\to$ starts transmitting.</li>
+          <li>Station C wants to send data to B. Senses medium $\to$ cannot hear A $\to$ senses IDLE!</li>
+          <li>Station C begins transmitting simultaneously!</li>
+          <li><strong>RESULT:</strong> Signals from A and C physically collide at receiver B, destroying both frames!</li>
+        </ul>
+      </li>
+      <li><strong>How RTS/CTS Solves Hidden Terminals:</strong>
+        <ul>
+          <li>A sends RTS to B. C does not hear this RTS.</li>
+          <li>B broadcasts <strong>CTS</strong> back to A. <strong>Because C is in range of B, C HEARS THE CTS!</strong></li>
+          <li>The CTS informs C: <em>"B is busy receiving for the next $X\ \mu\text{s}$."</em></li>
+          <li>Node C sets its NAV timer and remains silent, preventing the collision!</li>
+        </ul>
+      </li>
+    </ol>
+
+    <h3>2. The Exposed Terminal Problem Walkthrough</h3>
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 10.10B: The Exposed Terminal Topology</div>
+      <pre>
+   [ Node A ] <===== [ Node B ]             [ Node C ] =====> [ Node D ]
+                    (Transmitting to A)     (Wants to send to D)
+   |<--- Range B --->|                     |<--- Range C --->|
+      </pre>
+    </div>
+    <ol>
+      <li><strong>Physical Situation:</strong> Node B is transmitting data to Node A. Node C wants to transmit data to Node D (where D is completely out of range of B).</li>
+      <li><strong>The False Deferral:</strong> Node C senses the carrier, detects Node B's transmission, and assumes the air is busy. C defers its transmission to D!</li>
+      <li><strong>Why This Deferral Is Unnecessary:</strong> Transmission from C to D would <em>never</em> interfere with reception at A (since D is far from A, and A is far from C). Node C is an "exposed" terminal needlessly silenced, wasting 50% of aggregate wireless throughput!</li>
+      <li><strong>How RTS/CTS Resolves Exposed Terminals:</strong>
+        <ul>
+          <li>Node C overhears B's RTS, but does NOT hear A's CTS (A is out of range of C).</li>
+          <li>Because C does not hear the CTS, C knows its transmissions will not corrupt receiver A!</li>
+          <li>Node C is safely permitted to transmit concurrently to Node D!</li>
+        </ul>
+      </li>
+    </ol>
+
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Foundational wireless networking texts on spatial contention anomalies.</div>
+      <div class="resource-grid">
+        <a href="https://www.pearson.com/en-us/subject-catalog/p/computer-networking/P200000009493" target="_blank" rel="noopener noreferrer">
+          📘 Kurose &amp; Ross — Section 7.3.2
+          <small>Classic diagrams and scenario walkthroughs of hidden and exposed nodes.</small>
+        </a>
+        <a href="https://www.pearson.com/en-gb/subject-catalog/p/computer-networks-global-edition/P200000005535/9781292498621" target="_blank" rel="noopener noreferrer">
+          📘 Tanenbaum &amp; Wetherall — Section 4.4 Wireless LANs
+          <small>MACAW protocol and formal solutions to MAC anomalies.</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=PyLlYQXuxvs" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — Hidden &amp; Exposed Terminals
+          <small>Animated video tutorial explaining RTS/CTS coverage radii.</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 10.11: CSMA/CD VS CSMA/CA -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-cd-vs-ca" class="section-in-uni content-section" data-chapter="10" data-part="III" data-unit="II" data-midsem="core" data-exam-priority="core" data-search-section="CSMA/CD vs CSMA/CA comparison wired vs wireless collision detection vs avoidance comparison table">
+  <div class="section-heading">
+    <h2 class="prose">10.11 Architectural Comparison: CSMA/CD vs CSMA/CA
+      <button class="bookmark-btn" data-id="s-cd-vs-ca" data-label="10.11 CSMA/CD vs CSMA/CA" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>MAC Protocols: Comparative Analysis of CSMA/CD (Wired) vs CSMA/CA (Wireless)</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Architectural Distinction: Detection vs Avoidance</div>
+      <p>While both protocols share the underlying Carrier Sense Multiple Access principle, their fundamental physical environments dictate radically different recovery strategies: <strong>CSMA/CD reacts after a collision begins</strong> (via hardware voltage detection), whereas <strong>CSMA/CA plans ahead to prevent collisions from occurring</strong> (via explicit reservations and IFS spacing).</p>
+    </div>
+
+    <h3>Master Comparison Table</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Architectural Feature</th>
+          <th>CSMA/CD (IEEE 802.3)</th>
+          <th>CSMA/CA (IEEE 802.11)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Physical Medium</strong></td>
+          <td>Wired (Coaxial cable, Twisted pair half-duplex).</td>
+          <td>Wireless Radio Frequency (2.4 GHz, 5 GHz, 6 GHz airwaves).</td>
+        </tr>
+        <tr>
+          <td><strong>Core Philosophy</strong></td>
+          <td><strong>Listen while speaking</strong> (React to collision).</td>
+          <td><strong>Listen before speaking + Avoidance</strong> (Prevent collision).</td>
+        </tr>
+        <tr>
+          <td><strong>Collision Detection Feasible?</strong></td>
+          <td>✅ <strong>Yes</strong> (Direct voltage monitoring on wire).</td>
+          <td>❌ <strong>No</strong> (Local transmission drowns out receiver by 50 dB).</td>
+        </tr>
+        <tr>
+          <td><strong>Action on Collision</strong></td>
+          <td>Aborts frame immediately; sends 32-bit Jam Signal.</td>
+          <td>Transmits entire frame; infers collision upon missing ACK.</td>
+        </tr>
+        <tr>
+          <td><strong>Minimum Frame Size Rule</strong></td>
+          <td>Enforces $L_{\min} = 2 R T_p$ (64 bytes).</td>
+          <td>No hardware minimum frame size constraint.</td>
+        </tr>
+        <tr>
+          <td><strong>Explicit Control Handshake</strong></td>
+          <td>None (Direct transmission after carrier sensing).</td>
+          <td>Optional <strong>RTS / CTS 4-way handshake</strong>.</td>
+        </tr>
+        <tr>
+          <td><strong>Acknowledgment Frame</strong></td>
+          <td>No ACK at MAC layer (Absence of collision = success).</td>
+          <td><strong>Mandatory explicit ACK frame</strong> for every unicast packet.</td>
+        </tr>
+        <tr>
+          <td><strong>Carrier Sensing Mechanism</strong></td>
+          <td>Physical carrier sensing only (Voltage sensing).</td>
+          <td>Dual sensing: Physical (Clear Channel Assessment) + <strong>Virtual (NAV)</strong>.</td>
+        </tr>
+        <tr>
+          <td><strong>Channel Efficiency</strong></td>
+          <td>Very high on wired bus (~80-90%).</td>
+          <td>Moderate (~50-65% due to IFS, RTS, CTS, and ACK overheads).</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout tip">
+      <div class="callout-title">⚡ High-Yield Exam Question</div>
+      <p><em>"Why does CSMA/CD require no MAC-level ACK, while CSMA/CA strictly mandates an ACK frame?"</em><br>
+      <strong>Answer:</strong> In CSMA/CD, the sender monitors the wire during transmission. If no collision is detected during the slot time ($2T_p$), the sender knows with absolute physical certainty that the frame reached the destination. In CSMA/CA, the sender cannot listen while transmitting; it is completely blind to collisions at the receiver. Therefore, the receiver must send an explicit ACK frame to confirm successful delivery.</p>
+    </div>
+
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Comparative evaluations of wired vs wireless MAC protocols.</div>
+      <div class="resource-grid">
+        <a href="https://www.pearson.com/en-us/subject-catalog/p/computer-networking/P200000009493" target="_blank" rel="noopener noreferrer">
+          📘 Kurose &amp; Ross — Chapter 6 vs Chapter 7
+          <small>Detailed comparison between Ethernet and Wi-Fi architectures.</small>
+        </a>
+        <a href="https://www.mheducation.com/highered/product/data-communications-and-networking-with-tcp-ip-protocol-suite-forouzan.html" target="_blank" rel="noopener noreferrer">
+          📘 Forouzan — Section 12.1.5 Comparison
+          <small>Summary matrix of CSMA variants.</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=PyLlYQXuxvs" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — CSMA/CD vs CSMA/CA
+          <small>Video lecture on operational differences and exam points.</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 10.12: CONTROLLED ACCESS -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-controlled-access" class="section-in-uni content-section" data-chapter="10" data-part="III" data-unit="II" data-midsem="core" data-exam-priority="core" data-search-section="Controlled access reservation polling primary secondary token passing Token Ring collision free deterministic">
+  <div class="section-heading">
+    <h2 class="prose">10.12 Controlled Access Protocols (Reservation, Polling &amp; Token Passing)
+      <button class="bookmark-btn" data-id="s-controlled-access" data-label="10.12 Controlled Access" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Controlled Access Protocols: Reservation, Polling (Primary/Secondary), and Token Passing</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Controlled Access Protocols — First-Principles Definition</div>
+      <p><strong>Controlled Access Protocols</strong> are deterministic channel allocation mechanisms where stations consult one another to determine which node has the right to transmit. Unlike contention-based protocols, controlled access guarantees <strong>zero collisions ($P_{\text{collision}} = 0$)</strong>, ensuring bounded latency and deterministic quality of service.</p>
+    </div>
+
+    <h3>1. Reservation Method</h3>
+    <p>Time is divided into intervals. Before each data frame transmission interval, a <strong>Reservation Mini-Slot Frame</strong> containing $N$ small bits (one for each of the $N$ stations) is broadcast. If Station $k$ has a frame ready, it sets bit $k$ to $1$ in the mini-slot. After the reservation frame finishes, stations transmit their full frames in strictly ordered sequence matching the reservations.</p>
+
+    <h3>2. Polling Method (Primary / Secondary Architecture)</h3>
+    <p>Used in centralized topologies (such as industrial control networks):</p>
+    <ul>
+      <li><strong>Poll Function:</strong> The primary master node sends a <code>POLL</code> packet to a secondary station: <em>"Station 2, do you have data?"</em> If Station 2 has data, it transmits; otherwise, it returns a <code>NAK</code>, and the master polls Station 3.</li>
+      <li><strong>Select Function:</strong> When the master wants to send data to Station 4, it sends a <code>SELECT</code> frame: <em>"Station 4, prepare to receive data."</em> Station 4 returns an <code>ACK</code>, and the master transmits data.</li>
+    </ul>
+
+    <h3>3. Token Passing (Token Ring - IEEE 802.5 &amp; FDDI)</h3>
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 10.12: Token Passing Ring Architecture</div>
+      <pre>
+           [ Station A ] --------> [ Station B ]
+                 ^                       |
+                 |                       |
+                 |                       v
+           [ Station D ] <-------- [ Station C ]
+                 (Special 3-byte Token circulates unidirectionally)
+      </pre>
+    </div>
+    <ol>
+      <li>A special, tiny 3-byte control frame called the <strong>Token</strong> circulates continuously around the physical ring from node to node.</li>
+      <li>A station wishing to transmit must wait until it captures the free Token.</li>
+      <li>Upon capturing the Token, the station inverts a bit in the token (converting it into a Start-of-Frame delimiter), appends its data frame and CRC, and releases the frame onto the ring.</li>
+      <li>The frame circulates the ring; intermediate nodes inspect destination address; the target copies the bits and sets an acknowledgment flag.</li>
+      <li>When the frame completes the full circle back to the sender, the sender strips the data frame off the ring and regenerates a fresh <strong>Free Token</strong> for the next station!</li>
+    </ol>
+
+    <div class="callout tip">
+      <div class="callout-title">⚡ Trade-off: Contention vs Controlled Access</div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Traffic Load</th>
+            <th>Random Access (CSMA/CD)</th>
+            <th>Controlled Access (Token Passing)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Light Traffic</strong></td>
+            <td><strong>Superior:</strong> Near-zero latency; immediate transmission without waiting.</td>
+            <td><strong>Inferior:</strong> High latency; station must wait for token to circulate even if link is empty.</td>
+          </tr>
+          <tr>
+            <td><strong>Heavy Traffic</strong></td>
+            <td><strong>Inferior:</strong> Frequent collisions, backoff cascades, throughput degrades.</td>
+            <td><strong>Superior:</strong> Perfect 100% throughput; zero collisions; round-robin fairness.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Textbook chapters covering controlled access and Token Ring.</div>
+      <div class="resource-grid">
+        <a href="https://www.pearson.com/en-gb/subject-catalog/p/computer-networks-global-edition/P200000005535/9781292498621" target="_blank" rel="noopener noreferrer">
+          📘 Tanenbaum &amp; Wetherall — Section 4.2.4 Collision-Free Protocols
+          <small>Reservation bit-map protocols and Token Ring mechanics.</small>
+        </a>
+        <a href="https://www.mheducation.com/highered/product/data-communications-and-networking-with-tcp-ip-protocol-suite-forouzan.html" target="_blank" rel="noopener noreferrer">
+          📘 Forouzan — Section 12.2 Controlled Access
+          <small>Flowcharts for reservation, polling, and token passing.</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=PyLlYQXuxvs" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — Controlled Access Protocols
+          <small>Video lecture on polling and token circulating ring.</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 10.13: CHANNELIZATION PROTOCOLS & CDMA -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-channelization" class="section-in-uni content-section" data-chapter="10" data-part="III" data-unit="II" data-midsem="core" data-exam-priority="core" data-search-section="Channelization FDMA TDMA CDMA Code Division Multiple Access Walsh chip sequences inner product orthogonality matrix decoding">
+  <div class="section-heading">
+    <h2 class="prose">10.13 Channelization Protocols: FDMA, TDMA &amp; CDMA
+      <button class="bookmark-btn" data-id="s-channelization" data-label="10.13 CDMA & Orthogonality" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Channelization Protocols: FDMA, TDMA, and Code Division Multiple Access (CDMA) Orthogonal Chip Sequences</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Channelization Protocols — First-Principles Definition</div>
+      <p><strong>Channelization</strong> is a multiplexing technique where the total shared channel capacity is partitioned among multiple contending stations in <strong>frequency</strong> (FDMA), <strong>time</strong> (TDMA), or <strong>orthogonal code space</strong> (CDMA). Unlike random access, collisions are physically impossible because each station operates in its own non-interfering orthogonal subspace.</p>
+    </div>
+
+    <h3>1. Triad Comparison: FDMA vs TDMA vs CDMA</h3>
+    <ul>
+      <li><strong>FDMA (Frequency Division Multiple Access):</strong> The total bandwidth is split into distinct, non-overlapping frequency bands separated by guard bands. Each station owns a dedicated frequency band permanently. (Wasteful if a station is silent).</li>
+      <li><strong>TDMA (Time Division Multiple Access):</strong> Stations share the entire frequency band, but transmissions are divided into periodic time slots. Each station transmits only during its assigned synchronized time slot.</li>
+      <li><strong>CDMA (Code Division Multiple Access):</strong> All stations transmit <strong>simultaneously across the exact same frequency band for 100% of the time</strong>! Transmissions are mathematically separated using orthogonal <strong>Chip Sequences (Walsh Codes)</strong>.</li>
+    </ul>
+
+    <h3>2. The Mathematical Foundation of CDMA</h3>
+    <p>In CDMA, each bit time is subdivided into $m$ short intervals called <strong>chips</strong> (typically $m = 64$ or $m = 128$). Each station is assigned a unique, mathematically orthogonal $m$-bit chip sequence vector:</p>
+    <ul>
+      <li>To transmit a <strong>binary 1</strong>: The station transmits its assigned chip sequence vector $\mathbf{C}$.</li>
+      <li>To transmit a <strong>binary 0</strong>: The station transmits the negative complement of its chip sequence: $-\mathbf{C}$.</li>
+      <li>To transmit <strong>silence</strong>: The station transmits zero energy ($0$).</li>
+    </ul>
+
+    <div class="formula-box">
+      <div class="formula-title">The Orthogonality Invariants of Walsh Codes</div>
+      <p>For any two chip code vectors $\mathbf{C}_i$ and $\mathbf{C}_j$ of length $m$ (where bits $0 \to -1$ and $1 \to +1$):</p>
+      <div class="formula-math">\mathbf{C}_i \cdot \mathbf{C}_i = m \quad (\text{Self Inner Product})</div>
+      <div class="formula-math">\mathbf{C}_i \cdot \mathbf{C}_j = 0 \quad \text{for } i \ne j \quad (\text{Cross Inner Product Orthogonality})</div>
+    </div>
+
+    <h3>3. Worked CDMA Decoding Walkthrough (High-Yield Numerical)</h3>
+    <div class="worked-example">
+      <div class="example-title">📝 Worked Numerical 10.1 — CDMA Linear Superposition and Extraction</div>
+      <p>Consider 4 stations with 4-bit Walsh chip codes ($m=4$):</p>
+      <ul>
+        <li>Station 1 ($C_1$): $[-1, -1, -1, -1]$</li>
+        <li>Station 2 ($C_2$): $[-1, +1, -1, +1]$</li>
+        <li>Station 3 ($C_3$): $[-1, -1, +1, +1]$</li>
+        <li>Station 4 ($C_4$): $[-1, +1, +1, -1]$</li>
+      </ul>
+      <p><strong>Transmission:</strong></p>
+      <ul>
+        <li>Station 1 transmits bit <strong>1</strong> $\implies S_1 = C_1 = [-1, -1, -1, -1]$</li>
+        <li>Station 2 transmits bit <strong>0</strong> $\implies S_2 = -C_2 = [+1, -1, +1, -1]$</li>
+        <li>Station 3 is <strong>silent</strong> $\implies S_3 = [0, 0, 0, 0]$</li>
+        <li>Station 4 transmits bit <strong>1</strong> $\implies S_4 = C_4 = [-1, +1, +1, -1]$</li>
+      </ul>
+      <p><strong>Step 1: Physical Superposition on the Medium:</strong></p>
+      <p>Signals add linearly in the air: $\mathbf{R} = S_1 + S_2 + S_3 + S_4$</p>
+      $$\mathbf{R} = [-1 + 1 + 0 - 1, \; -1 - 1 + 0 + 1, \; -1 + 1 + 0 + 1, \; -1 - 1 + 0 - 1] = \mathbf{[-1, -1, +1, -3]}$$
+      <p><strong>Step 2: Receiver Extracts Station 2's Bit:</strong></p>
+      <p>The receiver computes the normalized dot product of the composite signal $\mathbf{R}$ with Station 2's code $C_2$:</p>
+      $$\text{Decoded Value} = \frac{\mathbf{R} \cdot C_2}{m} = \frac{[-1, -1, +1, -3] \cdot [-1, +1, -1, +1]}{4}$$
+      $$\text{Decoded Value} = \frac{(-1)(-1) + (-1)(+1) + (1)(-1) + (-3)(+1)}{4} = \frac{1 - 1 - 1 - 3}{4} = \frac{-4}{4} = \mathbf{-1}$$
+      <p><strong>Result:</strong> Value is $-1$, which unambiguously represents <strong>binary 0</strong>! Station 2's bit is recovered perfectly, completely canceling out transmissions from Stations 1 and 4!</p>
+    </div>
+
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Primary texts on CDMA mathematics and Walsh code construction.</div>
+      <div class="resource-grid">
+        <a href="https://www.pearson.com/en-gb/subject-catalog/p/computer-networks-global-edition/P200000005535/9781292498621" target="_blank" rel="noopener noreferrer">
+          📘 Tanenbaum &amp; Wetherall — Section 2.6.4 CDMA
+          <small>Walsh matrices, Hadamard construction, and linear algebra proofs.</small>
+        </a>
+        <a href="https://www.mheducation.com/highered/product/data-communications-and-networking-with-tcp-ip-protocol-suite-forouzan.html" target="_blank" rel="noopener noreferrer">
+          📘 Forouzan — Section 12.3 Channelization
+          <small>FDMA, TDMA, and CDMA chip sequence extraction numericals.</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=PyLlYQXuxvs" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — CDMA Worked Examples
+          <small>Video walkthrough of vector dot products and multi-user decoding.</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 10.14: ETHERNET EVOLUTION -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-ethernet-basics" class="section-in-uni content-section" data-chapter="10" data-part="III" data-unit="II" data-midsem="core" data-exam-priority="core" data-search-section="Ethernet evolution 10Base5 Thicknet 10Base2 Thinnet 10Base-T Fast Ethernet Gigabit Ethernet hubs vs switches full duplex">
+  <div class="section-heading">
+    <h2 class="prose">10.14 Evolution of Ethernet: 10Base5 to Gigabit &amp; Switched Ethernet
+      <button class="bookmark-btn" data-id="s-ethernet-basics" data-label="10.14 Ethernet Evolution" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>IEEE 802.3 Ethernet: Architectural Evolution from Shared Bus to Switched Star</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Ethernet Evolution — First-Principles Definition</div>
+      <p>Invented in 1973 by Robert Metcalfe at Xerox PARC and standardized as <strong>IEEE 802.3</strong>, Ethernet evolved from a shared physical coaxial cable using CSMA/CD into high-speed <strong>switched star networks</strong> operating over twisted pair and fiber optics, providing collision-free, full-duplex transmission up to 400 Gbps.</p>
+    </div>
+
+    <h3>1. The Classic Coaxial Era (Legacy Shared Bus)</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Standard</th>
+          <th>Common Name</th>
+          <th>Physical Medium</th>
+          <th>Max Segment</th>
+          <th>Topology</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>10Base5</strong></td>
+          <td>Thicknet (Thick Ethernet)</td>
+          <td>Thick yellow RG-8 coaxial cable; vampire taps</td>
+          <td>500 meters</td>
+          <td>Physical Bus</td>
+        </tr>
+        <tr>
+          <td><strong>10Base2</strong></td>
+          <td>Thinnet (Cheapernet)</td>
+          <td>Thin RG-58 coaxial cable; BNC T-connectors</td>
+          <td>185 meters</td>
+          <td>Physical Bus</td>
+        </tr>
+        <tr>
+          <td><strong>10Base-T</strong></td>
+          <td>Twisted Pair Ethernet</td>
+          <td>Category 3/5 UTP cable; RJ-45 jacks; central Hub</td>
+          <td>100 meters</td>
+          <td>Star Bus (Physical Star, Logical Bus)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>2. The Modern Era: Hubs vs. Switches &amp; Collision Elimination</h3>
+    <div class="callout tip">
+      <div class="callout-title">💡 The Architectural Shift: How Switches Eliminated CSMA/CD</div>
+      <p>• <strong>Hubs (Shared Collision Domain):</strong> An Ethernet Hub is an OSI Layer 1 repeater. When a packet arrives on port 1, it is electrically rebroadcast to all other ports. All connected computers share a single collision domain and must run CSMA/CD.<br>
+      • <strong>Switches (Micro-Segmentation):</strong> An Ethernet Switch is an OSI Layer 2 bridge. It reads MAC addresses and creates a dedicated, isolated internal point-to-point connection between ports. Each port is an independent <strong>collision-free domain</strong>.<br>
+      • <strong>Full-Duplex Ethernet:</strong> In modern full-duplex switched Ethernet (Fast Ethernet, Gigabit, 10GbE), separate wire pairs or fiber strands are used for transmit (Tx) and receive (Rx). Stations can send and receive simultaneously. Collisions are physically impossible, rendering <strong>CSMA/CD obsolete in modern enterprise networks</strong>!</p>
+    </div>
+
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Authoritative histories and standards documents on Ethernet evolution.</div>
+      <div class="resource-grid">
+        <a href="https://www.pearson.com/en-gb/subject-catalog/p/computer-networks-global-edition/P200000005535/9781292498621" target="_blank" rel="noopener noreferrer">
+          📘 Tanenbaum &amp; Wetherall — Section 4.3 Ethernet
+          <small>From Metcalfe's memo to Gigabit switched Ethernet.</small>
+        </a>
+        <a href="https://www.ciscopress.com/articles/article.asp?p=3089352&seqNum=4" target="_blank" rel="noopener noreferrer">
+          📘 Cisco Press — Ethernet Evolution &amp; Switching
+          <small>Collision domains, broadcast domains, and microsegmentation.</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=PyLlYQXuxvs" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — Evolution of Ethernet
+          <small>Video walkthrough of 10Base5, 10Base2, and 10Base-T.</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 10.15: MAC ADDRESSING -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-mac-address" class="section-in-uni content-section" data-chapter="10" data-part="III" data-unit="II" data-midsem="core" data-exam-priority="core" data-search-section="MAC addressing 48-bit physical address OUI organizationally unique identifier unicast multicast broadcast FF:FF:FF:FF:FF:FF">
+  <div class="section-heading">
+    <h2 class="prose">10.15 MAC Addressing &amp; OUI Architecture
+      <button class="bookmark-btn" data-id="s-mac-address" data-label="10.15 MAC Addressing" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>IEEE 802 MAC Addressing: 48-bit Physical Address, OUI, Unicast, Multicast &amp; Broadcast</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">MAC Address (IEEE 802 EUI-48) — First-Principles Definition</div>
+      <p>A <strong>MAC (Media Access Control) Address</strong> is a unique <strong>48-bit (6-byte) physical hardware address</strong> burned into the Network Interface Card (NIC) by its manufacturer. It uniquely identifies an endpoint node on a local layer-2 broadcast network.</p>
+    </div>
+
+    <h3>1. Hexadecimal Formatting and Structure</h3>
+    <p>A 48-bit MAC address is represented as 12 hexadecimal digits separated by colons or hyphens:</p>
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 10.15: Anatomy of a 48-Bit MAC Address</div>
+      <pre>
+   +-------------------------------------+-------------------------------------+
+   |  First 24 Bits (3 Bytes)            |  Last 24 Bits (3 Bytes)             |
+   |  Organizationally Unique ID (OUI)   |  Network Interface Controller (NIC) |
+   |  Assigned to Vendor by IEEE         |  Assigned to Hardware by Vendor     |
+   +-------------------------------------+-------------------------------------+
+   | Example: 00 : 1A : 2B               | Example: 3C : 4D : 5E               |
+   | (Identifies Vendor, e.g., Cisco)    | (Unique serial number of card)      |
+   +-------------------------------------+-------------------------------------+
+      </pre>
+    </div>
+
+    <h3>2. The Two Special Control Bits in Byte 1</h3>
+    <p>In the first transmitted byte (Byte 0) of the MAC address, the least significant bits dictate special addressing properties:</p>
+    <ul>
+      <li><strong>Bit 0 (I/G Bit - Individual / Group):</strong>
+        <ul>
+          <li>If $0$: <strong>Unicast Address</strong> (directed to a single specific NIC).</li>
+          <li>If $1$: <strong>Multicast Address</strong> (directed to a group of subscribed stations).</li>
+        </ul>
+      </li>
+      <li><strong>Bit 1 (U/L Bit - Universal / Local):</strong>
+        <ul>
+          <li>If $0$: <strong>Universally Administered</strong> (globally unique OUI assigned by IEEE).</li>
+          <li>If $1$: <strong>Locally Administered</strong> (overridden manually by a network administrator).</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3>3. Transmission Address Classes</h3>
+    <ul>
+      <li><strong>Unicast:</strong> Targeted to one specific MAC address (e.g., <code>00:1A:2B:3C:4D:5E</code>). Only the matching NIC processes the payload; all other NICs filter and discard it in hardware.</li>
+      <li><strong>Broadcast:</strong> Addressed to all $1$s: <code>FF:FF:FF:FF:FF:FF</code>. Every NIC on the layer-2 collision/broadcast domain accepts the frame and interrupts its CPU.</li>
+      <li><strong>Multicast:</strong> Addressed to an agreed-upon group (e.g., IPv4 multicast MAC addresses begin with <code>01:00:5E:...</code>).</li>
+    </ul>
+
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Official IEEE standards and tutorials on MAC addressing.</div>
+      <div class="resource-grid">
+        <a href="https://standards.ieee.org/products-programs/regauth/oui/" target="_blank" rel="noopener noreferrer">
+          🌐 IEEE Standards Association — OUI Database
+          <small>Official registration registry for hardware manufacturer MAC prefixes.</small>
+        </a>
+        <a href="https://www.mheducation.com/highered/product/data-communications-and-networking-with-tcp-ip-protocol-suite-forouzan.html" target="_blank" rel="noopener noreferrer">
+          📘 Forouzan — Section 13.1 MAC Addressing
+          <small>Unicast, multicast, and broadcast addressing breakdowns.</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=PyLlYQXuxvs" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — MAC Address Explained
+          <small>Video tutorial on OUI, hardware burning, and hex representations.</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 10.16: ETHERNET FRAME STRUCTURE -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-ethernet-frame" class="section-in-uni content-section" data-chapter="10" data-part="III" data-unit="II" data-midsem="core" data-exam-priority="core" data-search-section="IEEE 802.3 Ethernet frame structure preamble SFD destination address source address length type payload 46 bytes padding FCS CRC-32">
+  <div class="section-heading">
+    <h2 class="prose">10.16 Standard IEEE 802.3 Ethernet Frame Structure
+      <button class="bookmark-btn" data-id="s-ethernet-frame" data-label="10.16 Ethernet Frame Structure" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>IEEE 802.3 Ethernet Frame Anatomy: Fields, Minimum/Maximum Constraints &amp; CRC-32</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">IEEE 802.3 Ethernet Frame — First-Principles Definition</div>
+      <p>An <strong>Ethernet Frame</strong> is the standardized protocol data unit (PDU) at the MAC sublayer. It encapsulates higher-layer network packets (such as IPv4 or IPv6 datagrams) with synchronization headers, physical source and destination MAC addresses, protocol type indicators, optional padding bits, and a 32-bit CRC Frame Check Sequence (FCS).</p>
+    </div>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 10.16: Complete IEEE 802.3 / Ethernet II Frame Architecture</div>
+      <pre>
+   +----------+-------+----------+----------+------------+-----------------+----------+
+   | Preamble |  SFD  | Dest MAC | Src MAC  | Type/Length| Data (Payload)  |   FCS    |
+   | 7 Bytes  | 1 Byte| 6 Bytes  | 6 Bytes  | 2 Bytes    | 46 - 1500 Bytes | 4 Bytes  |
+   +----------+-------+----------+----------+------------+-----------------+----------+
+   |<--- Sync Fields ->|<-------------------- 64 to 1518 Bytes ---------------------->|
+      </pre>
+    </div>
+
+    <h3>Detailed Breakdown of Every Frame Field</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Field Name</th>
+          <th>Size (Bytes)</th>
+          <th>Exact Technical Purpose &amp; Bit Pattern</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Preamble</strong></td>
+          <td>7 Bytes (56 bits)</td>
+          <td>Alternating bit pattern <code>10101010...10101010</code>. Provides physical-layer clock synchronization, allowing receiving NICs to lock phase-locked loops (PLL) to incoming bit clock.</td>
+        </tr>
+        <tr>
+          <td><strong>Start of Frame Delimiter (SFD)</strong></td>
+          <td>1 Byte (8 bits)</td>
+          <td>Exact bit pattern: <code>10101011</code> (ending with double ones <code>11</code>). Alerts the receiver that the synchronization preamble has ended and the very next bit is the start of the destination MAC address!</td>
+        </tr>
+        <tr>
+          <td><strong>Destination Address (DA)</strong></td>
+          <td>6 Bytes (48 bits)</td>
+          <td>Physical hardware MAC address of the intended receiving station (Unicast, Multicast, or Broadcast <code>FF:FF:FF:FF:FF:FF</code>).</td>
+        </tr>
+        <tr>
+          <td><strong>Source Address (SA)</strong></td>
+          <td>6 Bytes (48 bits)</td>
+          <td>Physical hardware MAC address of the transmitting station (Always Unicast).</td>
+        </tr>
+        <tr>
+          <td><strong>Length / Type</strong></td>
+          <td>2 Bytes (16 bits)</td>
+          <td>Dual-purpose field:
+            <br>• If $\le 1500$ (0x05DC): Interpreted as <strong>Length</strong> (IEEE 802.3 standard).
+            <br>• If $\ge 1536$ (0x0600): Interpreted as <strong>EtherType</strong> (Ethernet II standard). E.g., <code>0x0800</code> = IPv4, <code>0x0806</code> = ARP, <code>0x86DD</code> = IPv6.
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Data (Payload)</strong></td>
+          <td><strong>46 to 1500 Bytes</strong></td>
+          <td>Higher-layer network packet (IP datagram). Minimum size is <strong>46 bytes</strong>; maximum size (MTU) is <strong>1500 bytes</strong>.</td>
+        </tr>
+        <tr>
+          <td><strong>Padding</strong></td>
+          <td>0 to 46 Bytes</td>
+          <td>If user payload is less than 46 bytes, padding bits (zeros) are automatically appended so the frame header + payload + FCS reaches the <strong>mandatory 64-byte minimum frame size</strong> ($18 + 46 = 64$).</td>
+        </tr>
+        <tr>
+          <td><strong>Frame Check Sequence (FCS)</strong></td>
+          <td>4 Bytes (32 bits)</td>
+          <td>Cyclic Redundancy Check (CRC-32) calculated over Dest MAC, Src MAC, Type/Length, and Payload fields. Detects all single, double, burst, and odd errors.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout tip">
+      <div class="callout-title">⚡ High-Yield Exam Calculation: Minimum &amp; Maximum Frame Boundaries</div>
+      <p>• <strong>Minimum Frame Size (without Preamble/SFD):</strong>
+      $$6\text{ (DA)} + 6\text{ (SA)} + 2\text{ (Type)} + \mathbf{46\text{ (Min Data)}} + 4\text{ (FCS)} = \mathbf{64\text{ Bytes}}$$
+      • <strong>Maximum Frame Size (without Preamble/SFD):</strong>
+      $$6\text{ (DA)} + 6\text{ (SA)} + 2\text{ (Type)} + \mathbf{1500\text{ (Max Data / MTU)}} + 4\text{ (FCS)} = \mathbf{1518\text{ Bytes}}$$
+      *(If IEEE 802.1Q VLAN tagging is present, a 4-byte VLAN tag expands the maximum frame size to 1522 bytes).*</p>
+    </div>
+
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Primary documentation on IEEE 802.3 frame standards.</div>
+      <div class="resource-grid">
+        <a href="https://standards.ieee.org/ieee/802.3/7097/" target="_blank" rel="noopener noreferrer">
+          🌐 IEEE Standards — IEEE 802.3 Ethernet Standard
+          <small>Official specification of MAC framing and physical line standards.</small>
+        </a>
+        <a href="https://www.mheducation.com/highered/product/data-communications-and-networking-with-tcp-ip-protocol-suite-forouzan.html" target="_blank" rel="noopener noreferrer">
+          📘 Forouzan — Section 13.2 Standard Ethernet Frame
+          <small>Field-by-field dissection of preamble, SFD, and padding rules.</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=PyLlYQXuxvs" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — Ethernet Frame Structure
+          <small>Video walkthrough of 64-byte minimum and 1518-byte maximum bounds.</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 10.17: SUMMARY & EXAM TRAPS -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-summary-ch10" class="section-in-uni content-section" data-chapter="10" data-part="III" data-unit="II" data-midsem="core" data-exam-priority="core" data-search-section="Chapter 10 summary formulas cheat sheet exam traps ALOHA CSMA/CD CSMA/CA CDMA Ethernet frame">
+  <div class="section-heading">
+    <h2 class="prose">10.17 Chapter 10 Summary, Master Formulas &amp; Exam Traps
+      <button class="bookmark-btn" data-id="s-summary-ch10" data-label="10.17 Summary & Exam Traps" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Chapter 10 Revision, Master Equations &amp; Examination Traps</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Chapter 10 Core Synthesis</div>
+      <p>Medium Access Control governs multi-node arbitration over shared physical media. Contention protocols range from uncoordinated random transmission (Pure ALOHA, Slotted ALOHA) to carrier-sensing architectures (CSMA, CSMA/CD, CSMA/CA), deterministic controlled access (Token Passing), and orthogonal channelization (CDMA). IEEE 802.3 Ethernet stands as the universal layer-2 standard uniting these principles.</p>
+    </div>
+
+    <h3>Master Formula Cheat Sheet</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Protocol / Concept</th>
+          <th>Mathematical Formula</th>
+          <th>Optimal Point / Key Values</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Pure ALOHA Vulnerable Window</strong></td>
+          <td>$T_{\text{vuln}} = 2 \times T_{\text{fr}}$</td>
+          <td>Double the frame transmission time.</td>
+        </tr>
+        <tr>
+          <td><strong>Pure ALOHA Throughput</strong></td>
+          <td>$S = G \cdot e^{-2G}$</td>
+          <td>$S_{\max} = 18.4\% = \frac{1}{2e}$ at $G = 0.5$.</td>
+        </tr>
+        <tr>
+          <td><strong>Slotted ALOHA Vulnerable Window</strong></td>
+          <td>$T_{\text{vuln}} = T_{\text{fr}}$</td>
+          <td>Single frame time slot.</td>
+        </tr>
+        <tr>
+          <td><strong>Slotted ALOHA Throughput</strong></td>
+          <td>$S = G \cdot e^{-G}$</td>
+          <td>$S_{\max} = 36.8\% = \frac{1}{e}$ at $G = 1.0$.</td>
+        </tr>
+        <tr>
+          <td><strong>CSMA/CD Minimum Frame Size</strong></td>
+          <td>$T_{\text{fr}} \ge 2T_p \implies L_{\min} = 2 R T_p$</td>
+          <td>$64\ \text{bytes} = 512\ \text{bits}$ in 10 Mbps Ethernet.</td>
+        </tr>
+        <tr>
+          <td><strong>Binary Exponential Backoff</strong></td>
+          <td>$r \in [0, \; 2^k - 1]$</td>
+          <td>$k = \min(n, 10)$; drop frame if $n = 16$.</td>
+        </tr>
+        <tr>
+          <td><strong>CDMA Orthogonality</strong></td>
+          <td>$\mathbf{C}_i \cdot \mathbf{C}_i = m, \quad \mathbf{C}_i \cdot \mathbf{C}_j = 0$</td>
+          <td>Decoded bit $= \frac{\mathbf{R} \cdot \mathbf{C}_i}{m}$.</td>
+        </tr>
+        <tr>
+          <td><strong>Ethernet Frame Size Bounds</strong></td>
+          <td>$64 \le \text{Frame Size} \le 1518\text{ bytes}$</td>
+          <td>Min payload $= 46\text{ B}$; Max payload (MTU) $= 1500\text{ B}$.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Top 5 High-Yield Examination Traps &amp; Pitfalls</h3>
+    <div class="callout danger">
+      <div class="callout-title">⚠️ Trap 1: Confusing Pure ALOHA and Slotted ALOHA Maximums</div>
+      <p>Students frequently swap the throughput maximums:<br>
+      • Pure ALOHA: Max is at <strong>$G = 0.5$</strong> yielding <strong>$18.4\%$</strong> ($1 / 2e$).<br>
+      • Slotted ALOHA: Max is at <strong>$G = 1.0$</strong> yielding <strong>$36.8\%$</strong> ($1 / e$).</p>
+    </div>
+
+    <div class="callout danger">
+      <div class="callout-title">⚠️ Trap 2: Minimum Frame Size with High Bandwidth</div>
+      <p>Questions frequently ask: <em>"If Ethernet bandwidth is upgraded from 10 Mbps to 1 Gbps (100x speedup) while keeping cable length 1 km, what happens to minimum frame size?"</em><br>
+      $$L_{\min} = 2 R T_p$$
+      Since $R$ increased by 100x, $L_{\min}$ must also increase by 100x (from 64 bytes to 6400 bytes!), or network diameter $d$ must be reduced by 100x (from 2500 m to 25 m)! This is why Gigabit Ethernet over half-duplex required <strong>Carrier Extension</strong>.</p>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">⚠️ Trap 3: Preamble and SFD Are NOT Counted in Frame Size</div>
+      <p>The 8-byte preamble + SFD ($7 + 1 = 8\text{ bytes}$) are <strong>physical layer synchronization framing</strong>, NOT counted in the 64-to-1518 byte MAC frame size! If an exam question asks for total frame size on the wire including preamble, add 8 bytes ($64 + 8 = 72\text{ bytes}$).</p>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">⚠️ Trap 4: Hidden Terminal vs Exposed Terminal Definition Swap</div>
+      <p>Remember:<br>
+      • <strong>Hidden Terminal:</strong> Stations cannot hear each other $\implies$ both transmit $\implies$ <strong>COLLISION!</strong> (Solved by CTS).<br>
+      • <strong>Exposed Terminal:</strong> Station hears an unrelated sender $\implies$ unnecessarily waits $\implies$ <strong>WASTED BANDWIDTH!</strong> (Solved by lack of CTS).</p>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-title">⚠️ Trap 5: Modern Ethernet Does NOT Use CSMA/CD</div>
+      <p>In modern switched networks (Cat6 twisted pair or fiber), each link is full-duplex point-to-point. <strong>CSMA/CD is completely disabled</strong> because collisions are physically impossible. However, CSMA/CD remains a mandatory syllabus and exam topic to understand half-duplex legacy roots.</p>
+    </div>
+
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Summary cheat sheets and practice exams for Chapter 10.</div>
+      <div class="resource-grid">
+        <a href="https://www.pearson.com/en-gb/subject-catalog/p/computer-networks-global-edition/P200000005535/9781292498621" target="_blank" rel="noopener noreferrer">
+          📘 Tanenbaum &amp; Wetherall — Chapter 4 Review Exercises
+          <small>Comprehensive problem set on MAC sublayer protocols.</small>
+        </a>
+        <a href="https://www.mheducation.com/highered/product/data-communications-and-networking-with-tcp-ip-protocol-suite-forouzan.html" target="_blank" rel="noopener noreferrer">
+          📘 Forouzan — Chapter 12 &amp; 13 Practice Problems
+          <small>University numerical drill questions on ALOHA and Ethernet.</small>
+        </a>
+        <a href="../exams/mock-exam.html">
+          📝 CN MiniBook — Practice Exams
+          <small>Interactive self-testing on MAC sublayer protocols.</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
 
   <!-- PREV/NEXT NAV -->
   <div class="prev-next">
-    <a href="ch09-protocols-sliding.html" class="nav-btn">← Ch 9: Protocols & Sliding Window</a>
-    <a href="../exams/mock-exam.html" class="nav-btn primary">Next: 100 MCQ Mock Exam →</a>
+    <a href="ch09-protocols-sliding.html" class="nav-btn">← Ch 9: Protocols &amp; Sliding Window</a>
+    <a href="ch11-network-layer-foundations.html" class="nav-btn primary">Next: Part IV — Ch 11 Network Layer Foundations →</a>
   </div>
 
 </div>

@@ -149,17 +149,18 @@ window.PomoTimer = (() => {
 
     const completedPhase = state.phase;
 
-    PomoBus.emit('analytics:session_end', {
-      phase:     completedPhase,
-      sessions:  state.sessions,
-      timestamp: Date.now(),
-    });
-    PomoBus.emit('timer:phase_complete', { ...state, completedPhase });
-
     if (completedPhase === PHASE.WORK) {
       state.sessions++;
       state.totalSessions++;
     }
+
+    PomoBus.emit('analytics:session_end', {
+      phase:     completedPhase,
+      sessions:  state.sessions,
+      timestamp: Date.now(),
+      skipped:   false,
+    });
+    PomoBus.emit('timer:phase_complete', { ...state, completedPhase });
     state.phase     = _nextPhase();
     state.remaining = _duration(state.phase);
     _broadcast();
@@ -334,11 +335,17 @@ window.PomodoroTimer = (() => {
         const btnEl   = document.getElementById('pomo-start');
         const pomoEl  = document.getElementById('pomodoro');
         if (timeEl)  timeEl.textContent  = `${m}:${sec}`;
-        if (labelEl) labelEl.textContent = s.phase === 'work'
-          ? `⏰ WORK · #${s.sessions + 1}` : (s.phase === 'short_break' ? '☕ BREAK' : '🌿 LONG BREAK');
-        if (btnEl)   btnEl.textContent   = s.running ? '⏸ Pause' : '▶ Start';
-        if (pomoEl)  pomoEl.style.borderColor = s.phase === 'work'
-          ? 'var(--accent-border)' : 'rgba(16,185,129,0.4)';
+        if (labelEl) {
+          labelEl.textContent = s.phase === 'work'
+            ? `FOCUS · #${s.sessions + 1}`
+            : (s.phase === 'short_break' ? 'SHORT BREAK' : 'LONG BREAK');
+          labelEl.dataset.phase = s.phase;
+        }
+        if (btnEl) {
+          btnEl.textContent = s.running ? 'Pause' : 'Start';
+          btnEl.setAttribute('aria-pressed', s.running ? 'true' : 'false');
+        }
+        if (pomoEl) pomoEl.dataset.phase = s.phase;
       } catch (e) {
         console.error('[PomodoroTimer] Render error:', e);
       }

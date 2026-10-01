@@ -1,80 +1,113 @@
-// ⚡ Arpit | modes.js — University / GATE / Advanced / All toggle
+/**
+ * Engineering Minibooks · study lens controller
+ * Preserves the existing ModeManager API used by chapter HTML.
+ */
+'use strict';
 
-const ModeManager = (() => {
+(() => {
   const KEY = 'cn-mode';
-  let current = localStorage.getItem(KEY) || localStorage.getItem('os-mode') || 'all';
+  const LEGACY_KEY = 'os-mode';
+  const ALLOWED = new Set(['all', 'uni', 'gate', 'advanced']);
 
   const MODES = {
-    all:      { label: '📚 All',        sel: null,          hide: [] },
-    uni:      { label: '🎓 University', sel: '.mode-uni',   hide: ['.mode-gate', '.mode-adv'] },
-    gate:     { label: '⚡ GATE',       sel: '.mode-gate',  hide: ['.mode-uni',  '.mode-adv'] },
-    advanced: { label: '🔬 Advanced',   sel: '.mode-adv',   hide: ['.mode-uni',  '.mode-gate'] },
+    all:      { label: 'All', sel: null, hide: [] },
+    uni:      { label: 'University', sel: '.mode-uni', hide: ['.mode-gate', '.mode-adv'] },
+    gate:     { label: 'GATE', sel: '.mode-gate', hide: ['.mode-uni', '.mode-adv'] },
+    advanced: { label: 'Advanced', sel: '.mode-adv', hide: ['.mode-uni', '.mode-gate'] }
   };
 
-  function apply(mode) {
-    current = mode;
-    localStorage.setItem(KEY, mode);
-    document.body.dataset.mode = mode;
-    document.documentElement.dataset.mode = mode;
-
-    // Show/hide content divs
-    if (mode === 'all') {
-      document.querySelectorAll('.mode-uni, .mode-gate, .mode-adv').forEach(el => el.classList.remove('mode-hidden'));
-    } else {
-      const { hide } = MODES[mode] || { hide: [] };
-      document.querySelectorAll('.mode-uni, .mode-gate, .mode-adv').forEach(el => el.classList.remove('mode-hidden'));
-      hide.forEach(sel => document.querySelectorAll(sel).forEach(el => el.classList.add('mode-hidden')));
-    }
-
-    // Toggle in-page Uni syllabus toggle switch buttons
-    document.querySelectorAll('.uni-toggle-btn').forEach(btn => {
-      if (btn.dataset.mode === 'uni' || btn.id === 'filter-uni-btn') btn.classList.toggle('active', mode === 'uni');
-      if (btn.dataset.mode === 'all' || btn.id === 'filter-all-btn') btn.classList.toggle('active', mode === 'all');
-    });
-
-    // Filter exam papers
-    if (mode === 'uni')  { showPapers('uni'); }
-    if (mode === 'gate') { showPapers('gate'); }
-    if (mode === 'all' || mode === 'advanced') { showPapers('all'); }
-
-    // Update buttons
-    document.querySelectorAll('.mode-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.mode === mode);
-    });
-
-    // Update sidebar indicator
-    const indicator = document.getElementById('mode-indicator');
-    if (indicator) {
-      const colors = { all:'var(--accent-light)', uni:'var(--uni-c)', gate:'var(--gate-c)', advanced:'var(--adv-c)' };
-      indicator.textContent = MODES[mode]?.label || '📚 All';
-      indicator.style.color  = colors[mode] || 'var(--accent-light)';
-    }
-
-    // Toast notification
-    if (window.Toast) Toast.show(`Mode: ${MODES[mode]?.label || mode}`, 'info');
+  function normalize(value) {
+    const mode = value === 'adv' ? 'advanced' : value;
+    return ALLOWED.has(mode) ? mode : 'all';
   }
 
-  function showPapers(mode) {
+  function readInitial() {
+    try {
+      return normalize(localStorage.getItem(KEY) || localStorage.getItem(LEGACY_KEY) || 'all');
+    } catch {
+      return 'all';
+    }
+  }
+
+  let current = readInitial();
+
+  function persist(mode) {
+    try { localStorage.setItem(KEY, mode); } catch { /* non-persistent session is fine */ }
+  }
+
+  function filterContent(mode) {
+    document.querySelectorAll('.mode-uni, .mode-gate, .mode-adv').forEach(el => {
+      el.classList.remove('mode-hidden');
+      el.removeAttribute('aria-hidden');
+    });
+
+    if (mode !== 'all') {
+      MODES[mode].hide.forEach(selector => {
+        document.querySelectorAll(selector).forEach(el => {
+          el.classList.add('mode-hidden');
+          el.setAttribute('aria-hidden', 'true');
+        });
+      });
+    }
+  }
+
+  function filterPapers(mode) {
     document.querySelectorAll('[data-paper-type]').forEach(el => {
-      if (mode === 'all') { el.classList.remove('mode-hidden'); return; }
-      el.classList.toggle('mode-hidden', el.dataset.paperType !== mode);
+      const visible = mode === 'all' || mode === 'advanced' || el.dataset.paperType === mode;
+      el.classList.toggle('mode-hidden', !visible);
+      el.setAttribute('aria-hidden', String(!visible));
+    });
+  }
+
+  function updateControls(mode) {
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+      const active = btn.dataset.mode === mode;
+      btn.classList.toggle('active', active);
+      btn.setAttribute('aria-pressed', String(active));
+    });
+
+    document.querySelectorAll('.uni-toggle-btn').forEach(btn => {
+      const target = normalize(btn.dataset.mode || (btn.id === 'filter-uni-btn' ? 'uni' : btn.id === 'filter-all-btn' ? 'all' : ''));
+      const active = target === mode;
+      btn.classList.toggle('active', active);
+      btn.setAttribute('aria-pressed', String(active));
+    });
+
+    const indicator = document.getElementById('mode-indicator');
+    if (indicator) {
+      indicator.textContent = MODES[mode].label;
+      indicator.dataset.mode = mode;
+    }
+  }
+
+  function apply(value, { silent = false } = {}) {
+    const mode = normalize(value);
+    current = mode;
+    persist(mode);
+    document.body.dataset.mode = mode;
+    document.documentElement.dataset.mode = mode;
+    filterContent(mode);
+    filterPapers(mode);
+    updateControls(mode);
+    if (!silent && window.Toast?.show) window.Toast.show(`Mode: ${MODES[mode].label}`, 'info');
+    return mode;
+  }
+
+  function bindButtons() {
+    document.querySelectorAll('.mode-btn, .uni-toggle-btn').forEach(btn => {
+      // Several chapter files still contain inline onclick handlers. Do not double-bind those.
+      if (btn.dataset.modeBound === '1' || btn.getAttribute('onclick')) return;
+      btn.dataset.modeBound = '1';
+      btn.addEventListener('click', () => apply(btn.dataset.mode || (btn.id === 'filter-uni-btn' ? 'uni' : 'all')));
     });
   }
 
   function init() {
-    // Wire up floating panel buttons
-    document.querySelectorAll('.mode-btn').forEach(btn => {
-      btn.addEventListener('click', () => apply(btn.dataset.mode));
-    });
-    // Wire up in-page uni syllabus toggle buttons
-    document.querySelectorAll('.uni-toggle-btn').forEach(btn => {
-      btn.addEventListener('click', () => apply(btn.dataset.mode));
-    });
-    apply(current);
+    bindButtons();
+    apply(current, { silent: true });
   }
 
-  return { init, apply, get: () => current };
+  const API = { init, apply, get: () => current };
+  window.ModeManager = API;
+  document.addEventListener('DOMContentLoaded', init, { once: true });
 })();
-
-window.ModeManager = ModeManager;
-document.addEventListener('DOMContentLoaded', () => ModeManager.init());

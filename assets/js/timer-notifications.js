@@ -13,7 +13,9 @@ window.PomoNotifications = (() => {
       if (!AudioCtor) return null;
       _ctx = new AudioCtor();
     }
-    if (_ctx && _ctx.state === 'suspended') _ctx.resume();
+    if (_ctx && _ctx.state === 'suspended') {
+      try { void _ctx.resume(); } catch (_) {}
+    }
     return _ctx;
   }
 
@@ -75,7 +77,7 @@ window.PomoNotifications = (() => {
   // ── Public audio API ──────────────────────────────────────────────────────
   function playSound(name, volume) {
     try {
-      if (typeof document !== 'undefined' && document.hidden === false && window.PomoSettings?.get?.('sound') === 'silent') return;
+      if (window.PomoSettings?.get?.('sound') === 'silent') return;
       const ctx = _getCtx();
       if (!ctx) return;
       const soundName = SOUNDS[name] ? name : 'bell';
@@ -98,8 +100,8 @@ window.PomoNotifications = (() => {
   }
 
   function _notify(title, body) {
-    if (!_notifGranted || !document.hidden) return;
-    try { new Notification(title, { body, icon: '⏰' }); } catch (_) {}
+    if (!_notifGranted || !document.hidden || typeof Notification === 'undefined') return;
+    try { new Notification(title, { body }); } catch (_) {}
   }
 
   // ── Phase complete handler ────────────────────────────────────────────────
@@ -109,14 +111,18 @@ window.PomoNotifications = (() => {
     playSound(sound, vol);
 
     if (completedPhase === 'work') {
-      const limit  = window.PomoSettings.get('sessionsBeforeLongBreak');
+      const limit = Math.max(1, Number(window.PomoSettings.get('sessionsBeforeLongBreak')) || 4);
       const isLong = sessions % limit === 0;
+      const breakSeconds = isLong
+        ? Number(window.PomoSettings.get('longBreak')) || 0
+        : Number(window.PomoSettings.get('shortBreak')) || 0;
+      const minutes = Math.max(1, Math.round(breakSeconds / 60));
       _notify(
-        isLong ? '🌿 Long Break Time!' : '☕ Short Break Time!',
-        `Session ${sessions} complete. ${isLong ? '15 min' : '5 min'} break earned.`
+        isLong ? 'Long break time' : 'Short break time',
+        `Focus session ${sessions} complete. Take a ${minutes}-minute break.`
       );
     } else {
-      _notify('⏰ Break Over — Back to Work!', 'Stay sharp. Next focus session starting.');
+      _notify('Break finished', 'Your next focus session is ready.');
     }
   }
 

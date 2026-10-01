@@ -946,24 +946,26 @@
       const host = document.querySelector(this.options.mount) || document.body;
       const wrap = document.createElement('div');
       wrap.className = 'tts-mini-player';
+      wrap.setAttribute('role', 'region');
+      wrap.setAttribute('aria-label', 'Text to speech controls');
       wrap.innerHTML = `
-        <div class="tts-mini-head" id="tts-mini-handle">TTS</div>
+        <div class="tts-mini-head" id="tts-mini-handle" tabindex="0">Text to speech</div>
         <div class="tts-mini-body">
           <div class="tts-mini-row">
-            <button id="tts-play">▶</button>
-            <button id="tts-stop">■</button>
-            <button id="tts-prev">⏮</button>
-            <button id="tts-next">⏭</button>
+            <button id="tts-play" type="button" aria-label="Play or pause">Play</button>
+            <button id="tts-stop" type="button" aria-label="Stop">Stop</button>
+            <button id="tts-prev" type="button" aria-label="Previous chunk">Prev</button>
+            <button id="tts-next" type="button" aria-label="Next chunk">Next</button>
           </div>
           <div class="tts-mini-row tts-mini-progress-row">
-            <progress id="tts-progress" max="100" value="0"></progress>
+            <progress id="tts-progress" max="100" value="0" aria-label="Reading progress"></progress>
             <span id="tts-progress-text">0%</span>
           </div>
           <div class="tts-mini-row">
-            <button id="tts-resume">Resume</button>
-            <button id="tts-bookmark">Bookmark</button>
+            <button id="tts-resume" type="button">Resume</button>
+            <button id="tts-bookmark" type="button">Bookmark</button>
           </div>
-          <div class="tts-mini-status" id="tts-status">Idle</div>
+          <div class="tts-mini-status" id="tts-status" aria-live="polite">Idle</div>
         </div>
       `;
       host.appendChild(wrap);
@@ -980,13 +982,18 @@
       const style = document.createElement('style');
       style.id = 'tts-mini-player-style';
       style.textContent = `
-        .tts-mini-player{position:fixed;right:16px;bottom:16px;width:220px;background:#111827;color:#f9fafb;border:1px solid rgba(255,255,255,.08);border-radius:16px;box-shadow:0 18px 50px rgba(0,0,0,.35);z-index:9999;font:13px/1.4 Inter,system-ui,sans-serif;overflow:hidden}
-        .tts-mini-head{padding:10px 12px;background:#0f172a;cursor:move;font-weight:700}
+        .tts-mini-player{position:fixed;right:16px;bottom:16px;width:min(320px,calc(100vw - 32px));background:var(--em-surface-1,#fefdfc);color:var(--em-text,#252624);border:1px solid var(--em-border,#d6d3cb);border-radius:var(--em-radius-md,10px);box-shadow:0 14px 36px rgba(37,38,36,.12);z-index:9999;font:13px/1.45 var(--font-sans,system-ui,sans-serif);overflow:hidden}
+        .tts-mini-head{padding:10px 12px;background:var(--em-surface-2,#f3f1eb);cursor:grab;font-weight:650;border-bottom:1px solid var(--em-border,#d6d3cb)}
+        .tts-mini-head:focus-visible{outline:2px solid var(--em-accent,#46645f);outline-offset:-2px}
         .tts-mini-body{padding:12px}
         .tts-mini-row{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:10px}
-        .tts-mini-player button{background:#1f2937;color:#fff;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:6px 8px;cursor:pointer}
-        .tts-mini-progress-row progress{width:100%}
-        .tts-mini-status{font-size:12px;color:#9ca3af}
+        .tts-mini-player button{background:var(--em-surface-1,#fefdfc);color:var(--em-text,#252624);border:1px solid var(--em-border,#d6d3cb);border-radius:var(--em-radius-sm,6px);padding:6px 8px;cursor:pointer;min-height:32px}
+        .tts-mini-player button:hover{background:var(--em-accent-soft,#e7eeec);border-color:var(--em-accent,#46645f)}
+        .tts-mini-player button:focus-visible{outline:2px solid var(--em-accent,#46645f);outline-offset:2px}
+        .tts-mini-progress-row progress{width:100%;accent-color:var(--em-accent,#46645f)}
+        .tts-mini-status{font-size:12px;color:var(--em-text-secondary,#5f615c)}
+        @media (max-width:600px){.tts-mini-player{right:12px;bottom:12px;width:calc(100vw - 24px)}}
+        @media (prefers-reduced-motion:reduce){.tts-mini-player *{transition:none !important;animation:none !important}}
       `;
       document.head.appendChild(style);
     }
@@ -1124,10 +1131,18 @@
       if (!sel) return;
       const allVoices = manager.engine.voices;
       if (!allVoices.length) return;
-      sel.innerHTML = allVoices
-        .map((v, i) => `<option value="${escapeHtml(v.voiceURI)}"${v.voiceURI === manager.engine.settings.voiceURI ? ' selected' : ''}>${escapeHtml(v.name)} (${escapeHtml(v.lang)})</option>`)
-        .join('');
-      sel.addEventListener('change', () => manager.setVoice(sel.value));
+      sel.replaceChildren();
+      allVoices.forEach((voice) => {
+        const option = document.createElement('option');
+        option.value = voice.voiceURI || '';
+        option.textContent = `${voice.name || 'Unnamed voice'} (${voice.lang || 'unknown'})`;
+        option.selected = voice.voiceURI === manager.engine.settings.voiceURI;
+        sel.appendChild(option);
+      });
+      if (!sel.dataset.ttsBound) {
+        sel.dataset.ttsBound = 'true';
+        sel.addEventListener('change', () => manager.setVoice(sel.value));
+      }
     }
     manager.engine.addEventListener('voiceschanged', populateVoiceSelect);
     populateVoiceSelect(); // in case voices already loaded
@@ -1187,7 +1202,10 @@
       const panel = document.getElementById('tts-panel');
       const isPlaying = e.detail.state === STATES.PLAYING;
       const isPaused  = e.detail.state === STATES.PAUSED;
-      if (btn) btn.innerHTML = (isPlaying && !isPaused) ? '⏸' : '▶';
+      if (btn) {
+        btn.textContent = (isPlaying && !isPaused) ? 'Pause' : (isPaused ? 'Resume' : 'Play');
+        btn.setAttribute('aria-label', (isPlaying && !isPaused) ? 'Pause text to speech' : (isPaused ? 'Resume text to speech' : 'Play text to speech'));
+      }
       if (panel) panel.classList.toggle('visible', isPlaying || isPaused);
     });
 
@@ -1206,12 +1224,12 @@
       const s = document.createElement('style');
       s.id = 'tts-inline-style';
       s.textContent = `
-        .tts-readable-hover { outline: 1.5px dashed rgba(124,58,237,0.4) !important; border-radius: 4px; cursor: pointer; }
-        .tts-reading-active  { outline: 2px solid rgba(124,58,237,0.7) !important; border-radius: 4px; background: rgba(124,58,237,0.06) !important; }
+        .tts-readable-hover { outline: 1px dashed color-mix(in srgb, var(--em-accent,#46645f) 55%, transparent) !important; border-radius: 4px; cursor: pointer; }
+        .tts-reading-active  { outline: 2px solid color-mix(in srgb, var(--em-accent,#46645f) 72%, transparent) !important; border-radius: 4px; background: var(--em-accent-soft,#e7eeec) !important; }
         .tts-inline-tip {
-          position: fixed; bottom: 88px; right: 24px; background: var(--accent,#7c3aed);
-          color: #fff; font-size: 11px; padding: 4px 10px; border-radius: 99px;
-          pointer-events: none; opacity: 0; transition: opacity .2s; z-index: 9999;
+          position: fixed; bottom: 88px; right: 24px; background: var(--em-surface-1,#fefdfc);
+          color: var(--em-text,#252624); border: 1px solid var(--em-border,#d6d3cb); font-size: 11px; padding: 4px 10px; border-radius: var(--em-radius-sm,6px);
+          pointer-events: none; opacity: 0; transition: opacity 160ms ease; z-index: 9999;
         }
         .tts-inline-tip.show { opacity: 1; }
       `;
@@ -1219,7 +1237,7 @@
     }
     const tip = document.createElement('div');
     tip.className = 'tts-inline-tip';
-    tip.textContent = '🔊 Click to read from here';
+    tip.textContent = 'Read from here';
     document.body.appendChild(tip);
 
     document.addEventListener('mouseover', (e) => {
@@ -1264,7 +1282,7 @@
         if (/^h[1-6]$/.test(t2)) return `Section: ${content}.`;
         return content;
       }).filter(Boolean).join('\n');
-      manager.speak(text, { source: 'inline-click', label: el.textContent.trim().slice(0, 40) });
+      manager.speak(text, { source: 'inline-click', label: el.textContent.trim().replace(/\s+/g, ' ').slice(0, 40) });
       manager.engine.addEventListener('queueend', () => el.classList.remove('tts-reading-active'), { once: true });
     });
 
@@ -1277,7 +1295,7 @@
       el.classList.add('tts-reading-active');
       const tag = el.tagName.toLowerCase();
       const text = /^h[1-6]$/.test(tag) ? `Section: ${el.textContent.trim()}` : el.textContent.trim();
-      manager.speak(text, { source: 'dblclick', label: el.textContent.trim().slice(0, 40) });
+      manager.speak(text, { source: 'dblclick', label: el.textContent.trim().replace(/\s+/g, ' ').slice(0, 40) });
       manager.engine.addEventListener('queueend', () => el.classList.remove('tts-reading-active'), { once: true });
     });
   });

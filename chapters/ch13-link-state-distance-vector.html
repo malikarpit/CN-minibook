@@ -1,0 +1,2877 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<!-- ⚡ Arpit | CN MiniBook 2026 -->
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="Arpit">
+<meta name="description" content="Chapter 13: Link-State & Distance-Vector Routing — CN MiniBook. Link-State Databases (LSDB), reliable flooding, Bellman-Ford algorithm, Count-to-Infinity, Split Horizon, Poison Reverse, and comprehensive protocol comparisons.">
+<title>Ch 13 — Link-State & Distance-Vector Routing | CN MiniBook 🌐 Arpit</title>
+<link rel="manifest" href="../manifest.json">
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/animations.css">
+<link rel="stylesheet" href="../assets/css/timer.css">
+<link rel="stylesheet" href="../assets/css/chapters.css">
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<!-- HEADER -->
+<header id="main-header">
+  <div class="header-left">
+    <button id="sidebar-toggle" class="icon-btn" title="Toggle Sidebar (S)">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </button>
+    <div class="brand-logo">
+      <div class="brand-icon">🌐</div>
+      <div class="brand-text"><span class="main">CN MiniBook</span><span class="sub">Computer Networks</span></div>
+    </div>
+  </div>
+  <span class="header-chapter-title">Ch 13 — Link-State &amp; Distance-Vector Routing</span>
+  <div class="header-right">
+    <button id="search-btn" class="icon-btn" title="Search (Ctrl+K)">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.35-4.35"></path></svg>
+    </button>
+    <button id="tts-toggle" class="icon-btn" title="Read Aloud">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"></path></svg>
+    </button>
+    <button id="print-btn" title="Print / Save as PDF (Ctrl+P)" aria-label="Print"><svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg><span class="print-label">PDF</span></button>
+    <button id="reading-mode-btn" class="icon-btn" title="Reading Mode (F)" aria-pressed="false" aria-label="Toggle reading mode">📖</button>
+    <button id="theme-toggle" class="icon-btn" title="Toggle Theme (T)"></button>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<div id="sidebar-overlay"></div>
+<aside id="sidebar">
+  <nav class="sidebar-nav">
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Navigation</div>
+      <a href="../index.html" class="sidebar-link"><span class="link-icon">🏠</span>Home</a>
+      <a href="../progress.html" class="sidebar-link"><span class="link-icon">📊</span>Dashboard</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Chapter 13 — Sections</div>
+      <a href="#s13-overview" class="sidebar-link active"><span class="link-icon">⚖️</span>13.1 Two Routing Families</a>
+      <a href="#s13-ls-idea" class="sidebar-link"><span class="link-icon">💡</span>13.2 Link-State Core Idea</a>
+      <a href="#s13-ls-info" class="sidebar-link"><span class="link-icon">📜</span>13.3 What LSA Advertises</a>
+      <a href="#s13-ls-flood" class="sidebar-link"><span class="link-icon">🌊</span>13.4 Flooding &amp; LSDB</a>
+      <a href="#s13-ls-fresh" class="sidebar-link"><span class="link-icon">⏱️</span>13.5 Sequences &amp; Aging</a>
+      <a href="#s13-ls-dijkstra" class="sidebar-link"><span class="link-icon">🌳</span>13.6 LSDB to Shortest Path Tree</a>
+      <a href="#s13-ls-example" class="sidebar-link"><span class="link-icon">📝</span>13.7 Link-State Worked Trace</a>
+      <a href="#s13-dv-idea" class="sidebar-link"><span class="link-icon">🗣️</span>13.8 Distance-Vector Core Idea</a>
+      <a href="#s13-bellman" class="sidebar-link"><span class="link-icon">📐</span>13.9 Bellman-Ford Principle</a>
+      <a href="#s13-dv-update" class="sidebar-link"><span class="link-icon">🔄</span>13.10 Distance-Vector Numerical</a>
+      <a href="#s13-convergence" class="sidebar-link"><span class="link-icon">🎯</span>13.11 Iterative Convergence</a>
+      <a href="#s13-count" class="sidebar-link"><span class="link-icon">♾️</span>13.12 Count-to-Infinity</a>
+      <a href="#s13-loop-prevention" class="sidebar-link"><span class="link-icon">🛡️</span>13.13 Split Horizon &amp; Poison</a>
+      <a href="#s13-compare" class="sidebar-link"><span class="link-icon">📊</span>13.14 LS vs DV Master Matrix</a>
+      <a href="#s13-chain" class="sidebar-link"><span class="link-icon">🔗</span>13.15 Full Routing Chain</a>
+      <a href="#s13-traps" class="sidebar-link"><span class="link-icon">🪤</span>13.16 Exam Traps &amp; Pitfalls</a>
+      <a href="#s13-practice" class="sidebar-link"><span class="link-icon">📋</span>13.17 Practice Problem Set</a>
+      <a href="#s13-summary" class="sidebar-link"><span class="link-icon">🏁</span>13.18 Summary &amp; Reference</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label part-label part-i">Part I — Introduction</div>
+      <a href="ch01-fundamentals.html" class="sidebar-link"><span class="link-icon">📡</span>Ch 1 — Fundamentals</a>
+      <a href="ch02-types-topologies.html" class="sidebar-link"><span class="link-icon">🔗</span>Ch 2 — Types &amp; Topologies</a>
+      <a href="ch03-models-addressing.html" class="sidebar-link"><span class="link-icon">📦</span>Ch 3 — Models &amp; Addressing</a>
+      <a href="ch04-devices-sdn.html" class="sidebar-link"><span class="link-icon">🔌</span>Ch 4 — Devices &amp; SDN</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label part-label part-ii">Part II — Physical Layer</div>
+      <a href="ch05-physical-fundamentals.html" class="sidebar-link"><span class="link-icon">📶</span>Ch 5 — Physical Fundamentals</a>
+      <a href="ch06-media-signaling.html" class="sidebar-link"><span class="link-icon">🔌</span>Ch 6 — Media &amp; Line Coding</a>
+      <a href="ch07-modulation-switching.html" class="sidebar-link"><span class="link-icon">📻</span>Ch 7 — Modulation &amp; Switching</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label part-label part-iii">Part III — Data Link Layer</div>
+      <a href="ch08-dll-fundamentals.html" class="sidebar-link"><span class="link-icon">🔧</span>Ch 8 — DLL Fundamentals</a>
+      <a href="ch09-protocols-sliding.html" class="sidebar-link"><span class="link-icon">🔄</span>Ch 9 — Protocols &amp; Sliding Window</a>
+      <a href="ch10-mac-ethernet.html" class="sidebar-link"><span class="link-icon">🌐</span>Ch 10 — MAC &amp; Ethernet</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label part-label part-iv">Part IV — Network Layer</div>
+      <a href="ch11-network-layer-foundations.html" class="sidebar-link part-iv"><span class="link-icon">🗺️</span>Ch 11 — Network Layer Foundations</a>
+      <a href="ch12-shortest-path-routing.html" class="sidebar-link part-iv"><span class="link-icon">🧭</span>Ch 12 — Shortest Path Routing</a>
+      <a href="ch13-link-state-distance-vector.html" class="sidebar-link active part-iv"><span class="link-icon">🔁</span>Ch 13 — Link-State &amp; Distance-Vector</a>
+      <a href="ch14-logical-addressing-ipv4.html" class="sidebar-link part-iv"><span class="link-icon">🏷️</span>Ch 14 — Logical Addressing &amp; IPv4</a>
+      <a href="ch15-ipv4-internals.html" class="sidebar-link part-iv"><span class="link-icon">📦</span>Ch 15 — IPv4 Internals</a>
+      
+      <a href="ch17-address-mapping-icmp.html" class="sidebar-link part-iv"><span class="link-icon">🔎</span>Ch 17 — Address Mapping &amp; ICMP</a>
+      <a href="ch18-routers-switches-firewalls.html" class="sidebar-link part-iv"><span class="link-icon">🛡️</span>Ch 18 — Routers, Switches &amp; Firewalls</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">My Notes</div>
+      <div id="notes-sidebar-list"></div>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-brand-mark"><div class="mark">🌐</div><span>Arpit · CN MiniBook 2026</span></div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main id="main-content">
+<div class="content-inner">
+
+  <!-- CHAPTER HERO -->
+  <div class="chapter-hero">
+    <div class="chapter-breadcrumb">
+      <a href="../index.html">Home</a><span>›</span><span>Part IV — Network Layer</span><span>›</span><span>Chapter 13</span>
+    </div>
+    <div class="chapter-num">🔁 Chapter 13 · Part IV — Network Layer</div>
+    <div class="chapter-part-banner part-iv">
+      <span class="part-banner-badge">Part IV</span>
+      <span>Network Layer</span>
+    </div>
+    <h1 class="chapter-title">Link-State &amp; Distance-Vector Routing</h1>
+    <div class="chapter-meta">
+      <span class="chapter-meta-item">🎓 Uni Unit II: Link-State &amp; Distance-Vector Routing</span>
+      <span>⏱️ 65 min read</span>
+      <span>📚 18 Sections</span>
+      <span>🎓 First-Principles + Systems Depth</span>
+      <span>⚡ Bellman-Ford, LSDB Flooding &amp; Count-to-Infinity</span>
+    </div>
+  </div>
+
+  <!-- UNIVERSITY SYLLABUS CALLOUT -->
+  <div class="uni-syllabus-callout">
+    <div class="uni-callout-title">🎓 Official University Syllabus — UNIT II</div>
+    <div><strong>Network Layer:</strong> Link-State Routing algorithm, Distance-Vector Routing algorithm, Bellman-Ford dynamic programming, Count-to-Infinity routing loops, Split Horizon with Poisoned Reverse, and LSDB flooding synchronization.</div>
+  </div>
+
+  <!-- UNIVERSITY SYLLABUS FILTER SWITCH -->
+  <div class="uni-mode-toggle-card">
+    <div>
+      <div class="uni-mode-title">
+        <span>🎓</span> University Exam Focus Filter
+      </div>
+      <div class="uni-mode-desc">
+        Focus specifically on sections prescribed in University syllabus vs supplementary deep-dives.
+      </div>
+    </div>
+    <div class="uni-filter-switch">
+      <button class="uni-toggle-btn active" id="filter-all-btn" data-mode="all" onclick="ModeManager.apply('all')">📚 Show All Content</button>
+      <button class="uni-toggle-btn" id="filter-uni-btn" data-mode="uni" onclick="ModeManager.apply('uni')">🎓 Focus Uni Syllabus</button>
+    </div>
+  </div>
+
+  <!-- TABLE OF CONTENTS -->
+  <div class="toc-card">
+    <div class="toc-part-tag part-iv">Part IV · Network Layer</div>
+    <div class="toc-title"><span>📑</span>Table of Contents</div>
+    <div class="toc-grid">
+      <a href="#s13-overview" class="toc-item in-uni"><span class="toc-num">13.1</span>Two Routing Families <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s13-ls-idea" class="toc-item in-uni"><span class="toc-num">13.2</span>Link-State: Core Idea <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s13-ls-info" class="toc-item in-uni"><span class="toc-num">13.3</span>What LSA Advertises <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s13-ls-flood" class="toc-item in-uni"><span class="toc-num">13.4</span>Flooding &amp; LSDB <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s13-ls-fresh" class="toc-item in-uni"><span class="toc-num">13.5</span>Sequences &amp; Aging <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s13-ls-dijkstra" class="toc-item in-uni"><span class="toc-num">13.6</span>LSDB to Shortest Path Tree <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s13-ls-example" class="toc-item in-uni"><span class="toc-num">13.7</span>Link-State Worked Trace <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s13-dv-idea" class="toc-item in-uni"><span class="toc-num">13.8</span>Distance-Vector Core Idea <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s13-bellman" class="toc-item in-uni"><span class="toc-num">13.9</span>Bellman-Ford Principle <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s13-dv-update" class="toc-item in-uni"><span class="toc-num">13.10</span>Distance-Vector Numerical <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s13-convergence" class="toc-item in-uni"><span class="toc-num">13.11</span>Iterative Convergence <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s13-count" class="toc-item in-uni"><span class="toc-num">13.12</span>Count-to-Infinity Problem <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s13-loop-prevention" class="toc-item in-uni"><span class="toc-num">13.13</span>Split Horizon &amp; Poison Reverse <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s13-compare" class="toc-item in-uni"><span class="toc-num">13.14</span>LS vs DV Master Matrix <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s13-chain" class="toc-item in-uni"><span class="toc-num">13.15</span>The Full Routing Chain <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s13-traps" class="toc-item in-uni"><span class="toc-num">13.16</span>Exam Traps &amp; Pitfalls <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s13-practice" class="toc-item in-uni"><span class="toc-num">13.17</span>Practice Problem Set <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s13-summary" class="toc-item in-uni"><span class="toc-num">13.18</span>Summary &amp; Reference <span class="toc-uni-tag">🎓 Uni Core</span></a>
+    </div>
+  </div>
+
+  <!-- LEARNING OBJECTIVES CALLOUT -->
+  <div class="callout info">
+    <span class="callout-icon">🎯</span>
+    <div><strong>After studying this chapter you will be able to:</strong>
+      <ul>
+        <li>Contrast global Link-State algorithms (complete topology synchronization) with decentralized Distance-Vector algorithms (routing by rumor).</li>
+        <li>Explain the complete Link-State pipeline: LSA origination, reliable flooding, sequence number lollipop spaces, LSDB consistency, and local Dijkstra execution.</li>
+        <li>Formulate and execute Bellman-Ford vector updates using the dynamic programming equation $d_x(y) = \min_v \{ c(x, v) + d_v(y) \}$.</li>
+        <li>Trace the step-by-step metric inflation during the Count-to-Infinity problem and analyze why metric infinity is set to 16 in RIP.</li>
+        <li>Implement and contrast Simple Split Horizon, Split Horizon with Poisoned Reverse, Holddown Timers, and identify topological scenarios where Poison Reverse still fails.</li>
+        <li>Evaluate routing protocols across 12 dimensions: message complexity, convergence speed, memory/CPU scaling, and loop vulnerability.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- STUDY PATH -->
+  <div class="study-path">
+    <strong>🧭 How to study this chapter (Architecture to Vector Derivations):</strong>
+    <div class="path">
+      <span>1. LS vs DV Paradigm</span> → 
+      <span>2. Link-State Flooding &amp; LSDB</span> → 
+      <span>3. Bellman-Ford Vector Updates</span> → 
+      <span>4. Count-to-Infinity &amp; Poison Reverse</span> → 
+      <span>5. Master Comparison Matrix</span>
+    </div>
+    <div><strong>Exam Lens:</strong> Sections 13.9 (Bellman-Ford Equation), 13.10 (Vector Numerical Update), 13.12 (Count-to-Infinity Step Trace), 13.13 (Split Horizon / Poison Reverse), and 13.14 (LS vs DV Comparison) represent the primary high-weightage questions in university end-semesters and GATE, marked <code>data-midsem="endsem"</code>.</div>
+  </div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 13.1: TWO ROUTING FAMILIES -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s13-overview" class="section-in-uni content-section" data-chapter="13" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="core" data-search-section="Two Routing Families Link-State vs Distance-Vector global topology vs decentralized routing by rumor OSPF vs RIP Bellman-Ford vs Dijkstra">
+  <div class="section-heading">
+    <h2 class="prose">13.1 Two Routing Families: One Problem, Different Information
+      <button class="bookmark-btn" data-id="s13-overview" data-label="13.1 Two Routing Families" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Unit II</span>
+    <span>Prescribed syllabus topic: <strong>Routing Paradigms: Global Link-State vs Decentralized Distance-Vector Routing</strong></span>
+  </div>
+
+  <div class="callout info">
+    <span class="callout-icon">📌</span>
+    <div>
+      <strong>1. Formal Definition:</strong>
+      All dynamic interior gateway routing algorithms solve the same fundamental problem — finding optimal, loop-free paths across an internetwork. However, they bifurcate into two radically distinct architectural paradigms based on <strong>information scope</strong>:
+      <ul>
+        <li><strong>Link-State (LS) / Global Routing:</strong> Every router possesses complete, global knowledge of the network topology graph $G = (V, E)$ by synchronizing an identical Link-State Database (LSDB) via reliable flooding, running Dijkstra locally.</li>
+        <li><strong>Distance-Vector (DV) / Decentralized Routing:</strong> No router possesses the global network graph. Routers maintain only estimates of minimum distances to all destinations, iteratively exchanging "vectors" of (Destination, Distance) with immediate physical neighbors using the Bellman-Ford algorithm.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout tip">
+    <span class="callout-icon">💡</span>
+    <div>
+      <strong>2. Why It Exists:</strong>
+      The dichotomy represents a fundamental trade-off in distributed systems:
+      <ul>
+        <li><strong>Memory/CPU vs Protocol Overhead:</strong> Link-State requires higher router RAM to store the entire graph and CPU to run Dijkstra, but converges almost instantaneously and eliminates routing loops.</li>
+        <li><strong>Simplicity vs Convergence Speed:</strong> Distance-Vector requires negligible memory ($O(|V|)$ vectors) and minimal CPU, but suffers from slow convergence, susceptibility to routing loops, and the Count-to-Infinity pathology.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="prose">
+    <h3>3. How It Works: The Information Scope Dichotomy</h3>
+    <p>
+      The core distinction can be summarized as:
+    </p>
+    <div class="callout info">
+      <strong>The Fundamental Routing Axiom:</strong>
+      <br>• <strong>Link-State:</strong> <em>"Tell all routers about your immediate neighbors."</em> (Global scope, local information).
+      <br>• <strong>Distance-Vector:</strong> <em>"Tell your immediate neighbors about all destinations in the world."</em> (Local scope, global information).
+    </div>
+  </div>
+
+  <div class="prose">
+    <h3>4. Structural Diagram: Architectural Comparison</h3>
+    <pre class="ascii-diagram">
++-------------------------------------------------------------------------+
+|                  THE DUAL PARADIGM OF INTERIOR ROUTING                  |
+|                                                                         |
+|                         THE ROUTING PROBLEM                             |
+|                        (Find optimal paths)                             |
+|                                  │                                      |
+|                 ┌────────────────┴────────────────┐                     |
+|                 ▼                                 ▼                     |
+|      LINK-STATE PARADIGM               DISTANCE-VECTOR PARADIGM         |
+|   (e.g., OSPF, IS-IS)                  (e.g., RIP, IGRP)                |
+|                 │                                 │                     |
+|   [1] Neighbor Discovery (Hello)       [1] Direct Link Cost Discovery   |
+|                 │                                 │                     |
+|   [2] Flood Link-State Ads (LSA)       [2] Periodic Vector Exchange     |
+|       to ALL routers in Area               ONLY with Immediate Neighbors|
+|                 │                                 │                     |
+|   [3] Synchronize identical LSDB       [3] "Routing by Rumor"           |
+|       (Complete graph G in RAM)            (Trust neighbor estimates)   |
+|                 │                                 │                     |
+|   [4] Local Dijkstra Execution         [4] Distributed Bellman-Ford     |
+|       (Each router roots SPT)              (Iterative relaxation)       |
+|                 │                                 │                     |
+|                 ▼                                 ▼                     |
+|       Loop-Free FIB Table               Converged Distance Vector       |
++-------------------------------------------------------------------------+
+    </pre>
+  </div>
+
+  <div class="prose">
+    <h3>5. Worked Example: Information Content Comparison</h3>
+    <p>
+      Consider a 4-router line: $A - B - C - D$, each link cost 1.
+    </p>
+    <ul>
+      <li><strong>Link-State Packet sent by Router $B$:</strong>
+        <br>Broadcast to the entire network: <em>"I am $B$. I have two active links: link to $A$ (cost 1) and link to $C$ (cost 1)."</em>
+        <br>Router $D$ receives this exact packet and directly adds edges $(B, A)$ and $(B, C)$ into its memory graph.
+      </li>
+      <li><strong>Distance-Vector Message sent by Router $B$ to $A$:</strong>
+        <br>Sent strictly to immediate neighbor $A$: <em>"My vector: to $B$ (cost 0), to $C$ (cost 1), to $D$ (cost 2)."</em>
+        <br>Router $A$ has no idea whether $B$ reaches $D$ through $C$, through an alternate satellite link, or through 10 hops. $A$ simply trusts $B$'s scalar distance!
+      </li>
+    </ul>
+  </div>
+
+  <div class="prose">
+    <h3>6. Important Invariants &amp; Algorithmic Pairing</h3>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Routing Paradigm</th>
+            <th>Underlying Math Algorithm</th>
+            <th>Knowledge Scope</th>
+            <th>Primary Internet Protocol</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Link-State (LS)</strong></td>
+            <td>Dijkstra's Single-Source Shortest Path</td>
+            <td>Global graph $G=(V, E)$</td>
+            <td><strong>OSPF</strong> (RFC 2328), <strong>IS-IS</strong> (ISO 10589)</td>
+          </tr>
+          <tr>
+            <td><strong>Distance-Vector (DV)</strong></td>
+            <td>Distributed Bellman-Ford Dynamic Programming</td>
+            <td>Local neighborhood vectors</td>
+            <td><strong>RIPv1/v2</strong> (RFC 2453), <strong>Cisco IGRP</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="prose">
+    <h3>7. Advantages &amp; Limitations</h3>
+    <ul>
+      <li><strong>Link-State Advantages:</strong> Fast convergence (sub-second), provably loop-free, supports hierarchical multi-area designs.</li>
+      <li><strong>Link-State Limitations:</strong> High memory overhead for large topologies, CPU intensive graph calculations.</li>
+      <li><strong>Distance-Vector Advantages:</strong> Minimal memory and CPU footprint, simple configuration.</li>
+      <li><strong>Distance-Vector Limitations:</strong> Slow convergence, Count-to-Infinity problem, vulnerability to transient routing loops.</li>
+    </ul>
+  </div>
+
+  <div class="callout warning">
+    <span class="callout-icon">⚠️</span>
+    <div>
+      <strong>8. Common Confusion: Paradigm vs Algorithm</strong>
+      Do NOT confuse the architectural <strong>paradigm</strong> with the <strong>mathematical algorithm</strong>. Link-State is a distributed routing paradigm; Dijkstra is the mathematical graph search algorithm it runs locally. Distance-Vector is a paradigm; Bellman-Ford is the mathematical dynamic programming principle it executes iteratively across nodes.
+    </div>
+  </div>
+
+  <div class="exam-tip">
+    <span class="exam-tip-badge">EXAM / GATE TIP</span>
+    <p>
+      <strong>University Exam Anchor:</strong> Whenever an exam asks: <em>"Compare Link-State and Distance-Vector routing"</em>, always begin by stating the fundamental information-sharing difference: Link-State distributes <strong>local link states to all nodes</strong>, whereas Distance-Vector distributes <strong>all known destination estimates to local neighbors</strong>. This one distinction establishes theoretical mastery!
+    </p>
+  </div>
+
+  <div class="study-resources">
+    <div class="resources-title">📚 References &amp; Further Learning</div>
+    <div class="resources-note">Foundational readings on routing taxonomy and architectural trade-offs.</div>
+    <div class="resource-grid">
+      <a href="https://www.pearson.com/en-us/subject-catalog/p/computer-networking/P200000009493" target="_blank" rel="noopener noreferrer">
+        📘 Kurose &amp; Ross — Section 5.2 Routing Algorithms
+        <small>Taxonomy of routing algorithms: Global vs Decentralized, Static vs Dynamic.</small>
+      </a>
+      <a href="https://www.ietf.org/rfc/rfc2328.txt" target="_blank" rel="noopener noreferrer">
+        ⚡ RFC 2328 — OSPF Version 2 &amp; RFC 2453 — RIP Version 2
+        <small>The industry standard protocol definitions contrasting LS and DV paradigms.</small>
+      </a>
+      <a href="https://www.youtube.com/watch?v=OyBIburQl6s" target="_blank" rel="noopener noreferrer">
+        ▶️ Neso Academy — Routing Algorithms Overview
+        <small>Clear conceptual walkthrough of Distance Vector vs Link State protocols.</small>
+      </a>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 13.2: LINK-STATE ROUTING: THE CORE IDEA -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s13-ls-idea" class="section-in-uni content-section" data-chapter="13" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="core" data-search-section="Link-State Routing Core Idea topology database LSDB synchronized graph local Dijkstra execution FIB synthesis OSPF pipeline">
+  <div class="section-heading">
+    <h2 class="prose">13.2 Link-State Routing: The Core Idea
+      <button class="bookmark-btn" data-id="s13-ls-idea" data-label="13.2 Link-State Core Idea" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Unit II</span>
+    <span>Prescribed syllabus topic: <strong>Link-State Routing: Core Principles, Database Synchronization &amp; Local SPF Execution</strong></span>
+  </div>
+
+  <div class="callout info">
+    <span class="callout-icon">📌</span>
+    <div>
+      <strong>1. Formal Definition:</strong>
+      <strong>Link-State (LS) Routing</strong> is an interior gateway routing architecture where every participating node independently discovers its local adjacencies, packages this telemetry into standardized <strong>Link-State Advertisements (LSAs)</strong>, reliably floods them across the routing domain, and aggregates all received advertisements into an identical <strong>Link-State Database (LSDB)</strong>. Each node then executes Dijkstra's algorithm independently with itself as root to construct its local Shortest Path Tree (SPT).
+    </div>
+  </div>
+
+  <div class="callout tip">
+    <span class="callout-icon">💡</span>
+    <div>
+      <strong>2. Why It Exists:</strong>
+      Distance-Vector protocols rely on second-hand information ("routing by rumor"), which allows loops to form when intermediate links fail. Link-State routing eliminates rumors: every router sees the entire unadulterated network graph directly. It enables instantaneous convergence and deterministic loop-freedom.
+    </div>
+  </div>
+
+  <div class="prose">
+    <h3>3. How It Works: The 5-Stage Link-State Engine</h3>
+    <ol>
+      <li><strong>Adjacency Discovery:</strong> Periodic <code>HELLO</code> packets establish bidirectional communication with immediate neighbors.</li>
+      <li><strong>Metric Assignment:</strong> The router assigns costs to its active physical interfaces based on link bandwidth.</li>
+      <li><strong>LSA Origination:</strong> The router compiles its active neighbor list and costs into an LSA packet.</li>
+      <li><strong>Reliable Flooding:</strong> LSAs are propagated to every other router in the area using acknowledgment handshakes.</li>
+      <li><strong>SPF Calculation:</strong> Once the LSDB quiesces, the router executes Dijkstra's algorithm to compute the SPT and populates the Layer-3 Forwarding Information Base (FIB).</li>
+    </ol>
+  </div>
+
+  <div class="prose">
+    <h3>4. Structural Diagram: The Link-State Pipeline</h3>
+    <pre class="ascii-diagram">
++-------------------------------------------------------------------------+
+|                  THE 5-STAGE LINK-STATE ROUTING ENGINE                  |
+|                                                                         |
+|   [Stage 1] HELLO Packets ────────► Discover active physical neighbors  |
+|                                            │                            |
+|   [Stage 2] Interface Telemetry ──► Assign link metric (Cost = 10^8/BW) |
+|                                            │                            |
+|   [Stage 3] LSA Construction ─────► Build Link-State Advertisement      |
+|                                            │                            |
+|   [Stage 4] Reliable Flooding ────► Flood LSU to ALL routers in Area    |
+|                                            │                            |
+|                                            ▼                            |
+|                             +─────────────────────────────+             |
+|                             |  Link-State Database (LSDB) |             |
+|                             |  (IDENTICAL on ALL routers) |             |
+|                             +──────────────┬──────────────+             |
+|                                            │                            |
+|                                            ▼                            |
+|                             +─────────────────────────────+             |
+|                             |  Local Dijkstra SPF Engine  |             |
+|                             |  (Source = THIS router)     |             |
+|                             +──────────────┬──────────────+             |
+|                                            │                            |
+|                                            ▼                            |
+|                             +─────────────────────────────+             |
+|                             |   Shortest Path Tree (SPT)  |             |
+|                             +──────────────┬──────────────+             |
+|                                            │                            |
+|                                            ▼                            |
+|                             +─────────────────────────────+             |
+|                             |  Hardware FIB Forwarding    |             |
+|                             |  [Prefix -> Next-Hop, Port] |             |
+|                             +─────────────────────────────+             |
++-------------------------------------------------------------------------+
+    </pre>
+  </div>
+
+  <div class="prose">
+    <h3>5. Worked Example: Database Symmetry vs Tree Asymmetry</h3>
+    <p>
+      Consider a 3-router ring with routers $A, B, C$ and edge costs:
+      $$c(A, B) = 1, \quad c(B, C) = 2, \quad c(A, C) = 5$$
+    </p>
+    <ul>
+      <li><strong>LSDB State:</strong> Every single router ($A, B, C$) holds the exact same 3 edge records in its LSDB.</li>
+      <li><strong>Router $A$'s Dijkstra Run:</strong> $A$ is root. Shortest path to $C$ is $A \to B \to C$ (cost 3). Forwarding table entry: $\text{Dest } C \implies \text{Next-Hop } B$.</li>
+      <li><strong>Router $C$'s Dijkstra Run:</strong> $C$ is root. Shortest path to $A$ is $C \to B \to A$ (cost 3). Forwarding table entry: $\text{Dest } A \implies \text{Next-Hop } B$.</li>
+    </ul>
+    <p>
+      Both routers independently deduced that routing through intermediate node $B$ is cheaper than the direct link $(A, C)$ of cost 5.
+    </p>
+  </div>
+
+  <div class="prose">
+    <h3>6. Important Invariants</h3>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Invariant</th>
+            <th>Condition</th>
+            <th>System Consequence</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>LSDB Identity</strong></td>
+            <td>$\text{LSDB}_i = \text{LSDB}_j, \forall i, j \in \text{Area}$</td>
+            <td>Routers possess identical graph representations of the network.</td>
+          </tr>
+          <tr>
+            <td><strong>Root Specificity</strong></td>
+            <td>$\text{SPT}_i \neq \text{SPT}_j$</td>
+            <td>Each router computes an SPT rooted at itself, producing unique next-hop forwarding tables.</td>
+          </tr>
+          <tr>
+            <td><strong>Micro-Loop Prevention</strong></td>
+            <td>Consistent metrics on all routers</td>
+            <td>Inconsistent reference bandwidths cause transient micro-loops during convergence.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="prose">
+    <h3>7. Advantages &amp; Limitations</h3>
+    <ul>
+      <li><strong>Advantage:</strong> Instantaneous topology awareness — failure notifications flood at wire speed.</li>
+      <li><strong>Advantage:</strong> Deterministic loop-free forwarding guaranteed by Dijkstra's shortest path tree.</li>
+      <li><strong>Limitation:</strong> Flooding overhead consumes interface bandwidth in large flat broadcast domains.</li>
+      <li><strong>Limitation:</strong> Router memory overhead requires storing all vertices and edges in RAM.</li>
+    </ul>
+  </div>
+
+  <div class="callout warning">
+    <span class="callout-icon">⚠️</span>
+    <div>
+      <strong>8. Common Confusion: Do Link-State routers compute routes for neighbors?</strong>
+      <strong>NO!</strong> Unlike Distance-Vector (where a router calculates paths and tells neighbors "use this path"), a Link-State router NEVER computes routes for others. It floods raw link facts and lets every neighbor compute its own paths independently.
+    </div>
+  </div>
+
+  <div class="exam-tip">
+    <span class="exam-tip-badge">EXAM / GATE TIP</span>
+    <p>
+      <strong>High-Yield Distinction:</strong> If an exam MCQ asks: <em>"In an OSPF network with 50 routers in Area 0, how many different Link-State Databases exist?"</em>
+      <br><strong>Answer:</strong> <strong>Exactly ONE.</strong> All 50 routers maintain identical LSDBs. However, there are <strong>50 distinct Shortest Path Trees</strong>, because each router roots the tree at itself!
+    </p>
+  </div>
+
+  <div class="study-resources">
+    <div class="resources-title">📚 References &amp; Further Learning</div>
+    <div class="resources-note">Foundational texts on Link-State database synchronization and SPF execution.</div>
+    <div class="resource-grid">
+      <a href="https://www.pearson.com/en-us/subject-catalog/p/computer-networking/P200000009493" target="_blank" rel="noopener noreferrer">
+        📘 Kurose &amp; Ross — Section 5.3 Intra-AS Routing: OSPF
+        <small>The complete operational model of link-state databases and Dijkstra integration.</small>
+      </a>
+      <a href="https://www.ietf.org/rfc/rfc2328.txt" target="_blank" rel="noopener noreferrer">
+        ⚡ RFC 2328 — Section 16 Calculation of Shortest-Path Tree
+        <small>The definitive IETF specification for OSPF SPF calculation.</small>
+      </a>
+      <a href="https://www.youtube.com/watch?v=PyLlYQXuxvs" target="_blank" rel="noopener noreferrer">
+        ▶️ Keith Barker — Link-State Routing &amp; LSDBs
+        <small>Video walkthrough of LSDB synchronization and SPT tree derivation.</small>
+      </a>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 13.3: WHAT A LINK-STATE ROUTER ADVERTISES -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s13-ls-info" class="section-in-uni content-section" data-chapter="13" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="core" data-search-section="What a Link-State Router Advertises LSA LSP header Router ID Link ID metric prefix subnet sequence number checksum age">
+  <div class="section-heading">
+    <h2 class="prose">13.3 What a Link-State Router Advertises
+      <button class="bookmark-btn" data-id="s13-ls-info" data-label="13.3 What LSA Advertises" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Unit II</span>
+    <span>Prescribed syllabus topic: <strong>Link-State Advertisements (LSA): Structure, Header Formats &amp; Link Telemetry</strong></span>
+  </div>
+
+  <div class="callout info">
+    <span class="callout-icon">📌</span>
+    <div>
+      <strong>1. Formal Definition:</strong>
+      A <strong>Link-State Advertisement (LSA)</strong> (called a Link-State Packet, LSP, in ISO IS-IS) is a structured control-plane protocol data unit generated by a router that describes the local operational state of that router's directly connected links and adjacent neighbors. It does NOT contain computed routes or routing tables; it contains raw mathematical graph edges: $e = (u, v)$ with weight $w(e)$.
+    </div>
+  </div>
+
+  <div class="callout tip">
+    <span class="callout-icon">💡</span>
+    <div>
+      <strong>2. Why It Exists:</strong>
+      If routers broadcast entire routing tables across a network of 10,000 subnets, protocol updates would saturate transmission capacity. Advertising only local link states bounds message sizes: a router with 4 interfaces advertises exactly 4 edge records, regardless of whether the wider network contains 10 routers or 10,000 routers.
+    </div>
+  </div>
+
+  <div class="prose">
+    <h3>3. How It Works: Standard LSA Header &amp; Payload Fields</h3>
+    <p>
+      An LSA consists of a standardized 20-byte header followed by link descriptors:
+    </p>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Field</th>
+            <th>Size</th>
+            <th>Operational Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>LS Age</strong></td>
+            <td>16 bits</td>
+            <td>Elapsed time (seconds) since origination. Discarded when it reaches MaxAge (3600s).</td>
+          </tr>
+          <tr>
+            <td><strong>LS Type</strong></td>
+            <td>8 bits</td>
+            <td>Identifies advertisement scope: Type 1 (Router LSA), Type 2 (Network LSA), Type 3 (Summary LSA).</td>
+          </tr>
+          <tr>
+            <td><strong>Link State ID</strong></td>
+            <td>32 bits</td>
+            <td>Identifying piece of the routing domain (e.g. Originating Router ID for Type 1).</td>
+          </tr>
+          <tr>
+            <td><strong>Advertising Router</strong></td>
+            <td>32 bits</td>
+            <td>Router ID (RID) of the originating router that created this LSA.</td>
+          </tr>
+          <tr>
+            <td><strong>LS Sequence Number</strong></td>
+            <td>32 bits</td>
+            <td>Monotonically increasing counter used to detect obsolete or duplicate LSAs.</td>
+          </tr>
+          <tr>
+            <td><strong>LS Checksum</strong></td>
+            <td>16 bits</td>
+            <td>Fletcher checksum of the entire LSA payload to detect transmission bit corruption.</td>
+          </tr>
+          <tr>
+            <td><strong>Link Descriptors</strong></td>
+            <td>Variable</td>
+            <td>Repeated blocks: (Neighbor Router ID, Interface IP, Subnet Mask, Link Metric Cost).</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="prose">
+    <h3>4. Structural Diagram: LSA Structure vs Distance Vector</h3>
+    <pre class="ascii-diagram">
++-------------------------------------------------------------------------+
+|                    LSA PAYLOAD STRUCTURE (ROUTER LSA)                   |
+|                                                                         |
+|   +─────────────────────────────────────────────────────────────────+   |
+|   | LS Age: 120s  │ Type: 1 (Router) │ Link State ID: 192.168.1.1   |   |
+|   ├──────────────────────────────────┼──────────────────────────────┤   |
+|   | Advertising Router: 192.168.1.1  │ Sequence Number: 0x80000004  |   |
+|   ├──────────────────────────────────┼──────────────────────────────┤   |
+|   | Checksum: 0x4F2A                 │ Length: 48 bytes             |   |
+|   +──────────────────────────────────┴──────────────────────────────+   |
+|   |                      LINK DESCRIPTORS (EDGES)                   |   |
+|   |  - Link 1: Point-to-Point to Neighbor 192.168.1.2  | Metric: 10 |   |
+|   |  - Link 2: Transit Network via DR 10.0.0.1         | Metric: 1  |   |
+|   |  - Link 3: Stub Network 172.16.5.0/24              | Metric: 5  |   |
+|   +─────────────────────────────────────────────────────────────────+   |
+|                                                                         |
+|   CONTRAST WITH DISTANCE-VECTOR ADVERTISEMENT:                          |
+|   [ Destination: 10.0.0.0/8, Metric: 3 ]                                |
+|   [ Destination: 172.16.0.0/16, Metric: 1 ]                             |
+|   (Advertises perceived distances, NOT physical link topologies!)       |
++-------------------------------------------------------------------------+
+    </pre>
+  </div>
+
+  <div class="prose">
+    <h3>5. Worked Example: Router LSA Generation</h3>
+    <p>
+      Router $R_1$ has three interfaces:
+    </p>
+    <ul>
+      <li>Port <code>eth0</code>: $10\text{ Gbps}$ fiber connected to $R_2$. Cost $= \lfloor 10^8 / 10^{10} \rfloor \implies 1$.</li>
+      <li>Port <code>eth1</code>: $100\text{ Mbps}$ copper connected to $R_3$. Cost $= \lfloor 10^8 / 10^8 \rfloor \implies 100$.</li>
+      <li>Port <code>eth2</code>: Subnet <code>192.168.10.0/24</code> for local PCs. Cost $= 1$.</li>
+    </ul>
+    <p>
+      Router $R_1$ originates an LSA with:
+      $$\text{Originator: } R_1, \quad \text{Links: } \{ (R_1 \to R_2, \text{Cost}=1), (R_1 \to R_3, \text{Cost}=100), (R_1 \to \text{Subnet}, \text{Cost}=1) \}$$
+      Notice: $R_1$ says <strong>nothing</strong> about destinations beyond $R_2$ or $R_3$. It advertises only its own immediate boundary!
+    </p>
+  </div>
+
+  <div class="prose">
+    <h3>6. Important Invariants</h3>
+    <ul>
+      <li><strong>Originator Exclusivity:</strong> Only the router that created an LSA is permitted to update or refresh it. Other routers merely store and flood it.</li>
+      <li><strong>Self-Contained Edge Record:</strong> An LSA provides directed connectivity information. Both routers on a link must originate matching LSAs for a bidirectional link to be valid in the graph.</li>
+    </ul>
+  </div>
+
+  <div class="prose">
+    <h3>7. Advantages &amp; Limitations</h3>
+    <ul>
+      <li><strong>Advantage:</strong> Compact update sizes — only changes to local links trigger updates.</li>
+      <li><strong>Limitation:</strong> Checksum and sequence number processing required on every incoming packet to prevent memory corruption.</li>
+    </ul>
+  </div>
+
+  <div class="callout danger">
+    <span class="callout-icon">🚨</span>
+    <div>
+      <strong>8. Common Confusion: Does an LSA contain IP packet routes?</strong>
+      <strong>NO!</strong> An LSA contains <strong>topology graph edges</strong> (links and neighbors). The actual routes to IP prefixes are computed downstream by the router's local Dijkstra SPF process.
+    </div>
+  </div>
+
+  <div class="exam-tip">
+    <span class="exam-tip-badge">EXAM / GATE TIP</span>
+    <p>
+      <strong>GATE Standard Question:</strong> <em>"In Link-State routing, what is the size of an update packet generated by a router with $d$ neighbors?"</em>
+      <br><strong>Answer:</strong> $O(d)$, proportional only to the degree of the router. It is completely independent of the total number of routers $|V|$ in the network!
+    </p>
+  </div>
+
+  <div class="study-resources">
+    <div class="resources-title">📚 References &amp; Further Learning</div>
+    <div class="resources-note">Technical RFC standards detailing LSA packet structures.</div>
+    <div class="resource-grid">
+      <a href="https://www.ietf.org/rfc/rfc2328.txt" target="_blank" rel="noopener noreferrer">
+        ⚡ RFC 2328 — Section A.4.1 Router-LSAs
+        <small>Complete bit-level header and link descriptor format specification.</small>
+      </a>
+      <a href="https://www.pearson.com/en-us/subject-catalog/p/computer-networking/P200000009493" target="_blank" rel="noopener noreferrer">
+        📘 Kurose &amp; Ross — Section 5.3 OSPF LSA types
+        <small>Router LSAs, Network LSAs, and intra-area flooding semantics.</small>
+      </a>
+      <a href="https://www.wireshark.org" target="_blank" rel="noopener noreferrer">
+        ▶️ Wireshark Sample Captures — OSPF LSU
+        <small>Inspect live dissected packet bytes of OSPF Link-State Update payloads.</small>
+      </a>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 13.4: FLOODING AND BUILDING THE LSDB -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s13-ls-flood" class="section-in-uni content-section" data-chapter="13" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="core" data-search-section="Flooding and Building the Link-State Database reliable flooding LSU LSAck duplicate suppression storm prevention split-horizon flooding">
+  <div class="section-heading">
+    <h2 class="prose">13.4 Flooding and Building the Link-State Database
+      <button class="bookmark-btn" data-id="s13-ls-flood" data-label="13.4 Flooding &amp; LSDB" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Unit II</span>
+    <span>Prescribed syllabus topic: <strong>Reliable Flooding: Update Mechanisms, Duplicate Suppression &amp; LSDB Convergence</strong></span>
+  </div>
+
+  <div class="callout info">
+    <span class="callout-icon">📌</span>
+    <div>
+      <strong>1. Formal Definition:</strong>
+      <strong>Reliable Flooding</strong> is the distributed message dissemination algorithm by which an originating router transmits an LSA to all immediate neighbors, which validate its sequence number, store it in their local LSDB, and forward it on all outbound interfaces except the interface on which it arrived, using explicit link-level acknowledgments (LSAcks) and retransmissions.
+    </div>
+  </div>
+
+  <div class="callout tip">
+    <span class="callout-icon">💡</span>
+    <div>
+      <strong>2. Why It Exists:</strong>
+      If an LSA is lost due to transmission noise or queue drops, a router would compute its Shortest Path Tree on an outdated graph, producing persistent routing loops or black holes. Reliable flooding guarantees that within a bounded propagation interval, every router in the area receives every valid LSA.
+    </div>
+  </div>
+
+  <div class="prose">
+    <h3>3. How It Works: The Flooding Decision Algorithm</h3>
+    <p>
+      When Router $R$ receives an LSA from neighbor $N$:
+    </p>
+    <pre class="ascii-diagram">
++-------------------------------------------------------------------------+
+|                  RELIABLE FLOODING DECISION ALGORITHM                   |
+|                                                                         |
+|   1. Verify Checksum: If corrupt, discard immediately.                  |
+|   2. Check local LSDB for existing instance of this LSA:                |
+|      - CASE A: LSA NOT in LSDB (New LSA):                               |
+|          -> Add LSA to local LSDB.                                      |
+|          -> Send LSAck back to neighbor N.                              |
+|          -> Flood LSA out ALL other interfaces (except incoming port).  |
+|          -> Schedule Dijkstra SPF recomputation.                        |
+|                                                                         |
+|      - CASE B: LSA in LSDB, but received LSA has HIGHER sequence number:|
+|          -> Overwrite old LSA in LSDB with newer instance.              |
+|          -> Send LSAck back to neighbor N.                              |
+|          -> Flood newer LSA out ALL other interfaces.                   |
+|          -> Schedule Dijkstra SPF recomputation.                        |
+|                                                                         |
+|      - CASE C: Received LSA has SAME sequence number (Duplicate):       |
+|          -> Discard duplicate LSA (DO NOT FLOOD!).                      |
+|          -> Send LSAck to acknowledge receipt.                          |
+|                                                                         |
+|      - CASE D: Received LSA has LOWER sequence number (Stale):          |
+|          -> Discard received LSA.                                       |
+|          -> Send newer LSA from local LSDB back to neighbor N to update it!
++-------------------------------------------------------------------------+
+    </pre>
+  </div>
+
+  <div class="prose">
+    <h3>4. Structural Diagram: Flooding Mesh and Loop Prevention</h3>
+    <pre class="ascii-diagram">
++-------------------------------------------------------------------------+
+|                  FLOODING IN A MESH (DUPLICATE SUPPRESSION)             |
+|                                                                         |
+|                           [ Router A ]                                  |
+|                          (Originates LSA)                               |
+|                           /          \                                  |
+|                  LSU(A)  /            \  LSU(A)                         |
+|                         ▼              ▼                                |
+|                   [ Router B ]    [ Router C ]                          |
+|                         \              /                                |
+|                  LSU(A)  \            /  LSU(A)                         |
+|                           ▼          ▼                                  |
+|                           [ Router D ]                                  |
+|                                                                         |
+|   Event at Router D:                                                    |
+|   1. D receives LSU(A) from B first: D installs LSA into LSDB and       |
+|      sends LSAck to B.                                                  |
+|   2. A millisecond later, D receives LSU(A) from C:                     |
+|      D checks sequence number -> identical to copy in LSDB!             |
+|   3. D DISCARDS the copy from C and does NOT flood it back to B or C.   |
+|   ==> FLOODING TERMINATES CLEANLY! ZERO ENDLESS LOOPS!                  |
++-------------------------------------------------------------------------+
+    </pre>
+  </div>
+
+  <div class="prose">
+    <h3>5. Worked Example: Broadcast Storm Prevention</h3>
+    <p>
+      In a ring of 4 routers $A - B - C - D - A$:
+    </p>
+    <ul>
+      <li>$A$ generates LSA with Seq <code>0x80000001</code>.</li>
+      <li>$A$ sends to $B$ and $D$.</li>
+      <li>$B$ forwards to $C$. $D$ forwards to $C$.</li>
+      <li>$C$ receives from $B$, installs it, and prepares to forward to $D$.</li>
+      <li>When $C$'s packet reaches $D$, $D$ already has Seq <code>0x80000001</code>. $D$ suppresses forwarding!</li>
+      <li>Total update packets across the entire ring $= 4$ forward copies $+ 4$ acknowledgments. Clean termination!</li>
+    </ul>
+  </div>
+
+  <div class="prose">
+    <h3>6. Important Invariants</h3>
+    <ul>
+      <li><strong>Split-Horizon Flooding Invariant:</strong> A router NEVER forwards an LSA back out of the physical interface from which it was received.</li>
+      <li><strong>Convergence Termination:</strong> Flooding is guaranteed to terminate across an arbitrary graph in at most $\text{Diameter}(G) \times \text{LinkDelay}$ time.</li>
+    </ul>
+  </div>
+
+  <div class="prose">
+    <h3>7. Advantages &amp; Limitations</h3>
+    <ul>
+      <li><strong>Advantage:</strong> Self-terminating — sequence number checks prevent infinite forwarding loops.</li>
+      <li><strong>Limitation:</strong> In dense meshes, redundant parallel updates consume link buffers during major topology shifts (LSA storm).</li>
+    </ul>
+  </div>
+
+  <div class="callout danger">
+    <span class="callout-icon">🚨</span>
+    <div>
+      <strong>8. Common Confusion: Flooding vs Broadcasting</strong>
+      Flooding is not uncontrolled broadcasting. An uncontrolled broadcast repeats packets indefinitely until buffers overflow. <strong>Reliable flooding is strictly controlled</strong> by sequence numbers, duplicate suppression, and split-horizon interface filtering.
+    </div>
+  </div>
+
+  <div class="exam-tip">
+    <span class="exam-tip-badge">EXAM / GATE TIP</span>
+    <p>
+      <strong>University Exam Trap:</strong> <em>"What does a router do when it receives an LSA with a sequence number lower than the copy in its LSDB?"</em>
+      <br><strong>Common student mistake:</strong> Writing "It discards the packet."
+      <br><strong>Correct complete answer:</strong> It discards the received stale packet AND <strong>sends its own newer LSA back to the sender</strong> to correct the neighbor's outdated database!
+    </p>
+  </div>
+
+  <div class="study-resources">
+    <div class="resources-title">📚 References &amp; Further Learning</div>
+    <div class="resources-note">Foundational papers and specifications on reliable flooding.</div>
+    <div class="resource-grid">
+      <a href="https://www.ietf.org/rfc/rfc2328.txt" target="_blank" rel="noopener noreferrer">
+        ⚡ RFC 2328 — Section 13 The Flooding Procedure
+        <small>Step-by-step state machine for handling incoming Link-State Update packets.</small>
+      </a>
+      <a href="https://www.pearson.com/en-us/subject-catalog/p/computer-networking/P200000009493" target="_blank" rel="noopener noreferrer">
+        📘 Tanenbaum &amp; Wetherall — Section 5.2.5 Link State Routing
+        <small>Flooding protocols, duplicate packet suppression, and age timers.</small>
+      </a>
+      <a href="https://www.cisco.com" target="_blank" rel="noopener noreferrer">
+        ▶️ Cisco TechNotes — Understanding OSPF Flooding
+        <small>Deep dive into LSU retransmission timers and link-state acknowledgments.</small>
+      </a>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 13.5: SEQUENCE NUMBERS, AGING & FRESHNESS -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s13-ls-fresh" class="section-in-uni content-section" data-chapter="13" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="core" data-search-section="Sequence Numbers Aging Freshness linear circular lollipop sequence space MaxAge LSARefreshTime wrap-around crash recovery">
+  <div class="section-heading">
+    <h2 class="prose">13.5 Sequence Numbers, Aging &amp; Freshness
+      <button class="bookmark-btn" data-id="s13-ls-fresh" data-label="13.5 Sequences &amp; Aging" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Unit II</span>
+    <span>Prescribed syllabus topic: <strong>LSA Freshness: Sequence Spaces, Lollipop Sequencing, MaxAge &amp; Garbage Collection</strong></span>
+  </div>
+
+  <div class="callout info">
+    <span class="callout-icon">📌</span>
+    <div>
+      <strong>1. Formal Definition:</strong>
+      To establish absolute temporal ordering among asynchronous updates and prevent stale topology data from polluting router databases, Link-State protocols employ a <strong>hybrid sequence number space (Lollipop Sequencing)</strong> paired with a decremental <strong>aging timer (MaxAge)</strong> and periodic refresh cycles.
+    </div>
+  </div>
+
+  <div class="callout tip">
+    <span class="callout-icon">💡</span>
+    <div>
+      <strong>2. Why It Exists:</strong>
+      Routers crash, reboot, and lose their sequence state. If sequence numbers were simple linear counters, a rebooted router starting at 0 would have all its updates rejected by neighbors holding its old sequence number $10,000$. If circular counters were used, wrap-around ambiguities could cause cycles. Lollipop sequencing and aging solve crash recovery and wrap-around conclusively.
+    </div>
+  </div>
+
+  <div class="prose">
+    <h3>3. How It Works: The Three Sequence Number Topologies</h3>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Sequence Space Type</th>
+            <th>Structure &amp; Mechanics</th>
+            <th>Fatal Failure Mode</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Linear Sequence Space</strong></td>
+            <td>Integers from $0$ to $2^N-1$. $A > B \iff A > B$.</td>
+            <td>When counter reaches $2^N-1$, it cannot increment. Router must shut down or wait for full database flush.</td>
+          </tr>
+          <tr>
+            <td><strong>Circular Sequence Space</strong></td>
+            <td>Numbers wrap from $2^N-1$ back to $0$. $A > B$ if $(A-B) \pmod{2^N} < 2^{N-1}$.</td>
+            <td>Intransitivity: Can have $A > B$, $B > C$, and $C > A$ simultaneously if corrupted!</td>
+          </tr>
+          <tr>
+            <td><strong>Lollipop Sequence Space (OSPF Standard)</strong></td>
+            <td>Linear stick $[-2^{31}, -1]$ followed by circular loop $[0, 2^{31}-2]$.</td>
+            <td>Combines reboot recovery with $2 \times 10^9$ wrap-around safety.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="prose">
+    <h3>4. Structural Diagram: OSPF Lollipop Sequence Number Architecture</h3>
+    <pre class="ascii-diagram">
++-------------------------------------------------------------------------+
+|                  OSPF LOLLIPOP SEQUENCE NUMBER SPACE                    |
+|                                                                         |
+|   INITIAL STICK (Linear, Crash Recovery):                               |
+|   0x80000001 (-2^31 + 1) ──► Initial sequence number upon reboot        |
+|            │                                                            |
+|            ▼                                                            |
+|   0x80000002 ──► Increment on update                                    |
+|            │                                                            |
+|            ▼                                                            |
+|   0xFFFFFFFF (-1) ──► Highest stick sequence                            |
+|            │                                                            |
+|            ▼                                                            |
+|   CIRCULAR CANDY LOOP:                                                  |
+|   0x00000000 ────────► 0x00000001 ────────► ... ───► 0x7FFFFFFF         |
+|        ▲                                                  │             |
+|        └──────────────────── Wrap Around ─────────────────┘             |
+|                                                                         |
+|   Rule: Any sequence number on the stick is OLDER than any number       |
+|         on the circle. On crash, router begins at 0x80000001.           |
++-------------------------------------------------------------------------+
+    </pre>
+  </div>
+
+  <div class="prose">
+    <h3>5. Worked Example: LSA Aging &amp; MaxAge Eviction</h3>
+    <p>
+      In OSPF (RFC 2328):
+    </p>
+    <ul>
+      <li>When Router $R_1$ originates an LSA, it sets $\text{Age} = 0$.</li>
+      <li>Every router increments the age field while storing it in RAM, and adds transmission delay ($\text{InfTransDelay} \approx 1\text{s}$) when flooding.</li>
+      <li><strong>Periodic Refresh:</strong> Every $1800\text{ seconds}$ ($30\text{ minutes}$), $R_1$ originates a refreshed LSA with $\text{Seq} \leftarrow \text{Seq} + 1$ and $\text{Age} = 0$.</li>
+      <li><strong>Router Failure / Deletion:</strong> If $R_1$ suffers catastrophic power failure and stops refreshing, its LSA reaches $\text{MaxAge} = 3600\text{ seconds}$ ($1\text{ hour}$).</li>
+      <li>When $\text{Age} = \text{MaxAge}$, routers immediately reflood the MaxAge LSA and <strong>purge it from the LSDB</strong>, triggering SPF recalculation to bypass $R_1$!</li>
+    </ul>
+  </div>
+
+  <div class="prose">
+    <h3>6. Important Invariants</h3>
+    <ul>
+      <li><strong>Monotonic Freshness:</strong> An LSA instance $A$ is strictly newer than $B$ if:
+        $$\text{Seq}(A) > \text{Seq}(B), \quad \text{OR if } \text{Seq}(A) = \text{Seq}(B) \text{ and } \text{Age}(A) = \text{MaxAge} \text{ and } \text{Age}(B) \neq \text{MaxAge}$$
+      </li>
+      <li><strong>Premature Aging:</strong> To flush an LSA immediately (e.g., interface shut down), the originating router sets its $\text{Age} = \text{MaxAge}$ and floods it.</li>
+    </ul>
+  </div>
+
+  <div class="prose">
+    <h3>7. Advantages &amp; Limitations</h3>
+    <ul>
+      <li><strong>Advantage:</strong> Automatic garbage collection prevents dead router records from lingering in LSDBs forever.</li>
+      <li><strong>Limitation:</strong> Unsynchronized router clocks or timer drift can cause flapping of aging entries (mitigated by relative age increments).</li>
+    </ul>
+  </div>
+
+  <div class="callout warning">
+    <span class="callout-icon">⚠️</span>
+    <div>
+      <strong>8. Common Confusion: Does Age decrement like TTL?</strong>
+      <strong>NO! In OSPF, Age INCREMENTS!</strong> Unlike the IP packet TTL (Time-to-Live) which decrements from 64 to 0, an LSA's age starts at 0 and increments upwards toward $\text{MaxAge} = 3600\text{ seconds}$. When it reaches 3600, it is purged.
+    </div>
+  </div>
+
+  <div class="exam-tip">
+    <span class="exam-tip-badge">EXAM / GATE TIP</span>
+    <p>
+      <strong>GATE Numerical Trick:</strong> <em>"What is the starting sequence number in an OSPF LSA header?"</em>
+      <br><strong>Answer:</strong> <code>0x80000001</code> (in signed 32-bit hexadecimal). The value <code>0x80000000</code> is reserved and never used!
+    </p>
+  </div>
+
+  <div class="study-resources">
+    <div class="resources-title">📚 References &amp; Further Learning</div>
+    <div class="resources-note">Foundational research papers and RFC specifications on sequence spaces.</div>
+    <div class="resource-grid">
+      <a href="https://www.ietf.org/rfc/rfc2328.txt" target="_blank" rel="noopener noreferrer">
+        ⚡ RFC 2328 — Section 12.1.6 Comparing Two LSA Instances
+        <small>The mathematical definition of the lollipop sequence comparison operator.</small>
+      </a>
+      <a href="https://www.cs.cornell.edu" target="_blank" rel="noopener noreferrer">
+        📘 Radia Perlman — Network Layer Protocols with Byzantine Robustness
+        <small>The landmark MIT doctoral dissertation inventing lollipop sequence spaces.</small>
+      </a>
+      <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer">
+        ▶️ NetworkLessons — OSPF LSA Sequence Numbers &amp; Aging
+        <small>Video explanation of MaxAge, LSA Refresh, and DNA (Do Not Age) bits.</small>
+      </a>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 13.6: FROM TOPOLOGY DATABASE TO SPT -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s13-ls-dijkstra" class="section-in-uni content-section" data-chapter="13" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="core" data-search-section="From Topology Database to Shortest-Path Tree LSDB to graph SPF calculation Shortest Path Tree FIB next-hop resolution line card ASIC">
+  <div class="section-heading">
+    <h2 class="prose">13.6 From Topology Database to Shortest-Path Tree
+      <button class="bookmark-btn" data-id="s13-ls-dijkstra" data-label="13.6 LSDB to SPT" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Unit II</span>
+    <span>Prescribed syllabus topic: <strong>LSDB to Shortest Path Tree: SPF Graph Transformation &amp; FIB Synthesis</strong></span>
+  </div>
+
+  <div class="callout info">
+    <span class="callout-icon">📌</span>
+    <div>
+      <strong>1. Formal Definition:</strong>
+      The transformation of a synchronized <strong>Link-State Database (LSDB)</strong> into an operational Layer-3 <strong>Forwarding Information Base (FIB)</strong> is executed by feeding the LSDB records as an abstract weighted graph $G = (V, E)$ into Dijkstra's Single-Source Shortest Path algorithm, designating the local router as source vertex $s$, assembling the predecessor edges into a Shortest Path Tree (SPT), and mapping each destination branch to an egress interface and next-hop IP.
+    </div>
+  </div>
+
+  <div class="callout tip">
+    <span class="callout-icon">💡</span>
+    <div>
+      <strong>2. Why It Exists:</strong>
+      An LSDB is merely a repository of raw topology data. Routers cannot forward user data packets with graph theory records; the packet switch fabric requires an indexed lookup table: $\text{Destination Prefix} \to (\text{Next-Hop IP}, \text{Egress Port})$. The SPF transformation translates abstract graph edges into physical line card instructions.
+    </div>
+  </div>
+
+  <div class="prose">
+    <h3>3. How It Works: The 4-Phase Transformation Pipeline</h3>
+    <ol>
+      <li><strong>Graph Extraction:</strong> Parse all Router LSAs and Network LSAs in the LSDB to construct adjacency lists in CPU memory.</li>
+      <li><strong>Dijkstra SPF Execution:</strong> Run Dijkstra's algorithm initialized with $D[\text{self}] = 0$ and $N' = \{\text{self}\}$. Extract candidate nodes via Min-Heap until all reachable vertices are confirmed.</li>
+      <li><strong>SPT Pruning:</strong> Discard all non-tree graph edges, retaining only the directed tree edges $(\pi[v], v)$.</li>
+      <li><strong>FIB Generation:</strong> For every destination subnet attached to router $v$, trace up the tree to the root's direct child to identify the <strong>Next-Hop Router</strong> and physical <strong>Outbound Interface</strong>.</li>
+    </ol>
+  </div>
+
+  <div class="prose">
+    <h3>4. Structural Diagram: LSDB to FIB Transformation</h3>
+    <pre class="ascii-diagram">
++-------------------------------------------------------------------------+
+|                  LSDB TO FORWARDING TABLE TRANSFORMATION                |
+|                                                                         |
+|   SYNCHRONIZED LSDB:                 LOCAL SHORTEST PATH TREE (SPT):    |
+|   Node A: links to B(2), C(5)                 [Router A] (Root)         |
+|   Node B: links to A(2), C(1), D(4)           /        \                |
+|   Node C: links to A(5), B(1), D(1)     c(A,B)=2        c(A,C)=3 (via B)|
+|   Node D: links to B(4), C(1)                 ▼          ▼              |
+|                                          [Router B] ──► [Router C]      |
+|                                                          │              |
+|                                                          │ c(C,D)=1     |
+|                                                          ▼              |
+|                                                     [Router D]          |
+|                                                                         |
+|   LOCAL ROUTER A FORWARDING INFORMATION BASE (FIB):                     |
+|   +───────────────────┬──────────────┬──────────────┬───────────────+   |
+|   | Destination Net   | Path Cost    | Next-Hop IP  | Outbound Port |   |
+|   +───────────────────┼──────────────┼──────────────┼───────────────+   |
+|   | Subnet B (direct) | 2            | 192.168.1.2  | eth0          |   |
+|   | Subnet C (via B)  | 3 (2 + 1)    | 192.168.1.2  | eth0          |   |
+|   | Subnet D (via C)  | 4 (2 + 1 + 1)| 192.168.1.2  | eth0          |   |
+|   +───────────────────┴──────────────┴──────────────┴───────────────+   |
++-------------------------------------------------------------------------+
+    </pre>
+  </div>
+
+  <div class="prose">
+    <h3>5. Worked Example: Next-Hop Resolution</h3>
+    <p>
+      In the diagram above, suppose Router $A$ needs to forward a packet to destination host <code>10.5.0.25</code> attached to Router $D$.
+    </p>
+    <ul>
+      <li>Dijkstra computed shortest path: $A \to B \to C \to D$ (cost 4).</li>
+      <li>Router $A$ looks at the first hop leaving itself along this path: it is router <strong>$B$</strong>.</li>
+      <li>Router $A$'s FIB programs: <code>10.5.0.0/24 -> NextHop: 192.168.1.2, Interface: eth0</code>.</li>
+      <li>Notice that Router $A$ does NOT care about $C$ or $D$ during packet transmission! It pushes the frame onto <code>eth0</code> addressed to $B$'s MAC. Router $B$ will repeat the process to forward to $C$.</li>
+    </ul>
+  </div>
+
+  <div class="prose">
+    <h3>6. Important Invariants</h3>
+    <ul>
+      <li><strong>Hop-by-Hop Consistency:</strong> For routing to be loop-free, Router $B$'s shortest path to $D$ must be a subpath of Router $A$'s shortest path to $D$. Optimal substructure guarantees this!</li>
+      <li><strong>Decoupled Control vs Data Plane:</strong> Dijkstra runs in software (Control Plane); forwarding table lookups occur at line rate in hardware TCAM (Data Plane).</li>
+    </ul>
+  </div>
+
+  <div class="prose">
+    <h3>7. Advantages &amp; Limitations</h3>
+    <ul>
+      <li><strong>Advantage:</strong> Rapid FIB lookup — once computed, routing lookup is a simple longest prefix match $O(1)$ in hardware.</li>
+      <li><strong>Limitation:</strong> Route recomputation delay — complex graphs take 5–50ms to run Dijkstra, during which transient packet loss may occur.</li>
+    </ul>
+  </div>
+
+  <div class="callout warning">
+    <span class="callout-icon">⚠️</span>
+    <div>
+      <strong>8. Common Confusion: Does the FIB store the full path?</strong>
+      <strong>NO!</strong> The Forwarding Information Base (FIB) stores only the <strong>immediate Next Hop</strong> and <strong>Outbound Interface</strong>. IP is a hop-by-hop forwarding architecture. Storing entire paths in packet forwarding tables would waste memory and break when intermediate routers re-route.
+    </div>
+  </div>
+
+  <div class="exam-tip">
+    <span class="exam-tip-badge">EXAM / GATE TIP</span>
+    <p>
+      <strong>University Exam Sequence Question:</strong> <em>"Trace the complete lifecycle of a route from physical cable to router hardware."</em>
+      <br>Write this exact 5-step sequence:
+      <br>1. Physical link senses neighbor (Hello protocol)
+      <br>2. Telemetry packaged into LSA and flooded
+      <br>3. LSAs assemble into identical LSDB
+      <br>4. Dijkstra generates local Shortest Path Tree
+      <br>5. FIB populated with Destination $\to$ Next-Hop $\to$ Interface. Full marks guaranteed!
+    </p>
+  </div>
+
+  <div class="study-resources">
+    <div class="resources-title">📚 References &amp; Further Learning</div>
+    <div class="resources-note">Foundational readings on routing table derivation and router architectures.</div>
+    <div class="resource-grid">
+      <a href="https://www.pearson.com/en-us/subject-catalog/p/computer-networking/P200000009493" target="_blank" rel="noopener noreferrer">
+        📘 Kurose &amp; Ross — Section 4.2 What's Inside a Router?
+        <small>Input ports, switching fabric, routing processor, and FIB line card lookup.</small>
+      </a>
+      <a href="https://www.ietf.org/rfc/rfc2328.txt" target="_blank" rel="noopener noreferrer">
+        ⚡ RFC 2328 — Section 16.1 Calculating the Shortest-Path Tree
+        <small>Formal specification for resolving next-hop IP addresses during SPF traversal.</small>
+      </a>
+      <a href="https://www.cisco.com" target="_blank" rel="noopener noreferrer">
+        ▶️ Cisco Live — Advanced OSPF Architecture &amp; SPF Tuning
+        <small>Industry presentation on incremental SPF (iSPF) and PRC (Partial Route Computation).</small>
+      </a>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+
+    <!-- 13.7 Complete Link-State Worked Trace: 5 Routers -->
+    <section id="s13-ls-example" class="section-in-uni content-section" data-chapter="13" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Link-State numerical Dijkstra step-by-step SPF tree routing table construction">
+      <div class="section-header">
+        <span class="section-number">13.7</span>
+        <h2>Complete Link-State Worked Trace: 5 Routers <button class="bookmark-btn" data-id="s13-ls-example" data-label="Complete Link-State Worked Trace: 5 Routers" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 Uni Unit II</span>
+<span>Prescribed syllabus topic: <strong>Link-State Numerical Calculation: Dijkstra Step-by-Step</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p>A <strong>Link-State Network Trace</strong> is an end-to-end execution audit that models the complete operational life cycle of an interior link-state routing domain: from physical adjacency discovery and Link-State Advertisement (LSA) generation, through reliable flooding and convergence onto an identical Link-State Database (LSDB), to independent local Dijkstra Shortest Path Tree (SPT) synthesis and Forwarding Information Base (FIB) installation.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why It Exists (Engineering Motivation)</h3>
+        <p>Link-state protocols (such as OSPF and IS-IS) separate state discovery from route calculation. In textbook theory, students often confuse the LSA flooding stage with route calculation. A complete worked trace across a 5-node topology provides empirical proof that every router independently achieves the identical graph topology matrix, yet arrives at fundamentally different, perspective-specific forwarding trees rooted at itself.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>3. How It Works: The 5-Router Reference Topology</h3>
+        <p>Consider five routers labeled A, B, C, D, and E interconnected with the following bidirectional symmetric link metric costs:</p>
+        <ul>
+          <li><strong>Link A &ndash; B:</strong> Cost = 1</li>
+          <li><strong>Link A &ndash; C:</strong> Cost = 4</li>
+          <li><strong>Link B &ndash; C:</strong> Cost = 2</li>
+          <li><strong>Link B &ndash; D:</strong> Cost = 6</li>
+          <li><strong>Link C &ndash; D:</strong> Cost = 3</li>
+          <li><strong>Link C &ndash; E:</strong> Cost = 5</li>
+          <li><strong>Link D &ndash; E:</strong> Cost = 2</li>
+        </ul>
+      </div>
+
+      <div class="ascii-box">
++---------+         1         +---------+
+|    A    |-------------------|    B    |
++---------+                   +---------+
+     \\                             |
+      \\ 4                         | 6
+       \\                          |
+        \\           2             |
+         +--------+---------------+
+         |        C               |
+         +--------+---------------+
+              /       \\
+             / 5       \\ 3
+            /           \\
++---------+               +---------+
+|    E    |---------------|    D    |
++---------+       2       +---------+
+      </div>
+
+      <div class="concept-card">
+        <h3>4. Step-by-Step LSDB Assembly</h3>
+        <p>Each router originates an LSA detailing its immediate point-to-point links. After reliable flood completion, all five routers store this exact 5-row LSDB adjacency matrix:</p>
+        <div class="table-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Originating Router</th>
+                <th>Advertised Adjacencies (Neighbor, Cost)</th>
+                <th>Sequence #</th>
+                <th>LS Age</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>LSA_A</strong></td>
+                <td>(B, 1), (C, 4)</td>
+                <td>0x80000001</td>
+                <td>12s</td>
+              </tr>
+              <tr>
+                <td><strong>LSA_B</strong></td>
+                <td>(A, 1), (C, 2), (D, 6)</td>
+                <td>0x80000001</td>
+                <td>11s</td>
+              </tr>
+              <tr>
+                <td><strong>LSA_C</strong></td>
+                <td>(A, 4), (B, 2), (D, 3), (E, 5)</td>
+                <td>0x80000001</td>
+                <td>10s</td>
+              </tr>
+              <tr>
+                <td><strong>LSA_D</strong></td>
+                <td>(B, 6), (C, 3), (E, 2)</td>
+                <td>0x80000001</td>
+                <td>14s</td>
+              </tr>
+              <tr>
+                <td><strong>LSA_E</strong></td>
+                <td>(C, 5), (D, 2)</td>
+                <td>0x80000001</td>
+                <td>15s</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <h3>5. Dijkstra Execution from the Perspective of Router A</h3>
+        <p>Router A executes Dijkstra's algorithm locally using its Tentative (Candidate) list and Permanent (Settled) set $S$:</p>
+        <ol>
+          <li><strong>Initialization:</strong> Settled $S = \{A\}$. Distances: $D(A)=0$. Tentative: $(B, 1, \text{via } B)$, $(C, 4, \text{via } C)$, $D=\infty, E=\infty$.</li>
+          <li><strong>Step 1:</strong> Minimum tentative is $B$ ($1$). Add $B$ to $S$. $S=\{A, B\}$. Relax neighbors of $B$:
+            <ul>
+              <li>To $C$: $D(B) + c(B,C) = 1 + 2 = 3 < 4$. Update $D(C) = 3$, next-hop becomes $B$!</li>
+              <li>To $D$: $D(B) + c(B,D) = 1 + 6 = 7$. Update $D(D) = 7$, next-hop is $B$.</li>
+            </ul>
+          </li>
+          <li><strong>Step 2:</strong> Candidate list: $C(3 \text{ via } B)$, $D(7 \text{ via } B)$, $E(\infty)$. Minimum is $C$ ($3$). Add $C$ to $S$. $S=\{A, B, C\}$. Relax neighbors of $C$:
+            <ul>
+              <li>To $D$: $D(C) + c(C,D) = 3 + 3 = 6 < 7$. Update $D(D) = 6$, next-hop remains $B$ (via $C$).</li>
+              <li>To $E$: $D(C) + c(C,E) = 3 + 5 = 8$. Update $D(E) = 8$, next-hop is $B$ (via $C$).</li>
+            </ul>
+          </li>
+          <li><strong>Step 3:</strong> Candidate list: $D(6 \text{ via } B)$, $E(8 \text{ via } B)$. Minimum is $D$ ($6$). Add $D$ to $S$. $S=\{A, B, C, D\}$. Relax neighbors of $D$:
+            <ul>
+              <li>To $E$: $D(D) + c(D,E) = 6 + 2 = 8$. Since $8 = 8$, tie-breaker keeps existing path or cost is 8 via $D$. Note: Path A-B-C-D-E has cost $1+2+3+2 = 8$. Path A-B-C-E has cost $1+2+5 = 8$. Equal Cost Multi-Path (ECMP) can install both!</li>
+            </ul>
+          </li>
+          <li><strong>Step 4:</strong> Minimum is $E$ ($8$). Add $E$ to $S$. All nodes are settled!</li>
+        </ol>
+
+        <h4>Final Forwarding Information Base (FIB) at Router A</h4>
+        <div class="table-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Destination</th>
+                <th>Total Least Cost</th>
+                <th>Next-Hop Interface / Neighbor</th>
+                <th>Full Optimal Path</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>A (Self)</strong></td>
+                <td>0</td>
+                <td>Local Loopback</td>
+                <td>A</td>
+              </tr>
+              <tr>
+                <td><strong>B</strong></td>
+                <td>1</td>
+                <td>Interface eth0 &rarr; B</td>
+                <td>A &ndash; B</td>
+              </tr>
+              <tr>
+                <td><strong>C</strong></td>
+                <td>3</td>
+                <td>Interface eth0 &rarr; B</td>
+                <td>A &ndash; B &ndash; C</td>
+              </tr>
+              <tr>
+                <td><strong>D</strong></td>
+                <td>6</td>
+                <td>Interface eth0 &rarr; B</td>
+                <td>A &ndash; B &ndash; C &ndash; D</td>
+              </tr>
+              <tr>
+                <td><strong>E</strong></td>
+                <td>8</td>
+                <td>Interface eth0 &rarr; B (ECMP)</td>
+                <td>A &ndash; B &ndash; C &ndash; D &ndash; E / A &ndash; B &ndash; C &ndash; E</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <h3>6. Critical Architectural Invariant</h3>
+        <p>Notice that for all remote destinations (C, D, E), Router A forwards packets out through <strong>neighbor B</strong>, even though A has a direct physical link to C! Because $c(A, B) + c(B, C) = 1 + 2 = 3 < c(A, C) = 4$, the link-state algorithm bypasses the direct high-cost link in favor of the two-hop lower-cost path. A pure local hop-count router would make the sub-optimal choice.</p>
+      </div>
+
+      <div class="confusion-box">
+        <h3>7. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "Router A sends its calculated Shortest Path Tree to Router B."<br>
+        <strong>Reality:</strong> Never! Routers in link-state protocols send <em>raw local topology adjacencies</em>, never paths or routing tables. Router B runs its own Dijkstra independently and roots the tree at B, finding $D(A)=1$, $D(C)=2$, $D(D)=5$ (via C), $D(E)=7$ (via C &rarr; D).</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>8. University Exam &amp; GATE Tips</h3>
+        <p>When asked to trace Dijkstra on an exam: always write out the Tentative list table at every single step showing <code>(Cost, Next-Hop)</code>. If an updated cost is strictly less than the tentative value, cross out the old one and write the new one. Showing the intermediate states is where full marks are awarded.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Curated authoritative links for tracing link-state and Dijkstra algorithms.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc2328" target="_blank" rel="noopener noreferrer">
+            📘 RFC 2328 - OSPF Version 2
+            <small>Section 16: Calculation of the Shortest Path Tree with full candidate list pseudocode.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=W3PslgW596k" target="_blank" rel="noopener noreferrer">
+            🎥 Dijkstra Algorithm Step-by-Step Visualization
+            <small>Animated graph trace tracking candidate set transitions and parent pointers.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/ospf" target="_blank" rel="noopener noreferrer">
+            📝 GATE Overflow: Link-State &amp; Dijkstra Questions
+            <small>Real exam numericals calculating routing tables from link-cost matrices.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 13.8 Distance-Vector Routing — The Core Idea -->
+    <section id="s13-dv-idea" class="section-in-uni content-section" data-chapter="13" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Distance-Vector routing philosophy Bellman-Ford local exchange routing by rumor">
+      <div class="section-header">
+        <span class="section-number">13.8</span>
+        <h2>Distance-Vector Routing &mdash; The Core Idea <button class="bookmark-btn" data-id="s13-dv-idea" data-label="Distance-Vector Routing &mdash; The Core Idea" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 Uni Unit II</span>
+<span>Prescribed syllabus topic: <strong>Distance-Vector Routing: Bellman-Ford Principle & Philosophy</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p><strong>Distance-Vector Routing (DV)</strong> is a distributed, iterative, and asynchronous routing paradigm based on the principle of <em>routing by rumor</em>, where each router maintains an array of estimated distances (costs) to every known network prefix and periodically transmits this entire vector only to its directly attached physical neighbors.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why It Exists (Engineering Motivation)</h3>
+        <p>In the early ARPANET (1969), router memory was severely constrained (measured in kilobytes) and CPU processing was weak. Maintaining an entire global network map and executing $O(V^2)$ graph algorithms locally was computationally infeasible. Distance-vector was engineered to distribute the computational burden: every router computes only for its own local table, relying on neighbors to compute theirs.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>3. How It Works: The Three Fundamental Tenets</h3>
+        <p>Distance-vector protocols (such as RIP, RFC 2453, and early IGRP) operate on three foundational mechanisms:</p>
+        <div class="concept-grid">
+          <div class="concept-card">
+            <h4>1. Distributed Computation</h4>
+            <p>No single router possesses a complete topology map. Each node calculates its best paths based solely on the metric summaries reported by its immediate neighbors.</p>
+          </div>
+          <div class="concept-card">
+            <h4>2. Asynchronous Iteration</h4>
+            <p>Routers exchange updates independently on local timers (e.g., RIP every 30 seconds) or when triggered by a metric change, continuing until no further updates are propagated.</p>
+          </div>
+          <div class="concept-card">
+            <h4>3. Local Information Horizon</h4>
+            <p>Routers only know: (a) cost to direct physical neighbors, (b) total reported cost to remote destinations, and (c) which neighbor offered that cost (next-hop).</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ascii-box">
++---------+         Report: "I can reach Z in 5 hops"        +---------+
+| Router  | <================================================ | Neighbor|
+|    X    | ------------------------------------------------> |    Y    |
++---------+          Link Cost c(X,Y) = 2                     +---------+
+    |                                                              |
+    V                                                              V
+Local Decision:                                             Destination Z
+Distance to Z via Y = c(X,Y) + D_Y(Z) = 2 + 5 = 7
+      </div>
+
+      <div class="example-box">
+        <h3>4. Mathematical Vector Representation</h3>
+        <p>Let $N$ be the set of all nodes in the network. Each router $x$ maintains:</p>
+        <ul>
+          <li>For each neighbor $v \in N(x)$: the direct link cost $c(x, v)$.</li>
+          <li>Router $x$'s own distance vector: $\mathbf{D}_x = [D_x(y) : y \in N]$.</li>
+          <li>The distance vectors received from each neighbor $v$: $\mathbf{D}_v = [D_v(y) : y \in N]$.</li>
+        </ul>
+        <p>When router $x$ receives an update from neighbor $v$, it evaluates whether routing through $v$ yields a lower metric than its current best path to destination $y$.</p>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Distance-Vector Paradigm</th>
+              <th>Link-State Paradigm</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Topology Knowledge</strong></td>
+              <td>Neighbor-only ("Routing by rumor")</td>
+              <td>Global map (Full LSDB identical everywhere)</td>
+            </tr>
+            <tr>
+              <td><strong>Computation Location</strong></td>
+              <td>Distributed across all nodes iteratively</td>
+              <td>Centralized local execution of Dijkstra</td>
+            </tr>
+            <tr>
+              <td><strong>Message Destination</strong></td>
+              <td>Only directly attached neighbors</td>
+              <td>Flooded to entire autonomous routing domain</td>
+            </tr>
+            <tr>
+              <td><strong>Message Content</strong></td>
+              <td>Entire routing table (Destinations &amp; Costs)</td>
+              <td>Local link status only (My neighbors &amp; costs)</td>
+            </tr>
+            <tr>
+              <td><strong>Memory Footprint</strong></td>
+              <td>Low: $O(V)$ per neighbor</td>
+              <td>High: $O(V + E)$ entire graph in RAM</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="confusion-box">
+        <h3>5. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "A distance-vector router knows the entire path that packets follow."<br>
+        <strong>Reality:</strong> False! A distance-vector router knows only the <em>distance</em> (total cost) and the <em>direction</em> (next-hop interface/neighbor). It has zero knowledge of the intermediate routers traversed beyond its immediate neighbor.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>6. University Exam &amp; GATE Tips</h3>
+        <p>Remember the classic one-liner: <em>"Link-state routers tell everyone about their neighbors; Distance-vector routers tell their neighbors about everyone."</em> This distinction appears in almost every undergraduate networking multiple-choice and conceptual exam.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Curated references on the foundation of distance-vector routing.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc2453" target="_blank" rel="noopener noreferrer">
+            📘 RFC 2453 - RIP Version 2
+            <small>The standard specification of the classical Distance-Vector protocol.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=0hWq92Q8_Fw" target="_blank" rel="noopener noreferrer">
+            🎥 Distance Vector Routing Algorithm
+            <small>Clear academic breakdown of distance vectors and neighbor message passing.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/distance-vector-routing" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on Distance-Vector Foundations
+            <small>Conceptual questions testing message contents and convergence properties.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 13.9 Bellman-Ford Principle & Distributed Asynchronous Math -->
+    <section id="s13-bellman" class="section-in-uni content-section" data-chapter="13" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Bellman-Ford equation distributed relaxation cost minimization vector update">
+      <div class="section-header">
+        <span class="section-number">13.9</span>
+        <h2>Bellman-Ford Principle &amp; Distributed Asynchronous Math <button class="bookmark-btn" data-id="s13-bellman" data-label="Bellman-Ford Principle &amp; Distributed Asynchronous Math" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 Uni Unit II</span>
+<span>Prescribed syllabus topic: <strong>Bellman-Ford Optimality Equation & Distributed Relaxation</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p>The <strong>Distributed Bellman-Ford Algorithm</strong> is the mathematical dynamic programming foundation of distance-vector routing, stating that the shortest path from source node $x$ to destination node $y$ is computed recursively by finding the minimum sum of the cost to an immediate neighbor $v$ plus neighbor $v$'s shortest path to $y$.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. The Bellman-Ford Optimality Equation</h3>
+        <p>For any node $x$ seeking the minimum cost $d_x(y)$ to reach destination $y$:</p>
+        <div class="math-block">
+          $$d_x(y) = \min_{v \in N(x)} \left\{ c(x, v) + d_v(y) \right\}$$
+        </div>
+        <p>Where:</p>
+        <ul>
+          <li>$N(x)$ is the set of physical neighbors directly connected to node $x$.</li>
+          <li>$c(x, v)$ is the direct link cost from node $x$ to neighbor $v$.</li>
+          <li>$d_v(y)$ is neighbor $v$'s currently reported shortest distance to destination $y$.</li>
+          <li>The next-hop router $v^*$ chosen by $x$ is the neighbor that achieves this minimum:
+            $$v^*(y) = \arg\min_{v \in N(x)} \left\{ c(x, v) + d_v(y) \right\}$$
+          </li>
+        </ul>
+      </div>
+
+      <div class="ascii-box">
+                    +-----------+
+              +---->| Neighbor v1| === d_v1(y) ==> [Destination y]
+              |     +-----------+
+        c(x,v1)
+              |     +-----------+
+[Router x] ---+---->| Neighbor v2| === d_v2(y) ==> [Destination y]
+              |     +-----------+
+        c(x,v3)
+              |     +-----------+
+              +---->| Neighbor v3| === d_v3(y) ==> [Destination y]
+                    +-----------+
+
+Decision: d_x(y) = min { c(x,v1)+d_v1(y), c(x,v2)+d_v2(y), c(x,v3)+d_v3(y) }
+      </div>
+
+      <div class="example-box">
+        <h3>3. Concrete Algebraic Evaluation</h3>
+        <p>Suppose Router X has two neighbors, A and B. It needs to reach Destination Z.</p>
+        <ul>
+          <li>Link costs: $c(X, A) = 3$, $c(X, B) = 7$.</li>
+          <li>Neighbor A reports: $d_A(Z) = 6$.</li>
+          <li>Neighbor B reports: $d_B(Z) = 1$.</li>
+        </ul>
+        <p>Router X calculates candidate path costs:</p>
+        <div class="math-block">
+          $$\text{Path via A: } c(X, A) + d_A(Z) = 3 + 6 = 9$$
+          $$\text{Path via B: } c(X, B) + d_B(Z) = 7 + 1 = 8$$
+          $$d_X(Z) = \min\{9, 8\} = 8$$
+        </div>
+        <p>Even though neighbor B is farther away on the direct physical link ($7 > 3$), B is much closer to Z ($1 < 6$). Therefore, Router X installs Next-Hop = <strong>B</strong> with total cost <strong>8</strong>.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>4. Convergence Guarantees and Bound on Iterations</h3>
+        <p>In a network graph $G = (V, E)$ with no negative-cost cycles:</p>
+        <ul>
+          <li><strong>Finite Convergence:</strong> If link costs remain static, the distributed Bellman-Ford algorithm is mathematically proven to converge to the absolute shortest path for all source-destination pairs.</li>
+          <li><strong>Iteration Bound:</strong> A simple path in a network of $|V|$ vertices can contain at most $|V| - 1$ edges. Thus, under synchronous rounds, distance vectors converge in at most $|V| - 1$ iterations.</li>
+          <li><strong>Asynchronous Reality:</strong> Because routers update on independent clocks, convergence time depends on network diameter and packet propagation delays.</li>
+        </ul>
+      </div>
+
+      <div class="confusion-box">
+        <h3>5. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "Dijkstra and Bellman-Ford solve different routing problems."<br>
+        <strong>Reality:</strong> Both solve the exact same single-source shortest path graph problem. The critical difference is computational architecture: Dijkstra is centralized/global (requires full graph in memory at one node), whereas Bellman-Ford naturally maps to distributed, localized, asynchronous message passing.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>6. University Exam &amp; GATE Tips</h3>
+        <p>GATE frequently asks: <em>"A node $X$ receives vectors from neighbors $A, B, C$. Calculate the updated distance table row for $X$ and identify the next hops."</em> Always format your answer as a candidate evaluation table showing $c(x,v) + d_v(y)$ for every neighbor $v$, and highlight the minimum.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Foundational papers and materials on distributed Bellman-Ford.</div>
+        <div class="resource-grid">
+          <a href="https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm" target="_blank" rel="noopener noreferrer">
+            📘 Bellman-Ford Algorithm Principles
+            <small>Mathematical proofs of dynamic programming recurrence and convergence bounds.</small>
+          </a>
+          <a href="https://ocw.mit.edu/courses/6-033-computer-system-engineering-spring-2018/" target="_blank" rel="noopener noreferrer">
+            🎥 MIT 6.033: Distributed Routing Algorithms
+            <small>Lecture exploring Bellman-Ford equations in decentralized network routing.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/bellman-ford" target="_blank" rel="noopener noreferrer">
+            📝 GATE Overflow: Bellman-Ford Numerical Problems
+            <small>Step-by-step vector evaluation problems from prior year papers.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 13.10 Distance-Vector Numerical Worked Example -->
+    <section id="s13-dv-update" class="section-in-uni content-section" data-chapter="13" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Distance-Vector exchange periodic routing table updates neighbor vectors">
+      <div class="section-header">
+        <span class="section-number">13.10</span>
+        <h2>Distance-Vector Numerical Worked Example <button class="bookmark-btn" data-id="s13-dv-update" data-label="Distance-Vector Numerical Worked Example" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 Uni Unit II</span>
+<span>Prescribed syllabus topic: <strong>Distance-Vector Routing Table Exchange & Periodic Updates</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. Problem Statement &amp; Network Setup</h3>
+        <p>Consider a 4-node network consisting of routers <strong>A, B, C, and D</strong>. The bidirectional symmetric link costs are:</p>
+        <ul>
+          <li>$c(A, B) = 2$</li>
+          <li>$c(A, C) = 7$</li>
+          <li>$c(B, C) = 1$</li>
+          <li>$c(B, D) = 5$</li>
+          <li>$c(C, D) = 3$</li>
+        </ul>
+        <p>We trace the initial state, Iteration 1, and Iteration 2 (final convergence) of the Distance Vector tables for all nodes.</p>
+      </div>
+
+      <div class="ascii-box">
+      2             5
+(A)-------(B)---------------(D)
+  \\       /                /
+   \\ 7   / 1              / 3
+    \\   /                /
+     (C)----------------+
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Iteration 0: Initial Local State (Only Direct Neighbors Known)</h3>
+        <p>At boot time, each router knows only the cost to its directly connected physical interfaces. Non-neighbors are marked with distance $\infty$.</p>
+        <div class="table-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Node</th>
+                <th>Distance to A</th>
+                <th>Distance to B</th>
+                <th>Distance to C</th>
+                <th>Distance to D</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Table at A</strong></td>
+                <td>0 (local)</td>
+                <td>2 (via B)</td>
+                <td>7 (via C)</td>
+                <td>&infin;</td>
+              </tr>
+              <tr>
+                <td><strong>Table at B</strong></td>
+                <td>2 (via A)</td>
+                <td>0 (local)</td>
+                <td>1 (via C)</td>
+                <td>5 (via D)</td>
+              </tr>
+              <tr>
+                <td><strong>Table at C</strong></td>
+                <td>7 (via A)</td>
+                <td>1 (via B)</td>
+                <td>0 (local)</td>
+                <td>3 (via D)</td>
+              </tr>
+              <tr>
+                <td><strong>Table at D</strong></td>
+                <td>&infin;</td>
+                <td>5 (via B)</td>
+                <td>3 (via C)</td>
+                <td>0 (local)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <h3>3. Iteration 1: First Neighbor Vector Exchange</h3>
+        <p>Every node transmits its initial vector to its direct neighbors and applies the Bellman-Ford recurrence $d_x(y) = \min_v \{c(x,v) + d_v(y)\}$:</p>
+
+        <h4>Calculations at Router A:</h4>
+        <ul>
+          <li>To C: $\min\{ c(A,C)+d_C(C), c(A,B)+d_B(C) \} = \min\{ 7+0, 2+1 \} = \min\{7, 3\} = \mathbf{3}$ (Next-Hop: <strong>B</strong>). <em>Cost drops from 7 to 3!</em></li>
+          <li>To D: $\min\{ c(A,B)+d_B(D), c(A,C)+d_C(D) \} = \min\{ 2+5, 7+3 \} = \min\{7, 10\} = \mathbf{7}$ (Next-Hop: <strong>B</strong>). <em>Learns path to D!</em></li>
+        </ul>
+
+        <h4>Calculations at Router B:</h4>
+        <ul>
+          <li>To D: $\min\{ c(B,D)+d_D(D), c(B,C)+d_C(D) \} = \min\{ 5+0, 1+3 \} = \min\{5, 4\} = \mathbf{4}$ (Next-Hop: <strong>C</strong>). <em>Cost drops from 5 to 4!</em></li>
+        </ul>
+
+        <h4>Calculations at Router C:</h4>
+        <ul>
+          <li>To A: $\min\{ c(C,A)+d_A(A), c(C,B)+d_B(A) \} = \min\{ 7+0, 1+2 \} = \min\{7, 3\} = \mathbf{3}$ (Next-Hop: <strong>B</strong>). <em>Cost drops from 7 to 3!</em></li>
+        </ul>
+
+        <h4>Calculations at Router D:</h4>
+        <ul>
+          <li>To A: $\min\{ c(D,B)+d_B(A), c(D,C)+d_C(A) \} = \min\{ 5+2, 3+7 \} = \min\{7, 10\} = \mathbf{7}$ (Next-Hop: <strong>B</strong>). <em>Learns path to A!</em></li>
+          <li>To B: $\min\{ c(D,B)+d_B(B), c(D,C)+d_C(B) \} = \min\{ 5+0, 3+1 \} = \min\{5, 4\} = \mathbf{4}$ (Next-Hop: <strong>C</strong>). <em>Cost drops from 5 to 4!</em></li>
+        </ul>
+      </div>
+
+      <div class="example-box">
+        <h3>4. Iteration 2: Second Exchange &amp; Convergence</h3>
+        <p>In round 2, updated vectors are exchanged again. Router A recalculates its cost to D based on B's new cost of 4:</p>
+        <div class="math-block">
+          $$d_A(D) = c(A, B) + d_B(D) = 2 + 4 = 6 \quad (\text{Next-Hop: B})$$
+        </div>
+        <p>Router D recalculates its cost to A based on C's new cost of 3:</p>
+        <div class="math-block">
+          $$d_D(A) = c(D, C) + d_C(A) = 3 + 3 = 6 \quad (\text{Next-Hop: C})$$
+        </div>
+
+        <h4>Final Fully Converged Distance Vector Matrix:</h4>
+        <div class="table-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Router</th>
+                <th>To A</th>
+                <th>To B</th>
+                <th>To C</th>
+                <th>To D</th>
+                <th>Forwarding Next-Hops (A, B, C, D)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Node A</strong></td>
+                <td>0</td>
+                <td>2</td>
+                <td>3</td>
+                <td>6</td>
+                <td>(Self, B, B, B)</td>
+              </tr>
+              <tr>
+                <td><strong>Node B</strong></td>
+                <td>2</td>
+                <td>0</td>
+                <td>1</td>
+                <td>4</td>
+                <td>(A, Self, C, C)</td>
+              </tr>
+              <tr>
+                <td><strong>Node C</strong></td>
+                <td>3</td>
+                <td>1</td>
+                <td>0</td>
+                <td>3</td>
+                <td>(B, B, Self, D)</td>
+              </tr>
+              <tr>
+                <td><strong>Node D</strong></td>
+                <td>6</td>
+                <td>4</td>
+                <td>3</td>
+                <td>0</td>
+                <td>(C, C, C, Self)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>In Iteration 3, no vector values change. No new update messages are triggered. The network has achieved <strong>quiescent convergence</strong>.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>5. University Exam Tip: Convergence Step Counting</h3>
+        <p>Exam questions frequently ask: <em>"How many iterations are required for convergence in this topology?"</em> Remember: Iteration 0 is initial direct link state. If the longest shortest path in terms of hop count has $k$ hops, it requires exactly $k$ exchange rounds for the endpoints to learn about each other. In our topology, the path between A and D traverses 3 hops (A &ndash; B &ndash; C &ndash; D), requiring exactly 2 update exchanges after Iteration 0.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Numerical tutorials and automated step-by-step distance-vector solvers.</div>
+        <div class="resource-grid">
+          <a href="https://www.geeksforgeeks.org/distance-vector-routing-dvr-protocol/" target="_blank" rel="noopener noreferrer">
+            📘 GeeksforGeeks: Distance Vector Routing Tutorial
+            <small>Comprehensive worked numerical tables with detailed iteration states.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=dmS1t1wqnE4" target="_blank" rel="noopener noreferrer">
+            🎥 Distance Vector Routing Numerical Problem
+            <small>Board walkthrough solving university exam table convergence step by step.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/distance-vector-routing" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on Distance-Vector Convergence
+            <small>Practice problem bank calculating iterations to convergence under topology changes.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 13.11 Iterative Convergence & Good News Spreading Fast -->
+    <section id="s13-convergence" class="section-in-uni content-section" data-chapter="13" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Distance-Vector convergence speed good news travels fast metric propagation">
+      <div class="section-header">
+        <span class="section-number">13.11</span>
+        <h2>Iterative Convergence &amp; "Good News Spreads Fast" <button class="bookmark-btn" data-id="s13-convergence" data-label="Iterative Convergence &amp; "Good News Spreads Fast"" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 Uni Unit II</span>
+<span>Prescribed syllabus topic: <strong>Distance-Vector Convergence Dynamics & Good News Propagation</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p><strong>Routing Convergence</strong> is the state achieved when all routers in an autonomous system have consistent, loop-free routing tables reflecting the true current topology. The asymmetry in distance-vector convergence is captured by the networking axiom: <strong>"Good news spreads fast, but bad news spreads slowly."</strong></p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why "Good News Spreads Fast"</h3>
+        <p>When a new physical link comes online, or an existing link cost decreases significantly (good news), every node along the path immediately recognizes a lower metric than its existing path. Because the reported distance is strictly less than prior estimates, routers eagerly and unconditionally adopt the improved path in a single exchange cycle without verification loops.</p>
+      </div>
+
+      <div class="ascii-box">
+Scenario: Link A-B drops from cost 10 to cost 1 (GOOD NEWS!)
+
+Time t0: A sees direct cost c(A,B) = 1.
+         A updates table: D_A(B) = 1.
+Time t1: A advertises vector to C.
+         C computes: D_C(B) = c(C,A) + D_A(B) = 1 + 1 = 2.
+Time t2: C advertises vector to D.
+         D computes: D_D(B) = c(D,C) + D_C(B) = 1 + 2 = 3.
+
+Result: Propagation is deterministic, taking exactly O(diameter) time!
+      </div>
+
+      <div class="example-box">
+        <h3>3. Detailed Trace of Rapid Improvement</h3>
+        <p>Consider a linear network: <strong>X &ndash; Y &ndash; Z</strong> where $c(X, Y) = 2$ and initially $c(Y, Z) = 50$.</p>
+        <ol>
+          <li>Initial converged cost from X to Z is $d_X(Z) = 2 + 50 = 52$.</li>
+          <li>Now, a high-speed fiber link replaces the link between Y and Z, dropping $c(Y, Z)$ from 50 to <strong>1</strong>.</li>
+          <li><strong>Step 1:</strong> Router Y detects the link cost drop immediately on its physical interface. Y updates $d_Y(Z) = 1$.</li>
+          <li><strong>Step 2:</strong> Y sends its periodic or triggered update to X: $\mathbf{D}_Y = [Z: 1]$.</li>
+          <li><strong>Step 3:</strong> X applies Bellman-Ford: $d_X(Z) = c(X, Y) + d_Y(Z) = 2 + 1 = 3$.</li>
+          <li>Total time to converge across the entire network: <strong>1 update interval</strong>! No oscillations or spurious loops occur.</li>
+        </ol>
+      </div>
+
+      <div class="concept-card">
+        <h3>4. The Structural Reason for Fast Convergence</h3>
+        <p>Good news is inherently self-validating. If a router is offered a path of cost 3 when it currently has a path of cost 52, accepting the cost 3 path cannot create a positive-cost loop with the neighbor offering it, because that neighbor's cost is strictly smaller ($1 < 3$). The strict decrease in metric guarantees monotonic progress toward the global optimum.</p>
+      </div>
+
+      <div class="confusion-box">
+        <h3>5. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "Since distance-vector protocols converge fast when links improve, they are equally rapid when links fail."<br>
+        <strong>Reality:</strong> Catastrophically false! When links fail or costs increase (bad news), routers cannot distinguish between fresh alternative paths and stale echoes of their own previously advertised routes. This vulnerability gives rise to the infamous <em>Count-to-Infinity</em> problem.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>6. University Exam &amp; GATE Tips</h3>
+        <p>Always state the time complexity of "good news" propagation on subjective exams: If a network has diameter $D$ (in hops), any metric reduction or newly introduced destination propagates to all nodes in at most $D$ update cycles.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Academic analysis of convergence asymmetry in distributed routing.</div>
+        <div class="resource-grid">
+          <a href="https://www.cs.princeton.edu/courses/archive/fall19/cos461/lectures/09-routing.pdf" target="_blank" rel="noopener noreferrer">
+            📘 Princeton COS 461: Distance Vector Convergence
+            <small>Slides formalizing good news propagation vs bad news loop dynamics.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=J8tZ28Q_f14" target="_blank" rel="noopener noreferrer">
+            🎥 Good News vs Bad News in Distance Vector
+            <small>Conceptual animation contrasting rapid metric drops with count-to-infinity.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/count-to-infinity" target="_blank" rel="noopener noreferrer">
+            📝 GATE Overflow: Distance Vector Convergence Questions
+            <small>Past exam questions calculating convergence times under link state transitions.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 13.12 The Count-to-Infinity Problem -->
+    <section id="s13-count" class="section-in-uni content-section" data-chapter="13" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Count-to-infinity problem routing loops bad news travels slow link failure">
+      <div class="section-header">
+        <span class="section-number">13.12</span>
+        <h2>The Count-to-Infinity Problem <button class="bookmark-btn" data-id="s13-count" data-label="The Count-to-Infinity Problem" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 Uni Unit II</span>
+<span>Prescribed syllabus topic: <strong>Count-to-Infinity Problem & Routing Loop Dynamics</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p>The <strong>Count-to-Infinity Problem</strong> is a catastrophic pathological condition in distance-vector routing protocols where a link failure or cost increase causes two or more adjacent routers to enter a mutually recursive routing loop, continuously incrementing their advertised metrics to an unreachable destination by tiny steps until reaching an arbitrary predefined numerical threshold (infinity).</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why It Occurs: The Mutual Dependency Trap</h3>
+        <p>Because distance-vector routers practice "routing by rumor," Router A does not know that Router B's path to destination X actually passes through Router A itself! When the physical link from A to X fails:</p>
+        <ol>
+          <li>A loses its direct route to X ($d_A(X) = \infty$).</li>
+          <li>A inspects its neighbors' vectors and sees that B recently advertised $d_B(X) = 2$.</li>
+          <li>A mistakenly assumes B has an <em>independent</em> path to X!</li>
+          <li>A updates: $d_A(X) = c(A, B) + d_B(X) = 1 + 2 = 3$ (Next-Hop: B).</li>
+          <li>In the next cycle, B receives A's update ($d_A(X) = 3$) and updates its own distance: $d_B(X) = c(B, A) + d_A(X) = 1 + 3 = 4$ (Next-Hop: A).</li>
+          <li>They ping-pong the distance upward: $3, 4, 5, 6, 7 \dots$ indefinitely!</li>
+        </ol>
+      </div>
+
+      <div class="ascii-box">
+Initial Stable State:
+(X) <===== 1 ===== (A) <===== 1 ===== (B)
+d_A(X) = 1         d_B(X) = 2 (via A)
+
+Step 1: Link (X)-(A) breaks!
+(X)   X---X        (A) <===== 1 ===== (B)
+d_A(X) = inf       A sees B reports d_B(X) = 2!
+                   A calculates: d_A(X) = c(A,B) + d_B(X) = 1 + 2 = 3 (via B)
+
+Step 2: A advertises d_A(X) = 3 to B!
+(X)                (A) ===== 1 =====> (B)
+                   B calculates: d_B(X) = c(B,A) + d_A(X) = 1 + 3 = 4 (via A)
+
+Step 3: B advertises d_B(X) = 4 to A!
+                   A calculates: d_A(X) = 1 + 4 = 5 (via B)...
+                   --> Loops until reaching INFINITY (e.g. 16 in RIP)
+      </div>
+
+      <div class="example-box">
+        <h3>3. Complete Cycle-by-Cycle Numerical Trace</h3>
+        <p>Assume link costs $c(X, A) = 1$ and $c(A, B) = 1$. The protocol defines $\infty = 16$ (as in RIP).</p>
+        <div class="table-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Exchange Round</th>
+                <th>Event / Trigger</th>
+                <th>Router A Table for Dest X</th>
+                <th>Router B Table for Dest X</th>
+                <th>Data Packet Forwarding Outcome</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>$t_0$</td>
+                <td>Normal operation</td>
+                <td>Cost 1, Next-Hop: X</td>
+                <td>Cost 2, Next-Hop: A</td>
+                <td>Packets forward correctly to X</td>
+              </tr>
+              <tr>
+                <td>$t_1$</td>
+                <td>Link X&ndash;A fails</td>
+                <td>Cost 3, Next-Hop: B (via stale B vector)</td>
+                <td>Cost 2, Next-Hop: A</td>
+                <td>Packets loop between A &amp; B!</td>
+              </tr>
+              <tr>
+                <td>$t_2$</td>
+                <td>A sends vector to B</td>
+                <td>Cost 3, Next-Hop: B</td>
+                <td>Cost 4, Next-Hop: A ($1 + 3$)</td>
+                <td>Packets loop between A &amp; B!</td>
+              </tr>
+              <tr>
+                <td>$t_3$</td>
+                <td>B sends vector to A</td>
+                <td>Cost 5, Next-Hop: B ($1 + 4$)</td>
+                <td>Cost 4, Next-Hop: A</td>
+                <td>Packets loop between A &amp; B!</td>
+              </tr>
+              <tr>
+                <td>$t_{14}$</td>
+                <td>Vector increments reach 15</td>
+                <td>Cost 15, Next-Hop: B</td>
+                <td>Cost 16 ($\infty$), Destination Unreachable</td>
+                <td>B drops loop, declares X dead</td>
+              </tr>
+              <tr>
+                <td>$t_{15}$</td>
+                <td>B notifies A</td>
+                <td>Cost 16 ($\infty$), Destination Unreachable</td>
+                <td>Cost 16 ($\infty$), Destination Unreachable</td>
+                <td>Network finally converged to failure</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <h3>4. Why is Infinity Set to 16 in RIP?</h3>
+        <p>In RIP, the metric is raw hop count. If infinity were set to $2^{32} - 1$, counting to infinity at 30-second update intervals would take centuries! By fixing $\infty = 16$:</p>
+        <ul>
+          <li>The maximum valid network diameter is bounded at <strong>15 hops</strong>.</li>
+          <li>A count-to-infinity loop terminates in at most 16 exchange cycles ($16 \times 30\text{s} \approx 8\text{ minutes}$, or faster with triggered updates).</li>
+          <li><strong>The Architectural Trade-Off:</strong> Setting $\infty = 16$ bounds the duration of the failure storm, but fundamentally restricts RIP from being deployed on large campus or wide-area networks spanning $>15$ hops.</li>
+        </ul>
+      </div>
+
+      <div class="confusion-box">
+        <h3>5. Common Confusion: 2-Node vs 3-Node Loops</h3>
+        <p><strong>Crucial Insight:</strong> A 2-node loop (A &ndash; B) can be mitigated by Split Horizon. However, in a <strong>3-node triangular loop</strong> (A &ndash; B &ndash; C &ndash; A):</p>
+        <p>When link X&ndash;A fails, A may learn a path from C, while C learned it from B, and B learned it from A! Split Horizon fails to break this indirect loop because no router is advertising directly back to its immediate parent. The count-to-infinity problem still occurs, proving that simple split horizon is not a universal cure for distance-vector loops.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>6. University Exam &amp; GATE Tips</h3>
+        <p>Standard GATE question: <em>"Why can RIP not be used in a network of diameter 18?"</em><br>
+        Answer: Because RIP defines 16 as $\infty$ (unreachable). Any destination located $\ge 16$ hops away from a source router is considered dead/unreachable, even if a healthy physical path exists!</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Definitive engineering papers on the count-to-infinity problem and loop prevention.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc1058" target="_blank" rel="noopener noreferrer">
+            📘 RFC 1058 - Routing Information Protocol
+            <small>Section 2.2: Detailed mathematical analysis of the Counting to Infinity flaw.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=kY31Kj8xV3k" target="_blank" rel="noopener noreferrer">
+            🎥 Count to Infinity Problem Explained with Animation
+            <small>Step-by-step visual demonstration of routing ping-pong and metric inflation.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/count-to-infinity" target="_blank" rel="noopener noreferrer">
+            📝 GATE Overflow: Count-to-Infinity Practice Questions
+            <small>Past numerical questions on RIP hop count limits and loop convergence rounds.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 13.13 Split Horizon, Poison Reverse & Holddown Timers -->
+    <section id="s13-loop-prevention" class="section-in-uni content-section" data-chapter="13" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Loop mitigation split horizon poison reverse hold-down timers">
+      <div class="section-header">
+        <span class="section-number">13.13</span>
+        <h2>Split Horizon, Poison Reverse &amp; Holddown Timers <button class="bookmark-btn" data-id="s13-loop-prevention" data-label="Split Horizon, Poison Reverse &amp; Holddown Timers" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 Uni Unit II</span>
+<span>Prescribed syllabus topic: <strong>Loop Mitigation: Split Horizon & Poison Reverse</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p><strong>Distance-Vector Loop Mitigation Mechanisms</strong> are a coordinated collection of protocol heuristics (Split Horizon, Poison Reverse, Triggered Updates, and Holddown Timers) designed to prevent adjacent routers from mutually reinforcing false routing rumors and to accelerate convergence upon link failures.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why They Exist (Engineering Motivation)</h3>
+        <p>Uncontrolled count-to-infinity renders distance-vector protocols unusable across physical networks during topology failures. If routers continuously advertise routes back to the very neighbors from which they learned them, routing loops will persist for minutes, consuming link bandwidth and causing packet loss due to TTL exhaustion. Protocol engineers introduced these algorithmic rules to break mutual circularity.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>3. How Each Mechanism Works</h3>
+        <div class="concept-grid">
+          <div class="concept-card">
+            <h4>Simple Split Horizon</h4>
+            <p><strong>Rule:</strong> Never advertise a route out of the physical interface from which it was originally learned.<br>
+            If Router B routes to Destination X through Router A, Router B completely omits Destination X from any update vector it sends to Router A.</p>
+          </div>
+          <div class="concept-card">
+            <h4>Split Horizon with Poison Reverse</h4>
+            <p><strong>Rule:</strong> Instead of omitting the route, explicitly advertise it out of that interface with a metric of <strong>Infinity</strong> ($\infty = 16$).<br>
+            Router B tells Router A: <em>"As for Destination X, my cost is 16 (unreachable)."</em> This immediately poisons any attempt by A to use B as a backup.</p>
+          </div>
+          <div class="concept-card">
+            <h4>Triggered Updates (Flash Updates)</h4>
+            <p><strong>Rule:</strong> When a route's metric changes or a link goes down, do not wait for the periodic 30-second timer. Immediately dispatch an update packet containing the poisoned route across all interfaces.</p>
+          </div>
+          <div class="concept-card">
+            <h4>Holddown Timers</h4>
+            <p><strong>Rule:</strong> When a router hears that a route is unreachable, it starts a timer (typically 180 seconds). During this window, it refuses to accept any new path to that destination unless the new metric is <em>strictly better</em> than the pre-failure metric.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ascii-box">
+Simple Split Horizon:
+(X) <===== (A) <===== (B)
+            |          |
+            |          +--- Advertises [X: omitted] ---> (A)  (Silent)
+            +-------------- Advertises [X: 1] ---------> (B)
+
+Split Horizon with Poison Reverse:
+(X) <===== (A) <===== (B)
+            |          |
+            |          +--- Advertises [X: 16 (inf)] --> (A)  (Explicit Poison)
+            +-------------- Advertises [X: 1] ---------> (B)
+
+Immediate Benefit: If link (X)-(A) fails, A will NEVER consider B's route!
+      </div>
+
+      <div class="example-box">
+        <h3>4. Poison Reverse in Action: Breaking the 2-Node Loop</h3>
+        <p>Let's revisit the link failure scenario on link X&ndash;A with Poison Reverse enabled:</p>
+        <ol>
+          <li>Initially, $d_A(X) = 1$ via direct link. Router B routes to X via A with cost 2.</li>
+          <li>Under Poison Reverse, B sends updates to A with $d_B(X) = 16$ ($\infty$).</li>
+          <li>Now, link X&ndash;A snaps! Router A sets $d_A(X) = \infty$.</li>
+          <li>Router A checks its neighbor table for an alternative route to X. The only neighbor is B, and B's reported distance is $16$.</li>
+          <li>Router A immediately concludes: <em>"There are zero valid paths to X."</em> Router A marks X as unreachable ($\infty$).</li>
+          <li>Router A sends a triggered update to B: $d_A(X) = 16$.</li>
+          <li>Router B marks X as unreachable. The loop is eliminated in <strong>1 single step</strong>!</li>
+        </ol>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Mitigation Technique</th>
+              <th>Primary Strength</th>
+              <th>Key Limitation / Vulnerability</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Simple Split Horizon</strong></td>
+              <td>Reduces update packet size; breaks 2-node loops</td>
+              <td>Silent omission leaves room for stale timers</td>
+            </tr>
+            <tr>
+              <td><strong>Poison Reverse</strong></td>
+              <td>Explicit notification; immediately purges reverse loops</td>
+              <td>Increases update packet payload size slightly</td>
+            </tr>
+            <tr>
+              <td><strong>Triggered Updates</strong></td>
+              <td>Sub-second convergence on local failure</td>
+              <td>Can trigger broadcast storms if cascading failures occur</td>
+            </tr>
+            <tr>
+              <td><strong>Holddown Timers</strong></td>
+              <td>Prevents flapping routes from destabilizing the domain</td>
+              <td>Significantly delays valid recovery if a legitimate backup exists</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="confusion-box">
+        <h3>5. The Triangular Loop Failure Mode</h3>
+        <p><strong>Critical Architectural Truth:</strong> Split Horizon (with or without Poison Reverse) <em>guarantees</em> loop prevention only in 2-node direct adjacencies. In topologies with 3 or more nodes forming cycles (e.g., A &ndash; B &ndash; C &ndash; A):</p>
+        <ul>
+          <li>Router A learns of X from B. B learns from C. C learns from A.</li>
+          <li>When link X&ndash;A fails, A does not route back to C (split horizon blocks A &rarr; C). But A can accept an advertisement from B!</li>
+          <li>Because B learned from C (not A), B does not poison its advertisement to A!</li>
+          <li>Thus, a 3-node loop forms despite split horizon and poison reverse. This is why distance-vector protocols eventually require path-vector mechanisms (BGP AS-Path) or link-state technology (OSPF).</li>
+        </ul>
+      </div>
+
+      <div class="exam-tip">
+        <h3>6. University Exam &amp; GATE Tips</h3>
+        <p>Exam question: <em>"Does Split Horizon with Poison Reverse completely eliminate the count-to-infinity problem in all network topologies?"</em><br>
+        <strong>Correct Answer:</strong> NO. It only eliminates loops involving two adjacent nodes. Multi-node circular paths (triangles, diamonds) can still count to infinity until the holddown timer expires or the metric reaches 16.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Engineering documentation on distance vector loop mitigation.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc2453" target="_blank" rel="noopener noreferrer">
+            📘 RFC 2453: Section 3.4.3 Split Horizon and Poisoned Reverse
+            <small>Formal specification of split horizon algorithm in RIPv2 implementations.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=F_fDkJN3R4w" target="_blank" rel="noopener noreferrer">
+            🎥 Split Horizon and Poison Reverse Visualization
+            <small>Clear animation comparing simple split horizon vs poisoned updates.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/split-horizon" target="_blank" rel="noopener noreferrer">
+            📝 GATE Overflow: Split Horizon &amp; Poison Reverse Problems
+            <small>GATE MCQs testing loop behavior and packet sizes under poison reverse.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 13.14 Comprehensive Link-State vs Distance-Vector Comparison -->
+    <section id="s13-compare" class="section-in-uni content-section" data-chapter="13" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Link-State vs Distance-Vector comparison memory CPU convergence overhead">
+      <div class="section-header">
+        <span class="section-number">13.14</span>
+        <h2>Comprehensive Link-State vs Distance-Vector Comparison <button class="bookmark-btn" data-id="s13-compare" data-label="Comprehensive Link-State vs Distance-Vector Comparison" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 Uni Unit II</span>
+<span>Prescribed syllabus topic: <strong>Comprehensive Comparison: Link-State vs Distance-Vector</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. Architectural Synthesis</h3>
+        <p>The choice between <strong>Link-State</strong> and <strong>Distance-Vector</strong> represents one of the most fundamental trade-offs in computer systems engineering: <em>global centralized computation over shared state</em> versus <em>decentralized iterative computation over distributed state</em>. Both paradigms achieve distributed routing, but with radically different performance, scaling, and operational profiles.</p>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Evaluation Dimension</th>
+              <th>Link-State (e.g., OSPF, IS-IS)</th>
+              <th>Distance-Vector (e.g., RIP, early IGRP)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Algorithmic Basis</strong></td>
+              <td>Dijkstra's Shortest Path First (SPF)</td>
+              <td>Distributed Bellman-Ford Recurrence</td>
+            </tr>
+            <tr>
+              <td><strong>Network Topology Knowledge</strong></td>
+              <td>Global: Every router possesses identical full graph</td>
+              <td>Local: Routers know only cost/direction reported by neighbors</td>
+            </tr>
+            <tr>
+              <td><strong>Information Dissemination</strong></td>
+              <td>Reliable Flooding to entire autonomous area</td>
+              <td>Point-to-point unicast/multicast to direct neighbors only</td>
+            </tr>
+            <tr>
+              <td><strong>Packet Payload Contents</strong></td>
+              <td>Link-State Advertisements (local adjacencies &amp; link costs)</td>
+              <td>Full Routing Table (all destinations and estimated costs)</td>
+            </tr>
+            <tr>
+              <td><strong>Convergence Speed</strong></td>
+              <td>Extremely Fast (typically sub-second: $O(V \log V)$ local CPU)</td>
+              <td>Slow (periodic intervals; bounded by count-to-infinity)</td>
+            </tr>
+            <tr>
+              <td><strong>Susceptibility to Routing Loops</strong></td>
+              <td>Transient during SPF computation; no count-to-infinity</td>
+              <td>Severe; requires Split Horizon, Poison Reverse, Holddowns</td>
+            </tr>
+            <tr>
+              <td><strong>Router Memory Overhead</strong></td>
+              <td>High: $O(V + E)$ full LSDB graph stored in RAM</td>
+              <td>Low: $O(V)$ routing table entries</td>
+            </tr>
+            <tr>
+              <td><strong>CPU Processing Overhead</strong></td>
+              <td>High: Dijkstra SPF execution on every link state change</td>
+              <td>Low: Simple vector addition and minimum search</td>
+            </tr>
+            <tr>
+              <td><strong>Network Bandwidth Utilization</strong></td>
+              <td>Low at steady state (only triggered differential updates)</td>
+              <td>High (full tables sent periodically, e.g., every 30s)</td>
+            </tr>
+            <tr>
+              <td><strong>Scalability &amp; Hierarchy</strong></td>
+              <td>Highly scalable via multi-area hierarchy (OSPF Areas)</td>
+              <td>Limited to small domains (RIP max 15 hops)</td>
+            </tr>
+            <tr>
+              <td><strong>Metric Flexibility</strong></td>
+              <td>Arbitrary dimensionless cost (bandwidth-based, delay, etc.)</td>
+              <td>Rigid integer hop count (1 to 15)</td>
+            </tr>
+            <tr>
+              <td><strong>Industrial Standardization</strong></td>
+              <td>RFC 2328 (OSPFv2), RFC 5340 (OSPFv3), ISO/IEC 10589 (IS-IS)</td>
+              <td>RFC 1058 (RIPv1), RFC 2453 (RIPv2)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Deep-Dive: Message Complexity Analysis</h3>
+        <p>Let $N = |V|$ be the number of nodes, and $E$ be the number of edges:</p>
+        <ul>
+          <li><strong>Link-State Message Complexity:</strong> When an edge metric changes, the LSA is flooded over all edges. In the worst-case, each node forwards the LSA over each of its links, yielding $O(N \cdot E)$ messages. However, steady-state bandwidth is virtually zero because LSAs are refreshed only every 30 minutes in OSPF.</li>
+          <li><strong>Distance-Vector Message Complexity:</strong> Messages are exchanged only between directly connected neighbors. But updates occur periodically regardless of topology changes. Thus, bandwidth is consumed continuously, proportional to $O(\text{periodic\_rate} \cdot N \cdot \text{deg}(v))$.</li>
+        </ul>
+      </div>
+
+      <div class="ascii-box">
+DECISION FLOWCHART: WHICH PROTOCOL TO DEPLOY?
+
+                        Network Scale?
+                         /          \
+            <= 15 Hops /             \ > 15 Hops or Enterprise/ISP
+                      /               \
+         Simple Topology?             Need Traffic Engineering / Multi-Area?
+            /        \                           |
+         Yes          No                        Yes
+          |            |                         |
+       Deploy        Deploy                    Deploy
+      RIP / DV     Link-State               OSPF or IS-IS
+     (Legacy/IoT)   (OSPF)             (Carrier-grade SPF Engine)
+      </div>
+
+      <div class="confusion-box">
+        <h3>3. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "Distance-vector is inherently inferior, so it is completely extinct in modern networking."<br>
+        <strong>Reality:</strong> False! While classical RIP is rare in enterprise cores, modern advanced protocols evolved from distance-vector: <strong>BGP (Border Gateway Protocol)</strong> is a <em>Path-Vector</em> protocol (a sophisticated descendant of DV that carries the entire AS-path to completely banish loops), and Cisco's <strong>EIGRP</strong> is an advanced distance-vector protocol using the DUAL algorithm to achieve instantaneous, loop-free backup convergence.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>4. University Exam &amp; GATE Tips</h3>
+        <p>University exams frequently demand: <em>"Compare Distance-Vector and Link-State on at least 6 points."</em> Memorize the 12-row table above. High-scoring answers contrast (1) Topology knowledge, (2) Algorithmic engine, (3) Update message contents, (4) Convergence speed, (5) Loop behavior, and (6) Memory/CPU overhead.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Comparative academic lectures and standardized RFC benchmarks.</div>
+        <div class="resource-grid">
+          <a href="https://www.cisco.com/c/en/us/support/docs/ip/enhanced-interior-gateway-routing-protocol-eigrp/16406-subprotocol.html" target="_blank" rel="noopener noreferrer">
+            📘 Cisco Technical Whitepaper: Routing Protocol Comparison
+            <small>In-depth architectural comparison between Distance-Vector, Link-State, and Hybrid.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=kY31Kj8xV3k" target="_blank" rel="noopener noreferrer">
+            🎥 Link State vs Distance Vector Routing Video
+            <small>Comprehensive visual comparison of packet flows and algorithmic performance.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/routing-protocols" target="_blank" rel="noopener noreferrer">
+            📝 GATE Overflow: Routing Protocol Comparison MCQs
+            <small>Curated GATE questions comparing message complexity, convergence, and loops.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 13.15 The Complete Routing Pipeline: Telemetry to Wire -->
+    <section id="s13-chain" class="section-in-uni content-section" data-chapter="13" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Internet routing protocols RIP OSPF IS-IS BGP real-world routing architecture">
+      <div class="section-header">
+        <span class="section-number">13.15</span>
+        <h2>The Complete Routing Pipeline: Telemetry to Wire <button class="bookmark-btn" data-id="s13-chain" data-label="The Complete Routing Pipeline: Telemetry to Wire" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 Uni Unit II</span>
+<span>Prescribed syllabus topic: <strong>Real-World Internet Routing Protocols: RIP, OSPF, BGP</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p>The <strong>Routing Pipeline</strong> is the end-to-end hardware and software pipeline within an Internet router that translates physical layer link telemetry into control-plane routing protocol state, computes optimal paths, compiles the Routing Information Base (RIB), and programs high-speed Ternary Content Addressable Memory (TCAM) Application-Specific Integrated Circuits (ASICs) in the data plane Forwarding Information Base (FIB).</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why It Exists: Separation of Control Plane &amp; Data Plane</h3>
+        <p>Modern routers forward millions of packets per second per interface (terabit-per-second aggregate throughput). A general-purpose CPU executing Dijkstra's algorithm or parsing RIP messages cannot process line-rate packets. Networking architecture strictly decouples:</p>
+        <ul>
+          <li><strong>Control Plane (Brain):</strong> Runs in software on a general-purpose CPU. Exchanges protocol packets (OSPF LSAs, BGP updates), builds the graph, runs Dijkstra/Bellman-Ford, and populates the master RIB.</li>
+          <li><strong>Data Plane (Muscle):</strong> Implemented in specialized hardware (ASICs, TCAM, Network Processors). Performs zero graph calculations; executes $O(1)$ hardware lookups in the FIB to switch packet bits from an ingress port to the correct egress port.</li>
+        </ul>
+      </div>
+
+      <div class="ascii-box">
++========================================================================+
+|                    CONTROL PLANE (Software / CPU)                      |
+|                                                                        |
+|  [Physical Link Telemetry]  (Carrier Detect, BFD, Bit Error Rate)      |
+|               |                                                        |
+|               V                                                        |
+|  [Routing Protocol Daemon]  (OSPF / IS-IS / BGP)                       |
+|               |                                                        |
+|               V                                                        |
+|  [Topology Database (LSDB)] ===> [Dijkstra SPF Engine]                 |
+|                                         |                              |
+|                                         V                              |
+|                          [Routing Information Base (RIB)]              |
++========================================================================+
+                                   ||  (RIB-to-FIB Compiler / IPC)
+                                   \/
++========================================================================+
+|                     DATA PLANE (Hardware / TCAM / ASICs)               |
+|                                                                        |
+|  [Forwarding Information Base (FIB)]  (Prefix -> Egress Port + Next-Hop)|
+|               ^                                                        |
+|               | (Hardware Lookups at Line Rate: 100 Gbps+)             |
+|   [Ingress Port] ===> [TCAM Lookup] ===> [Switch Fabric] ===> [Egress] |
++========================================================================+
+      </div>
+
+      <div class="example-box">
+        <h3>3. Step-by-Step Walkthrough of the Pipeline</h3>
+        <ol>
+          <li><strong>Physical Telemetry:</strong> An optical fiber is cut. The Physical Layer transceiver detects loss of carrier (LOS) in 10 microseconds. Bidirectional Forwarding Detection (BFD) confirms neighbor dead within 30 milliseconds.</li>
+          <li><strong>Protocol Event:</strong> The OSPF daemon on the CPU receives the interface down interrupt. It updates its local link list and increments its LSA sequence number.</li>
+          <li><strong>Flooding:</strong> The new LSA is flooded out of all remaining active interfaces to all neighboring routers.</li>
+          <li><strong>LSDB Update &amp; SPF Run:</strong> The router installs the LSA in its LSDB and runs Dijkstra's algorithm, recomputing the Shortest Path Tree.</li>
+          <li><strong>RIB Update:</strong> The new shortest paths are written to the software <strong>Routing Information Base (RIB)</strong>. If multiple protocols exist, administrative distance selects the winner.</li>
+          <li><strong>FIB Programming:</strong> The router's control processor compiles the RIB into a compact prefix-to-port lookup table and pushes it over the PCIe bus into the line cards' hardware <strong>Forwarding Information Base (FIB)</strong>.</li>
+          <li><strong>Wire Forwarding:</strong> Incoming data packets hit the line card ASIC, execute a parallel TCAM match on the destination IPv4 address, and are switched directly to the egress buffer without ever touching the CPU.</li>
+        </ol>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>Routing Information Base (RIB)</th>
+              <th>Forwarding Information Base (FIB)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Operating Plane</strong></td>
+              <td>Control Plane (Software)</td>
+              <td>Data Plane (Hardware ASICs)</td>
+            </tr>
+            <tr>
+              <td><strong>Storage Medium</strong></td>
+              <td>Standard DRAM memory on Supervisor CPU</td>
+              <td>Ultra-fast TCAM / SRAM on individual Line Cards</td>
+            </tr>
+            <tr>
+              <td><strong>Contents</strong></td>
+              <td>All routes learned from all protocols (OSPF, BGP, Static)</td>
+              <td>Only active, best forwarding entries (Prefix &rarr; Next-Hop/Interface)</td>
+            </tr>
+            <tr>
+              <td><strong>Lookup Speed</strong></td>
+              <td>Millisecond scale (trie walk in software)</td>
+              <td>Nanosecond scale (single clock cycle parallel TCAM match)</td>
+            </tr>
+            <tr>
+              <td><strong>Purpose</strong></td>
+              <td>Policy selection, route selection, graph calculation</td>
+              <td>Line-rate packet switching from ingress to egress port</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="confusion-box">
+        <h3>4. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "Every incoming IP packet triggers a Dijkstra calculation to find where to go."<br>
+        <strong>Reality:</strong> Absolutely not! If routers computed Dijkstra per packet, the Internet would instantly grind to a halt. Dijkstra runs only when <em>topology changes</em> (control plane, rare). Packets are forwarded using static, precomputed hardware table lookups (data plane, constant time $O(1)$).</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>5. University Exam &amp; GATE Tips</h3>
+        <p>Remember the distinction: <strong>Routing</strong> is the control-plane process of building the map and filling the routing table. <strong>Forwarding</strong> is the data-plane process of moving a packet from an input link interface to the appropriate output link interface based on the forwarding table.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Engineering resources on router architecture and control/data plane separation.</div>
+        <div class="resource-grid">
+          <a href="https://www.cisco.com/c/en/us/support/docs/ip/express-forwarding-cef/13706-20.html" target="_blank" rel="noopener noreferrer">
+            📘 Cisco Express Forwarding (CEF) Architecture
+            <small>Authoritative Cisco whitepaper on RIB, FIB, and adjacency table hardware compilation.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=iH-vN9iV2p8" target="_blank" rel="noopener noreferrer">
+            🎥 Control Plane vs Data Plane in Computer Networking
+            <small>Clear architectural breakdown of how routers separate brains from packet forwarding.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/routing-vs-forwarding" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on Routing vs Forwarding
+            <small>GATE exam questions distinguishing routing algorithms from packet switching.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 13.16 University Exam Traps & Common Fallacies -->
+    <section id="s13-traps" class="section-in-uni content-section" data-chapter="13" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Routing algorithm exam traps Gotchas fallacies negative weights convergence">
+      <div class="section-header">
+        <span class="section-number">13.16</span>
+        <h2>University Exam Traps &amp; Common Fallacies <button class="bookmark-btn" data-id="s13-traps" data-label="University Exam Traps &amp; Common Fallacies" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 Uni Unit II</span>
+<span>Prescribed syllabus topic: <strong>Routing Algorithm Exam Traps, Gotchas & Fallacies</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. Exam Trap Catalog</h3>
+        <p>This section documents the most pervasive conceptual misconceptions, trick questions, and grading pitfalls that appear on university end-semester examinations and competitive exams like GATE in the routing protocol domain.</p>
+      </div>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <h4>Trap 1: The Sequence Number Wrap Fallacy</h4>
+          <p><strong>The Trap:</strong> Assuming link-state sequence numbers increment as signed integers from $0$ to $+2^{31}-1$.<br>
+          <strong>The Reality:</strong> OSPF sequence numbers are signed 32-bit integers, but they start at <code>0x80000001</code> ($-2^{31}+1$) and increment toward <code>0x7FFFFFFF</code> ($+2^{31}-1$). <code>0x80000000</code> is reserved. A sequence number is higher if it is algebraically greater within the circular Lollipop space.</p>
+        </div>
+
+        <div class="concept-card">
+          <h4>Trap 2: Split Horizon Universality</h4>
+          <p><strong>The Trap:</strong> Believing that Split Horizon with Poison Reverse completely cures all count-to-infinity routing loops.<br>
+          <strong>The Reality:</strong> Poison reverse cures <em>two-node direct loops</em> only. Multi-node loops (loops involving 3 or more routers in a ring) completely bypass split horizon because the update arrives via an alternate physical port.</p>
+        </div>
+
+        <div class="concept-card">
+          <h4>Trap 3: LSA vs Routing Table Flooding</h4>
+          <p><strong>The Trap:</strong> Stating that "In Link-State routing, routers flood their routing tables to all nodes."<br>
+          <strong>The Reality:</strong> Major error! Routers flood <em>Link-State Advertisements</em> (local interface states and neighbor costs), never routing tables. In Distance-Vector, routers send their <em>routing tables</em>, but only to direct neighbors, never flooded.</p>
+        </div>
+
+        <div class="concept-card">
+          <h4>Trap 4: Dijkstra Dynamic Execution</h4>
+          <p><strong>The Trap:</strong> Thinking Dijkstra's algorithm executes dynamically for every transit data packet.<br>
+          <strong>The Reality:</strong> Dijkstra executes in the control plane only upon receipt of a new or updated LSA. Data packets are forwarded in hardware via TCAM table matches in constant time.</p>
+        </div>
+
+        <div class="concept-card">
+          <h4>Trap 5: RIP Max Distance Boundary</h4>
+          <p><strong>The Trap:</strong> Calculating a valid RIP path as 16 hops.<br>
+          <strong>The Reality:</strong> 16 is defined as <em>Infinity (Unreachable)</em>. The maximum valid path length in RIP is strictly <strong>15 hops</strong>.</p>
+        </div>
+
+        <div class="concept-card">
+          <h4>Trap 6: Equal Cost Multi-Path (ECMP)</h4>
+          <p><strong>The Trap:</strong> Assuming Dijkstra can produce only one unique shortest path tree.<br>
+          <strong>The Reality:</strong> If multiple paths yield the identical least cost, modern link-state implementations install all equal paths into the FIB for load balancing across physical interfaces.</p>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Common Student Statement</th>
+              <th>Technical Verdict</th>
+              <th>Correct Scientific Explanation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><em>"OSPF sends periodic updates every 30 seconds like RIP."</em></td>
+              <td><span style="color: #ef4444; font-weight: bold;">WRONG</span></td>
+              <td>OSPF sends updates only when link state changes (triggered), plus a slow 30-minute refresh. RIP sends full tables every 30 seconds.</td>
+            </tr>
+            <tr>
+              <td><em>"Flooding causes broadcast storms that never stop."</em></td>
+              <td><span style="color: #ef4444; font-weight: bold;">WRONG</span></td>
+              <td>Flooding stops because routers store received LSAs, drop duplicates, and never re-flood an LSA out of the incoming link interface.</td>
+            </tr>
+            <tr>
+              <td><em>"Distance-vector protocols know the entire path to the destination."</em></td>
+              <td><span style="color: #ef4444; font-weight: bold;">WRONG</span></td>
+              <td>They only know the total metric (distance) and next-hop neighbor (vector). Path-Vector (BGP) knows the path; Distance-Vector does not.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="exam-tip">
+        <h3>Examiner's Warning: Step-by-Step Marking</h3>
+        <p>In subjective university evaluations, numerical problems on Bellman-Ford or Dijkstra carry between 10 and 15 marks. <strong>Never write just the final routing table!</strong> Write out the initial state, show the evaluation of each neighbor's offer with explicit arithmetic, note when a route is poisoned or updated, and draw the final forwarding table with next-hop interfaces clearly indicated.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Exam preparation resources and past competitive exam analysis.</div>
+        <div class="resource-grid">
+          <a href="https://gateoverflow.in/questions/computer-science/computer-networks/routing" target="_blank" rel="noopener noreferrer">
+            📘 GATE Overflow: Computer Networks Routing Category
+            <small>Extensive repository of trick questions, solutions, and community discussions.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=H8_s4NqYJcM" target="_blank" rel="noopener noreferrer">
+            🎥 Common Routing Protocol Mistakes in Networking Exams
+            <small>Video lecture breaking down the top 10 exam mistakes students make in network layer.</small>
+          </a>
+          <a href="https://nptel.ac.in/courses/106105183" target="_blank" rel="noopener noreferrer">
+            📝 NPTEL Computer Networks: Routing Protocols Module
+            <small>IIT Kharagpur lectures covering algorithmic details and exam-focused derivations.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 13.17 Practice Problem Set & Quantitative Drills -->
+    <section id="s13-practice" class="section-in-uni content-section" data-chapter="13" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="University and GATE routing numericals practice step-by-step solutions">
+      <div class="section-header">
+        <span class="section-number">13.17</span>
+        <h2>Practice Problem Set &amp; Quantitative Drills <button class="bookmark-btn" data-id="s13-practice" data-label="Practice Problem Set &amp; Quantitative Drills" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 Uni Unit II</span>
+<span>Prescribed syllabus topic: <strong>University & GATE Routing Table Numericals</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>Mastery Practice Problems</h3>
+        <p>Solve these three fully worked quantitative problems modeling typical university end-semester and competitive engineering exam questions.</p>
+      </div>
+
+      <div class="example-box">
+        <h3>Problem 1: Distance-Vector Neighbor Evaluation (GATE Level)</h3>
+        <p><strong>Problem:</strong> Router $R_1$ has direct physical links to neighbors $A$, $B$, and $C$ with costs $c(R_1, A) = 2$, $c(R_1, B) = 5$, and $c(R_1, C) = 4$. $R_1$ receives the following distance vectors for destinations $D_1$ and $D_2$:</p>
+        <ul>
+          <li>From Neighbor $A$: $D_A(D_1) = 6$, $D_A(D_2) = 11$</li>
+          <li>From Neighbor $B$: $D_B(D_1) = 2$, $D_B(D_2) = 8$</li>
+          <li>From Neighbor $C$: $D_C(D_1) = 4$, $D_C(D_2) = 7$</li>
+        </ul>
+        <p><strong>Task:</strong> Compute the new distance vector entries for $R_1$ to destinations $D_1$ and $D_2$, and determine the next-hop router for each.</p>
+
+        <h4>Solution:</h4>
+        <p>Applying the Bellman-Ford optimality equation $d_{R_1}(y) = \min_{v \in \{A, B, C\}} \{ c(R_1, v) + d_v(y) \}$:</p>
+        <p><strong>For Destination $D_1$:</strong></p>
+        <ul>
+          <li>Via $A$: $c(R_1, A) + D_A(D_1) = 2 + 6 = 8$</li>
+          <li>Via $B$: $c(R_1, B) + D_B(D_1) = 5 + 2 = 7$</li>
+          <li>Via $C$: $c(R_1, C) + D_C(D_1) = 4 + 4 = 8$</li>
+          <li>Minimum cost = $\min\{8, 7, 8\} = \mathbf{7}$. Next-Hop = <strong>B</strong>.</li>
+        </ul>
+        <p><strong>For Destination $D_2$:</strong></p>
+        <ul>
+          <li>Via $A$: $c(R_1, A) + D_A(D_2) = 2 + 11 = 13$</li>
+          <li>Via $B$: $c(R_1, B) + D_B(D_2) = 5 + 8 = 13$</li>
+          <li>Via $C$: $c(R_1, C) + D_C(D_2) = 4 + 7 = 11$</li>
+          <li>Minimum cost = $\min\{13, 13, 11\} = \mathbf{11}$. Next-Hop = <strong>C</strong>.</li>
+        </ul>
+        <p><strong>Final Table at $R_1$:</strong> $D_{R_1}(D_1) = 7$ (via $B$), $D_{R_1}(D_2) = 11$ (via $C$).</p>
+      </div>
+
+      <div class="example-box">
+        <h3>Problem 2: Count-to-Infinity Termination Calculation</h3>
+        <p><strong>Problem:</strong> Three routers are connected in a line: $A \text{ --- } B \text{ --- } C$. Link costs are $c(A, B) = 1$ and $c(B, C) = 1$. The protocol is RIP with periodic updates every 30 seconds and $\infty = 16$. Split horizon is <em>disabled</em>. At time $t = 0$, the physical link between $B$ and $C$ fails. Assuming synchronized update rounds, at what time (in seconds) will both routers $A$ and $B$ finally agree that $C$ is unreachable?</p>
+
+        <h4>Solution:</h4>
+        <ol>
+          <li>Initial state ($t = 0$): $d_B(C) = 1$ (direct), $d_A(C) = 2$ (via $B$).</li>
+          <li>At $t = 0^+$, link $B-C$ breaks. $B$ loses direct link, but sees $A$'s stale vector $d_A(C) = 2$. $B$ calculates $d_B(C) = c(B, A) + d_A(C) = 1 + 2 = 3$ (via $A$).</li>
+          <li>At $t = 30\text{s}$ (Round 1): $B$ advertises $d_B(C) = 3$ to $A$. $A$ updates $d_A(C) = 1 + 3 = 4$.</li>
+          <li>At $t = 60\text{s}$ (Round 2): $A$ advertises $d_A(C) = 4$ to $B$. $B$ updates $d_B(C) = 1 + 4 = 5$.</li>
+          <li>In each full round of two exchanges ($2 \times 30 = 60\text{s}$), the metrics increase by 2.</li>
+          <li>$B$'s sequence of advertised values: $3, 5, 7, 9, 11, 13, 15, 16 (\infty)$.</li>
+          <li>$B$ sets its metric to 15 in round 7, and upon receiving $A$'s update of 16, $B$ caps at 16 in round 8 ($t = 14 \times 30\text{s} = 420\text{s}$).</li>
+          <li>At $t = 15 \times 30\text{s} = \mathbf{450\text{ seconds}}$ ($7.5\text{ minutes}$), both routers converge on metric 16 and cease advertising $C$.</li>
+        </ol>
+      </div>
+
+      <div class="example-box">
+        <h3>Problem 3: Link-State Flooding Message Bound</h3>
+        <p><strong>Problem:</strong> An enterprise OSPF network contains $N = 20$ routers and $E = 45$ point-to-point links. When a link fails, the detecting router originates an LSA. Assuming reliable flooding where each router receives the LSA and re-transmits it over all active interfaces except the one on which it arrived, calculate the exact upper bound on the number of LSA transmissions across the network.</p>
+
+        <h4>Solution:</h4>
+        <ol>
+          <li>Each bidirectional link consists of two directional transmission opportunities (one in each direction).</li>
+          <li>Total directional link channels = $2 \times E = 2 \times 45 = 90$ link transmissions.</li>
+          <li>The failed link cannot transmit ($2 \times 1 = 2$ transmissions eliminated). Remaining active channels = $90 - 2 = 88$.</li>
+          <li>Because a router never echoes an LSA back over the incoming interface, exactly one transmission occurs over each active half-link.</li>
+          <li>Therefore, the maximum number of LSA transmissions across the domain is bounded at <strong>88 LSA packet transmissions</strong>.</li>
+        </ol>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Practice problem archives and step-by-step video solutions.</div>
+        <div class="resource-grid">
+          <a href="https://gateoverflow.in/questions/computer-science/computer-networks" target="_blank" rel="noopener noreferrer">
+            📘 GATE Overflow: Solved CN Numerical Question Bank
+            <small>Over 500 peer-reviewed questions with complete mathematical derivations.</small>
+          </a>
+          <a href="https://www.youtube.com/playlist?list=PLBlnK6fEyqRgMCUAG0XRw78UA8qnv6jEx" target="_blank" rel="noopener noreferrer">
+            🎥 Neso Academy: Computer Networks Routing Playlist
+            <small>Comprehensive video tutorials working through routing numericals on blackboard.</small>
+          </a>
+          <a href="https://practice.geeksforgeeks.org/explore?page=1&category=Computer%20Networks" target="_blank" rel="noopener noreferrer">
+            📝 GeeksforGeeks: Computer Networks Practice Drills
+            <small>Interactive quizzes and multiple-choice problem sets on routing protocols.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 13.18 Chapter Summary, Self-Check & Study Path -->
+    <section id="s13-summary" class="section-in-uni content-section" data-chapter="13" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Unit II routing algorithms master architectural summary cheat sheet review">
+      <div class="section-header">
+        <span class="section-number">13.18</span>
+        <h2>Chapter Summary, Self-Check &amp; Study Path <button class="bookmark-btn" data-id="s13-summary" data-label="Chapter Summary, Self-Check &amp; Study Path" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 Uni Unit II</span>
+<span>Prescribed syllabus topic: <strong>Unit II Routing Algorithms Master Architectural Summary</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. Chapter Summary: Core Takeaways</h3>
+        <p>This chapter examined the two fundamental paradigms that govern interior routing across packet-switched networks:</p>
+        <ul>
+          <li><strong>Link-State Routing:</strong> Built upon reliable flooding of local neighbor adjacencies (LSAs), synchronizing an identical global topology graph (LSDB) on every router, and running Dijkstra's Shortest Path First algorithm locally to compute loop-free forwarding trees. Fast convergence, high memory/CPU requirements, zero count-to-infinity. Exemplified by OSPF and IS-IS.</li>
+          <li><strong>Distance-Vector Routing:</strong> Built upon the distributed Bellman-Ford dynamic programming recurrence, where routers periodically exchange their entire routing tables only with directly connected neighbors ("routing by rumor"). Extremely lightweight memory footprint, low CPU overhead, but vulnerable to convergence delays and the catastrophic Count-to-Infinity problem. Exemplified by RIP.</li>
+          <li><strong>Loop Mitigation:</strong> Simple Split Horizon, Poison Reverse, Triggered Updates, and Holddown Timers mitigate two-node distance-vector loops, but multi-node loops still require metric bounding ($\infty = 16$).</li>
+          <li><strong>System Architecture:</strong> Routers strictly decouple the software Control Plane (RIB, routing protocols, Dijkstra) from the line-rate hardware Data Plane (FIB, TCAM, ASIC switching).</li>
+        </ul>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Rapid Self-Check Quiz</h3>
+        <div class="concept-grid">
+          <div class="concept-card">
+            <h4>Q1: Information Horizon</h4>
+            <p><strong>Question:</strong> What does an LSA contain versus what a RIP update contains?<br>
+            <strong>Answer:</strong> An LSA contains only the router's local physical neighbors and link costs. A RIP update contains the router's entire routing table (all known destinations and total costs).</p>
+          </div>
+          <div class="concept-card">
+            <h4>Q2: Algorithm Engine</h4>
+            <p><strong>Question:</strong> Which mathematical algorithm drives Link-State vs Distance-Vector?<br>
+            <strong>Answer:</strong> Link-State uses Dijkstra's Shortest Path First algorithm locally; Distance-Vector uses the Distributed Bellman-Ford recurrence across neighbors.</p>
+          </div>
+          <div class="concept-card">
+            <h4>Q3: Count-to-Infinity</h4>
+            <p><strong>Question:</strong> Why is $\infty$ set to 16 in RIP?<br>
+            <strong>Answer:</strong> To bound the maximum duration of count-to-infinity loops upon link failure, limiting failure recovery to at most 16 exchange cycles.</p>
+          </div>
+          <div class="concept-card">
+            <h4>Q4: Poison Reverse</h4>
+            <p><strong>Question:</strong> How does Poison Reverse differ from Simple Split Horizon?<br>
+            <strong>Answer:</strong> Simple split horizon silently suppresses the route out the incoming interface; Poison Reverse explicitly advertises it with metric $\infty$ (16).</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <h3>3. Next Chapter Preview: Logical Addressing &amp; IPv4</h3>
+        <p>In <strong>Chapter 14: Logical Addressing &amp; IPv4</strong>, we transition from routing algorithms to the universal addressing format that makes global packet routing possible:</p>
+        <ul>
+          <li>The 32-bit IPv4 address structure: Network Prefix versus Host Identifier.</li>
+          <li>Classless Inter-Domain Routing (CIDR) and slash notation (/24, /27, /30).</li>
+          <li>Subnet masks, bitwise AND operations, network IDs, and directed broadcast addresses.</li>
+          <li>Variable Length Subnet Masking (VLSM) step-by-step numerical drills.</li>
+          <li>Longest Prefix Match (LPM) forwarding logic in hardware TCAM engines.</li>
+        </ul>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Complete curriculum references and next chapter navigation.</div>
+        <div class="resource-grid">
+          <a href="ch12-shortest-path-routing.html">
+            📘 Chapter 12: Shortest Path Routing
+            <small>Review Dijkstra and Bellman-Ford foundational graph theory.</small>
+          </a>
+          <a href="ch14-logical-addressing-ipv4.html">
+            📘 Chapter 14: Logical Addressing &amp; IPv4
+            <small>Proceed to IP addressing, CIDR, subnetting, and longest prefix matching.</small>
+          </a>
+          <a href="../index.html">
+            🏠 MiniBook Course Overview &amp; Syllabus
+            <small>View complete syllabus map, unit progress, and mock exam schedules.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+  <!-- PREV/NEXT NAV -->
+  <div class="prev-next">
+    <a href="ch12-shortest-path-routing.html" class="nav-btn">&larr; Ch 12: Shortest Path Routing</a>
+    <a href="ch14-logical-addressing-ipv4.html" class="nav-btn primary">Next: Ch 14 Logical Addressing &amp; IPv4 &rarr;</a>
+  </div>
+
+</div>
+</main>
+
+<!-- FLOATING MODE PANEL -->
+<div id="mode-panel">
+  <button class="mode-btn active" data-mode="all">📚 All</button>
+  <button class="mode-btn uni-btn" data-mode="uni">🎓 Uni</button>
+  <button class="mode-btn gate-btn" data-mode="gate">⚡ GATE</button>
+  <button class="mode-btn adv-btn" data-mode="advanced">🔬 Adv</button>
+</div>
+
+<!-- TTS FLOATING PANEL -->
+<div id="tts-panel">
+  <div class="tts-controls">
+    <button class="tts-btn" id="tts-play" title="Play/Pause">▶</button>
+    <button class="tts-btn" id="tts-stop" title="Stop">⏹</button>
+    <div class="tts-speed"><span>Speed</span><input type="range" id="tts-rate" min="0.5" max="2" step="0.1" value="1"><span id="tts-rate-label">1.0x</span></div>
+  </div>
+  <div class="tts-voice"><select id="tts-voice-select"><option>Loading voices…</option></select></div>
+</div>
+
+<!-- SEARCH MODAL -->
+<div id="search-modal">
+  <div class="search-box">
+    <div class="search-input-wrap"><span class="s-icon">🔍</span><input id="search-input" type="text" placeholder="Search chapters, topics, protocols…" autocomplete="off"></div>
+    <div id="search-results"></div>
+    <div class="search-hint"><span><kbd>↵</kbd> to navigate</span><span><kbd>Esc</kbd> to close</span><span><kbd>Ctrl+K</kbd> to open</span></div>
+  </div>
+</div>
+
+<!-- MOBILE NAV -->
+<nav id="mobile-nav">
+  <button class="mobile-nav-btn" onclick="SidebarManager?.toggle()"><span class="icon">☰</span>Menu</button>
+  <a href="../index.html" class="mobile-nav-btn"><span class="icon">🏠</span>Home</a>
+  <a href="ch13-link-state-distance-vector.html" class="mobile-nav-btn active"><span class="icon">📖</span>Chapters</a>
+  <a href="../exams/mock-exam.html" class="mobile-nav-btn"><span class="icon">📝</span>Exams</a>
+  <button class="mobile-nav-btn" onclick="SearchManager?.open()"><span class="icon">🔍</span>Search</button>
+</nav>
+
+<div id="toast-container"></div>
+<script src="../assets/js/state.js"></script>
+<script src="../assets/js/core.js"></script>
+<script src="../assets/js/modes.js"></script>
+<script src="../assets/js/tts.js"></script>
+<script src="../assets/js/timer-settings.js"></script>
+<script src="../assets/js/timer.js"></script>
+<script src="../assets/js/timer-analytics.js"></script>
+<script src="../assets/js/timer-notifications.js"></script>
+<script src="../assets/js/timer-ui.js"></script>
+<script src="../assets/js/print.js"></script>
+<script src="../assets/js/notes.js"></script>
+<script src="../assets/js/glossary.js"></script>
+
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['$', '$'], ['\(', '\)']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>

@@ -66,7 +66,7 @@
       <a href="#s-numerical-practice" class="sidebar-link"><span class="link-icon">🧮</span>5.12 Worked Numerical Practice</a>
       <a href="#s-summary-ch5" class="sidebar-link"><span class="link-icon">🎯</span>5.13 Summary & Exam Traps</a>
     </div>
-                <div class="sidebar-section">
+    <div class="sidebar-section">
       <div class="sidebar-section-label part-label part-i">Part I — Introduction</div>
       <a href="ch01-fundamentals.html" class="sidebar-link"><span class="link-icon">📡</span>Ch 1 — Fundamentals</a>
       <a href="ch02-types-topologies.html" class="sidebar-link"><span class="link-icon">🔗</span>Ch 2 — Types &amp; Topologies</a>
@@ -85,6 +85,18 @@
       <a href="ch09-protocols-sliding.html" class="sidebar-link"><span class="link-icon">🔄</span>Ch 9 — Protocols &amp; Sliding Window</a>
       <a href="ch10-mac-ethernet.html" class="sidebar-link"><span class="link-icon">🌐</span>Ch 10 — MAC &amp; Ethernet</a>
     </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label part-label part-iv">Part IV — Network Layer</div>
+      <a href="ch11-network-layer-foundations.html" class="sidebar-link"><span class="link-icon">🗺️</span>Ch 11 — Network Layer Foundations</a>
+      <a href="ch12-shortest-path-routing.html" class="sidebar-link"><span class="link-icon">🧭</span>Ch 12 — Shortest Path Routing</a>
+      <a href="ch13-link-state-distance-vector.html" class="sidebar-link part-iv"><span class="link-icon">🔁</span>Ch 13 — Link-State &amp; Distance-Vector</a>
+      <a href="ch14-logical-addressing-ipv4.html" class="sidebar-link part-iv"><span class="link-icon">🏷️</span>Ch 14 — Logical Addressing &amp; IPv4</a>
+      <a href="ch15-ipv4-internals.html" class="sidebar-link part-iv"><span class="link-icon">📦</span>Ch 15 — IPv4 Internals</a>
+      
+      <a href="ch17-address-mapping-icmp.html" class="sidebar-link part-iv"><span class="link-icon">🔎</span>Ch 17 — Address Mapping &amp; ICMP</a>
+      <a href="ch18-routers-switches-firewalls.html" class="sidebar-link part-iv"><span class="link-icon">🛡️</span>Ch 18 — Routers, Switches &amp; Firewalls</a>
+    </div>
+
     <div class="sidebar-section">
       <div class="sidebar-section-label">My Notes</div>
       <div id="notes-sidebar-list"></div>
@@ -105,27 +117,27 @@
       <a href="../index.html">Home</a><span>›</span><span>Part II — Physical Layer</span><span>›</span><span style="color:var(--tx-primary)">Chapter 5</span>
     </div>
     <div class="chapter-num">📶 Chapter 5 · Part II — Physical Layer</div>
-        <div class="chapter-part-banner part-ii">
+    <div class="chapter-part-banner part-ii">
       <span class="part-banner-badge">Part II</span>
       <span>Physical Layer</span>
     </div>
-    <h1 class="chapter-title">Physical Layer Fundamentals & Impairments</h1>
+    <h1 class="chapter-title">Physical Layer Fundamentals &amp; Impairments</h1>
     <div class="chapter-meta">
-      <span class="chapter-meta-item" style="background:var(--uni-bg-hd); border-color:var(--uni-b-hd); color:var(--uni-text); font-weight:700;">🎓 Uni Syllabus: Signaling & Fundamentals</span>
+      <span class="chapter-meta-item" style="background:var(--uni-bg-hd); border-color:var(--uni-b-hd); color:var(--uni-text); font-weight:700;">🎓 Uni Syllabus: Signaling &amp; Fundamentals</span>
       <span>⏱️ 55 min read</span>
       <span>📚 13 Sections</span>
       <span>🎓 Rigorous Mathematical Foundations</span>
-      <span>⚡ Nyquist, Shannon & SNR Practice</span>
+      <span>⚡ Nyquist, Shannon &amp; SNR Practice</span>
     </div>
   </div>
 
   <!-- UNIVERSITY SYLLABUS CALLOUT -->
   <div class="uni-syllabus-callout">
     <div class="uni-callout-title">🎓 Official University Syllabus Focus</div>
-    <div><strong>Physical Layer:</strong> Signaling fundamentals, analog vs digital signals, transmission impairments, and Nyquist/Shannon channel capacity.</div>
+    <div><strong>Physical Layer:</strong> Signaling fundamentals, analog vs digital signals, transmission impairments (attenuation, distortion, noise), and channel capacity theorems (Nyquist and Shannon).</div>
   </div>
 
-    <!-- UNIVERSITY SYLLABUS FILTER SWITCH -->
+  <!-- UNIVERSITY SYLLABUS FILTER SWITCH -->
   <div class="uni-mode-toggle-card">
     <div>
       <div style="font-weight:700; font-size:0.95rem; color:var(--tx-primary); display:flex; align-items:center; gap:0.4rem;">
@@ -149,748 +161,972 @@
       <a href="#s-phy-purpose" class="toc-item in-uni"><span class="toc-num">5.1</span>Purpose of Physical Layer <span class="toc-uni-tag">🎓 Uni Core</span></a>
       <a href="#s-data-signals" class="toc-item in-uni"><span class="toc-num">5.2</span>Data vs Signals <span class="toc-uni-tag">🎓 Uni Core</span></a>
       <a href="#s-periodic" class="toc-item in-uni"><span class="toc-num">5.3</span>Periodic vs Non-Periodic Signals <span class="toc-uni-tag">🎓 Uni Core</span></a>
-      <a href="#s-sine-wave" class="toc-item in-uni"><span class="toc-num">5.4</span>Sine Wave & Properties <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-sine-wave" class="toc-item in-uni"><span class="toc-num">5.4</span>Sine Wave &amp; Properties <span class="toc-uni-tag">🎓 Uni Core</span></a>
       <a href="#s-bitrate-baud" class="toc-item in-uni"><span class="toc-num">5.5</span>Bit Rate vs Baud Rate <span class="toc-uni-tag">🎓 Uni Core</span></a>
-      <a href="#s-attenuation" class="toc-item in-uni"><span class="toc-num">5.6</span>Attenuation & Decibels <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-attenuation" class="toc-item in-uni"><span class="toc-num">5.6</span>Attenuation &amp; Decibels <span class="toc-uni-tag">🎓 Uni Core</span></a>
       <a href="#s-distortion" class="toc-item in-uni"><span class="toc-num">5.7</span>Distortion <span class="toc-uni-tag">🎓 Uni Core</span></a>
-      <a href="#s-noise" class="toc-item in-uni"><span class="toc-num">5.8</span>Noise & Its Types <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-noise" class="toc-item in-uni"><span class="toc-num">5.8</span>Noise &amp; Its Types <span class="toc-uni-tag">🎓 Uni Core</span></a>
       <a href="#s-snr" class="toc-item in-uni"><span class="toc-num">5.9</span>Signal-to-Noise Ratio (SNR) <span class="toc-uni-tag">🎓 Uni Core</span></a>
       <a href="#s-nyquist" class="toc-item in-uni"><span class="toc-num">5.10</span>Nyquist Theorem (Noiseless) <span class="toc-uni-tag">🎓 Uni Core</span></a>
       <a href="#s-shannon" class="toc-item in-uni"><span class="toc-num">5.11</span>Shannon's Capacity (Noisy) <span class="toc-uni-tag">🎓 Uni Core</span></a>
       <a href="#s-numerical-practice" class="toc-item in-uni"><span class="toc-num">5.12</span>Worked Numerical Practice <span class="toc-uni-tag">🎓 Uni Core</span></a>
-      <a href="#s-summary-ch5" class="toc-item in-uni"><span class="toc-num">5.13</span>Summary & Exam Traps <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s-summary-ch5" class="toc-item in-uni"><span class="toc-num">5.13</span>Summary &amp; Exam Traps <span class="toc-uni-tag">🎓 Uni Core</span></a>
     </div>
   </div>
 
-  <!-- SECTION 5.1: PURPOSE OF PHYSICAL LAYER -->
-  <section id="s-phy-purpose" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 5.1</div>
-      <h2 class="section-title">Purpose and Specifications of the Physical Layer</h2>
+  <!-- LEARNING OBJECTIVES CALLOUT -->
+  <div class="callout info" style="margin-bottom:var(--sp-6);border-left:4px solid var(--accent-border)">
+    <span class="callout-icon">🎯</span>
+    <div><strong>After studying this chapter you will be able to:</strong>
+      <ul style="margin:6px 0 0;padding-left:18px">
+        <li>Identify the four standard physical layer interface specifications (mechanical, electrical, functional, procedural).</li>
+        <li>Distinguish between analog and digital data, and analog and digital signals across the 4 transmission combinations.</li>
+        <li>Deconstruct composite waveforms into fundamental harmonics using Fourier analysis intuition.</li>
+        <li>Convert between linear and logarithmic Decibels ($dB$), calculate cascaded link losses, and compute $SNR_{\text{dB}}$.</li>
+        <li>Calculate theoretical channel capacities using Nyquist's theorem ($C = 2B\log_2 L$) for noiseless channels and Shannon's theorem ($C = B\log_2(1 + SNR)$) for noisy channels.</li>
+        <li>Solve combined competitive exam numericals determining the minimum discrete signal levels required to achieve Shannon limits.</li>
+      </ul>
     </div>
+  </div>
+
+  <!-- STUDY PATH -->
+  <div class="study-path">
+    <strong>🧭 How to study this chapter (First-Principles Mathematical Progression):</strong>
+    <div class="path">
+      <span>1. Physical Specs &amp; Signals</span> → 
+      <span>2. Sine Waves &amp; Fourier Basis</span> → 
+      <span>3. Bit Rate vs Baud Rate</span> → 
+      <span>4. Transmission Impairments (Attenuation, Distortion, Noise)</span> → 
+      <span>5. SNR &amp; Decibel Math</span> → 
+      <span>6. Channel Capacity (Nyquist &amp; Shannon)</span>
+    </div>
+    <div style="margin-top:.65rem;color:var(--tx-muted);font-size:.84rem"><strong>Exam Lens:</strong> Sections 5.5 to 5.12 contain mandatory university numerical problems and GATE score-differentiating formulas marked <code>data-midsem="core"</code>.</div>
+  </div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 5.1 — PURPOSE OF PHYSICAL LAYER -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-phy-purpose" data-midsem="core" data-exam-priority="core" data-search-section="Physical layer purpose specifications mechanical electrical functional procedural ISO ITU bit transmission" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">5.1 Purpose &amp; Specifications of the Physical Layer
+      <button class="bookmark-btn" data-id="s-phy-purpose" data-label="5.1 Purpose &amp; Specifications of the Physical Layer" title="Bookmark">🔖</button>
+    </h2>
+  </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: signaling (Physical Layer Functions & Specs)</strong></span>
+    <span>Prescribed syllabus topic: <strong>Physical Layer: Signaling &amp; Standard Interface Specifications</strong></span>
   </div>
 
-
-    <p>Everything in a computer network—whether it is an email, an HD video stream, or a banking transaction—ultimately consists of abstract mathematical bits ($0\text{s}$ and $1\text{s}$). However, copper wires, fiber-optic glass cables, and the wireless atmosphere cannot transport abstract numbers; they can only transport <strong>physical energy</strong> (voltages, light pulses, or electromagnetic waves). The primary objective of the Physical Layer is to bridge this gap.</p>
-
+  <div class="prose">
     <div class="def-box">
-      <div class="def-term">Physical Layer (OSI Layer 1)</div>
-      <p class="def-body">The fundamental layer of the network architecture responsible for the physical transmission and reception of unstructured raw bit streams over a physical communication medium. It coordinates the functions required to carry a bit stream across physical links.</p>
+      <div class="def-term">Physical Layer (OSI Layer 1) — First-Principles Definition</div>
+      The <strong>Physical Layer</strong> is the lowest architectural layer of the network protocol stack. Its sole operational responsibility is the transmission of raw, uninterpreted binary bits ($0\text{s}$ and $1\text{s}$) over a physical communication medium (copper, fiber, or air), converting mathematical binary digits into propagate-able physical energy pulses (voltages, photons, or radio waves).
     </div>
 
-    <h3>The Four Standard Specifications</h3>
+    <h3>Why It Exists: Bridging Abstract Math and Physical Matter</h3>
+    <p>Computer software and operating systems operate in an abstract world of pure mathematics—arrays, integers, and bits. However, a piece of copper wire or a strand of glass has no intrinsic concept of a "number". A physical channel can only conduct physical forces: electric currents, electromagnetic fields, or photon bursts. The Physical Layer exists to establish the concrete physical contract that maps binary states onto electromagnetic waveforms.</p>
+
+    <h3>The Four Standard Interface Specifications (ISO / ITU Standard)</h3>
+    <p>Every physical layer standard (e.g., Ethernet IEEE 802.3, USB, RS-232, DOCSIS) defines four formal dimensions:</p>
+
     <div class="table-wrap">
-      <table class="data-table">
+      <table class="prose-table">
         <thead>
           <tr>
             <th>Specification</th>
-            <th>Engineering Scope</th>
-            <th>Key Standards & Parameters</th>
+            <th>What It Governs</th>
+            <th>Concrete Real-World Examples</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>Mechanical</strong></td>
-            <td>Physical geometry, dimensions, connectors, pins, cable shielding, and jack sockets.</td>
-            <td>RJ45 (8P8C) plug for Ethernet, BNC for coaxial, LC/SC/ST fiber connectors, USB-C pin layout.</td>
+            <td><strong>1. Mechanical</strong></td>
+            <td>Physical properties of the interface connector, dimensions, pin counts, locking clips, and cable jacket standards.</td>
+            <td>RJ-45 modular 8-pin plug, USB-C 24-pin reversible connector, DB-9 serial connector, LC/SC fiber connectors.</td>
           </tr>
           <tr>
-            <td><strong>Electrical</strong></td>
-            <td>Voltage levels, current limits, pulse rise/fall times, signal waveforms, and line impedance.</td>
-            <td>RS-232 (-12V to +12V), TTL (0V to 5V), LVDS, optical power measured in milliwatts/dBm.</td>
+            <td><strong>2. Electrical</strong></td>
+            <td>Voltage levels, current thresholds, signal pulse rise/fall times, transmission speeds, and impedance matching.</td>
+            <td>RS-232: $-3\text{V to } -15\text{V}$ for binary $1$, $+3\text{V to } +15\text{V}$ for binary $0$; Ethernet UTP: differential $\pm 2.5\text{V}$ across $100\ \Omega$ load.</td>
           </tr>
           <tr>
-            <td><strong>Functional</strong></td>
-            <td>Defines the specific semantic role assigned to each physical circuit or pin.</td>
-            <td>Designating Pin 1 as Transmit Data (Tx), Pin 2 as Receive Data (Rx), Pin 5 as Signal Ground.</td>
+            <td><strong>3. Functional</strong></td>
+            <td>The exact operational meaning and purpose assigned to each pin or circuit (timing, control, data, ground).</td>
+            <td>Pin 1 = Transmit Data ($TX+$), Pin 2 = Transmit Data ($TX-$), Pin 3 = Receive Data ($RX+$), Pin 6 = Receive Data ($RX-$).</td>
           </tr>
           <tr>
-            <td><strong>Procedural</strong></td>
-            <td>Specifies the mandatory protocol sequence, handshaking events, and timing order for bit transfer.</td>
-            <td>"Assert Request to Send (RTS); wait for Clear to Send (CTS) assertion before transmitting clock pulses."</td>
+            <td><strong>4. Procedural</strong></td>
+            <td>The chronological sequence of handshaking events, voltage state transitions, and timing protocols to establish, maintain, and tear down physical links.</td>
+            <td>Ethernet auto-negotiation pulses (FLP), modem RTS/CTS (Request-to-Send / Clear-to-Send) hardware handshakes.</td>
           </tr>
         </tbody>
       </table>
     </div>
-  </section>
-  <hr class="section-hr">
 
-  <!-- SECTION 5.2: DATA VS SIGNALS -->
-  <section id="s-data-signals" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 5.2</div>
-      <h2 class="section-title">Data vs Signals (The Four Transmission Combinations) <span class="uni-syllabus-badge">🎓 Uni: Signaling Fundamentals</span></h2>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">The Four Layer 1 Specifications</span></div>
+      <pre><code>
+   ┌─────────────────────────────────────────────────────────────┐
+   │             PHYSICAL LAYER INTERFACE DIMENSIONS             │
+   ├──────────────────────────────┬──────────────────────────────┤
+   │ MECHANICAL SPECIFICATION     │ ELECTRICAL SPECIFICATION     │
+   │ • Connector shape & pins     │ • Voltage levels (e.g. ±5V)  │
+   │ • RJ-45, USB-C, SC Fiber     │ • Rise/fall pulse times      │
+   ├──────────────────────────────┼──────────────────────────────┤
+   │ FUNCTIONAL SPECIFICATION     │ PROCEDURAL SPECIFICATION     │
+   │ • Meaning of each pin        │ • Sequence of events         │
+   │ • Pin 1 = TX+, Pin 3 = RX+   │ • Handshaking: RTS -> CTS    │
+   └──────────────────────────────┴──────────────────────────────┘
+      </code></pre>
     </div>
+
+    <div class="card" style="margin-top:var(--sp-4)">
+      <h4>Exam &amp; MCQ High-Yield Points</h4>
+      <ul style="margin:4px 0 0;padding-left:18px">
+        <li>The unit of data at Layer 1 is strictly the <strong>Bit</strong> (or symbol).</li>
+        <li>The Physical Layer has <strong>no concept of frame boundaries, MAC addresses, or error checking</strong>.</li>
+        <li>The 4 interface specifications are: <strong>Mechanical, Electrical, Functional, Procedural</strong>.</li>
+      </ul>
+    </div>
+
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 5.1</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 3, Section 3.1: "Physical Layer Overview".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Stallings (10th Ed):</strong> Chapter 3, Section 3.1: "Transmission Media and Interface Specifications".</li>
+        <li><span class="res-tag tag-spec">RFC / Standard</span> <strong>ISO/IEC 7498-1:</strong> Physical Layer Architecture &amp; Service Primitives.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 5.2 — DATA VS SIGNALS -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-data-signals" data-midsem="core" data-exam-priority="core" data-search-section="Data vs signals analog digital transmission combinations PCM modem codec" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">5.2 Data vs. Signals (The 4 Transmission Combinations)
+      <button class="bookmark-btn" data-id="s-data-signals" data-label="5.2 Data vs. Signals" title="Bookmark">🔖</button>
+    </h2>
+  </div>
   <div class="uni-req-banner">
     <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: signaling (Analog vs Digital Data and Signals)</strong></span>
+    <span>Prescribed syllabus topic: <strong>Signaling Fundamentals — Analog vs Digital Data and Signals</strong></span>
   </div>
 
-
-    <p>Students frequently conflate <strong>Data</strong> with <strong>Signals</strong>. In computer science and telecommunications, they represent fundamentally different concepts:</p>
-
+  <div class="prose">
     <div class="def-box">
-      <div class="def-term">Data vs Signal</div>
-      <p class="def-body">
-        • <strong>Data:</strong> Entities that convey meaning or information (e.g., text, audio, integers). Can be continuous (analog data, like human speech) or discrete (digital data, like a stored text file).<br>
-        • <strong>Signal:</strong> The electric, optical, or electromagnetic representation of data that physically propagates along a transmission medium. Can also be analog (continuously varying wave) or digital (discrete voltage pulses).
-      </p>
+      <div class="def-term">Fundamental Conceptual Distinction</div>
+      <ul>
+        <li><strong>Data:</strong> Entities that convey meaning or information (e.g., text, numbers, images, audio). Data can be continuous/analog (human speech) or discrete/digital (a stored text file).</li>
+        <li><strong>Signals:</strong> Electric, electromagnetic, or optical representations of data suitable for propagation through a physical medium. Signals can be continuous/analog (time-varying sine waves) or discrete/digital (voltage pulses).</li>
+      </ul>
     </div>
 
+    <h3>The 4 Combinations of Data and Signals</h3>
+    <p>To transmit information, data must be converted into a signal. This yields four fundamental engineering permutations:</p>
+
     <div class="table-wrap">
-      <table class="data-table">
+      <table class="prose-table">
         <thead>
           <tr>
             <th>Data Type</th>
             <th>Signal Type</th>
-            <th>Technique Used</th>
-            <th>Practical Application</th>
+            <th>Required Conversion Device</th>
+            <th>Real-World Example</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>Digital Data</strong></td>
-            <td><strong>Digital Signal</strong></td>
-            <td><strong>Line Coding</strong> (NRZ, Manchester, AMI)</td>
-            <td>Local computer bus, Ethernet cables (10Base-T, 1000Base-T).</td>
-          </tr>
-          <tr>
-            <td><strong>Digital Data</strong></td>
+            <td><strong>Analog Data</strong></td>
             <td><strong>Analog Signal</strong></td>
-            <td><strong>Digital Modulation</strong> (ASK, FSK, PSK, QAM)</td>
-            <td>Modems, Wi-Fi radio transmission, optical fiber transceivers.</td>
+            <td>Amplifier / Filter / Modulator</td>
+            <td>Traditional AM/FM Radio broadcasting; conventional landline telephone (PSTN local loop).</td>
           </tr>
           <tr>
             <td><strong>Analog Data</strong></td>
             <td><strong>Digital Signal</strong></td>
-            <td><strong>Digitization / PCM</strong> (Sampling, Quantization)</td>
-            <td>Audio recording, Voice over IP (VoIP), telephone digitization (G.711).</td>
+            <td><strong>Codec (Coder-Decoder)</strong> / ADC</td>
+            <td>Pulse Code Modulation (PCM): Digitizing human voice for VoIP, MP3 audio recording, CD audio.</td>
           </tr>
           <tr>
-            <td><strong>Analog Data</strong></td>
+            <td><strong>Digital Data</strong></td>
+            <td><strong>Digital Signal</strong></td>
+            <td><strong>Line Driver / DSU</strong> (Line Coding)</td>
+            <td>Computer LAN: Manchester encoding in 10BASE-T Ethernet, NRZ-I in USB buses.</td>
+          </tr>
+          <tr>
+            <td><strong>Digital Data</strong></td>
             <td><strong>Analog Signal</strong></td>
-            <td><strong>Analog Modulation</strong> (AM, FM, PM)</td>
-            <td>Commercial AM/FM broadcast radio, traditional analog landline telephone.</td>
+            <td><strong>Modem (Modulator-Demodulator)</strong></td>
+            <td>Dial-up modems (V.92), Wi-Fi (QAM over radio), DSL, DOCSIS cable TV broadband.</td>
           </tr>
         </tbody>
       </table>
     </div>
-  </section>
-  <hr class="section-hr">
 
-  <!-- SECTION 5.3: PERIODIC VS NON-PERIODIC -->
-  <section id="s-periodic" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 5.3</div>
-      <h2 class="section-title">Periodic vs Non-Periodic & Composite Signals</h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: signaling (Periodic vs Non-Periodic & Composite Signals)</strong></span>
-  </div>
-
-
-    <p>A signal can be categorized as <strong>periodic</strong> or <strong>non-periodic (aperiodic)</strong>:</p>
-    <ul>
-      <li><strong>Periodic Signal:</strong> Completes a specific pattern within a measurable time frame (called a <strong>period</strong> $T$) and repeats that identical pattern over subsequent identical cycles: $s(t) = s(t + T)$.</li>
-      <li><strong>Non-Periodic Signal:</strong> Changes constantly over time without any repeating cyclical pattern. <strong>All practical computer data transmission is non-periodic</strong>, because a signal that repeats infinitely with identical cycles carries zero new information!</li>
-    </ul>
-
-    <div class="callout info">
-      <div class="callout-title">📌 Fourier Analysis: Composite Signals</div>
-      <p>French mathematician Jean-Baptiste Fourier proved a monumental theorem: <strong>Any composite signal is a linear combination of simple sine waves of different frequencies, amplitudes, and phases.</strong><br>
-      A digital square wave is actually a composite signal containing an infinite number of harmonic sine waves! To transmit a sharp, perfect square wave with zero rise time would require a channel with <strong>infinite bandwidth</strong>. Because real physical channels have limited bandwidth, digital pulses inevitably become rounded and smeared.</p>
-    </div>
-  </section>
-  <hr class="section-hr">
-
-  <!-- SECTION 5.4: SINE WAVE PROPERTIES -->
-  <section id="s-sine-wave" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 5.4</div>
-      <h2 class="section-title">Sine Wave Properties & Fundamental Formulas</h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: signaling (Sine Wave: Amplitude, Frequency, Phase)</strong></span>
-  </div>
-
-
-    <p>The <strong>sine wave</strong> is the fundamental building block of all analog and electromagnetic communications. A general sine wave is represented mathematically as:</p>
-
-    <div class="formula-box">
-      <div class="formula-title">Mathematical Representation of a Sine Wave</div>
-      <div class="formula-math">s(t) = A \cdot \sin(2\pi f t + \phi)</div>
-      <div class="formula-vars">
-        • $A$ = Peak Amplitude (volts or watts)<br>
-        • $f$ = Frequency in Hertz (Hz)<br>
-        • $\omega = 2\pi f$ = Angular Frequency in radians/sec<br>
-        • $\phi$ = Phase angle in radians or degrees<br>
-        • $t$ = Time in seconds
+    <div class="callout tip">
+      <span class="callout-icon">💡</span>
+      <div><strong>Exam Distinction: Codec vs. Modem</strong>
+      A <strong>Codec</strong> converts continuous <em>Analog Data into Digital Signals</em> (sampling and quantizing).<br>
+      A <strong>Modem</strong> converts discrete <em>Digital Data into Analog Signals</em> (modulating a carrier wave).
       </div>
     </div>
 
-    <div class="diagram-box">
-      <div class="diagram-title">Figure 5.1: Key Sine Wave Parameters in the Time Domain</div>
-      <pre>
-   Amplitude (Volts)
-         ^
-      +A |         ***                 ***
-         |       **   **             **   **
-         |      *       *           *       *
-       0 +-----+---------+---------+---------+---------> Time (seconds)
-         |               *       *           *       *
-     -A  |                **   **             **   **
-         |                  ***                 ***
-         |<--------- Period T --------->|
-      </pre>
+    <div class="card" style="margin-top:var(--sp-4)">
+      <h4>Exam &amp; MCQ High-Yield Points</h4>
+      <ul style="margin:4px 0 0;padding-left:18px">
+        <li>Analog signals vary <strong>continuously</strong> with time; digital signals have a <strong>finite set of discrete levels</strong>.</li>
+        <li>A <strong>Codec</strong> performs Analog-to-Digital conversion (ADC).</li>
+        <li>A <strong>Modem</strong> performs Digital-to-Analog conversion (DAC).</li>
+      </ul>
     </div>
 
-    <h3>The Five Core Sine Wave Parameters</h3>
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 5.2</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 3, Section 3.2: "Analog and Digital Data and Signals".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Stallings (10th Ed):</strong> Chapter 3, Section 3.2: "Data and Signals".</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 5.3 — PERIODIC VS NON-PERIODIC -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-periodic" data-midsem="core" data-exam-priority="core" data-search-section="Periodic non-periodic signals composite Fourier analysis harmonics fundamental frequency bandwidth" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">5.3 Periodic vs. Non-Periodic &amp; Composite Signals
+      <button class="bookmark-btn" data-id="s-periodic" data-label="5.3 Periodic vs. Non-Periodic Signals" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Signal Analysis — Periodic/Aperiodic Signals &amp; Fourier Basis</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Periodic Signal — Mathematical Definition</div>
+      A signal $s(t)$ is <strong>periodic</strong> if it completes a pattern within a measurable time frame, called a period $T$, and repeats that identical pattern over subsequent identical periods:
+      $$s(t) = s(t + T) \quad \text{for all } t$$
+      A signal that exhibits no repeating pattern over time is <strong>non-periodic (aperiodic)</strong>.
+    </div>
+
+    <h3>Fourier Analysis Intuition: The Composite Waveform Principle</h3>
+    <p>In 1822, French mathematician Jean-Baptiste Joseph Fourier proved a profound theorem that underpins all telecommunications: <strong>Any periodic composite signal can be decomposed into an infinite sum of simple sine and cosine waves of different frequencies, amplitudes, and phases</strong> (Fourier Series).</p>
+
+    <p>For example, a symmetrical square wave of amplitude $A$ and fundamental frequency $f$ consists of only odd harmonics:</p>
+    $$s(t) = \frac{4A}{\pi} \left[ \sin(2\pi f t) + \frac{1}{3}\sin(6\pi f t) + \frac{1}{5}\sin(10\pi f t) + \frac{1}{7}\sin(14\pi f t) + \dots \right]$$
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">Decomposing a Digital Square Pulse into Fourier Harmonics</span></div>
+      <pre><code>
+   1. Fundamental Sine Wave (Frequency f):
+   ───/\───────/\───────/\───  (Single smooth wave; rounded peaks)
+
+   2. Fundamental + 3rd Harmonic (f + 3f):
+   ───┌~┐─────┌~┐─────┌~┐───  (Corners begin sharpening)
+
+   3. Fundamental + 3rd + 5th + 7th Harmonics:
+   ───┌─┐─────┌─┐─────┌─┐───  (Steep vertical edges; near-perfect square pulse)
+      │ │     │ │     │ │
+   ───┘ └─────┘ └─────┘ └───
+      </code></pre>
+    </div>
+
+    <h3>Bandwidth of a Signal</h3>
+    <p>The <strong>bandwidth</strong> of a composite signal is the difference between the highest and lowest frequencies contained within it:</p>
+    $$\text{Bandwidth } B = f_{\text{max}} - f_{\text{min}}$$
+    <p>Because a theoretical digital square wave with instantaneously vertical edges contains an infinite number of odd harmonics, transmitting a perfect digital pulse requires a channel with <strong>infinite bandwidth</strong>. Real physical cables have finite bandwidth, filtering out higher harmonics and rounding pulse edges, causing <strong>intersymbol interference (ISI)</strong>.</p>
+
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 5.3</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 3, Section 3.3: "Periodic Analog Signals and Composite Signals".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Tanenbaum &amp; Wetherall (5th Ed):</strong> Chapter 2, Section 2.1: "Theoretical Basis for Data Communication (Fourier Analysis)".</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 5.4 — SINE WAVE & PROPERTIES -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-sine-wave" data-midsem="core" data-exam-priority="core" data-search-section="Sine wave peak amplitude frequency period phase wavelength time frequency domain" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">5.4 Sine Wave &amp; Fundamental Formulas
+      <button class="bookmark-btn" data-id="s-sine-wave" data-label="5.4 Sine Wave &amp; Fundamental Formulas" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Signaling Parameters: Amplitude, Frequency, Phase &amp; Wavelength</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">The Sine Wave Equation</div>
+      The fundamental building block of all analog communication signals is the sine wave, represented mathematically as:
+      $$s(t) = A \sin(2\pi f t + \phi)$$
+    </div>
+
+    <h3>The 4 Cardinal Parameters of a Waveform</h3>
+    <ol style="margin:6px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:6px">
+      <li><strong>Peak Amplitude ($A$):</strong> The maximum absolute value of its voltage or power level. Measured in Volts ($V$), Amperes ($A$), or Watts ($W$).</li>
+      <li><strong>Frequency ($f$):</strong> The number of complete cycles the signal executes per second. Measured in Hertz ($\text{Hz}$).
+        $$f = \frac{1}{T}$$
+        where $T$ is the period (the time in seconds required to complete one full cycle).</li>
+      <li><strong>Phase ($\phi$):</strong> The position of the waveform relative to time $t = 0$. Measured in degrees or radians ($360^\circ = 2\pi\text{ rad}$). A phase shift of $180^\circ$ ($\pi$ radians) inverts the waveform.</li>
+      <li><strong>Wavelength ($\lambda$):</strong> The physical spatial distance that one cycle travels through the transmission medium:
+        $$\lambda = \frac{v}{f} = v \times T$$
+        where $v$ is the propagation speed of the electromagnetic wave in the medium ($v \approx 3 \times 10^8\ \text{m/s}$ in vacuum; $v \approx 2 \times 10^8\ \text{m/s}$ in copper and optical fiber).</li>
+    </ol>
+
+    <div class="card" style="margin-top:var(--sp-4)">
+      <h4>Exam &amp; MCQ High-Yield Points</h4>
+      <ul style="margin:4px 0 0;padding-left:18px">
+        <li>$f = 1/T$ and $T = 1/f$.</li>
+        <li>Wavelength formula: $\lambda = v / f$. As frequency increases, wavelength decreases.</li>
+        <li>A phase shift of $90^\circ$ converts a sine wave into a cosine wave ($\sin(\theta + 90^\circ) = \cos(\theta)$).</li>
+      </ul>
+    </div>
+
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 5.4</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 3, Section 3.3.1: "Sine Wave".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Stallings (10th Ed):</strong> Chapter 3, Section 3.1: "Signals for Conveying Information".</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 5.5 — BIT RATE VS BAUD RATE -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-bitrate-baud" data-midsem="core" data-exam-priority="core" data-search-section="Bit rate baud rate signaling rate modulation level bits per symbol constellation" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">5.5 Bit Rate vs. Baud Rate (Signaling Speed)
+      <button class="bookmark-btn" data-id="s-bitrate-baud" data-label="5.5 Bit Rate vs. Baud Rate" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Signaling Metrics: Bit Rate vs Baud Rate (Signaling Rate)</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Bit Rate vs. Baud Rate — Definitions</div>
+      <ul>
+        <li><strong>Bit Rate ($R$):</strong> The number of information bits ($0\text{s}$ and $1\text{s}$) transmitted per second. Expressed in <strong>bits per second (bps)</strong>. Measures pure information throughput.</li>
+        <li><strong>Baud Rate ($S$):</strong> The number of signal units (symbols, voltage transitions, or carrier state changes) transmitted per second. Expressed in <strong>baud</strong> or <strong>symbols per second</strong>. Measures the physical signaling speed on the wire.</li>
+      </ul>
+    </div>
+
+    <h3>The Fundamental Mathematical Relationship</h3>
+    $$\text{Bit Rate } R = S \times r = S \times \log_2(M)$$
+    <p>where:</p>
+    <ul>
+      <li>$S$ = Baud rate (symbols/second).</li>
+      <li>$M$ = Number of discrete signal levels / constellation points.</li>
+      <li>$r = \log_2(M)$ = Number of bits carried by each physical signal unit.</li>
+    </ul>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">Analogy: The Train Freight Analogy</span></div>
+      <pre><code>
+   • Baud Rate = Number of train cars passing a railway station per second.
+   • Bits per Symbol = Number of cargo containers stacked inside each train car.
+   • Bit Rate = Total cargo containers passing the station per second!
+
+   If 1,000 train cars pass per second (1,000 Baud), and each car carries 4 containers (16-QAM):
+   Bit Rate = 1,000 Baud × 4 bits/symbol = 4,000 bps!
+      </code></pre>
+    </div>
+
     <div class="table-wrap">
-      <table class="data-table">
+      <table class="prose-table">
         <thead>
           <tr>
-            <th>Parameter</th>
-            <th>Symbol & Units</th>
-            <th>Formula / Definition</th>
+            <th>Modulation Scheme</th>
+            <th>Constellation Points ($M$)</th>
+            <th>Bits per Symbol ($r = \log_2 M$)</th>
+            <th>Bit Rate for $S = 2400\ \text{Baud}$</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Binary PSK (BPSK)</td>
+            <td>$2$</td>
+            <td>$1\text{ bit}$</td>
+            <td>$2400 \times 1 = 2,400\ \text{bps}$</td>
+          </tr>
+          <tr>
+            <td>QPSK / 4-QAM</td>
+            <td>$4$</td>
+            <td>$2\text{ bits}$</td>
+            <td>$2400 \times 2 = 4,800\ \text{bps}$</td>
+          </tr>
+          <tr>
+            <td>16-QAM</td>
+            <td>$16$</td>
+            <td>$4\text{ bits}$</td>
+            <td>$2400 \times 4 = 9,600\ \text{bps}$</td>
+          </tr>
+          <tr>
+            <td>64-QAM</td>
+            <td>$64$</td>
+            <td>$6\text{ bits}$</td>
+            <td>$2400 \times 6 = 14,400\ \text{bps}$</td>
+          </tr>
+          <tr>
+            <td>256-QAM</td>
+            <td>$256$</td>
+            <td>$8\text{ bits}$</td>
+            <td>$2400 \times 8 = 19,200\ \text{bps}$</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warning">
+      <span class="callout-icon">⚠️</span>
+      <div><strong>Exam Trap: Can Baud Rate be Higher than Bit Rate?</strong>
+      <strong>Yes!</strong> In line coding schemes with heavy redundancy for clock synchronization (such as Manchester encoding), $r = 1/2$ (each data bit requires two signal levels/transitions). Thus, a 10 Mbps Ethernet link using Manchester encoding operates at a baud rate of <strong>20 Megabaud</strong>!
+      </div>
+    </div>
+
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 5.5</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 3, Section 3.4.1: "Bit Rate and Bit Interval".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Stallings (10th Ed):</strong> Chapter 3, Section 3.3: "Channel Capacity and Signaling Rates".</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 5.6 — ATTENUATION & DECIBELS -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-attenuation" data-midsem="core" data-exam-priority="core" data-search-section="Attenuation decibels loss gain power formula cascaded amplifier dBm" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">5.6 Transmission Impairment 1: Attenuation &amp; Decibels
+      <button class="bookmark-btn" data-id="s-attenuation" data-label="5.6 Attenuation &amp; Decibels" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Transmission Impairments (Attenuation, Decibel Math &amp; Gain/Loss)</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Attenuation — Definition &amp; Decibel Metric</div>
+      <strong>Attenuation</strong> is the progressive loss of signal energy as an electromagnetic wave travels through a physical transmission medium. Because attenuation spans vast orders of magnitude, engineers quantify signal loss or gain using the logarithmic <strong>Decibel ($\text{dB}$)</strong> unit:
+      $$\text{dB} = 10 \log_{10}\left(\frac{P_2}{P_1}\right)$$
+      where $P_1$ is the input power (at transmitter) and $P_2$ is the output power (at receiver).
+    </div>
+
+    <h3>Mathematical Properties of Decibels</h3>
+    <ul>
+      <li>If $P_2 > P_1$, $\text{dB}$ is <strong>positive</strong> $\implies$ <strong>Amplification (Gain)</strong>.</li>
+      <li>If $P_2 < P_1$, $\text{dB}$ is <strong>negative</strong> $\implies$ <strong>Attenuation (Loss)</strong>.</li>
+      <li>If $P_2 = P_1$, $\text{dB} = 0$.</li>
+      <li><strong>Voltage Form:</strong> Because electrical power is proportional to voltage squared ($P = V^2 / R$):
+      $$\text{dB} = 20 \log_{10}\left(\frac{V_2}{V_1}\right)$$</li>
+      <li><strong>Cascaded Links (Additive Property):</strong> In a transmission system with multiple sequential segments, the total loss/gain is simply the algebraic sum of the individual decibel values:
+      $$\text{dB}_{\text{total}} = \text{dB}_1 + \text{dB}_2 + \text{dB}_3 + \dots$$</li>
+    </ul>
+
+    <div class="callout tip">
+      <span class="callout-icon">💡</span>
+      <div><strong>The Rule of 3 dB and 10 dB:</strong>
+      <ul>
+        <li>A loss of $-3\ \text{dB}$ corresponds to a <strong>50% power reduction</strong> ($P_2 = 0.5 P_1$).</li>
+        <li>A gain of $+3\ \text{dB}$ corresponds to a <strong>doubling of power</strong> ($P_2 = 2 P_1$).</li>
+        <li>A loss of $-10\ \text{dB}$ corresponds to a <strong>90% power reduction</strong> ($P_2 = 0.1 P_1$).</li>
+        <li>A loss of $-20\ \text{dB}$ corresponds to a <strong>99% power reduction</strong> ($P_2 = 0.01 P_1$).</li>
+      </ul>
+      </div>
+    </div>
+
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 5.6</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 3, Section 3.5.1: "Attenuation and Decibels".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Stallings (10th Ed):</strong> Chapter 3, Section 3.2: "Transmission Impairments: Attenuation".</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 5.7 — DISTORTION -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-distortion" data-midsem="core" data-exam-priority="core" data-search-section="Distortion delay dispersion phase shift intersymbol interference ISI eye pattern" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">5.7 Transmission Impairment 2: Distortion &amp; Dispersion
+      <button class="bookmark-btn" data-id="s-distortion" data-label="5.7 Distortion" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Transmission Impairments (Delay Distortion &amp; Dispersion)</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Distortion — Definition</div>
+      <strong>Distortion</strong> is the alteration of a signal's waveform shape caused by the transmission medium reacting differently to different frequency components of a composite signal.
+    </div>
+
+    <h3>Types of Distortion</h3>
+    <ul>
+      <li><strong>Delay Distortion:</strong> A composite signal consists of many harmonic frequencies. In a guided medium, the velocity of propagation varies slightly with frequency. Consequently, some frequency components arrive at the destination earlier than others, creating phase shifts that scramble the waveform.</li>
+      <li><strong>Dispersion (Pulse Spreading in Fiber):</strong> In optical fibers, light pulses broaden spatially as they travel:
+        <ul>
+          <li><em>Modal Dispersion:</em> Different light rays (modes) travel along paths of different lengths in multimode fiber.</li>
+          <li><em>Chromatic Dispersion:</em> Different wavelengths of light travel at slightly different velocities through glass.</li>
+        </ul>
+      </li>
+      <li><strong>Intersymbol Interference (ISI):</strong> When pulse spreading causes adjacent bit symbols to spill into each other's time slots, the receiver cannot determine whether a bit was $0$ or $1$.</li>
+    </ul>
+
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 5.7</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 3, Section 3.5.2: "Distortion".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Stallings (10th Ed):</strong> Chapter 3, Section 3.2: "Delay Distortion".</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 5.8 — NOISE & ITS TYPES -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-noise" data-midsem="core" data-exam-priority="core" data-search-section="Noise thermal Johnson intermodulation crosstalk impulse burst errors" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">5.8 Transmission Impairment 3: Noise &amp; Its Types
+      <button class="bookmark-btn" data-id="s-noise" data-label="5.8 Noise &amp; Its Types" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Transmission Impairments (Noise Taxonomy &amp; Characteristics)</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Noise — Definition</div>
+      <strong>Noise</strong> refers to unwanted, extraneous electromagnetic energy that corrupts the signal along the transmission path, originating from physical sources outside or inside the communication circuitry.
+    </div>
+
+    <h3>The 4 Primary Categories of Noise</h3>
+    <div class="table-wrap">
+      <table class="prose-table">
+        <thead>
+          <tr>
+            <th>Noise Category</th>
+            <th>Physical Origin &amp; Formula</th>
+            <th>Primary Impact on Data</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Thermal Noise (White / Johnson Noise)</strong></td>
+            <td>Thermal agitation of electrons inside conductors. Present in all electronic devices; impossible to eliminate.
+            $$N_0 = k \cdot T \cdot B$$
+            ($k = 1.38 \times 10^{-23}\ \text{J/K}$, $T$ in Kelvin, $B$ in Hz).</td>
+            <td>Creates a steady, baseline background hiss. Sets the theoretical minimum floor for channel capacity.</td>
+          </tr>
+          <tr>
+            <td><strong>2. Intermodulation Noise</strong></td>
+            <td>Nonlinearities in transmitters or receivers producing spurious signals at harmonic frequencies ($f_1 + f_2$, $f_1 - f_2$).</td>
+            <td>Interferes with adjacent frequency channels sharing the same physical amplifier.</td>
+          </tr>
+          <tr>
+            <td><strong>3. Crosstalk</strong></td>
+            <td>Unwanted inductive or capacitive coupling between adjacent telephone wires or PCB traces.</td>
+            <td>Hearing a faint second telephone conversation in the background; near-end crosstalk (NEXT) in twisted pairs.</td>
+          </tr>
+          <tr>
+            <td><strong>4. Impulse Noise</strong></td>
+            <td>Sudden, high-energy electromagnetic spikes caused by lightning, power line faults, electric motors, or sparking switches.</td>
+            <td><strong>The #1 cause of errors in digital communications.</strong> Blots out dozens of contiguous bits, creating <strong>burst errors</strong>.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 5.8</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 3, Section 3.5.3: "Noise".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Stallings (10th Ed):</strong> Chapter 3, Section 3.2: "Noise (Thermal, Intermodulation, Crosstalk, Impulse)".</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 5.9 — SIGNAL-TO-NOISE RATIO -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-snr" data-midsem="core" data-exam-priority="core" data-search-section="Signal to noise ratio SNR SNR_dB linear logarithmic conversion formula" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">5.9 Signal-to-Noise Ratio (SNR &amp; $\text{SNR}_{\text{dB}}$)
+      <button class="bookmark-btn" data-id="s-snr" data-label="5.9 Signal-to-Noise Ratio" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Signaling Metrics — Signal-to-Noise Ratio (SNR &amp; Decibel Form)</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Signal-to-Noise Ratio — Mathematical Formulations</div>
+      The <strong>Signal-to-Noise Ratio (SNR)</strong> measures signal quality by comparing signal power to background noise power:
+      $$\text{SNR (Linear)} = \frac{P_{\text{signal}}}{P_{\text{noise}}}$$
+      In telecommunications engineering, SNR is almost universally expressed on a logarithmic scale:
+      $$\text{SNR}_{\text{dB}} = 10 \log_{10}(\text{SNR}) = 10 \log_{10}\left(\frac{P_{\text{signal}}}{P_{\text{noise}}}\right)$$
+    </div>
+
+    <h3>Rapid Conversion Reference Table</h3>
+    <div class="table-wrap">
+      <table class="prose-table">
+        <thead>
+          <tr>
+            <th>$\text{SNR}_{\text{dB}}$ Value</th>
+            <th>Linear Ratio ($\text{SNR} = 10^{\text{dB}/10}$)</th>
             <th>Physical Meaning</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>Peak Amplitude</strong></td>
-            <td>$A$ (Volts, Amperes, Watts)</td>
-            <td>Maximum absolute value of the signal from the zero baseline.</td>
-            <td>Represents the energy, power, or volume of the signal.</td>
+            <td>$0\ \text{dB}$</td>
+            <td>$1$</td>
+            <td>Signal power equals noise power ($P_{\text{signal}} = P_{\text{noise}}$).</td>
           </tr>
           <tr>
-            <td><strong>Period</strong></td>
-            <td>$T$ (Seconds, ms, $\mu$s, ns)</td>
-            <td>$T = \frac{1}{f}$</td>
-            <td>The time taken to complete one full cycle of the waveform.</td>
+            <td>$10\ \text{dB}$</td>
+            <td>$10$</td>
+            <td>Signal is $10\times$ stronger than noise.</td>
           </tr>
           <tr>
-            <td><strong>Frequency</strong></td>
-            <td>$f$ (Hertz / Hz, kHz, MHz, GHz)</td>
-            <td>$f = \frac{1}{T}$</td>
-            <td>The number of complete cycles executed per second ($1\text{ Hz} = 1\text{ cycle/sec}$).</td>
+            <td>$20\ \text{dB}$</td>
+            <td>$100$</td>
+            <td>Signal is $100\times$ stronger than noise.</td>
           </tr>
           <tr>
-            <td><strong>Phase</strong></td>
-            <td>$\phi$ (Degrees $^\circ$ or Radians)</td>
-            <td>Offset relative to $t = 0$. $\phi = \frac{\Delta t}{T} \times 360^\circ$</td>
-            <td>Describes the exact position of the waveform at time $t=0$.</td>
+            <td>$30\ \text{dB}$</td>
+            <td>$1,000$</td>
+            <td>Signal is $1,000\times$ stronger than noise (standard telephone line).</td>
           </tr>
           <tr>
-            <td><strong>Wavelength</strong></td>
-            <td>$\lambda$ (Meters, cm, $\mu$m)</td>
-            <td>$\lambda = \frac{v}{f} = \frac{c}{f}$ (in vacuum)</td>
-            <td>The physical distance traveled by a wave in the duration of one period ($c \approx 3 \times 10^8\text{ m/s}$).</td>
+            <td>$40\ \text{dB}$</td>
+            <td>$10,000$</td>
+            <td>High-quality digital audio or broadcast channel.</td>
           </tr>
         </tbody>
       </table>
     </div>
 
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 5.9</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 3, Section 3.5.4: "Signal-to-Noise Ratio".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Stallings (10th Ed):</strong> Chapter 3, Section 3.3: "Signal-to-Noise Ratio".</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 5.10 — NYQUIST THEOREM -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-nyquist" data-midsem="core" data-exam-priority="core" data-search-section="Nyquist bit rate theorem noiseless channel capacity formula discrete signal levels sampling" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">5.10 Nyquist Theorem (Noiseless Channel)
+      <button class="bookmark-btn" data-id="s-nyquist" data-label="5.10 Nyquist Theorem (Noiseless Channel)" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Channel Capacity Theorems — Nyquist Bit Rate for Noiseless Channels</strong></span>
+  </div>
+
+  <div class="prose">
     <div class="def-box">
-      <div class="def-term">Bandwidth of a Channel ($B$)</div>
-      <p class="def-body">The width of the frequency spectrum that a transmission medium or channel can pass without unacceptable attenuation:<br>
-      <code style="color:var(--accent-light); font-weight:bold;">Bandwidth (B) = f_highest - f_lowest</code><br>
-      Example: Traditional telephone voice channel passes frequencies from $300\text{ Hz}$ to $3400\text{ Hz}$. Bandwidth $B = 3400 - 300 = 3100\text{ Hz} = 3.1\text{ kHz}$.</p>
-    </div>
-  </section>
-  <hr class="section-hr">
-
-  <!-- SECTION 5.5: BIT RATE VS BAUD RATE -->
-  <section id="s-bitrate-baud" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 5.5</div>
-      <h2 class="section-title">Bit Rate vs Baud Rate (Signaling Rate)</h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: signaling (Bit Rate vs Baud Rate Formulation)</strong></span>
-  </div>
-
-
-    <p>A classic, high-frequency trap in university exams and competitive tests is the fundamental distinction between <strong>Bit Rate</strong> and <strong>Baud Rate</strong> (Modulation Rate).</p>
-
-    <div class="def-box">
-      <div class="def-term">Bit Rate vs Baud Rate</div>
-      <p class="def-body">
-        • <strong>Bit Rate ($R_b$):</strong> The number of <strong>data bits ($0$ or $1$) transmitted per second</strong>. Measured in bits per second (bps, kbps, Mbps, Gbps).<br>
-        • <strong>Baud Rate ($S$ or $D$):</strong> The number of <strong>signal state transitions (symbols) per second</strong>. Measured in baud or symbols/sec.<br>
-        • <strong>Signal Levels ($L$):</strong> The number of distinct voltage levels, phase shifts, or constellation points used to represent data.
-      </p>
-    </div>
-
-    <div class="formula-box">
-      <div class="formula-title">The Fundamental Bit Rate — Baud Rate Relationship</div>
-      <div class="formula-math">\text{Bit Rate} = \text{Baud Rate} \times \log_2(L)</div>
-      <div class="formula-math">R_b = S \times r \quad \text{where } r = \log_2(L) \text{ bits per signal element}</div>
-    </div>
-
-    <div class="diagram-box">
-      <div class="diagram-title">Figure 5.2: Signal Level ($L$) vs Bits Carried Per Signal Element</div>
-      <pre>
-   Case 1: L = 2 levels (e.g., 0V and +5V)
-   Each symbol carries: log2(2) = 1 bit
-   [ +5V ] -> '1'
-   [  0V ] -> '0'
-   => Bit Rate = Baud Rate!
-
-   Case 2: L = 4 levels (e.g., -3V, -1V, +1V, +3V)
-   Each symbol carries: log2(4) = 2 bits
-   [ +3V ] -> '11'
-   [ +1V ] -> '10'
-   [ -1V ] -> '01'
-   [ -3V ] -> '00'
-   => Bit Rate = 2 × Baud Rate!
-      </pre>
-    </div>
-
-    <h3>Worked Example: Bit Rate & Baud Rate</h3>
-    <div class="callout tip">
-      <div class="callout-title">📝 Worked Problem 5.1</div>
-      <p><strong>Problem:</strong> An analog signal carries 4 bits in each signal element. If 1000 signal elements are sent per second, find the baud rate and bit rate.</p>
-      <p><strong>Solution:</strong><br>
-      • Number of bits per signal element $r = 4$ bits/symbol.<br>
-      • Baud rate = number of signal elements per second = <strong>1000 baud</strong>.<br>
-      • Bit rate $R_b = \text{Baud Rate} \times r = 1000 \times 4 = \mathbf{4000\text{ bps}}\ (4\text{ kbps})$.</p>
-    </div>
-  </section>
-  <hr class="section-hr">
-
-  <!-- SECTION 5.6: ATTENUATION -->
-  <section id="s-attenuation" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 5.6</div>
-      <h2 class="section-title">Transmission Impairment 1: Attenuation & Decibels</h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: signaling (Transmission Impairment 1: Attenuation & Decibels)</strong></span>
-  </div>
-
-
-    <p>Signals traveling through any transmission medium experience <strong>three fundamental physical impairments</strong>: 1. Attenuation, 2. Distortion, and 3. Noise.</p>
-
-    <div class="def-box">
-      <div class="def-term">1. Attenuation</div>
-      <p class="def-body">The progressive loss of signal energy and reduction in signal amplitude as it propagates through a transmission medium due to conductor electrical resistance or dielectric absorption. To compensate for attenuation, engineers deploy <strong>amplifiers</strong> (for analog signals) and <strong>repeaters</strong> (for digital signals).</p>
-    </div>
-
-    <h3>The Decibel (dB) Formula</h3>
-    <p>Because signal power loss varies exponentially over distance, engineers express attenuation and gain using a logarithmic unit: the <strong>Decibel (dB)</strong>.</p>
-
-    <div class="formula-box">
-      <div class="formula-title">Decibel Formulas for Power and Voltage</div>
-      <div class="formula-math">\text{dB} = 10 \log_{10}\left(\frac{P_2}{P_1}\right) \quad \text{(For Power)}</div>
-      <div class="formula-math">\text{dB} = 20 \log_{10}\left(\frac{V_2}{V_1}\right) \quad \text{(For Voltage)}</div>
-      <div class="formula-vars">
-        • $P_1$ = Input / Transmitted power (watts)<br>
-        • $P_2$ = Output / Received power (watts)<br>
-        • If $\text{dB} < 0$: Signal is <strong>attenuated</strong> (loss).<br>
-        • If $\text{dB} > 0$: Signal is <strong>amplified</strong> (gain).
-      </div>
-    </div>
-
-    <div class="callout tip">
-      <div class="callout-title">📝 Worked Problem 5.2 (Decibel Calculation)</div>
-      <p><strong>Problem:</strong> A signal travels through a transmission cable and its power is reduced to one-half of its original value. Calculate the attenuation in decibels.</p>
-      <p><strong>Solution:</strong><br>
-      $P_2 = 0.5 \cdot P_1 \implies \frac{P_2}{P_1} = 0.5$<br>
-      $\text{dB} = 10 \log_{10}(0.5) = 10 \times (-0.3010) = \mathbf{-3.01\text{ dB}}$<br>
-      A loss of <strong>$3\text{ dB}$</strong> means exactly half the power is lost!</p>
-    </div>
-  </section>
-  <hr class="section-hr">
-
-  <!-- SECTION 5.7: DISTORTION -->
-  <section id="s-distortion" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 5.7</div>
-      <h2 class="section-title">Transmission Impairment 2: Distortion & Dispersion</h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: signaling (Transmission Impairment 2: Distortion & Dispersion)</strong></span>
-  </div>
-
-
-    <div class="def-box">
-      <div class="def-term">2. Distortion</div>
-      <p class="def-body">A change in the shape or form of a composite signal caused by the fact that different frequency components travel through a guided physical medium at slightly different propagation speeds (phase velocities) and experience different amounts of attenuation.</p>
-    </div>
-
-    <h3>Delay Distortion & Chromatic Dispersion</h3>
-    <ul>
-      <li><strong>Delay Distortion (Copper Cables):</strong> In a composite signal made of harmonics $f_1, f_2, f_3$, the harmonic $f_1$ might arrive at the receiver slightly ahead of harmonic $f_3$. When the receiver sums the received harmonics, their phase relationship has altered, creating a deformed, unrecognizable composite wave.</li>
-      <li><strong>Chromatic Dispersion (Optical Fiber):</strong> Different wavelengths of light propagate at slightly different speeds through silica glass, causing narrow laser light pulses to broaden and overlap with adjacent bit intervals (Inter-Symbol Interference / ISI).</li>
-    </ul>
-  </section>
-  <hr class="section-hr">
-
-  <!-- SECTION 5.8: NOISE -->
-  <section id="s-noise" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 5.8</div>
-      <h2 class="section-title">Transmission Impairment 3: Noise & Its Types</h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: signaling (Transmission Impairment 3: Thermal & Induced Noise)</strong></span>
-  </div>
-
-
-    <div class="def-box">
-      <div class="def-term">3. Noise</div>
-      <p class="def-body">Unwanted, extraneous electrical or electromagnetic energy that gets inserted into a communication channel from external or internal sources, corrupting the transmitted signal.</p>
-    </div>
-
-    <div class="table-wrap">
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>Type of Noise</th>
-            <th>Physical Cause</th>
-            <th>Characteristics & Impact</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Thermal Noise (Johnson-Nyquist / White Noise)</strong></td>
-            <td>Thermal agitation and random motion of electrons inside conductors. Proportional to absolute temperature ($T$) and bandwidth ($B$). Formula: $N = k \cdot T \cdot B$.</td>
-            <td>Present in all electronic circuits at temperatures above absolute zero (0 K). Uniformly distributed across all frequencies. Unavoidable!</td>
-          </tr>
-          <tr>
-            <td><strong>Induced Noise</strong></td>
-            <td>Electromagnetic induction from external high-power sources: electric motors, fluorescent lighting, transformers.</td>
-            <td>The transmission cable acts as an accidental antenna picking up external ambient EM radiation.</td>
-          </tr>
-          <tr>
-            <td><strong>Crosstalk</strong></td>
-            <td>Electromagnetic coupling between adjacent parallel wires running inside the same conduit bundle.</td>
-            <td>Hearing a faint second telephone conversation in the background of your landline call. Solved by twisting wire pairs (UTP).</td>
-          </tr>
-          <tr>
-            <td><strong>Impulse Noise</strong></td>
-            <td>Sudden, high-energy, short-duration voltage spikes caused by lightning strikes, power line surges, or sparking switches.</td>
-            <td>The #1 cause of burst errors in digital data transmission. Can wipe out hundreds of consecutive bits in an instant.</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-  <hr class="section-hr">
-
-  <!-- SECTION 5.9: SNR -->
-  <section id="s-snr" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 5.9</div>
-      <h2 class="section-title">Signal-to-Noise Ratio (SNR & SNR_dB)</h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: signaling (Signal-to-Noise Ratio & SNR_dB)</strong></span>
-  </div>
-
-
-    <p>To quantify the quality and fidelity of a communication channel, engineers calculate the <strong>Signal-to-Noise Ratio (SNR)</strong>.</p>
-
-    <div class="formula-box">
-      <div class="formula-title">Signal-to-Noise Ratio Formulas</div>
-      <div class="formula-math">\text{SNR} = \frac{\text{Average Signal Power (watts)}}{\text{Average Noise Power (watts)}} = \frac{P_{\text{signal}}}{P_{\text{noise}}}</div>
-      <div class="formula-math">\text{SNR}_{\text{dB}} = 10 \log_{10}(\text{SNR})</div>
-      <div class="formula-vars">
-        • A high SNR ($\gg 1$) means the signal is far stronger than the background noise (clean channel).<br>
-        • A low SNR ($\approx 1$ or $\text{SNR}_{\text{dB}} = 0\text{ dB}$) means signal power equals noise power (severely degraded).
-      </div>
-    </div>
-
-    <div class="callout tip">
-      <div class="callout-title">📝 Worked Problem 5.3 (SNR to SNR_dB Conversion)</div>
-      <p><strong>Problem:</strong> The power of a signal is $10\text{ mW}$ and the power of the background noise is $1\ \mu\text{W}$. Calculate the SNR and $\text{SNR}_{\text{dB}}$.</p>
-      <p><strong>Solution:</strong><br>
-      • $P_{\text{signal}} = 10\text{ mW} = 10 \times 10^{-3}\text{ W} = 10^{-2}\text{ W}$<br>
-      • $P_{\text{noise}} = 1\ \mu\text{W} = 1 \times 10^{-6}\text{ W}$<br>
-      • $\text{SNR} = \frac{10 \times 10^{-3}}{1 \times 10^{-6}} = 10,000$<br>
-      • $\text{SNR}_{\text{dB}} = 10 \log_{10}(10,000) = 10 \times 4 = \mathbf{40\text{ dB}}$.</p>
-    </div>
-  </section>
-  <hr class="section-hr">
-
-  <!-- SECTION 5.10: NYQUIST THEOREM -->
-  <section id="s-nyquist" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 5.10</div>
-      <h2 class="section-title">Nyquist Bit Rate Theorem (Noiseless Channel) <span class="uni-syllabus-badge">🎓 Uni: Channel Capacity</span></h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: signaling (Nyquist Bit Rate Theorem for Noiseless Channels)</strong></span>
-  </div>
-
-
-    <p>In 1928, Harry Nyquist published a seminal theorem that establishes the absolute theoretical maximum data rate of a <strong>noiseless (ideal) communication channel</strong> with bandwidth $B$.</p>
-
-    <div class="formula-box">
-      <div class="formula-title">Nyquist Maximum Bit Rate Formula</div>
-      <div class="formula-math">C = 2 \times B \times \log_2(L) \quad \text{bits per second (bps)}</div>
-      <div class="formula-vars">
-        • $C$ = Maximum Theoretical Channel Capacity / Bit Rate (bps)<br>
-        • $B$ = Bandwidth of the channel in Hertz (Hz)<br>
-        • $L$ = Number of discrete signal levels (voltage levels) used to represent data<br>
-        • $\log_2(L)$ = Number of bits carried per signal element ($r$)
-      </div>
-    </div>
-
-    <div class="callout info">
-      <div class="callout-title">💡 Why 2B? (The Nyquist Sampling Principle)</div>
-      <p>Nyquist showed that to completely reconstruct an arbitrary analog signal having bandwidth $B$, it is sufficient to sample it at a rate of <strong>$2B$ samples per second</strong>. If each sample uses $L$ distinct levels, each sample carries $\log_2(L)$ bits. Thus, maximum bit rate = $2B \times \log_2(L)$ bps!</p>
-    </div>
-
-    <h3>Step-by-Step Worked Nyquist Examples</h3>
-    <div class="callout tip">
-      <div class="callout-title">📝 Worked Problem 5.4 (Standard Noiseless Channel)</div>
-      <p><strong>Problem:</strong> Consider a noiseless channel with a bandwidth of $3000\text{ Hz}$ transmitting a signal with two signal levels ($L = 2$). Calculate the maximum bit rate.</p>
-      <p><strong>Solution:</strong><br>
-      $B = 3000\text{ Hz}$, $L = 2$<br>
-      $C = 2 \times B \times \log_2(L) = 2 \times 3000 \times \log_2(2) = 6000 \times 1 = \mathbf{6000\text{ bps}}\ (6\text{ kbps})$.</p>
-    </div>
-
-    <div class="callout tip">
-      <div class="callout-title">📝 Worked Problem 5.5 (Increasing Signal Levels)</div>
-      <p><strong>Problem:</strong> What happens to the capacity of the same $3000\text{ Hz}$ channel if we upgrade the transmitter to use $L = 16$ distinct voltage levels?</p>
-      <p><strong>Solution:</strong><br>
-      $L = 16 \implies \log_2(16) = 4\text{ bits/sample}$<br>
-      $C = 2 \times 3000 \times \log_2(16) = 6000 \times 4 = \mathbf{24,000\text{ bps}}\ (24\text{ kbps})$.<br>
-      <em>Conclusion:</em> By increasing signal levels $L$, we can increase data rate indefinitely on a noiseless channel!</p>
-    </div>
-  </section>
-  <hr class="section-hr">
-
-  <!-- SECTION 5.11: SHANNON CAPACITY -->
-  <section id="s-shannon" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 5.11</div>
-      <h2 class="section-title">Shannon Capacity Theorem (Noisy Channel) <span class="uni-syllabus-badge">🎓 Uni: Shannon Capacity</span></h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: signaling (Shannon Capacity Theorem for Noisy Channels)</strong></span>
-  </div>
-
-
-    <p>In the real world, a completely noiseless channel does not exist. In 1948, Claude Shannon published his legendary foundation of Information Theory, introducing the <strong>Shannon Capacity Formula</strong>. This formula establishes the insurmountable, hard physical upper limit on the data rate of any real-world channel subject to thermal (white) noise, regardless of how many signal levels ($L$) you attempt to use!</p>
-
-    <div class="formula-box">
-      <div class="formula-title">Shannon Channel Capacity Formula</div>
-      <div class="formula-math">C = B \times \log_2(1 + \text{SNR}) \quad \text{bits per second (bps)}</div>
-      <div class="formula-vars">
-        • $C$ = Maximum Theoretical Channel Capacity (bps)<br>
-        • $B$ = Channel Bandwidth in Hertz (Hz)<br>
-        • $\text{SNR}$ = Signal-to-Noise Ratio (<strong>MUST be in absolute linear power ratio, NOT in dB!</strong>)
-      </div>
-    </div>
-
-    <div class="callout danger">
-      <div class="callout-title">⚠️ The #1 University Exam Trap in Shannon Calculations!</div>
-      <p>Exam questions will almost always provide SNR in decibels (e.g., "$\text{SNR}_{\text{dB}} = 30\text{ dB}$").<br>
-      <strong>NEVER plug the dB value directly into Shannon's formula!</strong><br>
-      You must FIRST convert $\text{SNR}_{\text{dB}}$ into linear SNR:<br>
-      <code style="color:var(--accent-light); font-weight:bold;">SNR = 10^(\text{SNR}_{\text{dB}} / 10)</code><br>
-      For example, if $\text{SNR}_{\text{dB}} = 30\text{ dB} \implies \text{SNR} = 10^{30/10} = 10^3 = \mathbf{1000}$.</p>
-    </div>
-
-    <h3>Step-by-Step Worked Shannon Examples</h3>
-    <div class="callout tip">
-      <div class="callout-title">📝 Worked Problem 5.6 (Classic Telephone Channel)</div>
-      <p><strong>Problem:</strong> A traditional telephone line has a bandwidth of $3100\text{ Hz}$ ($300\text{ Hz}$ to $3400\text{ Hz}$) and a typical signal-to-noise ratio of $30\text{ dB}$. Calculate the theoretical maximum channel capacity.</p>
-      <p><strong>Solution:</strong><br>
-      1. Given: $B = 3100\text{ Hz}$, $\text{SNR}_{\text{dB}} = 30\text{ dB}$.<br>
-      2. Convert SNR from dB to linear:<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;$\text{SNR} = 10^{30/10} = 10^3 = 1000$.<br>
-      3. Apply Shannon formula:<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;$C = B \log_2(1 + \text{SNR}) = 3100 \log_2(1 + 1000) = 3100 \log_2(1001)$<br>
-      4. Since $2^9 = 512$ and $2^{10} = 1024$, $\log_2(1001) \approx 9.967$.<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;$C = 3100 \times 9.967 \approx \mathbf{30,898\text{ bps}}\ (\approx 30.9\text{ kbps})$.<br>
-      <em>Historical insight:</em> This mathematical proof explains why dial-up modems could never exceed ~33.6 kbps on standard analog telephone lines without special downstream PCM tricks (V.90)!</p>
-    </div>
-  </section>
-  <hr class="section-hr">
-
-  <!-- SECTION 5.12: WORKED NUMERICAL PRACTICE -->
-  <section id="s-numerical-practice" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 5.12</div>
-      <h2 class="section-title">Comprehensive Worked Numerical Practice (GATE / Exam Level)</h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: signaling (Worked Numerical Problems on Capacity)</strong></span>
-  </div>
-
-
-    <p>In advanced competitive exams like GATE and university finals, questions combine both Nyquist and Shannon theorems to test deep conceptual mastery.</p>
-
-    <div class="callout tip">
-      <div class="callout-title">📝 Worked Problem 5.7 (Combining Shannon and Nyquist)</div>
-      <p><strong>Problem:</strong> A channel has a bandwidth of $1\text{ MHz}$ and an SNR of 63.
-      <br>(a) What is the theoretical maximum channel capacity?
-      <br>(b) To achieve this maximum capacity, what is the minimum number of signal levels ($L$) required?</p>
-      
-      <p><strong>Step-by-Step Solution:</strong><br>
-      <strong>Part (a): Shannon Capacity</strong><br>
-      $B = 1\text{ MHz} = 10^6\text{ Hz}$, $\text{SNR} = 63$<br>
-      $C = B \log_2(1 + \text{SNR}) = 10^6 \times \log_2(1 + 63) = 10^6 \times \log_2(64)$<br>
-      Since $2^6 = 64 \implies \log_2(64) = 6$.<br>
-      $C = 10^6 \times 6 = \mathbf{6\text{ Mbps}}$.</p>
-
-      <p><strong>Part (b): Minimum Signal Levels via Nyquist</strong><br>
-      Now set Nyquist capacity equal to Shannon capacity to find $L$:<br>
-      $C = 2 \times B \times \log_2(L)$<br>
-      $6 \times 10^6 = 2 \times (10^6) \times \log_2(L)$<br>
-      $6 = 2 \log_2(L) \implies \log_2(L) = 3$<br>
-      $L = 2^3 = \mathbf{8\text{ signal levels}}$.<br>
-      <em>Conclusion:</em> To transmit at the full 6 Mbps Shannon capacity, the modulation system must encode each symbol using at least <strong>8 discrete voltage levels</strong> (3 bits per symbol).</p>
-    </div>
-
-    <div class="callout tip">
-      <div class="callout-title">📝 Worked Problem 5.8 (Extreme Noisy Channel)</div>
-      <p><strong>Problem:</strong> Suppose an extremely noisy channel has an SNR of 0. Calculate its theoretical channel capacity.</p>
-      <p><strong>Solution:</strong><br>
-      $\text{SNR} = 0$<br>
-      $C = B \log_2(1 + 0) = B \log_2(1) = B \times 0 = \mathbf{0\text{ bps}}$.<br>
-      If the signal power is zero or noise is infinite, no data can be communicated, exactly as physical intuition demands.</p>
-    </div>
-
-    <h3>Nyquist vs Shannon: Master Comparison</h3>
-    <div class="table-wrap">
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>Comparison Parameter</th>
-            <th>Nyquist Theorem</th>
-            <th>Shannon Capacity</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Channel Assumption</strong></td>
-            <td><strong>Noiseless (Ideal) channel</strong> ($\text{Noise} = 0$).</td>
-            <td><strong>Noisy channel</strong> (Thermal Gaussian white noise).</td>
-          </tr>
-          <tr>
-            <td><strong>Governing Formula</strong></td>
-            <td>$C = 2B \log_2(L)$</td>
-            <td>$C = B \log_2(1 + \text{SNR})$</td>
-          </tr>
-          <tr>
-            <td><strong>Role of Signal Levels ($L$)</strong></td>
-            <td>Can increase $C$ indefinitely by using higher $L$.</td>
-            <td>$L$ does NOT appear in formula; capacity is capped by physics and SNR.</td>
-          </tr>
-          <tr>
-            <td><strong>Practical Interpretation</strong></td>
-            <td>Tells you how many signal levels you need to achieve a given data rate.</td>
-            <td>Tells you the absolute physical speed limit of the universe for that wire/air channel.</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-  <hr class="section-hr">
-
-  <!-- SECTION 5.13: SUMMARY & EXAM TRAPS -->
-  <section id="s-summary-ch5" class="section-in-uni  content-section">
-    <div class="section-header">
-      <div class="section-tag">Section 5.13</div>
-      <h2 class="section-title">Chapter Summary & High-Yield Exam Traps</h2>
-    </div>
-  <div class="uni-req-banner">
-    <span class="uni-req-badge">🎓 Uni Required</span>
-    <span>Required for syllabus topic: <strong>Physical layer: signaling (Chapter Revision & Exam Traps)</strong></span>
-  </div>
-
-
-    <div class="callout tip">
-      <div class="callout-title">⚡ High-Yield Rapid Review Points</div>
+      <div class="def-term">Nyquist Bit Rate Theorem (Harry Nyquist, 1928)</div>
+      For an idealized, <strong>noiseless channel</strong> of bandwidth $B$ Hertz, the maximum theoretical data transmission rate $C$ that can be supported without intersymbol interference is given by:
+      $$C = 2B \log_2(L) \quad \text{bits per second (bps)}$$
+      where:
       <ul>
-        <li><strong>Sine Wave Formula:</strong> $s(t) = A \sin(2\pi ft + \phi)$; $T = 1/f$; $\lambda = v/f$.</li>
-        <li><strong>Bandwidth:</strong> $B = f_{\text{high}} - f_{\text{low}}$ (in Hz).</li>
-        <li><strong>Bit Rate vs Baud Rate:</strong> $\text{Bit Rate} = \text{Baud Rate} \times \log_2(L)$. Bit rate $\ge$ Baud rate always.</li>
-        <li><strong>Attenuation in dB:</strong> $\text{dB} = 10 \log_{10}(P_2/P_1)$. A loss of $3\text{ dB}$ means half power; a loss of $10\text{ dB}$ means $90\%$ power lost ($10\%$ remains); a loss of $20\text{ dB}$ means $99\%$ power lost ($1\%$ remains).</li>
-        <li><strong>Three Impairments:</strong> Attenuation (loss of power), Distortion (delay/phase change in composite signals), Noise (unwanted external/internal energy).</li>
-        <li><strong>Noise Types:</strong> Thermal ($kT B$), Induced (motors), Crosstalk (adjacent wires), Impulse (lightning spikes, causes burst errors).</li>
-        <li><strong>SNR:</strong> $\text{SNR} = P_S / P_N$; $\text{SNR}_{\text{dB}} = 10 \log_{10}(\text{SNR})$.</li>
-        <li><strong>Nyquist:</strong> $C = 2B \log_2(L)$ (for ideal noiseless channel).</li>
-        <li><strong>Shannon:</strong> $C = B \log_2(1 + \text{SNR})$ (for real noisy channel; SNR MUST be linear, not dB).</li>
+        <li>$B$ = Channel bandwidth in Hertz ($\text{Hz}$).</li>
+        <li>$L$ (or $M$) = Number of discrete, distinguishable signal voltage levels.</li>
       </ul>
     </div>
 
-    <h3>Top 5 High-Yield Exam & GATE Traps</h3>
+    <h3>Physical Derivation &amp; Intuition</h3>
+    <p>Nyquist proved that if an arbitrary signal is passed through a low-pass filter of bandwidth $B$, the filtered signal can be completely reconstructed by taking $2B$ samples per second (the <strong>Nyquist Sampling Rate</strong>: $f_s = 2B$). Sampling faster than $2B$ yields redundant information.</p>
+    <p>If each sample can take on one of $L$ distinct voltage levels, each sample conveys $\log_2(L)$ bits of information. Multiplying the sampling rate by the bits per sample yields the maximum bit rate:</p>
+    $$C = (2B\ \text{samples/sec}) \times (\log_2 L\ \text{bits/sample}) = 2B \log_2(L)\ \text{bps}$$
+
+    <div class="callout tip">
+      <span class="callout-icon">💡</span>
+      <div><strong>Solved Quick Example:</strong>
+      Consider a noiseless channel with a bandwidth of $3\ \text{kHz}$ carrying a signal with $4$ discrete voltage levels ($L = 4$).
+      $$C = 2 \times 3000 \times \log_2(4) = 6000 \times 2 = 12,000\ \text{bps} = 12\ \text{kbps}$$
+      </div>
+    </div>
+
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 5.10</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 3, Section 3.6.1: "Nyquist Bit Rate".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Tanenbaum &amp; Wetherall (5th Ed):</strong> Chapter 2, Section 2.1.2: "The Maximum Data Rate of a Channel".</li>
+        <li><span class="res-tag tag-spec">Historic Paper</span> <strong>Nyquist, H. (1928):</strong> "Certain Topics in Telegraph Transmission Theory", Trans. AIEE.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 5.11 — SHANNON'S CAPACITY -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-shannon" data-midsem="core" data-exam-priority="core" data-search-section="Shannon capacity theorem noisy channel thermal noise SNR theoretical limit infinite bandwidth" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">5.11 Shannon's Capacity (Noisy Channel)
+      <button class="bookmark-btn" data-id="s-shannon" data-label="5.11 Shannon's Capacity (Noisy Channel)" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Channel Capacity Theorems — Shannon Capacity for Noisy Channels</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Shannon Capacity Theorem (Claude Shannon, 1948)</div>
+      In real physical channels subjected to thermal white noise, the maximum theoretical upper bound on data transmission rate $C$ that can achieve an arbitrarily small error probability (using optimal error-correcting codes) is governed by:
+      $$C = B \log_2\left(1 + \text{SNR}\right) \quad \text{bits per second (bps)}$$
+      where:
+      <ul>
+        <li>$B$ = Channel bandwidth in Hertz ($\text{Hz}$).</li>
+        <li>$\text{SNR}$ = Signal-to-Noise Ratio expressed as a <strong>linear ratio</strong> (NOT decibels!).</li>
+      </ul>
+    </div>
+
+    <h3>Physical Implications &amp; The Infinite Bandwidth Limit</h3>
+    <p>Shannon's theorem represents the absolute speed limit of physical telecommunications:</p>
+    <ul>
+      <li>Notice that Shannon's formula contains <strong>no mention of signal levels ($L$)</strong>. In a noisy channel, making $L$ arbitrarily large does not yield infinite capacity because noise fluctuations blur adjacent voltage levels together.</li>
+      <li><strong>Infinite Bandwidth Limit:</strong> As bandwidth $B \to \infty$, capacity does NOT grow to infinity! Because thermal noise power increases linearly with bandwidth ($N = N_0 B$):
+      $$C_{\infty} = \lim_{B \to \infty} B \log_2\left(1 + \frac{S}{N_0 B}\right) = \frac{S}{N_0 \ln 2} \approx 1.44 \frac{S}{N_0}\ \text{bps}$$
+      This proves that transmission speed is strictly bounded by signal energy per bit over noise spectral density.</li>
+    </ul>
+
+    <div class="callout danger">
+      <span class="callout-icon">🚨</span>
+      <div><strong>Universal Exam Blunder: Decibels in Shannon's Formula</strong>
+      If an exam gives $\text{SNR}_{\text{dB}} = 20\ \text{dB}$, you <strong>MUST convert to linear SNR first</strong>!
+      $$\text{SNR} = 10^{20/10} = 100$$
+      $$C = B \log_2(1 + 100) = B \log_2(101)$$
+      Plugging "20" directly into Shannon's formula is an instant zero on university and GATE exams!
+      </div>
+    </div>
+
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 5.11</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 3, Section 3.6.2: "Shannon Capacity".</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Tanenbaum &amp; Wetherall (5th Ed):</strong> Chapter 2, Section 2.1.2: "Shannon Capacity".</li>
+        <li><span class="res-tag tag-spec">Historic Paper</span> <strong>Shannon, C. E. (1948):</strong> "A Mathematical Theory of Communication", Bell System Technical Journal.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 5.12 — WORKED NUMERICAL PRACTICE -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-numerical-practice" data-midsem="core" data-exam-priority="core" data-search-section="Worked numerical practice Nyquist Shannon attenuation cascaded SNR solved exam questions" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">5.12 Worked Numerical Practice (GATE / Exam Level)
+      <button class="bookmark-btn" data-id="s-numerical-practice" data-label="5.12 Worked Numerical Practice" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Channel Capacity &amp; Signaling Solved Numericals</strong></span>
+  </div>
+
+  <div class="prose">
+    <!-- NUMERICAL 1 -->
+    <h3>Problem 1: Classic Telephone Channel Capacity</h3>
+    <p><strong>Problem:</strong> A standard analog telephone voice circuit has a bandwidth of $3.1\ \text{kHz}$ ($300\ \text{Hz}$ to $3400\ \text{Hz}$) and a signal-to-noise ratio of $35\ \text{dB}$. Calculate the theoretical maximum channel capacity.</p>
+    <p><strong>Solution:</strong></p>
+    <ol style="margin:4px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:4px">
+      <li>Convert $\text{SNR}_{\text{dB}}$ to linear ratio:
+      $$\text{SNR} = 10^{35/10} = 10^{3.5} \approx 3162.28$$</li>
+      <li>Apply Shannon's Theorem:
+      $$C = B \log_2(1 + \text{SNR}) = 3100 \times \log_2(1 + 3162.28) = 3100 \times \log_2(3163.28)$$</li>
+      <li>Using change of base ($\log_2 x = \frac{\log_{10} x}{\log_{10} 2}$):
+      $$\log_2(3163.28) = \frac{\log_{10}(3163.28)}{\log_{10}(2)} = \frac{3.5001}{0.30103} \approx 11.627\ \text{bits}$$</li>
+      <li>$$C = 3100 \times 11.627 \approx 36,044\ \text{bps} \approx 36\ \text{kbps}$$</li>
+    </ol>
+    <p><em>Significance:</em> This mathematical result explains why early dial-up telephone modems hit a ceiling around 33.6 kbps before V.90 utilized digital PSTN trunks to reach 56 kbps!</p>
+
+    <hr style="margin:1.5rem 0;border-color:var(--border-subtle)">
+
+    <!-- NUMERICAL 2 -->
+    <h3>Problem 2: Combined Shannon &amp; Nyquist Capacity (GATE CS Classic)</h3>
+    <p><strong>Problem:</strong> A communication channel has a bandwidth of $1\ \text{MHz}$ and an SNR of $63$. What is the theoretical maximum channel capacity? According to Nyquist's theorem, how many discrete signal levels ($L$) are required to achieve this capacity?</p>
+    <p><strong>Solution:</strong></p>
+    <ol style="margin:4px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:4px">
+      <li>Find Shannon Capacity:
+      $$C = B \log_2(1 + \text{SNR}) = 10^6 \times \log_2(1 + 63) = 10^6 \times \log_2(64)$$
+      Since $64 = 2^6$, $\log_2(64) = 6$.
+      $$C = 10^6 \times 6 = 6\ \text{Mbps}$$</li>
+      <li>Determine required signal levels $L$ via Nyquist:
+      $$C = 2B \log_2(L) \implies 6 \times 10^6 = 2 \times (10^6) \times \log_2(L)$$
+      $$6 = 2 \times \log_2(L) \implies \log_2(L) = 3 \implies L = 2^3 = 8\ \text{discrete levels}$$</li>
+    </ol>
+
+    <hr style="margin:1.5rem 0;border-color:var(--border-subtle)">
+
+    <!-- NUMERICAL 3 -->
+    <h3>Problem 3: Cascaded Link Attenuation &amp; Power Calculation</h3>
+    <p><strong>Problem:</strong> A signal with an input power of $5\ \text{mW}$ traverses a transmission line with an attenuation of $-12\ \text{dB}$. It is then boosted by an amplifier with a gain of $+20\ \text{dB}$, and travels through a final cable segment with an attenuation of $-14\ \text{dB}$. Find the final output power.</p>
+    <p><strong>Solution:</strong></p>
+    <ol style="margin:4px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:4px">
+      <li>Calculate Net Decibels:
+      $$\text{dB}_{\text{net}} = -12 + 20 - 14 = -6\ \text{dB}$$</li>
+      <li>Calculate output power $P_2$:
+      $$-6 = 10 \log_{10}\left(\frac{P_2}{5\ \text{mW}}\right) \implies \log_{10}\left(\frac{P_2}{5}\right) = -0.6$$
+      $$\frac{P_2}{5} = 10^{-0.6} \approx 0.2512 \implies P_2 = 5 \times 0.2512 = 1.256\ \text{mW}$$</li>
+    </ol>
+
+    <div class="study-resources">
+      <div class="res-title">📚 Deep Study Resources for Section 5.12</div>
+      <ul class="res-list">
+        <li><span class="res-tag tag-foundational">Foundational</span> <strong>Forouzan (5th Ed):</strong> Chapter 3, Problem Set: Questions 3-15 to 3-30.</li>
+        <li><span class="res-tag tag-academic">Standard Academic</span> <strong>Stallings (10th Ed):</strong> Chapter 3, Homework Problems on Channel Capacity.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 5.13 — SUMMARY & EXAM TRAPS -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s-summary-ch5" data-midsem="core" data-exam-priority="core" data-search-section="Chapter 5 summary traps exam revision self-check Nyquist Shannon decibel" class="section-in-uni content-section">
+  <div class="section-heading">
+    <h2 class="prose">5.13 Summary &amp; High-Yield Exam Traps
+      <button class="bookmark-btn" data-id="s-summary-ch5" data-label="5.13 Summary &amp; High-Yield Exam Traps" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Chapter 5 Revision Checklist &amp; Common Pitfalls</strong></span>
+  </div>
+
+  <div class="prose">
+    <h3>Five Critical University Exam Traps</h3>
     <div class="table-wrap">
-      <table class="data-table">
+      <table class="prose-table">
         <thead>
           <tr>
-            <th>Trap #</th>
-            <th>The Common Misconception</th>
-            <th>The Technical Reality</th>
+            <th>Trap ID</th>
+            <th>Common Misconception</th>
+            <th>First-Principles Reality &amp; Refutation</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>Trap 1</strong></td>
-            <td>Plugging $\text{SNR}_{\text{dB}}$ directly into Shannon's formula.</td>
-            <td><strong>Instant zero marks!</strong> Always convert: $\text{SNR} = 10^{(\text{SNR}_{\text{dB}}/10)}$.</td>
+            <td>"Plugging SNR in decibels directly into Shannon's formula."</td>
+            <td><strong>Fatal Error!</strong> Shannon's capacity formula $C = B \log_2(1 + \text{SNR})$ requires the <strong>linear ratio</strong>. If given $30\ \text{dB}$, you must convert to $10^{30/10} = 1000$ first!</td>
           </tr>
           <tr>
             <td><strong>Trap 2</strong></td>
-            <td>"Bit rate and Baud rate are identical in all digital systems."</td>
-            <td><strong>Only when $L = 2$!</strong> Whenever $L > 2$ (e.g., 4 levels = 2 bits/symbol, 16-QAM = 4 bits/symbol), Bit Rate is strictly greater than Baud Rate.</td>
+            <td>"Infinite bandwidth yields infinite capacity in real channels."</td>
+            <td><strong>False!</strong> Because noise power increases linearly with bandwidth ($N = N_0 B$), Shannon's capacity asymptotically converges to $C_{\infty} = \frac{S}{N_0 \ln 2} \approx 1.44 \frac{S}{N_0}$.</td>
           </tr>
           <tr>
             <td><strong>Trap 3</strong></td>
-            <td>Confusing frequency bandwidth ($B$ in Hz) with digital throughput ($R_b$ in bps).</td>
-            <td>Bandwidth in the Physical Layer is measured in <strong>Hertz (Hz)</strong>, representing the spectrum width. Digital data rate is measured in <strong>bits per second (bps)</strong>.</td>
+            <td>"Baud rate is always less than or equal to bit rate."</td>
+            <td><strong>False!</strong> In Manchester encoding, each data bit requires two signal transitions ($r = 1/2$), so baud rate is <strong>double</strong> the bit rate!</td>
           </tr>
           <tr>
             <td><strong>Trap 4</strong></td>
-            <td>"A noiseless channel has an infinite data rate."</td>
-            <td><strong>False!</strong> Even if noise is zero, the data rate is limited by channel bandwidth $B$ and signal levels $L$ via Nyquist: $C = 2B \log_2(L)$.</td>
+            <td>"Decibels of cascaded links must be multiplied."</td>
+            <td><strong>False!</strong> Because decibels are logarithmic ($dB = 10 \log_{10} P_2/P_1$), gains and losses across sequential links are <strong>added algebraically</strong> ($\text{dB}_{\text{total}} = \text{dB}_1 + \text{dB}_2$).</td>
           </tr>
           <tr>
             <td><strong>Trap 5</strong></td>
-            <td>"Thermal noise can be eliminated by perfect cable shielding."</td>
-            <td><strong>Impossible!</strong> Shielding eliminates <em>induced noise</em> and <em>crosstalk</em>. Thermal noise is generated by the random kinetic motion of electrons inside the conductor itself and is unavoidable at any temperature above $0\text{ Kelvin}$.</td>
+            <td>"The Physical Layer detects and corrects corrupted bits."</td>
+            <td><strong>False!</strong> The Physical Layer transmits raw bits without interpretation. Error detection and correction are strictly performed at <strong>Layer 2 (Data Link) and Layer 4 (Transport)</strong>.</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <!-- CHAPTER PROGRESS CHECK -->
+    <!-- CHAPTER SELF-CHECK QUESTIONS -->
     <div class="def-box" style="margin-top:2rem; border-color:var(--accent);">
-      <div class="def-term">🎯 End of Chapter Self-Check</div>
+      <div class="def-term">🎯 End-of-Chapter Self-Check Questions</div>
       <p class="def-body">
-        Verify your mastery before moving to Transmission Media:<br>
+        Verify your mastery before moving to Chapter 6:<br>
         1. State Nyquist's theorem and Shannon's theorem. Under what physical assumptions does each apply?<br>
         2. If a signal has 16 constellation points and a baud rate of 2400 baud, what is its bit rate?<br>
-        3. Convert an SNR of $20\text{ dB}$ into its linear ratio.<br>
+        3. Convert an SNR of $20\ \text{dB}$ into its linear ratio.<br>
         4. Name the three types of transmission impairments and explain why impulse noise is the primary culprit in digital data errors.<br>
-        5. Calculate the Shannon capacity for a channel with bandwidth $4\text{ kHz}$ and $\text{SNR}_{\text{dB}} = 10\text{ dB}$.
+        5. Calculate the Shannon capacity for a channel with bandwidth $4\ \text{kHz}$ and $\text{SNR}_{\text{dB}} = 10\ \text{dB}$.
       </p>
     </div>
-  </section>
-  <hr class="section-hr">
+  </div>
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Comprehensive chapter review and practice exam links.</div>
+      <div class="resource-grid">
+        <a href="https://www.mheducation.com/highered/product/data-communications-and-networking-with-tcp-ip-protocol-suite-forouzan.html" target="_blank" rel="noopener noreferrer">
+          📘 Forouzan — Chapter 3 Data &amp; Signals
+          <small>Nyquist and Shannon capacity problem sets.</small>
+        </a>
+        <a href="https://www.pearson.com/en-gb/subject-catalog/p/computer-networks-global-edition/P200000005535/9781292498621" target="_blank" rel="noopener noreferrer">
+          📘 Tanenbaum &amp; Wetherall — Chapter 2 Physical Layer
+          <small>Theoretical basis of data communications and impairments.</small>
+        </a>
+        <a href="../exams/mock-exam.html">
+          📝 CN MiniBook — Practice Exams
+          <small>Interactive self-testing on signals, attenuation, and SNR.</small>
+        </a>
+      </div>
+    </div>
+</section>
+<hr class="section-hr">
 
   <!-- PREV/NEXT NAV -->
   <div class="prev-next">
-    <a href="ch04-devices-sdn.html" class="nav-btn">← Ch 4: Devices & SDN</a>
-    <a href="ch06-media-signaling.html" class="nav-btn primary">Next: Media & Line Coding →</a>
+    <a href="ch04-devices-sdn.html" class="nav-btn">← Ch 4: Devices &amp; SDN</a>
+    <a href="ch06-media-signaling.html" class="nav-btn primary">Next: Media &amp; Line Coding →</a>
   </div>
 
 </div>

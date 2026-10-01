@@ -1,0 +1,2652 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<!-- ⚡ Arpit | CN MiniBook 2026 -->
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="Arpit">
+<meta name="description" content="Chapter 17: Address Mapping &amp; ICMP — CN MiniBook. In-depth mastery of the Address Resolution Protocol (RFC 826), ARP cache dynamics, Default Gateway routing, Gratuitous ARP, ARP spoofing and DAI security, historical RARP/BOOTP/DHCP evolution, IPv6 Neighbor Discovery (NDP), ICMPv4 error reporting and query architecture (RFC 792), Destination Unreachable codes, Path MTU Discovery, Time Exceeded and traceroute mechanics, ping RTT calculations, ICMPv6 enhancements (RFC 4443), and multi-hop packet traces.">
+<title>Ch 17 — Address Mapping &amp; ICMP | CN MiniBook 🌐 Arpit</title>
+<link rel="manifest" href="../manifest.json">
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/animations.css">
+<link rel="stylesheet" href="../assets/css/timer.css">
+<link rel="stylesheet" href="../assets/css/chapters.css">
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<!-- HEADER -->
+<header id="main-header">
+  <div class="header-left">
+    <button id="sidebar-toggle" class="icon-btn" title="Toggle Sidebar (S)">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </button>
+    <div class="brand-logo">
+      <div class="brand-icon">🌐</div>
+      <div class="brand-text"><span class="main">CN MiniBook</span><span class="sub">Computer Networks</span></div>
+    </div>
+  </div>
+  <span class="header-chapter-title">Ch 17 — Address Mapping &amp; ICMP</span>
+  <div class="header-right">
+    <button id="search-btn" class="icon-btn" title="Search (Ctrl+K)">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.35-4.35"></path></svg>
+    </button>
+    <button id="tts-toggle" class="icon-btn" title="Read Aloud">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"></path></svg>
+    </button>
+    <button id="print-btn" title="Print / Save as PDF (Ctrl+P)" aria-label="Print"><svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg><span class="print-label">PDF</span></button>
+    <button id="reading-mode-btn" class="icon-btn" title="Reading Mode (F)" aria-pressed="false" aria-label="Toggle reading mode">📖</button>
+    <button id="theme-toggle" class="icon-btn" title="Toggle Theme (T)"></button>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<div id="sidebar-overlay"></div>
+<aside id="sidebar">
+  <nav class="sidebar-nav">
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Navigation</div>
+      <a href="../index.html" class="sidebar-link"><span class="link-icon">🏠</span>Home</a>
+      <a href="../progress.html" class="sidebar-link"><span class="link-icon">📊</span>Dashboard</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Chapter 17 — Sections</div>
+      <a href="#s17-1" class="sidebar-link active"><span class="link-icon">💡</span>17.1 The Address-Mapping Problem</a>
+      <a href="#s17-2" class="sidebar-link"><span class="link-icon">📋</span>17.2 ARP Protocol &amp; Format</a>
+      <a href="#s17-3" class="sidebar-link"><span class="link-icon">🔄</span>17.3 ARP Request &amp; Reply</a>
+      <a href="#s17-4" class="sidebar-link"><span class="link-icon">⚡</span>17.4 ARP Cache &amp; Aging</a>
+      <a href="#s17-5" class="sidebar-link"><span class="link-icon">🎯</span>17.5 Same-LAN vs Remote</a>
+      <a href="#s17-6" class="sidebar-link"><span class="link-icon">🚪</span>17.6 ARP &amp; Default Gateway</a>
+      <a href="#s17-7" class="sidebar-link"><span class="link-icon">📣</span>17.7 Gratuitous ARP</a>
+      <a href="#s17-8" class="sidebar-link"><span class="link-icon">🛡️</span>17.8 ARP Security &amp; Spoofing</a>
+      <a href="#s17-9" class="sidebar-link"><span class="link-icon">📜</span>17.9 RARP, BOOTP &amp; DHCP</a>
+      <a href="#s17-10" class="sidebar-link"><span class="link-icon">🚀</span>17.10 IPv6 NDP vs ARP</a>
+      <a href="#s17-11" class="sidebar-link"><span class="link-icon">⚠️</span>17.11 ICMP Error Reporting</a>
+      <a href="#s17-12" class="sidebar-link"><span class="link-icon">📦</span>17.12 ICMP Message Structure</a>
+      <a href="#s17-13" class="sidebar-link"><span class="link-icon">🚫</span>17.13 Destination Unreachable</a>
+      <a href="#s17-14" class="sidebar-link"><span class="link-icon">⏱️</span>17.14 Time Exceeded &amp; Traceroute</a>
+      <a href="#s17-15" class="sidebar-link"><span class="link-icon">📶</span>17.15 Echo (Ping) &amp; RTT</a>
+      <a href="#s17-16" class="sidebar-link"><span class="link-icon">⚖️</span>17.16 ICMPv4 vs ICMPv6</a>
+      <a href="#s17-17" class="sidebar-link"><span class="link-icon">🛠️</span>17.17 End-to-End Walkthrough</a>
+      <a href="#s17-18" class="sidebar-link"><span class="link-icon">🏁</span>17.18 Exam Traps &amp; Summary</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label part-label part-i">Part I — Introduction</div>
+      <a href="ch01-fundamentals.html" class="sidebar-link"><span class="link-icon">📡</span>Ch 1 — Fundamentals</a>
+      <a href="ch02-types-topologies.html" class="sidebar-link"><span class="link-icon">🔗</span>Ch 2 — Types &amp; Topologies</a>
+      <a href="ch03-models-addressing.html" class="sidebar-link"><span class="link-icon">📦</span>Ch 3 — Models &amp; Addressing</a>
+      <a href="ch04-devices-sdn.html" class="sidebar-link"><span class="link-icon">🔌</span>Ch 4 — Devices &amp; SDN</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label part-label part-ii">Part II — Physical Layer</div>
+      <a href="ch05-physical-fundamentals.html" class="sidebar-link"><span class="link-icon">📶</span>Ch 5 — Physical Fundamentals</a>
+      <a href="ch06-media-signaling.html" class="sidebar-link"><span class="link-icon">🔌</span>Ch 6 — Media &amp; Line Coding</a>
+      <a href="ch07-modulation-switching.html" class="sidebar-link"><span class="link-icon">📻</span>Ch 7 — Modulation &amp; Switching</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label part-label part-iii">Part III — Data Link Layer</div>
+      <a href="ch08-dll-fundamentals.html" class="sidebar-link"><span class="link-icon">🔧</span>Ch 8 — DLL Fundamentals</a>
+      <a href="ch09-protocols-sliding.html" class="sidebar-link"><span class="link-icon">🔄</span>Ch 9 — Protocols &amp; Sliding Window</a>
+      <a href="ch10-mac-ethernet.html" class="sidebar-link"><span class="link-icon">🌐</span>Ch 10 — MAC &amp; Ethernet</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label part-label part-iv">Part IV — Network Layer</div>
+      <a href="ch11-network-layer-foundations.html" class="sidebar-link part-iv"><span class="link-icon">🗺️</span>Ch 11 — Network Layer Foundations</a>
+      <a href="ch12-shortest-path-routing.html" class="sidebar-link part-iv"><span class="link-icon">🧭</span>Ch 12 — Shortest Path Routing</a>
+      <a href="ch13-link-state-distance-vector.html" class="sidebar-link part-iv"><span class="link-icon">🔁</span>Ch 13 — Link-State &amp; Distance-Vector</a>
+      <a href="ch14-logical-addressing-ipv4.html" class="sidebar-link part-iv"><span class="link-icon">🏷️</span>Ch 14 — Logical Addressing &amp; IPv4</a>
+      <a href="ch15-ipv4-internals.html" class="sidebar-link part-iv"><span class="link-icon">📦</span>Ch 15 — IPv4 Internals</a>
+      <a href="ch16-ipv6.html" class="sidebar-link part-iv"><span class="link-icon">🚀</span>Ch 16 — IPv6 Architecture</a>
+      <a href="ch17-address-mapping-icmp.html" class="sidebar-link active part-iv"><span class="link-icon">🔎</span>Ch 17 — Address Mapping &amp; ICMP</a>
+      <a href="ch18-routers-switches-firewalls.html" class="sidebar-link part-iv"><span class="link-icon">🛡️</span>Ch 18 — Routers, Switches &amp; Firewalls</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">My Notes</div>
+      <div id="notes-sidebar-list"></div>
+    </div>
+    </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-brand-mark"><div class="mark">🌐</div><span>Arpit · CN MiniBook 2026</span></div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main id="main-content">
+<div class="content-inner">
+    <div class="chapter-hero">
+      <div class="chapter-part-banner part-iv"><span class="part-banner-badge">Part IV</span><span>Network Layer</span></div>
+<div class="hero-badge">
+        <span class="part-badge part-iv">Part IV · Network Layer</span>
+        <span class="weight-badge high">High Exam Weightage</span>
+        <span class="time-badge">⏱️ 35 min read</span>
+      </div>
+      <h1 class="chapter-title">Address Mapping &amp; ICMP</h1>
+      <p class="chapter-desc">The essential binding between logical network-layer addresses and physical link-layer addresses, combined with network-layer diagnostic feedback. Deep-dive exploration of the Address Resolution Protocol (RFC 826), ARP cache dynamics, Default Gateway routing, Gratuitous ARP, ARP spoofing and DAI security, historical RARP/BOOTP/DHCP evolution, IPv6 Neighbor Discovery (NDP), ICMPv4 error reporting and query architecture (RFC 792), Destination Unreachable codes, Path MTU Discovery, Time Exceeded and traceroute mechanics, ping RTT calculations, ICMPv6 enhancements (RFC 4443), and multi-hop packet traces.</p>
+      <div class="hero-actions">
+        <button id="focus-toggle-btn" class="action-btn" title="Toggle University Exam Filter">
+          <span class="btn-icon">🎓</span><span class="btn-text">Filter: Uni Exam Focus</span>
+        </button>
+        <button id="bookmark-btn" class="action-btn" title="Bookmark Chapter">
+          <span class="btn-icon">🔖</span><span class="btn-text">Bookmark</span>
+        </button>
+        <button id="notes-toggle-btn" class="action-btn" title="Chapter Notes">
+          <span class="btn-icon">📝</span><span class="btn-text">Notes</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- OBJECTIVES & STUDY PATH -->
+    <div class="concept-card">
+      <div class="concept-title">🎯 Chapter Learning Objectives &amp; Exam Strategy</div>
+      <ul class="concept-features">
+        <li><strong>Address Resolution Core:</strong> Master why Layer-3 IP addresses cannot be forwarded directly by Layer-2 Ethernet hardware and how RFC 826 dynamically binds them.</li>
+        <li><strong>Packet Framing &amp; Fields:</strong> Memorize the 28-byte ARP header (HTYPE, PTYPE, HLEN, PLEN, Opcode, SHA, SPA, THA, TPA) and the 14-byte Ethernet frame encapsulation.</li>
+        <li><strong>Gateway &amp; Multi-Hop Traversal:</strong> Master the target selection algorithm—why local hosts ARP for the destination, but remote destinations force an ARP for the Default Gateway router.</li>
+        <li><strong>Security &amp; MitM:</strong> Understand the stateless nature of ARP, how ARP Cache Poisoning enables Man-in-the-Middle attacks, and how Dynamic ARP Inspection (DAI) mitigates them.</li>
+        <li><strong>IPv6 Modernization:</strong> Explain why ARP and broadcasts were eliminated in IPv6, and how NDP leverages ICMPv6 Solicited-Node Multicast for hardware-efficient resolution.</li>
+        <li><strong>ICMP Diagnostics:</strong> Memorize the two classes of ICMP messages, the 4 non-negotiable error reporting prohibitions, Destination Unreachable codes (especially PMTUD Code 4), and Time Exceeded (Type 11).</li>
+        <li><strong>Tool Engineering:</strong> Trace the precise mechanical packet exchanges of <code>ping</code> (RTT timestamping) and <code>traceroute</code> (TTL decrementing and UDP port probes).</li>
+      </ul>
+    </div>
+
+    <!-- INTERACTIVE TOC -->
+    
+  <!-- OFFICIAL UNIVERSITY SYLLABUS CALLOUT -->
+  <div class="uni-syllabus-callout">
+    <div class="uni-callout-title">🎓 Official University Syllabus — UNIT II</div>
+    <div><strong>Network Layer:</strong> Address mapping protocols: Address Resolution Protocol (ARP), Reverse ARP (RARP), Dynamic Host Configuration Protocol (DHCP); Error reporting and control: Internet Control Message Protocol (ICMPv4 &amp; ICMPv6), query/error messages, Path MTU Discovery (PMTUD), and Traceroute mechanics.</div>
+  </div>
+
+  <!-- UNIVERSITY SYLLABUS FILTER SWITCH -->
+  <div class="uni-mode-toggle-card">
+    <div>
+      <div class="uni-mode-title">
+        <span>🎓</span> University Exam Focus Filter
+      </div>
+      <div class="uni-mode-desc">
+        Focus specifically on sections prescribed in Delhi University syllabus vs supplementary deep-dives.
+      </div>
+    </div>
+    <div class="uni-filter-switch">
+      <button class="uni-toggle-btn active" id="filter-all-btn" data-mode="all" onclick="ModeManager.apply('all')">📚 Show All Content</button>
+      <button class="uni-toggle-btn" id="filter-uni-btn" data-mode="uni" onclick="ModeManager.apply('uni')">🎓 Focus Uni Syllabus Only</button>
+    </div>
+  </div>
+
+  <div class="toc-card">
+      <div class="toc-header">
+        <span class="toc-title">Table of Contents &mdash; 18 Comprehensive Sections</span>
+        <span class="toc-badge">All 18 Sections Verified</span>
+      </div>
+      <div class="toc-grid">
+        <a class="toc-item in-uni" href="#s17-1"><span class="toc-num">17.1</span>The Address-Mapping Problem <span class="toc-uni-tag">🎓 Unit II</span></a>
+        <a class="toc-item in-uni" href="#s17-2"><span class="toc-num">17.2</span>ARP: Address Resolution Protocol <span class="toc-uni-tag">🎓 Unit II</span></a>
+        <a class="toc-item in-uni" href="#s17-3"><span class="toc-num">17.3</span>ARP Request and ARP Reply <span class="toc-uni-tag">🎓 Unit II</span></a>
+        <a class="toc-item in-uni" href="#s17-4"><span class="toc-num">17.4</span>ARP Cache Dynamics &amp; Aging <span class="toc-uni-tag">🎓 Unit II</span></a>
+        <a class="toc-item in-uni" href="#s17-5"><span class="toc-num">17.5</span>Same-LAN vs Remote Destination <span class="toc-uni-tag">🎓 Unit II</span></a>
+        <a class="toc-item in-uni" href="#s17-6"><span class="toc-num">17.6</span>ARP and the Default Gateway <span class="toc-uni-tag">🎓 Unit II</span></a>
+        <a class="toc-item in-uni" href="#s17-7"><span class="toc-num">17.7</span>Gratuitous ARP <span class="toc-uni-tag">🎓 Unit II</span></a>
+        <a class="toc-item in-uni" href="#s17-8"><span class="toc-num">17.8</span>ARP Security Considerations <span class="toc-uni-tag">🎓 Unit II</span></a>
+        <a class="toc-item in-uni" href="#s17-9"><span class="toc-num">17.9</span>RARP, BOOTP and DHCP History <span class="toc-uni-tag">🎓 Unit II</span></a>
+        <a class="toc-item in-uni" href="#s17-10"><span class="toc-num">17.10</span>IPv6: Why ARP Is Not Used <span class="toc-uni-tag">🎓 Unit II</span></a>
+        <a class="toc-item in-uni" href="#s17-11"><span class="toc-num">17.11</span>ICMP: Network-Layer Reporting <span class="toc-uni-tag">🎓 Unit II</span></a>
+        <a class="toc-item in-uni" href="#s17-12"><span class="toc-num">17.12</span>ICMP Message Structure <span class="toc-uni-tag">🎓 Unit II</span></a>
+        <a class="toc-item in-uni" href="#s17-13"><span class="toc-num">17.13</span>Destination Unreachable <span class="toc-uni-tag">🎓 Unit II</span></a>
+        <a class="toc-item in-uni" href="#s17-14"><span class="toc-num">17.14</span>Time Exceeded &amp; Traceroute <span class="toc-uni-tag">🎓 Unit II</span></a>
+        <a class="toc-item in-uni" href="#s17-15"><span class="toc-num">17.15</span>Echo Request / Reply &amp; Ping <span class="toc-uni-tag">🎓 Unit II</span></a>
+        <a class="toc-item in-uni" href="#s17-16"><span class="toc-num">17.16</span>ICMPv4 vs ICMPv6 <span class="toc-uni-tag">🎓 Unit II</span></a>
+        <a class="toc-item in-uni" href="#s17-17"><span class="toc-num">17.17</span>Worked End-to-End Walkthrough <span class="toc-uni-tag">🎓 Unit II</span></a>
+        <a class="toc-item in-uni" href="#s17-18"><span class="toc-num">17.18</span>High-Yield Traps &amp; Summary <span class="toc-uni-tag">🎓 Unit II</span></a>
+      </div>
+    </div>
+
+    <!-- SECTIONS -->
+
+<section id="s17-1" class="section-in-uni content-section" data-chapter="17" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="high" data-search-section="Address mapping Layer 2 MAC Layer 3 IP mapping resolution delivery problem">
+  <div class="section-header">
+    <div class="section-tag">Section 17.1</div>
+    <h2 class="section-title">The Address-Mapping Problem <button class="bookmark-btn" data-id="s17-1" data-label="The Address-Mapping Problem" title="Bookmark">🔖</button></h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+    <span>Syllabus Topic: <strong>Network Layer to Data Link Layer Binding — The Logical vs Physical Address Dilemma</strong></span>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">1. Technical Definition &amp; Architectural Context</div>
+    <p class="concept-p">
+      The <strong>Address-Mapping Problem</strong> is the fundamental architectural requirement in packet-switched internetworks to dynamically bind a <em>logical layer-3 network address</em> (such as a 32-bit IPv4 address or 128-bit IPv6 address) to a <em>physical layer-2 link-layer address</em> (such as a 48-bit IEEE 802.3 MAC address) before a datagram can be encapsulated into a hardware frame and transmitted over physical media.
+    </p>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">2. Why It Exists: The Two-Tier Addressing Dilemma</div>
+    <p class="concept-p">
+      IP addresses provide <strong>global hierarchical routing</strong> across autonomous systems worldwide. However, physical network hardware (such as Ethernet Network Interface Cards, Wi-Fi radios, and fiber transceivers) has no intrinsic awareness of IP prefixes, subnet masks, or CIDR blocks. Physical NICs filter and accept frames exclusively based on <strong>flat, manufacturer-burned link-layer MAC addresses</strong>.
+    </p>
+    <p class="concept-p">
+      Without a deterministic, high-speed translation mechanism between IP and MAC addresses, a host router might know that an IP packet must go to <code>192.168.1.50</code>, but would be physically incapable of constructing the Ethernet frame header (which requires a 6-byte Destination MAC address) to place the packet onto the wire.
+    </p>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">3. How It Works: The Encapsulation Boundary</div>
+    <p class="concept-p">
+      When an application generates data, the transport layer adds a TCP/UDP header, and the network layer wraps it in an IP header containing <code>Source IP</code> and <code>Destination IP</code>. At the boundary between Layer 3 and Layer 2:
+    </p>
+    <ol class="concept-features">
+      <li><strong>Route Decision:</strong> The host inspects the destination IP. If local, target IP is the destination host; if remote, target IP is the default gateway router.</li>
+      <li><strong>Address Resolution Query:</strong> Layer 3 requests Layer 2: <em>"Who has target IP <code>X.X.X.X</code>? Provide its MAC address."</em></li>
+      <li><strong>Hardware Frame Assembly:</strong> Once the MAC address <code>MM:MM:MM:MM:MM:MM</code> is resolved, the NIC wraps the IP packet into an Ethernet frame with <code>Dest MAC = MM:MM:MM:MM:MM:MM</code> and <code>EtherType = 0x0800</code> (IPv4).</li>
+      <li><strong>Wire Transmission:</strong> The bits are encoded and transmitted onto the physical medium.</li>
+    </ol>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Figure 17.1 — Layer-3 Logical Address to Layer-2 Physical Address Binding</div>
+    <pre>
++-------------------------------------------------------------------------+
+| APPLICATION LAYER       HTTP / DNS / TLS Payload                        |
++-------------------------------------------------------------------------+
+                                 │
+                                 ▼
++-------------------------------------------------------------------------+
+| TRANSPORT LAYER         TCP Header (Ports: Src=51234, Dst=80)           |
++-------------------------------------------------------------------------+
+                                 │
+                                 ▼
++-------------------------------------------------------------------------+
+| NETWORK LAYER (L3)      IP Header (Src=192.168.1.10, Dst=192.168.1.25)  |
+|                         [Hierarchical, Routable, Topology-Dependent]    |
++-------------------------------------------------------------------------+
+                                 │
+                       ADDRESS MAPPING (ARP)
+          "What is the 48-bit MAC for IP 192.168.1.25?"
+                                 │
+                                 ▼
++-------------------------------------------------------------------------+
+| DATA LINK LAYER (L2)    Ethernet Frame Header                           |
+|                         [Dest MAC: 00:1A:2B:3C:4D:5E, EtherType: 0x0800]|
+|                         [Flat, Hardware-Burned, Link-Local Scope]       |
++-------------------------------------------------------------------------+
+                                 │
+                                 ▼
++─────────────────────────────────────────────────────────────────────────+
+| PHYSICAL LAYER (L1)     Bitstream over UTP / Optical Fiber / RF Wave    |
++─────────────────────────────────────────────────────────────────────────+
+    </pre>
+  </div>
+
+  <div class="calc-box">
+    <div class="calc-title">Worked Structural Analysis: Physical vs Logical Address Properties</div>
+    <div class="calc-step">
+      <strong>Parameter 1: Bit Length &amp; Namespace Size</strong><br>
+      • IPv4: 32 bits ($2^{32} \approx 4.29 \times 10^9$ addresses), dotted-decimal notation.<br>
+      • MAC: 48 bits ($2^{48} \approx 2.81 \times 10^{14}$ addresses), hexadecimal colon/hyphen notation.
+    </div>
+    <div class="calc-step">
+      <strong>Parameter 2: Scope &amp; Mutability</strong><br>
+      • IP Address: Changes whenever a host moves to a different network subnet (location-dependent).<br>
+      • MAC Address: Permanent to the physical interface NIC (burned-in address), global uniqueness managed by IEEE OUI (Organizationally Unique Identifier).
+    </div>
+    <div class="calc-step">
+      <strong>Parameter 3: Hardware Decoding Constraint</strong><br>
+      Ethernet switches and standard NIC microcode process frames at line rate (10 Gbps – 100 Gbps). Hardware ASIC filters look only at the first 12 bytes of the frame (Dest MAC + Src MAC). Requiring L2 hardware to parse variable-length IP headers for local switching would create severe latency and silicon complexity bottlenecks.
+    </div>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">4. Important Invariants</div>
+    <ul class="concept-features">
+      <li><strong>Hop-by-Hop L2 Mutability:</strong> As an IP datagram crosses multiple router hops, the IP source and destination addresses remain unchanged end-to-end, while the source and destination MAC addresses are rewritten at <em>every single router hop</em>.</li>
+      <li><strong>Subnet Boundary Constraint:</strong> Physical MAC addresses have strictly <em>link-local significance</em>. An Ethernet frame carrying a MAC destination cannot cross a layer-3 router boundary without being decapsulated and re-encapsulated.</li>
+    </ul>
+  </div>
+
+  <div class="warning-box">
+    <div class="warning-title">Common Confusion &amp; Exam Trap</div>
+    <p>
+      <strong>Myth:</strong> "If a host knows the destination IP address, the network switches can just deliver the packet directly."<br>
+      <strong>Reality:</strong> Standard Layer-2 switches have CAM (Content Addressable Memory) tables indexed solely by 48-bit MAC addresses. If an IP packet lacks an Ethernet header containing the correct destination MAC, the frame cannot be forwarded on an Ethernet broadcast segment.
+    </p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-title">University &amp; GATE Exam Key Takeaway</div>
+    <p>
+      In GATE questions regarding packet forwarding across $N$ routers: The packet traverses $(N + 1)$ physical links. Therefore, exactly <strong>$(N + 1)$ pairs of MAC address resolutions</strong> occur, while the original Source IP and Destination IP remain identical across all hops (excluding NAT).
+    </p>
+  </div>
+
+  <div class="study-resources">
+    <div class="study-resources-title">Curated 3-Tier Study Resources</div>
+    <div class="resource-grid">
+      <div class="resource-card">
+        <div class="resource-tag text">Standard Textbook</div>
+        <strong>Kurose &amp; Ross (8th Ed.)</strong>
+        <p>Section 6.4.1: "Link-Layer Addressing and ARP" — Detailed analysis of why both MAC and IP addresses are essential.</p>
+        <span class="resource-link">Chapter 6 &middot; Pages 485–492</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag rfc">IETF RFC Standard</div>
+        <strong>RFC 826 Specification</strong>
+        <p>"An Ethernet Address Resolution Protocol" — The foundational standard for mapping network addresses to hardware addresses.</p>
+        <span class="resource-link">IETF RFC 826 &middot; Standard 37</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag gate">GATE &amp; Uni Drill</div>
+        <strong>GATE CS 2014 / 2018</strong>
+        <p>Multi-hop packet traversal: Calculate the number of times MAC and IP headers change between source host, 2 routers, and destination host.</p>
+        <span class="resource-link">GATE CS &middot; Computer Networks Core</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="s17-2" class="section-in-uni content-section" data-chapter="17" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="high" data-search-section="RFC 826 Address Resolution Protocol ARP packet format hardware type protocol type opcodes">
+  <div class="section-header">
+    <div class="section-tag">Section 17.2</div>
+    <h2 class="section-title">ARP: Address Resolution Protocol <button class="bookmark-btn" data-id="s17-2" data-label="ARP: Address Resolution Protocol" title="Bookmark">🔖</button></h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+    <span>Syllabus Topic: <strong>RFC 826 Protocol Mechanics, Packet Format &amp; Header Dissection</strong></span>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">1. Technical Definition &amp; Protocol Layering</div>
+    <p class="concept-p">
+      The <strong>Address Resolution Protocol (ARP)</strong>, defined in <strong>RFC 826</strong>, is a dynamic request-response protocol operating at the boundary of Layer 2 and Layer 3 (often classified as Layer 2.5) that maps a known 32-bit IPv4 address to its corresponding 48-bit physical MAC address on a local broadcast multi-access network (such as IEEE 802.3 Ethernet or IEEE 802.11 Wi-Fi).
+    </p>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">2. Why It Exists: Eliminating Static Mapping Tables</div>
+    <p class="concept-p">
+      In early experimental networks, administrators maintained static text files containing tables of IP-to-MAC mappings on every host. This approach failed completely because:
+    </p>
+    <ul class="concept-features">
+      <li><strong>Administrative Scalability:</strong> Any NIC replacement required updating every single machine on the local network.</li>
+      <li><strong>Dynamic Host Addition:</strong> Modern networks with DHCP, laptops, and mobile devices continuously join and leave, making static tables impossible to maintain.</li>
+      <li><strong>Zero Configuration:</strong> ARP operates fully autonomously with zero manual operator intervention.</li>
+    </ul>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">3. RFC 826 28-Byte ARP Packet Format</div>
+    <p class="concept-p">
+      ARP packets are encapsulated directly into Ethernet frames with EtherType <code>0x0806</code>. The standard ARP message for IPv4 over Ethernet is exactly <strong>28 bytes</strong> in length:
+    </p>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Figure 17.2 — Detailed RFC 826 ARP Packet Header Layout (28 Bytes)</div>
+    <pre>
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|       Hardware Type (HTYPE)   |       Protocol Type (PTYPE)   |
+|       (Ethernet = 0x0001)     |       (IPv4 = 0x0800)         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  HLEN (0x06)  |  PLEN (0x04)  |          Operation Code       |
+|  (MAC=6 bytes)| (IP=4 bytes)  |   (1 = Request, 2 = Reply)    |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                  Sender Hardware Address (SHA)                |
+|                  (Bytes 0 - 3 of Sender MAC)                  |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Sender Hardware Addr (cont) |  Sender Protocol Addr (SPA)   |
+|   (Bytes 4 - 5 of Sender MAC) |  (Bytes 0 - 1 of Sender IP)   |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Sender Protocol Addr (cont) | Target Hardware Address (THA) |
+|   (Bytes 2 - 3 of Sender IP)  |  (Bytes 0 - 1 of Target MAC)  |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                  Target Hardware Address (cont)               |
+|                  (Bytes 2 - 5 of Target MAC)                  |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                  Target Protocol Address (TPA)                |
+|                  (Bytes 0 - 3 of Target IPv4 Address)         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    </pre>
+  </div>
+
+  <div class="calc-box">
+    <div class="calc-title">Detailed Field Breakdown &amp; Ethernet Framing Math</div>
+    <div class="calc-step">
+      <strong>1. Hardware Type (HTYPE - 16 bits):</strong> Defines link-layer type. <code>0x0001</code> denotes 10/100/1000 Mbps Ethernet.<br>
+      <strong>2. Protocol Type (PTYPE - 16 bits):</strong> Defines network protocol. <code>0x0800</code> denotes IPv4.<br>
+      <strong>3. Hardware Length (HLEN - 8 bits):</strong> Length of MAC address in bytes (<code>6</code> for Ethernet).<br>
+      <strong>4. Protocol Length (PLEN - 8 bits):</strong> Length of IP address in bytes (<code>4</code> for IPv4).<br>
+      <strong>5. Operation Code (OPER - 16 bits):</strong> <code>1</code> = ARP Request, <code>2</code> = ARP Reply, <code>3</code> = RARP Request, <code>4</code> = RARP Reply.
+    </div>
+    <div class="calc-step">
+      <strong>Total Frame Padding Calculation:</strong><br>
+      • ARP Payload = 28 bytes.<br>
+      • Ethernet Header = 14 bytes (Dest MAC 6B + Src MAC 6B + Type 2B).<br>
+      • Ethernet Min Payload Requirement = 46 bytes.<br>
+      • Padding Required = $46 - 28 = 18$ bytes of zero padding.<br>
+      • Total Frame on Wire (excluding preamble and CRC) = $14 + 46 = 60$ bytes ($64$ bytes with FCS).
+    </div>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">4. Important Invariants</div>
+    <ul class="concept-features">
+      <li><strong>Target MAC in Request:</strong> In an ARP Request, the Target Hardware Address (THA) field is completely unknown; it is set to all zeros (<code>00:00:00:00:00:00</code>) or ignored inside the ARP body, while the encapsulating Ethernet frame destination MAC is set to broadcast <code>FF:FF:FF:FF:FF:FF</code>.</li>
+      <li><strong>No IP Header:</strong> ARP packets are <em>not</em> encapsulated inside an IP header. They run directly inside the Data Link Layer payload with EtherType <code>0x0806</code>.</li>
+    </ul>
+  </div>
+
+  <div class="warning-box">
+    <div class="warning-title">Common Exam Trap</div>
+    <p>
+      Students frequently write that ARP is a Layer 3 protocol because it handles IP addresses, or Layer 2 because it handles MAC addresses. In the OSI model, ARP is officially classified as a <strong>Network Support Protocol</strong> sitting at the Layer 2/Layer 3 interface (Layer 2.5), encapsulated in L2 frames but serving L3 address binding.
+    </p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-title">GATE Multiple Choice Clue</div>
+    <p>
+      If asked: <em>"What is the value of the EtherType field in an Ethernet frame carrying an ARP message?"</em><br>
+      Answer: <code>0x0806</code>. (In contrast, <code>0x0800</code> is standard IPv4, and <code>0x86DD</code> is IPv6).
+    </p>
+  </div>
+
+  <div class="study-resources">
+    <div class="study-resources-title">Curated 3-Tier Study Resources</div>
+    <div class="resource-grid">
+      <div class="resource-card">
+        <div class="resource-tag text">Standard Textbook</div>
+        <strong>Forouzan (5th Ed.)</strong>
+        <p>Chapter 9: "Address Resolution Protocol (ARP)" — Complete bit-level header breakdowns and state machine analysis.</p>
+        <span class="resource-link">Chapter 9 &middot; Pages 257–268</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag rfc">IETF RFC Standard</div>
+        <strong>RFC 826 Packet Specification</strong>
+        <p>Review the original C structures and packet format definitions designed by David C. Plummer.</p>
+        <span class="resource-link">RFC 826 &middot; Sections: Packet Format</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag gate">GATE Numerical Drill</div>
+        <strong>GATE CS 2017 Packet Size</strong>
+        <p>Calculate the minimum frame size of an Ethernet frame carrying an ARP request, including FCS and minimum payload padding constraints.</p>
+        <span class="resource-link">GATE CS &middot; Data Link / Network Interface</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="s17-3" class="section-in-uni content-section" data-chapter="17" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="high" data-search-section="ARP request broadcast FF:FF:FF:FF:FF:FF unicast reply caching performance">
+  <div class="section-header">
+    <div class="section-tag">Section 17.3</div>
+    <h2 class="section-title">ARP Request and ARP Reply <button class="bookmark-btn" data-id="s17-3" data-label="ARP Request and ARP Reply" title="Bookmark">🔖</button></h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+    <span>Syllabus Topic: <strong>Broadcast Query vs Unicast Response Lifecycle &amp; Wire Behavior</strong></span>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">1. Technical Definition &amp; Transmission Asymmetry</div>
+    <p class="concept-p">
+      The operational cycle of ARP consists of an asymmetric exchange: an <strong>ARP Request</strong>, transmitted as a <em>Layer-2 broadcast</em> to query all nodes on the local broadcast domain, followed by an <strong>ARP Reply</strong>, returned as a <em>Layer-2 unicast</em> specifically addressed to the requester's physical hardware address.
+    </p>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">2. Why It Exists: Solving the "Bootstrapping" Discovery Problem</div>
+    <p class="concept-p">
+      When Host A wishes to send a packet to Host B, Host A initially possesses zero knowledge of Host B's hardware location or MAC address. Because Host A does not know which physical port or switch line Host B resides on:
+    </p>
+    <ul class="concept-features">
+      <li><strong>Broadcast Necessity:</strong> The request must be broadcast (<code>FF:FF:FF:FF:FF:FF</code>) so every switch floods it to all ports, ensuring Host B receives it regardless of location.</li>
+      <li><strong>Unicast Efficiency:</strong> When Host B receives the request, it extracts Host A's Sender MAC (SHA) from the packet. Therefore, Host B already knows Host A's exact hardware address and sends its reply <strong>unicast</strong>, avoiding unnecessary network-wide noise.</li>
+    </ul>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Figure 17.3 — ARP Request (Broadcast) vs ARP Reply (Unicast) Timeline</div>
+    <pre>
+  HOST A (192.168.1.10)              SWITCH              HOST B (192.168.1.25)
+  MAC: AA:AA:AA:AA:AA:AA                                 MAC: BB:BB:BB:BB:BB:BB
+         │                                                         │
+         │ 1. ARP REQUEST (Broadcast)                              │
+         │    Ethernet Dest: FF:FF:FF:FF:FF:FF                     │
+         │    ARP Op: 1 (Request)                                  │
+         │    "Who has 192.168.1.25? Tell 192.168.1.10"            │
+         ├──────────────────────────►[ S W I T C H ]               │
+         │                            Floods to all                │
+         │                            ports                        │
+         │                                  ├─────────────────────►│
+         │                                  │ (Host C, D drop it)  │
+         │                                                         │
+         │                                                         │ 2. Host B learns:
+         │                                                         │    192.168.1.10 -> AA:..
+         │                                                         │    Updates its ARP cache!
+         │                                                         │
+         │ 3. ARP REPLY (Unicast)                                  │
+         │    Ethernet Dest: AA:AA:AA:AA:AA:AA                     │
+         │    ARP Op: 2 (Reply)                                    │
+         │    "192.168.1.25 is at BB:BB:BB:BB:BB:BB"               │
+         │◄──────────────────────────[ S W I T C H ]───────────────┤
+         │                            Forwards unicast             │
+         │                            directly to Port A           │
+         │                                                         │
+  4. Host A updates ARP cache:                                     │
+     192.168.1.25 -> BB:BB:BB:BB:BB:BB                             │
+  5. Host A sends buffered IP datagrams!                           │
+    </pre>
+  </div>
+
+  <div class="calc-box">
+    <div class="calc-title">Step-by-Step Message Field Inspection</div>
+    <div class="calc-step">
+      <strong>Step 1: ARP Request Packet Contents (Host A &rarr; Wire)</strong><br>
+      • L2 Frame Header: Dest MAC = <code>FF:FF:FF:FF:FF:FF</code>, Src MAC = <code>AA:AA:AA:AA:AA:AA</code>, Type = <code>0x0806</code>.<br>
+      • ARP Payload: HTYPE = <code>1</code>, PTYPE = <code>0x0800</code>, HLEN = <code>6</code>, PLEN = <code>4</code>, OPER = <code>1 (Request)</code>.<br>
+      • SHA (Sender MAC) = <code>AA:AA:AA:AA:AA:AA</code>, SPA (Sender IP) = <code>192.168.1.10</code>.<br>
+      • THA (Target MAC) = <code>00:00:00:00:00:00</code> (ignored), TPA (Target IP) = <code>192.168.1.25</code>.
+    </div>
+    <div class="calc-step">
+      <strong>Step 2: Processing by Non-Target Hosts (Host C: 192.168.1.30)</strong><br>
+      Host C's NIC receives the broadcast frame, passes it to the OS ARP handler. The OS inspects <code>TPA (192.168.1.25)</code>. Since <code>192.168.1.25 != 192.168.1.30</code>, Host C silently drops the packet without generating any reply.
+    </div>
+    <div class="calc-step">
+      <strong>Step 3: ARP Reply Packet Contents (Host B &rarr; Host A)</strong><br>
+      • L2 Frame Header: Dest MAC = <code>AA:AA:AA:AA:AA:AA</code>, Src MAC = <code>BB:BB:BB:BB:BB:BB</code>, Type = <code>0x0806</code>.<br>
+      • ARP Payload: OPER = <code>2 (Reply)</code>.<br>
+      • SHA = <code>BB:BB:BB:BB:BB:BB</code>, SPA = <code>192.168.1.25</code>.<br>
+      • THA = <code>AA:AA:AA:AA:AA:AA</code>, TPA = <code>192.168.1.10</code>.
+    </div>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">4. Important Invariants</div>
+    <ul class="concept-features">
+      <li><strong>Piggybacked Reverse Learning:</strong> When Host B receives Host A's ARP request, Host B automatically caches Host A's IP-to-MAC mapping. Thus, when Host B later needs to respond to Host A's application data, Host B does <em>not</em> need to send a reverse ARP request!</li>
+      <li><strong>Packet Buffering:</strong> While waiting for an ARP reply, the operating system holds pending outgoing IP datagrams in a temporary queue. If no reply arrives after a timeout (typically 1–3 seconds), pending packets are dropped and an ICMP Host Unreachable error is reported.</li>
+    </ul>
+  </div>
+
+  <div class="warning-box">
+    <div class="warning-title">Common Exam Trap</div>
+    <p>
+      <strong>Trap:</strong> Stating that "ARP Replies are broadcast so all hosts on the switch can learn the new MAC."<br>
+      <strong>Fact:</strong> Standard ARP replies are strictly <strong>unicast</strong>. Only the original requester (Host A) receives the reply frame. Other nodes on the LAN do not update their caches unless Gratuitous ARP is used.
+    </p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-title">University Exam Focus</div>
+    <p>
+      Describe the complete sequence of events when Host A pings Host B on the same subnet for the first time. You must enumerate: (1) ARP Request broadcast, (2) Switch CAM table learning on incoming port, (3) ARP Reply unicast, (4) ICMP Echo Request, (5) ICMP Echo Reply.
+    </p>
+  </div>
+
+  <div class="study-resources">
+    <div class="study-resources-title">Curated 3-Tier Study Resources</div>
+    <div class="resource-grid">
+      <div class="resource-card">
+        <div class="resource-tag text">Standard Textbook</div>
+        <strong>Tanenbaum (6th Ed.)</strong>
+        <p>Section 5.6.1: "ARP — Address Resolution Protocol" — Request/reply transaction model and protocol state machine.</p>
+        <span class="resource-link">Chapter 5 &middot; Pages 460–465</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag rfc">IETF RFC Standard</div>
+        <strong>RFC 826 Packet Exchange</strong>
+        <p>Read the exact algorithm specified for handling incoming ARP packets and updating translation tables.</p>
+        <span class="resource-link">RFC 826 &middot; Address Resolution Algorithm</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag gate">University Exam Question</div>
+        <strong>Delhi University / Mumbai University Core</strong>
+        <p>"Explain the ARP request and reply format. Why is the request broadcast while the reply is unicast?" (5/10 marks).</p>
+        <span class="resource-link">University End-Sem Question Bank</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="s17-4" class="section-in-uni content-section" data-chapter="17" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="high" data-search-section="ARP cache timeout dynamic entries static entries cache poisoning ARP spoofing security">
+  <div class="section-header">
+    <div class="section-tag">Section 17.4</div>
+    <h2 class="section-title">ARP Cache <button class="bookmark-btn" data-id="s17-4" data-label="ARP Cache" title="Bookmark">🔖</button></h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+    <span>Syllabus Topic: <strong>Table Structure, Dynamic vs Static Entries &amp; Cache Aging Timers</strong></span>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">1. Technical Definition &amp; In-Memory Architecture</div>
+    <p class="concept-p">
+      The <strong>ARP Cache</strong> (or ARP Table) is an in-memory kernel lookup table maintained by every network-connected operating system that stores dynamic and static bindings between 32-bit IPv4 addresses and 48-bit physical MAC addresses, indexed for rapid $O(1)$ hardware forwarding.
+    </p>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">2. Why It Exists: Amortizing Network Broadcast Overhead</div>
+    <p class="concept-p">
+      If a host sent an ARP broadcast request for every single IP packet transmitted, a high-speed video stream transmitting 2,000 packets per second would trigger 2,000 network-wide broadcasts per second. This would trigger severe <strong>broadcast storms</strong>, forcing every CPU on the LAN to interrupt its kernel to inspect irrelevant queries.
+    </p>
+    <p class="concept-p">
+      The ARP cache amortizes this cost: the broadcast occurs exactly <em>once</em>, and all subsequent packets to that destination IP over the next several minutes use the cached MAC address directly with zero wire overhead.
+    </p>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">3. Dynamic vs Static Entries &amp; Cache Aging Timers</div>
+    <p class="concept-p">
+      ARP cache entries fall into two distinct categories:
+    </p>
+    <ul class="concept-features">
+      <li><strong>Dynamic Entries:</strong> Created automatically upon receiving ARP replies or gratuitous ARPs. They have a strict <strong>Time-To-Live (aging timer)</strong>. If no packets are exchanged with that host before the timer expires, the entry is flushed. Typical defaults: Linux = ~60 seconds to 5 minutes (adaptive); Windows = 15–45 seconds if unused, up to 20 minutes max; Cisco IOS = 4 hours (240 minutes).</li>
+      <li><strong>Static Entries:</strong> Manually configured by an administrator via <code>arp -s &lt;IP&gt; &lt;MAC&gt;</code>. Static entries never expire automatically; they survive until reboot or explicit manual deletion. Frequently used on critical servers for anti-spoofing security.</li>
+    </ul>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Figure 17.4 — Typical Operating System ARP Table Structure (Output of <code>arp -a</code>)</div>
+    <pre>
+Internet Address      Physical Address      Type        Aging / State
+────────────────────────────────────────────────────────────────────────
+192.168.1.1           00-14-22-01-23-45     dynamic     Expires in 238s
+192.168.1.25          b8-27-eb-4a-89-cd     dynamic     Expires in 42s
+192.168.1.254         00-50-56-c0-00-08     static      Permanent
+224.0.0.22            01-00-5e-00-00-16     static      Permanent (Multicast)
+255.255.255.255       ff-ff-ff-ff-ff-ff     static      Permanent (Broadcast)
+    </pre>
+  </div>
+
+  <div class="calc-box">
+    <div class="calc-title">Worked Analysis: Cache Aging State Transition &amp; Timeout Mechanics</div>
+    <div class="calc-step">
+      <strong>State 1: INCOMPLETE</strong><br>
+      Host has sent an ARP request; pending packet is queued in socket buffer. If no reply is received within $T_{\text{timeout}} = 3$ seconds, the kernel retries (typically 3 attempts). If all fail, entry is cleared and ICMP Destination Host Unreachable is raised.
+    </div>
+    <div class="calc-step">
+      <strong>State 2: REACHABLE (Active)</strong><br>
+      Valid ARP reply received. Timer set to default $T_{\text{reach}}$ (e.g. 300 seconds). Every outgoing packet resets the idle timer or validates entry freshness.
+    </div>
+    <div class="calc-step">
+      <strong>State 3: STALE &rarr; PROBE</strong><br>
+      After timer expires without traffic, the state transitions to STALE. When a new packet arrives for this IP, Linux sends a <em>unicast ARP probe</em> directly to the known MAC. If acknowledged, it returns to REACHABLE; if unacknowledged, it transitions to FAILED and initiates a full broadcast request.
+    </div>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">4. Important Invariants</div>
+    <ul class="concept-features">
+      <li><strong>Cache Poisoning Vulnerability:</strong> Most operating systems update an existing dynamic ARP cache entry if an incoming ARP packet claims a new MAC for that IP, even if the host <em>never requested</em> that resolution. This architectural design makes ARP vulnerable to cache spoofing.</li>
+      <li><strong>Local Interface Scope:</strong> Every network interface on a multi-homed machine or router maintains its own independent ARP cache.</li>
+    </ul>
+  </div>
+
+  <div class="warning-box">
+    <div class="warning-title">Common Exam Trap</div>
+    <p>
+      <strong>Question:</strong> "If a host changes its network cable to a different port on the same switch, does the ARP cache on neighboring hosts break?"<br>
+      <strong>Answer:</strong> No! The host's MAC and IP address did not change, so neighboring hosts' ARP caches remain 100% valid. Only the <em>switch's CAM table</em> (which maps MAC &rarr; physical port) needs to be updated.
+    </p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-title">CLI Commands to Know for Lab &amp; Viva</div>
+    <p>
+      • <code>arp -a</code> (or <code>ip neigh show</code> in Linux): View ARP cache table.<br>
+      • <code>arp -d &lt;ip&gt;</code> (or <code>ip neigh flush all</code>): Delete cache entry.<br>
+      • <code>arp -s &lt;ip&gt; &lt;mac&gt;</code>: Insert static permanent mapping.
+    </p>
+  </div>
+
+  <div class="study-resources">
+    <div class="study-resources-title">Curated 3-Tier Study Resources</div>
+    <div class="resource-grid">
+      <div class="resource-card">
+        <div class="resource-tag text">Standard Textbook</div>
+        <strong>Kurose &amp; Ross (8th Ed.)</strong>
+        <p>Section 6.4.1: "ARP Cache Timeout and Plug-and-Play Characteristics".</p>
+        <span class="resource-link">Chapter 6 &middot; Pages 487–490</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag rfc">IETF RFC Standard</div>
+        <strong>RFC 1122 Host Requirements</strong>
+        <p>Section 2.3.2.1: "ARP Cache Validation" — Specifies the mandatory mechanisms for detecting stale cache entries.</p>
+        <span class="resource-link">RFC 1122 &middot; Communication Layers</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag gate">GATE Concept Drill</div>
+        <strong>GATE CS 2012 Cache Lifetime</strong>
+        <p>Analyze the latency and overhead trade-offs between short (30s) and long (4h) ARP cache expiration timers.</p>
+        <span class="resource-link">GATE CS &middot; Operating Systems &amp; Networks</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="s17-5" class="section-in-uni content-section" data-chapter="17" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="high" data-search-section="Gratuitous ARP IP conflict detection duplicate address detection DAD cache update">
+  <div class="section-header">
+    <div class="section-tag">Section 17.5</div>
+    <h2 class="section-title">Same-LAN Destination vs Remote Destination <button class="bookmark-btn" data-id="s17-5" data-label="Same-LAN Destination vs Remote Destination" title="Bookmark">🔖</button></h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+    <span>Syllabus Topic: <strong>Bitwise Subnet Evaluation &amp; The Target Selection Algorithm</strong></span>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">1. Technical Definition &amp; Decision Boundary</div>
+    <p class="concept-p">
+      The <strong>Target Selection Algorithm</strong> is the fundamental Layer-3 routing decision executed by a sending host prior to initiating an ARP query: it evaluates whether the destination IPv4 address resides on the <strong>same local network segment (Same-LAN)</strong> or across an intervening router on a <strong>remote network (Remote Destination)</strong>.
+    </p>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">2. Why It Exists: Routers Do Not Forward Broadcasts</div>
+    <p class="concept-p">
+      Layer-2 Ethernet switches flood broadcast frames (including ARP requests) within the local broadcast domain, but <strong>routers strictly drop Layer-2 broadcast packets</strong> to prevent global broadcast congestion.
+    </p>
+    <p class="concept-p">
+      Therefore, if a sending host in New York wants to send an IP packet to a web server in London (<code>142.250.190.46</code>), broadcasting an ARP request asking <em>"Who has 142.250.190.46?"</em> on its local office LAN is completely futile: the London server will never hear the broadcast. The sender must instead resolve the physical hardware address of its <strong>local Default Gateway router</strong>.
+    </p>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Figure 17.5 — The Bitwise Subnet Mask Decision Flowchart</div>
+    <pre>
+                          [ Outgoing IP Datagram ]
+                                     │
+                     Dest IP = D, Host IP = S, Subnet Mask = M
+                                     │
+                                     ▼
+                ┌─────────────────────────────────────────┐
+                │ Compute: (D & M) == (S & M) ?            │
+                └─────────────────────────────────────────┘
+                                     │
+                     ┌───────────────┴───────────────┐
+                     ▼ YES                           ▼ NO
+            [ SAME LOCAL LAN ]              [ REMOTE DESTINATION ]
+                     │                               │
+        ARP for Destination Host:         ARP for Default Gateway:
+        Target IP = Dest IP D             Target IP = Gateway IP G
+                     │                               │
+                     ▼                               ▼
+       Frame Dest MAC = Host D MAC       Frame Dest MAC = Gateway MAC
+       Packet Dest IP = Host D IP        Packet Dest IP = Host D IP
+    </pre>
+  </div>
+
+  <div class="calc-box">
+    <div class="calc-title">Worked Numerical: Bitwise AND Evaluation Examples</div>
+    <div class="calc-step">
+      <strong>Host Configuration:</strong><br>
+      • Host S IP: <code>192.168.1.100</code><br>
+      • Subnet Mask M: <code>255.255.255.0</code> (/24)<br>
+      • Default Gateway G: <code>192.168.1.1</code><br>
+      • Local Network Prefix = $192.168.1.100 \text{ AND } 255.255.255.0 = \mathbf{192.168.1.0}$
+    </div>
+    <div class="calc-step">
+      <strong>Case 1: Sending to Destination D1 = <code>192.168.1.50</code></strong><br>
+      • Evaluate: $192.168.1.50 \text{ AND } 255.255.255.0 = \mathbf{192.168.1.0}$.<br>
+      • Comparison: $192.168.1.0 == 192.168.1.0$ &rarr; <strong>TRUE (Same LAN)</strong>.<br>
+      • Action: Host S searches ARP cache or broadcasts ARP for <strong>192.168.1.50</strong>.<br>
+      • Resulting Frame: <code>[Dest MAC: D1 MAC] [Src MAC: S MAC] [Dest IP: 192.168.1.50]</code>.
+    </div>
+    <div class="calc-step">
+      <strong>Case 2: Sending to Destination D2 = <code>8.8.8.8</code></strong><br>
+      • Evaluate: $8.8.8.8 \text{ AND } 255.255.255.0 = \mathbf{8.8.8.0}$.<br>
+      • Comparison: $8.8.8.0 == 192.168.1.0$ &rarr; <strong>FALSE (Remote Destination)</strong>.<br>
+      • Action: Host S searches ARP cache or broadcasts ARP for <strong>192.168.1.1 (Gateway)</strong>.<br>
+      • Resulting Frame: <code>[Dest MAC: Gateway MAC] [Src MAC: S MAC] [Dest IP: 8.8.8.8]</code>.
+    </div>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">4. Important Invariants</div>
+    <ul class="concept-features">
+      <li><strong>The Golden Invariant:</strong> In Case 2 (Remote), the Ethernet frame Destination MAC is the <strong>Router's MAC</strong>, but the IP header Destination IP is <strong>Host D2's IP (8.8.8.8)</strong>! The router's IP address never appears in the IP packet header.</li>
+      <li><strong>Proxy ARP:</strong> If a router is configured with Proxy ARP enabled, it will answer ARP requests for remote IPs by responding with its own MAC address, tricking misconfigured hosts into thinking the entire Internet is on their local subnet.</li>
+    </ul>
+  </div>
+
+  <div class="warning-box">
+    <div class="warning-title">High-Yield GATE &amp; Exam Trap</div>
+    <p>
+      <strong>Question:</strong> "Host A wants to send a packet to Host B on a different network across Router R. What is the Target IP in Host A's ARP request?"<br>
+      <strong>Trap:</strong> Answering "Host B's IP".<br>
+      <strong>Correct Answer:</strong> <strong>Router R's LAN Interface IP</strong> (the default gateway). Host A never sends an ARP request containing Host B's IP!
+    </p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-title">Key Exam Rule of Thumb</div>
+    <p>
+      Always remember: <strong>ARP queries are strictly confined to the local broadcast domain</strong>. You can only ARP for an IP that shares your direct subnet prefix.
+    </p>
+  </div>
+
+  <div class="study-resources">
+    <div class="study-resources-title">Curated 3-Tier Study Resources</div>
+    <div class="resource-grid">
+      <div class="resource-card">
+        <div class="resource-tag text">Standard Textbook</div>
+        <strong>Forouzan (5th Ed.)</strong>
+        <p>Section 9.2: "Four Cases of ARP Usage" — Comprehensive diagrams of Host-to-Host, Host-to-Router, Router-to-Router, and Router-to-Host.</p>
+        <span class="resource-link">Chapter 9 &middot; Pages 260–265</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag rfc">IETF RFC Standard</div>
+        <strong>RFC 1027 Proxy ARP</strong>
+        <p>"Using ARP to Implement Transparent Subnet Gateways" — Why and how routers answer ARPs on behalf of remote subnets.</p>
+        <span class="resource-link">RFC 1027 &middot; Standards Track</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag gate">GATE Numerical Drill</div>
+        <strong>GATE CS 2015 Subnet Mismatch</strong>
+        <p>Determine packet forwarding behavior when a host has an incorrect subnet mask (/24 instead of /26) during local and remote communications.</p>
+        <span class="resource-link">GATE CS &middot; IP Routing &amp; Subnets</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="s17-6" class="section-in-uni content-section" data-chapter="17" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="high" data-search-section="Proxy ARP router responding on behalf transparent subnetting security concerns">
+  <div class="section-header">
+    <div class="section-tag">Section 17.6</div>
+    <h2 class="section-title">ARP and the Default Gateway <button class="bookmark-btn" data-id="s17-6" data-label="ARP and the Default Gateway" title="Bookmark">🔖</button></h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+    <span>Syllabus Topic: <strong>Hop-by-Hop L2 Frame Rewriting &amp; End-to-End Packet Invariance</strong></span>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">1. Technical Definition &amp; The Gateway Concept</div>
+    <p class="concept-p">
+      A <strong>Default Gateway</strong> is a Layer-3 router interface residing on the same physical link as the host that serves as the designated exit point (forwarding relay) for all outbound IP traffic destined outside the local subnet. When communicating remotely, ARP is employed specifically to obtain the gateway's link-layer MAC address.
+    </p>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">2. Why It Exists: Decoupling Local Media from Global Topologies</div>
+    <p class="concept-p">
+      Individual hosts do not run complex dynamic routing protocols (like BGP or OSPF) and do not maintain 900,000 global Internet routes. Instead, hosts maintain a simple default route (<code>0.0.0.0/0 &rarr; Default Gateway IP</code>).
+    </p>
+    <p class="concept-p">
+      The host delegates the entire global routing burden to the gateway router simply by wrapping outbound IP packets inside a Layer-2 frame addressed to the <strong>gateway's MAC address</strong>.
+    </p>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Figure 17.6 — Hop-by-Hop MAC Rewriting Across Router Boundaries</div>
+    <pre>
+[ HOST A ]                                 [ ROUTER R1 ]                                 [ HOST B ]
+192.168.1.10                              Interface eth0: 192.168.1.1                   10.0.0.25
+MAC: AA:AA:AA                             MAC: RR:RR:01                                 MAC: BB:BB:BB
+      │                                   Interface eth1: 10.0.0.1                           ▲
+      │                                   MAC: RR:RR:02                                      │
+      │                                         │                                            │
+      │ 1. Host A encapsulates:                 │                                            │
+      │    L2 Dest MAC: RR:RR:01 (Gateway)       │                                            │
+      │    L2 Src MAC:  AA:AA:AA (Host A)        │                                            │
+      │    L3 Dest IP:  10.0.0.25 (Host B)       │                                            │
+      │    L3 Src IP:   192.168.1.10 (Host A)    │                                            │
+      ├────────────────────────────────────────►│                                            │
+      │                                         │ 2. Router R1 processes:                    │
+      │                                         │    • Checks frame FCS (valid)              │
+      │                                         │    • Strips L2 Ethernet header             │
+      │                                         │    • Checks IP Checksum & decrements TTL   │
+      │                                         │    • Route lookup for 10.0.0.25 -> eth1    │
+      │                                         │    • ARPs on eth1 for 10.0.0.25 -> BB:BB:BB│
+      │                                         │                                            │
+      │                                         │ 3. Router R1 re-encapsulates:              │
+      │                                         │    L2 Dest MAC: BB:BB:BB (Host B)          │
+      │                                         │    L2 Src MAC:  RR:RR:02 (R1 eth1)         │
+      │                                         │    L3 Dest IP:  10.0.0.25 (UNCHANGED)      │
+      │                                         │    L3 Src IP:   192.168.1.10 (UNCHANGED)   │
+      │                                         ├───────────────────────────────────────────►│
+    </pre>
+  </div>
+
+  <div class="calc-box">
+    <div class="calc-title">Detailed Trace: Header Mutations Across the Router Hop</div>
+    <div class="calc-step">
+      <strong>Hop 1 (Host A &rarr; Router R1 on Subnet 192.168.1.0/24):</strong><br>
+      • Data Link Layer Frame: <code>Dst_MAC = RR:RR:01</code>, <code>Src_MAC = AA:AA:AA</code>, <code>Type = 0x0800</code>.<br>
+      • Network Layer Packet: <code>Dst_IP = 10.0.0.25</code>, <code>Src_IP = 192.168.1.10</code>, <code>TTL = 64</code>.
+    </div>
+    <div class="calc-step">
+      <strong>Inside Router R1 (Decapsulation &amp; Forwarding Decision):</strong><br>
+      • Frame decapsulated; L2 header discarded.<br>
+      • TTL decremented: $64 - 1 = 63$.<br>
+      • IP Header Checksum recomputed due to TTL change.<br>
+      • FIB table lookup matches interface <code>eth1</code>.
+    </div>
+    <div class="calc-step">
+      <strong>Hop 2 (Router R1 &rarr; Host B on Subnet 10.0.0.0/24):</strong><br>
+      • Data Link Layer Frame: <code>Dst_MAC = BB:BB:BB</code>, <code>Src_MAC = RR:RR:02</code>, <code>Type = 0x0800</code>.<br>
+      • Network Layer Packet: <code>Dst_IP = 10.0.0.25</code> (Same!), <code>Src_IP = 192.168.1.10</code> (Same!), <code>TTL = 63</code>.
+    </div>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">4. Important Invariants</div>
+    <ul class="concept-features">
+      <li><strong>IP Invariance:</strong> Under standard routing without NAT, the Source IP and Destination IP addresses never change anywhere along the transmission path.</li>
+      <li><strong>MAC Volatility:</strong> The Source MAC and Destination MAC addresses change at <em>every single router interface</em> along the path.</li>
+      <li><strong>FCS Regeneration:</strong> Because the MAC header is rewritten and the IP TTL field is decremented, the Ethernet Frame Check Sequence (FCS) CRC-32 is completely recalculated at every hop.</li>
+    </ul>
+  </div>
+
+  <div class="warning-box">
+    <div class="warning-title">GATE Multiple Choice Trap</div>
+    <p>
+      In a path traversing 3 routers (4 link segments):<br>
+      • How many different Source MAC addresses appear across the wire? <strong>4 distinct Source MACs</strong> (Host A, R1_out, R2_out, R3_out).<br>
+      • How many different Source IP addresses appear? <strong>Only 1</strong> (Host A's original IP).
+    </p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-title">What Happens if the Default Gateway IP is Wrong?</div>
+    <p>
+      If Host A configures an incorrect default gateway IP (e.g. non-existent <code>192.168.1.254</code>), Host A will broadcast ARP requests for <code>192.168.1.254</code>, receive no reply, time out, and report <em>"Destination Host Unreachable"</em> even though local hosts on the same LAN remain completely accessible!
+    </p>
+  </div>
+
+  <div class="study-resources">
+    <div class="study-resources-title">Curated 3-Tier Study Resources</div>
+    <div class="resource-grid">
+      <div class="resource-card">
+        <div class="resource-tag text">Standard Textbook</div>
+        <strong>Kurose &amp; Ross (8th Ed.)</strong>
+        <p>Section 6.4.2: "Addressing in the Internet: Router-to-Host and Routing Traversal".</p>
+        <span class="resource-link">Chapter 6 &middot; Pages 491–495</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag rfc">IETF RFC Standard</div>
+        <strong>RFC 1812 Requirements for IP Routers</strong>
+        <p>Section 5.2.2: "IP Header Validation and Hop-by-Hop Link Encapsulation".</p>
+        <span class="resource-link">RFC 1812 &middot; Section 5</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag gate">GATE Classical Problem</div>
+        <strong>GATE CS 2008 Multi-Hop Trace</strong>
+        <p>Trace the exact MAC and IP header values as a frame moves from a PC through a router to a local server.</p>
+        <span class="resource-link">GATE CS &middot; Packet Forwarding</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="s17-7" class="section-in-uni content-section" data-chapter="17" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="high" data-search-section="Reverse ARP RARP diskless workstations MAC to IP translation bootstrap limitation">
+  <div class="section-header">
+    <div class="section-tag">Section 17.7</div>
+    <h2 class="section-title">Gratuitous ARP <button class="bookmark-btn" data-id="s17-7" data-label="Gratuitous ARP" title="Bookmark">🔖</button></h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+    <span>Syllabus Topic: <strong>Duplicate Address Detection (DAD), High Availability Failover &amp; CAM Updates</strong></span>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">1. Technical Definition &amp; Packet Characteristics</div>
+    <p class="concept-p">
+      A <strong>Gratuitous ARP (GARP)</strong> is a specialized ARP broadcast frame transmitted by a host where the <strong>Sender Protocol Address (SPA)</strong> and the <strong>Target Protocol Address (TPA)</strong> are identical (both set to the host's own IPv4 address), sent without any prior request from another host on the network.
+    </p>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">2. Why It Exists: Three Vital Network Engineering Functions</div>
+    <p class="concept-p">
+      Gratuitous ARP serves three indispensable production roles:
+    </p>
+    <ol class="concept-features">
+      <li><strong>Duplicate Address Detection (DAD):</strong> Upon boot or interface initialization, a host transmits a GARP Request. If another node on the LAN already holds that IP, it responds with an ARP reply. The booting host instantly detects the IP conflict, logs an error, and disables the duplicate interface.</li>
+      <li><strong>Updating Neighbor ARP Caches:</strong> If a host changes its physical NIC (new MAC address) while retaining its IP address, sending a GARP forces all neighboring hosts and routers to immediately update their cached mappings to the new MAC.</li>
+      <li><strong>Switch CAM Table Migration (High Availability Failover):</strong> In server clustering and router redundancy protocols (such as VRRP or HSRP), when a primary router fails and a backup router takes over a Virtual IP (VIP), the backup sends a GARP. This causes all Layer-2 switches to update their MAC address tables (CAM tables), pointing the VIP's MAC to the backup router's physical switch port.</li>
+    </ol>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Figure 17.7 — Gratuitous ARP Packet Structure and High Availability Failover</div>
+    <pre>
+       RFC 826 GRATUITOUS ARP (Request Form for IP: 192.168.1.50)
++─────────────────────────────────────────────────────────────────────────+
+| Ethernet Dest: FF:FF:FF:FF:FF:FF (Broadcast)                           |
+| Ethernet Src:  00:1A:2B:3C:4D:5E (Host's MAC)                           |
+| EtherType:     0x0806 (ARP)                                             |
++─────────────────────────────────────────────────────────────────────────+
+| Hardware Type: 0x0001 (Ethernet)     Protocol Type: 0x0800 (IPv4)       |
+| Hardware Len:  6                     Protocol Len:  4                   |
+| Operation:     1 (ARP Request)       [or Opcode 2 Reply]                |
+| Sender MAC:    00:1A:2B:3C:4D:5E     Sender IP:     192.168.1.50        |
+| Target MAC:    FF:FF:FF:FF:FF:FF     Target IP:     192.168.1.50 (SAME!)|
++─────────────────────────────────────────────────────────────────────────+
+                                    │
+                         Sent onto LAN Broadcast
+                                    │
+            ┌───────────────────────┴───────────────────────┐
+            ▼                                               ▼
+ [ SWITCH CAM TABLE ]                             [ NEIGHBOR HOSTS ]
+ Updates port mapping:                            Update ARP Cache:
+ 00:1A:2B:3C:4D:5E -> Port 4                      192.168.1.50 -> 00:1A:2B:3C:4D:5E
+    </pre>
+  </div>
+
+  <div class="calc-box">
+    <div class="calc-title">Worked Analysis: DAD Timing Sequence During Host Boot</div>
+    <div class="calc-step">
+      <strong>Step 1: Host Bootstrapping</strong><br>
+      Host boots with static IP <code>10.0.0.15</code>. Before binding the IP to the TCP/IP stack, it emits an ARP Request with:<br>
+      • <code>SPA = 0.0.0.0</code> (to prevent polluting neighbor caches in case of conflict)<br>
+      • <code>TPA = 10.0.0.15</code>, <code>THA = 00:00:00:00:00:00</code>.
+    </div>
+    <div class="calc-step">
+      <strong>Step 2: Conflict Evaluation</strong><br>
+      • Case A (No Reply within 1000 ms): Host confirms IP is unique, transmits a second GARP with <code>SPA = 10.0.0.15</code> to announce its ownership, and brings up the link.<br>
+      • Case B (Reply Received): Another host responds <em>"10.0.0.15 is at MAC XX:XX:XX"</em>. Booting host marks interface <code>DUPLICATE</code>, aborts IP assignment, and logs an alert.
+    </div>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">4. Important Invariants</div>
+    <ul class="concept-features">
+      <li><strong>Zero Response Expectation:</strong> In normal operation when no duplicate address exists, a Gratuitous ARP Request receives <em>exactly zero replies</em>. Receiving a reply is an indicator of an error (IP conflict).</li>
+      <li><strong>Unsolicited Cache Update:</strong> Compliant operating systems automatically update existing ARP entries upon receiving an unsolicited Gratuitous ARP frame.</li>
+    </ul>
+  </div>
+
+  <div class="warning-box">
+    <div class="warning-title">Security Danger of Gratuitous ARP</div>
+    <p>
+      Because operating systems passively accept Gratuitous ARPs to update their caches, an attacker can broadcast a fake Gratuitous ARP claiming to own the Default Gateway's IP. Every host on the switch will immediately redirect all outbound Internet traffic to the attacker's machine!
+    </p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-title">GATE &amp; Interview Concept</div>
+    <p>
+      When asked: <em>"How does a VRRP/HSRP virtual router failover complete in under 1 second without dropping active TCP connections?"</em><br>
+      Answer: The standby router assumes the Virtual MAC and immediately blasts a <strong>Gratuitous ARP</strong> onto the LAN. This forces all intermediate switches to re-learn the port path to the Virtual MAC instantly without waiting for CAM aging timers.
+    </p>
+  </div>
+
+  <div class="study-resources">
+    <div class="study-resources-title">Curated 3-Tier Study Resources</div>
+    <div class="resource-grid">
+      <div class="resource-card">
+        <div class="resource-tag text">Standard Textbook</div>
+        <strong>Stevens &amp; Fall: TCP/IP Illustrated Vol 1</strong>
+        <p>Section 4.5: "Gratuitous ARP" — Classic packet traces demonstrating DAD and address announcement.</p>
+        <span class="resource-link">Chapter 4 &middot; Pages 63–66</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag rfc">IETF RFC Standard</div>
+        <strong>RFC 5227 IPv4 Address Conflict Detection</strong>
+        <p>"IPv4 Address Conflict Detection" — The modern IETF standard formalizing ARP Probe and ARP Announcement messages.</p>
+        <span class="resource-link">IETF RFC 5227 &middot; Standards Track</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag gate">System Administration &amp; GATE</div>
+        <strong>High Availability Clustering</strong>
+        <p>Trace the frame updates generated during a CARP/VRRP VIP migration across a 24-port managed Gigabit switch.</p>
+        <span class="resource-link">Advanced Networking Concepts</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="s17-8" class="section-in-uni content-section" data-chapter="17" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="high" data-search-section="BOOTP bootstrap protocol UDP port 67 68 fixed configuration BOOTP gateway relay">
+  <div class="section-header">
+    <div class="section-tag">Section 17.8</div>
+    <h2 class="section-title">ARP Security Considerations <button class="bookmark-btn" data-id="s17-8" data-label="ARP Security Considerations" title="Bookmark">🔖</button></h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+    <span>Syllabus Topic: <strong>ARP Spoofing, Cache Poisoning, Man-in-the-Middle &amp; Dynamic ARP Inspection (DAI)</strong></span>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">1. Technical Definition &amp; The Core Vulnerability</div>
+    <p class="concept-p">
+      <strong>ARP Cache Poisoning</strong> (or ARP Spoofing) is a link-layer attack wherein a malicious host transmits forged, unsolicited ARP messages across a local broadcast domain to associate the attacker's physical MAC address with the IP address of a legitimate node (most frequently the Default Gateway), enabling <strong>Man-in-the-Middle (MitM) eavesdropping, session hijacking, or Denial of Service (DoS)</strong>.
+    </p>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">2. Why It Exists: The Stateless &amp; Unauthenticated Nature of RFC 826</div>
+    <p class="concept-p">
+      RFC 826 was authored in 1982 for small, mutually trusting academic networks. Consequently, ARP has <strong>zero cryptographic authentication</strong>:
+    </p>
+    <ul class="concept-features">
+      <li><strong>No Identity Verification:</strong> A host cannot verify whether the sender of an ARP reply actually owns that IP.</li>
+      <li><strong>Stateless Acceptance:</strong> Hosts happily accept ARP replies even if they never transmitted a corresponding request.</li>
+      <li><strong>Unconditional Overwriting:</strong> Newer dynamic ARP replies blindly overwrite older cache entries.</li>
+    </ul>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Figure 17.8 — Man-in-the-Middle (MitM) Attack via ARP Cache Poisoning</div>
+    <pre>
+                                [ ATTACKER (Host M) ]
+                                IP:  192.168.1.66
+                                MAC: MM:MM:MM:MM:MM:MM
+                                      ▲        │
+         1. Spoofed ARP Reply to A:   │        │ 2. Spoofed ARP Reply to Gateway:
+            "192.168.1.1 is at MM:.." │        │    "192.168.1.10 is at MM:.."
+                                      │        │
+               ┌──────────────────────┴────────┴──────────────────────┐
+               │                                                      │
+               ▼                                                      ▼
+     [ VICTIM (Host A) ]                                    [ DEFAULT GATEWAY ]
+     IP:  192.168.1.10                                      IP:  192.168.1.1
+     MAC: AA:AA:AA:AA:AA:AA                                 MAC: GG:GG:GG:GG:GG:GG
+     ┌────────────────────────┐                             ┌────────────────────────┐
+     │ POISONED ARP CACHE:    │                             │ POISONED ARP CACHE:    │
+     │ 192.168.1.1 -> MM:MM.. │                             │ 192.168.1.10-> MM:MM.. │
+     └────────────────────────┘                             └────────────────────────┘
+               │                                                      ▲
+               │  3. Host A transmits private web traffic             │
+               │     addressed to Gateway IP, but with Dest MAC=MM    │
+               └────────────────────►[ ATTACKER ]─────────────────────┘
+                                      Inspects / Modifies / Forwards
+    </pre>
+  </div>
+
+  <div class="calc-box">
+    <div class="calc-title">Mitigation Mechanisms: DAI, 802.1X &amp; Static Tables</div>
+    <div class="calc-step">
+      <strong>Defense 1: Dynamic ARP Inspection (DAI) on Managed Switches</strong><br>
+      Enterprise switches maintain a trusted <strong>DHCP Snooping Binding Database</strong>. When an ARP packet arrives on an untrusted switch port, the switch hardware intercepts it and compares:
+      $$\text{Is } (\text{Incoming Port}, \text{Sender MAC}, \text{Sender IP}) \in \text{DHCP Binding Table}?$$
+      If the mapping does not match, the switch immediately drops the frame and shuts down the attacker's port.
+    </div>
+    <div class="calc-step">
+      <strong>Defense 2: Static ARP Binding</strong><br>
+      High-value servers permanently configure static entries (<code>arp -s 192.168.1.1 GG:GG:GG:GG:GG:GG</code>). Static entries reject dynamic overwrites, defeating spoofing.
+    </div>
+    <div class="calc-step">
+      <strong>Defense 3: Cryptographic Solutions &amp; 802.1X Port Security</strong><br>
+      IEEE 802.1X requires mutual certificate or RADIUS authentication before a switch port transitions to forwarding state, preventing rogue devices from injecting packets.
+    </div>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">3. Important Invariants</div>
+    <ul class="concept-features">
+      <li><strong>Link-Local Attack Boundary:</strong> ARP spoofing is strictly limited to the local Layer-2 broadcast domain. An attacker on the Internet cannot directly poison a private LAN's ARP cache unless they compromise a host inside that LAN.</li>
+      <li><strong>IP Forwarding Requirement:</strong> To maintain an undetectable MitM eavesdropping session, the attacker must enable IP kernel forwarding (e.g. <code>sysctl net.ipv4.ip_forward=1</code>); otherwise, the victim's connection abruptly dies (causing a DoS instead of MitM).</li>
+    </ul>
+  </div>
+
+  <div class="warning-box">
+    <div class="warning-title">Common Exam Trap</div>
+    <p>
+      <strong>Question:</strong> "Does HTTPS / TLS encryption prevent ARP spoofing?"<br>
+      <strong>Answer:</strong> <em>No!</em> ARP spoofing operates at Layer 2, redirecting the raw physical frames. While TLS prevents the attacker from reading plaintext application payloads (passwords/cookies) without certificate warnings, the attacker can still capture metadata, execute DNS spoofing, or terminate connections.
+    </p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-title">University Security Exam Focus</div>
+    <p>
+      In network security exams, be prepared to draw the tripartite diagram (Victim, Attacker, Gateway) showing the two forged ARP reply frames and explain how <strong>DHCP Snooping + Dynamic ARP Inspection (DAI)</strong> thwarts the vulnerability in hardware.
+    </p>
+  </div>
+
+  <div class="study-resources">
+    <div class="study-resources-title">Curated 3-Tier Study Resources</div>
+    <div class="resource-grid">
+      <div class="resource-card">
+        <div class="resource-tag text">Standard Textbook</div>
+        <strong>Kurose &amp; Ross (8th Ed.)</strong>
+        <p>Section 8.9: "Network Security: Link-Layer Vulnerabilities and ARP Poisoning".</p>
+        <span class="resource-link">Chapter 8 &middot; Pages 712–718</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag rfc">IETF Security Guideline</div>
+        <strong>RFC 4732 Internet DOS Considerations</strong>
+        <p>Section 2.1: "Link-Layer Attacks and ARP Flooding Vulnerabilities".</p>
+        <span class="resource-link">RFC 4732 &middot; Informational</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag gate">Security Lab Exercise</div>
+        <strong>Wireshark ARP Analysis Drill</strong>
+        <p>Inspect pcap traces of an Ettercap/arpspoof session; identify duplicate ARP replies with mismatching MAC addresses.</p>
+        <span class="resource-link">Network Security Practical Syllabus</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="s17-9" class="section-in-uni content-section" data-chapter="17" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="high" data-search-section="DHCP Dynamic Host Configuration Protocol DORA Discover Offer Request Ack leasing">
+  <div class="section-header">
+    <div class="section-tag">Section 17.9</div>
+    <h2 class="section-title">RARP, BOOTP and DHCP: Historical Context <button class="bookmark-btn" data-id="s17-9" data-label="RARP, BOOTP and DHCP: Historical Context" title="Bookmark">🔖</button></h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+    <span>Syllabus Topic: <strong>The Evolution of Dynamic IP Bootstrapping from Diskless Workstations to DHCP</strong></span>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">1. Technical Definition &amp; The Reverse Resolution Problem</div>
+    <p class="concept-p">
+      While ARP answers: <em>"I have an IP; what is the physical MAC?"</em>, early diskless computer systems faced the exact opposite challenge: a machine booted up knowing only its 48-bit hardware MAC burned into ROM, but had no secondary storage (hard drive) to store its assigned 32-bit IPv4 address. This necessitated <strong>Reverse Address Resolution</strong> protocols.
+    </p>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">2. Historical Evolution: RARP &rarr; BOOTP &rarr; DHCP</div>
+    <p class="concept-p">
+      The bootstrapping architecture evolved across three successive generations:
+    </p>
+    <ul class="concept-features">
+      <li><strong>RARP (Reverse ARP — RFC 903, 1984):</strong> Directly mirrored ARP packet format (Opcodes 3 &amp; 4). The diskless host broadcast an Ethernet frame with EtherType <code>0x8035</code> asking: <em>"My MAC is MM:MM; what is my IP?"</em>.
+        <br><em>Fatal Limitations:</em> Operated at Layer 2 (could not cross routers, requiring a dedicated RARP server on every single physical cable); returned <em>only</em> an IP address (no subnet mask, default gateway, or DNS server).
+      </li>
+      <li><strong>BOOTP (Bootstrap Protocol — RFC 951, 1985):</strong> Moved bootstrapping from Layer 2 to the transport layer using <strong>UDP</strong> (Client port 68, Server port 67).
+        <br><em>Major Breakthrough:</em> Enabled <strong>BOOTP Relay Agents</strong> on routers, allowing a single centralized server to service multiple subnets. Returned IP, Gateway IP, and TFTP boot image filename.
+        <br><em>Limitation:</em> Static manual configuration; administrators had to pre-register every MAC address in <code>/etc/bootptab</code>.
+      </li>
+      <li><strong>DHCP (Dynamic Host Configuration Protocol — RFC 2131, 1997):</strong> The modern standard. Built directly upon BOOTP packet format but introduced <strong>dynamic automated IP address lease pools</strong> and hundreds of configuration options (NTP, domain names, MTU, routes).</li>
+    </ul>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Figure 17.9 — Architectural Comparison Matrix and DHCP DORA Lifecycle</div>
+    <pre>
++───────────+──────────+─────────────────+───────────────────+──────────────────────+
+| Protocol  | Layer    | Transport / Port| Cross Routers?    | Key Parameters Given |
++───────────+──────────+─────────────────+───────────────────+──────────────────────+
+| RARP      | Layer 2  | Raw Ethernet    | No (Link-Local)   | IPv4 Address ONLY    |
+| BOOTP     | Layer 7  | UDP (Ports 67/68)| Yes (via Relay)   | IP, Gateway, BootFile|
+| DHCP      | Layer 7  | UDP (Ports 67/68)| Yes (via Relay)   | IP (Leased), Mask,   |
+|           |          |                 |                   | Gateway, DNS, Options|
++───────────+──────────+─────────────────+───────────────────+──────────────────────+
+
+                       MODERN DHCP DORA TRANSACTION
+   CLIENT (00:11:22:33:44:55)                              DHCP SERVER (192.168.1.1)
+        │                                                              │
+        │ 1. DHCP DISCOVER (Broadcast: 255.255.255.255, Port 67)       │
+        ├─────────────────────────────────────────────────────────────►│
+        │                                                              │
+        │ 2. DHCP OFFER (Unicast / Broadcast, Port 68)                 │
+        │    Offered IP: 192.168.1.100, Lease: 86400s                  │
+        │◄─────────────────────────────────────────────────────────────┤
+        │                                                              │
+        │ 3. DHCP REQUEST (Broadcast, Port 67)                         │
+        │    "I accept 192.168.1.100 from Server 192.168.1.1"          │
+        ├─────────────────────────────────────────────────────────────►│
+        │                                                              │
+        │ 4. DHCP ACK (Unicast / Broadcast, Port 68)                   │
+        │    Final confirmation with Mask, Gateway, DNS                │
+        │◄─────────────────────────────────────────────────────────────┤
+    </pre>
+  </div>
+
+  <div class="calc-box">
+    <div class="calc-title">DHCP Lease Mathematics: T1 (Renewal) and T2 (Rebinding) Timers</div>
+    <div class="calc-step">
+      When a client receives an IP lease duration $T$ (e.g. $T = 86,400$ seconds = 24 hours):<br>
+      • <strong>T1 Renewal Timer ($0.5 \times T = 43,200$ s = 12 hrs):</strong> Client sends a <em>unicast</em> DHCPREQUEST directly to the issuing server to extend its lease.<br>
+      • <strong>T2 Rebind Timer ($0.875 \times T = 75,600$ s = 21 hrs):</strong> If original server fails to respond, client broadcasts DHCPREQUEST to <em>any</em> available DHCP server.<br>
+      • <strong>Lease Expiration ($T = 86,400$ s):</strong> Client must immediately cease using the IP address and restart the DORA discovery process.
+    </div>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">3. Important Invariants</div>
+    <ul class="concept-features">
+      <li><strong>Backward Compatibility:</strong> DHCP was intentionally engineered to use the exact same UDP ports (67 and 68) and basic message layout as BOOTP so existing BOOTP relay agents could forward DHCP packets without firmware upgrades.</li>
+      <li><strong>Broadcast Request in DORA:</strong> Step 3 (DHCP REQUEST) is deliberately transmitted as a broadcast so that other DHCP servers whose offers were <em>not</em> accepted know they can release their reserved addresses back into their pools.</li>
+    </ul>
+  </div>
+
+  <div class="warning-box">
+    <div class="warning-title">High-Yield Exam Trap</div>
+    <p>
+      <strong>Question:</strong> "Does RARP operate over IP?"<br>
+      <strong>Answer:</strong> <strong>No!</strong> The booting machine does not yet have an IP address, so it cannot form an IP packet. RARP packets are encapsulated directly into raw Ethernet frames (EtherType <code>0x8035</code>). This was its fatal flaw.
+    </p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-title">University Viva Cheat Sheet</div>
+    <p>
+      Remember the acronym <strong>DORA</strong>: <strong>D</strong>iscover (Client &rarr; All), <strong>O</strong>ffer (Server &rarr; Client), <strong>R</strong>equest (Client &rarr; All), <strong>A</strong>cknowledge (Server &rarr; Client).
+    </p>
+  </div>
+
+  <div class="study-resources">
+    <div class="study-resources-title">Curated 3-Tier Study Resources</div>
+    <div class="resource-grid">
+      <div class="resource-card">
+        <div class="resource-tag text">Standard Textbook</div>
+        <strong>Tanenbaum (6th Ed.)</strong>
+        <p>Section 5.6.2: "BOOTP and DHCP" — Evolution from static hardware tables to dynamic lease allocation.</p>
+        <span class="resource-link">Chapter 5 &middot; Pages 465–471</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag rfc">IETF RFC Standard</div>
+        <strong>RFC 2131 Dynamic Host Configuration</strong>
+        <p>Section 3: "The Client-Server Protocol" — State transition diagram for DHCP clients.</p>
+        <span class="resource-link">RFC 2131 &middot; Standards Track</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag gate">GATE Classical Drill</div>
+        <strong>GATE CS 2016 DHCP Relay Drill</strong>
+        <p>Analyze how a router acts as a DHCP Relay agent, rewriting 0.0.0.0 source IP and forwarding unicast packets across subnets.</p>
+        <span class="resource-link">GATE CS &middot; Network Protocols</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="s17-10" class="section-in-uni content-section" data-chapter="17" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="high" data-search-section="DHCP Relay Agent Option 82 crossing router boundaries giaddr forwarding">
+  <div class="section-header">
+    <div class="section-tag">Section 17.10</div>
+    <h2 class="section-title">IPv6: Why ARP Is Not Used <button class="bookmark-btn" data-id="s17-10" data-label="IPv6: Why ARP Is Not Used" title="Bookmark">🔖</button></h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+    <span>Syllabus Topic: <strong>Neighbor Discovery Protocol (NDP), ICMPv6 &amp; Solicited-Node Multicast</strong></span>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">1. Technical Definition &amp; Architectural Modernization</div>
+    <p class="concept-p">
+      In <strong>IPv6</strong>, the legacy Address Resolution Protocol (ARP) has been completely deprecated and removed. Address mapping, router discovery, duplicate address detection, and prefix learning are unified under the <strong>Neighbor Discovery Protocol (NDP)</strong>, specified in <strong>RFC 4861</strong>, which operates via <strong>ICMPv6</strong> messages running over link-local <strong>multicast</strong>.
+    </p>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">2. Why It Exists: Eliminating the Flaws of IPv4 Broadcasts</div>
+    <p class="concept-p">
+      In IPv4, ARP relies on <strong>Layer-2 broadcast (<code>FF:FF:FF:FF:FF:FF</code>)</strong>. Every single broadcast forces every NIC on the VLAN to wake its host CPU, context switch into the kernel, and parse the ARP frame—even if the packet was meant for another machine. On modern enterprise subnets with thousands of virtual machines, broadcast chatter severely degrades CPU performance.
+    </p>
+    <p class="concept-p">
+      <strong>IPv6 completely eliminates broadcast addressing.</strong> Instead, NDP maps addresses using <strong>Solicited-Node Multicast</strong>:
+    </p>
+    <ul class="concept-features">
+      <li><strong>Targeted Hardware Filtering:</strong> An NDP Neighbor Solicitation is sent to <code>FF02::1:FFxx:xxxx</code>, where the last 24 bits are derived from the target's IPv6 address.</li>
+      <li><strong>Zero CPU Overhead on Unrelated Nodes:</strong> Only the machine possessing that specific address (and rare hash collisions) listens to that multicast MAC group in its NIC hardware filter. All other hosts drop the frame at the NIC hardware level without interrupting their main processor!</li>
+    </ul>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Figure 17.10 — IPv4 ARP vs IPv6 NDP Architectural Comparison</div>
+    <pre>
++───────────────────────────+───────────────────────────+───────────────────────────+
+| Architectural Property    | IPv4 (ARP)                | IPv6 (NDP)                |
++───────────────────────────+───────────────────────────+───────────────────────────+
+| Protocol Standard         | RFC 826                   | RFC 4861                  |
+| Underlying Carrier        | Raw Ethernet (0x0806)     | ICMPv6 (Type 135/136)     |
+| Addressing Mechanism      | L2 Broadcast (FF:FF:..FF) | Solicited-Node Multicast  |
+| Hardware Interruption     | Every host on LAN         | Target NIC hardware only  |
+| Security Capabilities     | None (inherently insecure)| Secure Neighbor Disc (SEND)|
+| Router Discovery          | Separate (ICMP IRDP)      | Native (Router Sol/Advert)|
+| Stateless Auto-Config     | None (needs DHCP)         | Native (SLAAC)            |
++───────────────────────────+───────────────────────────+───────────────────────────+
+
+                 SOLICITED-NODE MULTICAST ADDRESS DERIVATION
+       Target IPv6:  2001:0db8:85a3:0000:0000:8a2e:0370:7334
+                                                      └──┬──┘
+                                                 Last 24 bits: 0x707334
+                                                         │
+                                                         ▼
+       Solicited-Node Multicast:       FF02::1:FF70:7334
+       Mapped Ethernet Multicast MAC:  33:33:FF:70:73:34
+    </pre>
+  </div>
+
+  <div class="calc-box">
+    <div class="calc-title">Worked Analysis: The NDP Neighbor Solicitation (NS) / Advertisement (NA) Cycle</div>
+    <div class="calc-step">
+      <strong>Step 1: Neighbor Solicitation (ICMPv6 Type 135)</strong><br>
+      Host A wants the MAC of <code>2001:db8::50</code>.<br>
+      • Destination IP: <code>FF02::1:FF00:50</code> (Solicited-Node Multicast).<br>
+      • Destination MAC: <code>33:33:FF:00:00:50</code>.<br>
+      • ICMPv6 Option: Source link-layer address (Host A's MAC).
+    </div>
+    <div class="calc-step">
+      <strong>Step 2: Neighbor Advertisement (ICMPv6 Type 136)</strong><br>
+      Target Host B receives the frame (its NIC hardware is registered for <code>33:33:FF:00:00:50</code>).<br>
+      • Destination IP: Host A's link-local IP (Unicast).<br>
+      • Destination MAC: Host A's MAC.<br>
+      • Flags: Router (R), Solicited (S), Override (O).<br>
+      • ICMPv6 Option: Target link-layer address (Host B's MAC).
+    </div>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">3. Important Invariants</div>
+    <ul class="concept-features">
+      <li><strong>ICMPv6 Dependency:</strong> NDP packets are encapsulated inside IPv6 datagrams (Next Header = 58 for ICMPv6). Therefore, IPv6 address resolution actually runs <em>over IPv6 itself</em> using link-local addresses!</li>
+      <li><strong>Hop Limit = 255:</strong> To prevent off-link spoofing attacks, RFC 4861 mandates that all NDP messages must be transmitted with an IPv6 <strong>Hop Limit of 255</strong>. If a node receives an NDP packet with Hop Limit &lt; 255, it knows the packet crossed a router and immediately discards it!</li>
+    </ul>
+  </div>
+
+  <div class="warning-box">
+    <div class="warning-title">Common Exam Trap</div>
+    <p>
+      <strong>Question:</strong> "What is the broadcast address used by ARP in IPv6?"<br>
+      <strong>Trick Question!</strong> IPv6 has <strong>no broadcast addresses whatsoever</strong>. Anyone answering with an IPv6 broadcast address receives zero marks. The correct answer is <em>Solicited-Node Multicast</em>.
+    </p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-title">University Exam Distinction</div>
+    <p>
+      When asked to compare ARP and NDP (frequently a 5-mark question), emphasize: (1) Carrier protocol (Raw L2 vs ICMPv6), (2) Broadcast vs Multicast, (3) Security (SEND with RSA cryptographically generated addresses vs unsecured ARP), and (4) Integrated SLAAC router discovery.
+    </p>
+  </div>
+
+  <div class="study-resources">
+    <div class="study-resources-title">Curated 3-Tier Study Resources</div>
+    <div class="resource-grid">
+      <div class="resource-card">
+        <div class="resource-tag text">Standard Textbook</div>
+        <strong>Kurose &amp; Ross (8th Ed.)</strong>
+        <p>Section 4.3.4: "IPv6 Datagram Format and Neighbor Discovery".</p>
+        <span class="resource-link">Chapter 4 &middot; Pages 352–358</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag rfc">IETF RFC Standard</div>
+        <strong>RFC 4861 Neighbor Discovery in IPv6</strong>
+        <p>Sections 4.3–4.4: Complete specifications of NS (Type 135) and NA (Type 136) messages.</p>
+        <span class="resource-link">RFC 4861 &middot; Standards Track</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag gate">GATE &amp; Viva Drill</div>
+        <strong>GATE CS 2021 Multicast Derivation</strong>
+        <p>Calculate the Solicited-Node Multicast IP and corresponding Ethernet MAC address for a given 128-bit IPv6 host address.</p>
+        <span class="resource-link">GATE CS &middot; Advanced Addressing</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="s17-11" class="section-in-uni content-section" data-chapter="17" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="high" data-search-section="ICMP Internet Control Message Protocol RFC 792 error reporting companion protocol IP encapsulation">
+  <div class="section-header">
+    <div class="section-tag">Section 17.11</div>
+    <h2 class="section-title">ICMP: Network-Layer Error Reporting <button class="bookmark-btn" data-id="s17-11" data-label="ICMP: Network-Layer Error Reporting" title="Bookmark">🔖</button></h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+    <span>Syllabus Topic: <strong>RFC 792 Philosophy, Feedback Signaling &amp; Error Reporting Invariants</strong></span>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">1. Technical Definition &amp; Protocol Layering</div>
+    <p class="concept-p">
+      The <strong>Internet Control Message Protocol (ICMP)</strong>, defined in <strong>RFC 792</strong>, is an integral network-layer companion protocol to IPv4 (assigned <strong>IP Protocol Number 1</strong>) designed to provide operational feedback, diagnostic signaling, and error reporting when network datagrams cannot be successfully delivered or processed.
+    </p>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">2. Why It Exists: Bridging the "Best-Effort" Information Void</div>
+    <p class="concept-p">
+      The foundational design of IP is <strong>unreliable and connectionless ("best-effort")</strong>. IP routers silently drop packets when:
+    </p>
+    <ul class="concept-features">
+      <li>A destination network is unreachable due to route failure.</li>
+      <li>A packet's Time-To-Live (TTL) counter decrements to 0 in a routing loop.</li>
+      <li>A datagram exceeds a router's outgoing link MTU and has the Don't Fragment (DF) flag asserted.</li>
+      <li>A destination host port has no active application listening.</li>
+    </ul>
+    <p class="concept-p">
+      Without ICMP, the sending host would be entirely blind—unable to distinguish whether a packet was delayed, dropped, or corrupted. ICMP provides the closed-loop diagnostic reporting mechanism that informs the sender why forwarding failed.
+    </p>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Figure 17.11 — The IP / ICMP Layering Relationship</div>
+    <pre>
+   +───────────────────────────────────────────────────────────────+
+   | APPLICATION LAYER      Ping / Traceroute Utilities            |
+   +───────────────────────────────────────────────────────────────+
+                                   ▲
+                                   │ (Diagnostic Data)
+                                   ▼
+   +───────────────────────────────────────────────────────────────+
+   | TRANSPORT LAYER        TCP / UDP (Not used by core ICMP)      |
+   +───────────────────────────────────────────────────────────────+
+                                   ▲
+                                   │
+   +───────────────────────────────────────────────────────────────+
+   | NETWORK LAYER (L3)                                            |
+   |                                                               |
+   |   ┌────────────────────────┐      ┌────────────────────────┐  |
+   |   │ IPv4 Forwarding Engine │◄────►│  ICMP (Protocol = 1)   │  |
+   |   │ (Best-Effort Delivery) │      │ (Error / Diagnostic)   │  |
+   |   └────────────────────────┘      └────────────────────────┘  |
+   |                │                              │               |
+   |                │ Encapsulates ICMP into IP    │               |
+   |                ▼                              ▼               |
+   |   [ IP Header: Protocol = 1 ] [ ICMP Message Payload ]        |
+   +───────────────────────────────────────────────────────────────+
+                                   │
+                                   ▼
+   +───────────────────────────────────────────────────────────────+
+   | DATA LINK LAYER (L2)   Ethernet Frame (EtherType = 0x0800)    |
+   +───────────────────────────────────────────────────────────────+
+    </pre>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">3. The Golden Rules: When ICMP Messages Must NEVER Be Sent</div>
+    <p class="concept-p">
+      To prevent catastrophic <strong>broadcast storms and infinite error loops</strong>, RFC 792 and RFC 1122 establish strict, non-negotiable rules governing when routers and hosts are forbidden from generating ICMP error messages:
+    </p>
+    <ol class="concept-features">
+      <li><strong>No ICMP for an ICMP Error:</strong> An ICMP error message is <em>never</em> generated in response to another ICMP error message! (Otherwise, two misconfigured routers would bounce error packets back and forth infinitely until link saturation).</li>
+      <li><strong>No ICMP for Broadcast or Multicast:</strong> An ICMP error is never generated in response to a datagram addressed to a broadcast (e.g. <code>255.255.255.255</code>) or multicast address (e.g. <code>224.0.0.1</code>). (Otherwise, a single ping to a broadcast address would trigger a distributed denial-of-service avalanche of error replies from every node).</li>
+      <li><strong>No ICMP for Non-Initial Fragments:</strong> An ICMP error is generated only for fragment with <code>Offset = 0</code>; it is never generated for subsequent fragments.</li>
+      <li><strong>No ICMP for Invalid Source IP:</strong> An ICMP error is never sent to a source address that is <code>0.0.0.0</code>, loopback <code>127.0.0.1</code>, or a broadcast address.</li>
+    </ol>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">4. Important Invariants</div>
+    <ul class="concept-features">
+      <li><strong>No Reliability Guarantee:</strong> ICMP error messages themselves are transmitted using standard unreliable IP datagrams. If an ICMP error packet gets lost in transit, it is <em>never</em> retransmitted.</li>
+      <li><strong>No Automatic Correction:</strong> ICMP is strictly an <em>error-reporting</em> protocol, not an <em>error-correcting</em> protocol. It informs the source node; it is up to the higher-layer protocol (TCP or application) to take corrective action.</li>
+    </ul>
+  </div>
+
+  <div class="warning-box">
+    <div class="warning-title">High-Yield GATE Trap</div>
+    <p>
+      <strong>Question:</strong> "Is ICMP a Transport Layer protocol because it is encapsulated inside an IP packet?"<br>
+      <strong>Answer:</strong> <strong>No!</strong> ICMP is officially an architectural component of the <strong>Network Layer (Layer 3)</strong>. Even though it is encapsulated with an IP header (Protocol field = 1), its functionality serves network-layer routing, diagnostics, and MTU discovery.
+    </p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-title">Classification of ICMP Messages</div>
+    <p>
+      ICMP messages divide cleanly into two classes:<br>
+      1. <strong>Error-Reporting Messages:</strong> Destination Unreachable (Type 3), Source Quench (Type 4 - deprecated), Time Exceeded (Type 11), Parameter Problem (Type 12), Redirect (Type 5).<br>
+      2. <strong>Query / Informational Messages:</strong> Echo Request/Reply (Type 8/0), Timestamp Request/Reply (Type 13/14).
+    </p>
+  </div>
+
+  <div class="study-resources">
+    <div class="study-resources-title">Curated 3-Tier Study Resources</div>
+    <div class="resource-grid">
+      <div class="resource-card">
+        <div class="resource-tag text">Standard Textbook</div>
+        <strong>Forouzan (5th Ed.)</strong>
+        <p>Chapter 19: "Internet Control Message Protocol (ICMPv4)" — Complete message taxonomy and error rules.</p>
+        <span class="resource-link">Chapter 19 &middot; Pages 547–562</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag rfc">IETF RFC Standard</div>
+        <strong>RFC 792 ICMP Specification</strong>
+        <p>The original protocol definition authored by Jon Postel detailing error conditions and packet structure.</p>
+        <span class="resource-link">IETF RFC 792 &middot; Standard 7</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag gate">GATE Classical Question</div>
+        <strong>GATE CS 2005 / 2019 Error Rules</strong>
+        <p>Evaluate under which network conditions a router is legally prohibited from generating an ICMP Destination Unreachable message.</p>
+        <span class="resource-link">GATE CS &middot; Network Layer Protocols</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="s17-12" class="section-in-uni content-section" data-chapter="17" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="high" data-search-section="ICMP message format Type Code Checksum header inspection error vs query messages">
+  <div class="section-header">
+    <div class="section-tag">Section 17.12</div>
+    <h2 class="section-title">ICMP Message Structure <button class="bookmark-btn" data-id="s17-12" data-label="ICMP Message Structure" title="Bookmark">🔖</button></h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+    <span>Syllabus Topic: <strong>Header Format, The 8-Byte Payload Inclusion Rule &amp; Demultiplexing</strong></span>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">1. Technical Definition &amp; Common Header Layout</div>
+    <p class="concept-p">
+      All ICMP messages share an identical <strong>8-byte common header format</strong> consisting of three primary fields (Type, Code, and Checksum) followed by a 4-byte message-specific header section. For all error-reporting messages, the ICMP payload contains the <strong>original IPv4 header plus the first 64 bits (8 bytes) of the original datagram payload</strong>.
+    </p>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">2. Why It Exists: The 8-Byte Original Payload Rule</div>
+    <p class="concept-p">
+      When a router drops a packet and generates an ICMP error back to the source host, the source host's operating system needs to know: <em>"Which application or socket on my system sent the packet that caused this error?"</em>
+    </p>
+    <p class="concept-p">
+      In TCP and UDP, the first 8 bytes of the transport payload contain:
+    </p>
+    <ul class="concept-features">
+      <li><strong>Source Port (16 bits):</strong> Identifies the exact sending client socket application.</li>
+      <li><strong>Destination Port (16 bits):</strong> Identifies the targeted server service.</li>
+      <li><strong>Sequence Number (TCP - 32 bits):</strong> Identifies the exact segment within the data stream.</li>
+    </ul>
+    <p class="concept-p">
+      By quoting the original IP header + first 8 bytes of payload, the host kernel can parse the ports and immediately pass the ICMP error notification directly to the appropriate socket (e.g. raising <code>ECONNREFUSED</code> in C/Python).
+    </p>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Figure 17.12 — Detailed ICMPv4 Message Header Layout and Payload Composition</div>
+    <pre>
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|     Type      |     Code      |          Checksum             |
+|   (8 bits)    |   (8 bits)    |          (16 bits)            |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                 Message-Specific Header Data                  |
+|          (e.g., Unused, Next-Hop MTU, Ident/Seq Num)          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                               |
+|        Original IPv4 Header of the Errant Datagram            |
+|                     (Minimum 20 Bytes)                        |
+|                                                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|       First 64 Bits (8 Bytes) of Original Datagram Payload    |
+|       (Contains Transport Source Port & Destination Port)      |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    </pre>
+  </div>
+
+  <div class="calc-box">
+    <div class="calc-title">Detailed Field Breakdown &amp; Size Arithmetic</div>
+    <div class="calc-step">
+      <strong>1. Type (8 bits):</strong> Defines the broad category of the message (e.g. <code>Type 3</code> = Destination Unreachable, <code>Type 11</code> = Time Exceeded, <code>Type 8</code> = Echo Request).<br>
+      <strong>2. Code (8 bits):</strong> Defines the precise diagnostic subtype or reason (e.g. under Type 3: <code>Code 0</code> = Network Unreachable, <code>Code 1</code> = Host Unreachable, <code>Code 3</code> = Port Unreachable).<br>
+      <strong>3. Checksum (16 bits):</strong> One's complement sum of the entire ICMP message (header + data). Unlike the IPv4 header checksum, this checksum covers the <em>entire ICMP payload</em>.
+    </div>
+    <div class="calc-step">
+      <strong>Total Minimum ICMP Error Packet Size:</strong><br>
+      • ICMP Header = 8 bytes.<br>
+      • Quoted Original IP Header = 20 bytes.<br>
+      • Quoted Original Transport Header = 8 bytes.<br>
+      • Total ICMP Payload = $8 + 20 + 8 = 36$ bytes.<br>
+      • Encapsulating Outer IP Header = 20 bytes.<br>
+      • Total IP Datagram Size = $20 + 36 = \mathbf{56\text{ bytes}}$ on the wire.
+    </div>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">4. Important Invariants</div>
+    <ul class="concept-features">
+      <li><strong>Demultiplexing to User Space:</strong> Without the 8-byte payload inclusion, raw ICMP errors arriving at a host could never be linked to their originating TCP/UDP user socket, because the outer IP header lists the router as the source, not the original server.</li>
+      <li><strong>Checksum Scope:</strong> In ICMPv4, the checksum calculation does <em>not</em> include an IP pseudo-header (unlike TCP/UDP or ICMPv6).</li>
+    </ul>
+  </div>
+
+  <div class="warning-box">
+    <div class="warning-title">Common Exam Trap</div>
+    <p>
+      Students frequently confuse the <strong>Outer IP Header</strong> with the <strong>Inner (Quoted) IP Header</strong>:<br>
+      • Outer IP Source: The IP of the <em>router</em> that generated the error.<br>
+      • Outer IP Destination: The IP of the <em>original sending host</em>.<br>
+      • Inner IP Source: The <em>original sending host's IP</em>.<br>
+      • Inner IP Destination: The <em>target IP</em> that could not be reached.
+    </p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-title">GATE Multiple Choice Clue</div>
+    <p>
+      If asked: <em>"How many bytes of the original datagram payload are included in an ICMPv4 error message?"</em><br>
+      Answer: Exactly <strong>64 bits (8 bytes)</strong>. In contrast, ICMPv6 includes as much of the original packet as possible without exceeding the minimum MTU (1280 bytes).
+    </p>
+  </div>
+
+  <div class="study-resources">
+    <div class="study-resources-title">Curated 3-Tier Study Resources</div>
+    <div class="resource-grid">
+      <div class="resource-card">
+        <div class="resource-tag text">Standard Textbook</div>
+        <strong>Stevens &amp; Fall: TCP/IP Illustrated Vol 1</strong>
+        <p>Chapter 6: "ICMP: Internet Control Message Protocol" — Bit-level diagrams and transport demultiplexing trace.</p>
+        <span class="resource-link">Chapter 6 &middot; Pages 87–96</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag rfc">IETF RFC Standard</div>
+        <strong>RFC 792 Message Formats</strong>
+        <p>Review the exact byte offsets and bit diagrams for Destination Unreachable and Time Exceeded headers.</p>
+        <span class="resource-link">RFC 792 &middot; Destination Unreachable Format</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag gate">GATE Numerical Drill</div>
+        <strong>GATE CS 2011 ICMP Header Extraction</strong>
+        <p>Given an ICMP error packet hex dump, extract the original source port, destination port, and protocol type.</p>
+        <span class="resource-link">GATE CS &middot; Packet Parsing</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="s17-13" class="section-in-uni content-section" data-chapter="17" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="high" data-search-section="Destination Unreachable Type 3 Code 0-15 network host protocol port unreachable fragmentation needed">
+  <div class="section-header">
+    <div class="section-tag">Section 17.13</div>
+    <h2 class="section-title">Destination Unreachable <button class="bookmark-btn" data-id="s17-13" data-label="Destination Unreachable" title="Bookmark">🔖</button></h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+    <span>Syllabus Topic: <strong>ICMP Type 3 Codes &amp; RFC 1191 Path MTU Discovery (PMTUD)</strong></span>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">1. Technical Definition &amp; The Type 3 Ecosystem</div>
+    <p class="concept-p">
+      An <strong>ICMP Destination Unreachable (Type 3)</strong> message is generated by an intermediate router or the final destination host whenever an IP datagram cannot be delivered to its intended endpoint due to routing failures, administrative filtering, link MTU constraints, or inactive transport-layer services.
+    </p>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">2. Master Taxonomy of Type 3 Diagnostic Codes</div>
+    <p class="concept-p">
+      The 8-bit Code field specifies the exact point of delivery failure:
+    </p>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Code</th>
+            <th>Description</th>
+            <th>Originating Entity</th>
+            <th>Root Cause / Operational Trigger</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>3</strong></td>
+            <td><strong>0</strong></td>
+            <td>Network Unreachable</td>
+            <td>Router</td>
+            <td>Router has no matching route in its FIB/routing table and no default route.</td>
+          </tr>
+          <tr>
+            <td><strong>3</strong></td>
+            <td><strong>1</strong></td>
+            <td>Host Unreachable</td>
+            <td>Router</td>
+            <td>Router reached destination subnet, but ARP requests for target IP timed out (host offline).</td>
+          </tr>
+          <tr>
+            <td><strong>3</strong></td>
+            <td><strong>2</strong></td>
+            <td>Protocol Unreachable</td>
+            <td>Destination Host</td>
+            <td>Transport protocol in IP header (e.g. Protocol 17 for UDP) is not supported by target OS.</td>
+          </tr>
+          <tr>
+            <td><strong>3</strong></td>
+            <td><strong>3</strong></td>
+            <td>Port Unreachable</td>
+            <td>Destination Host</td>
+            <td>Target port has no active process or daemon listening (e.g. UDP port probe, traceroute).</td>
+          </tr>
+          <tr>
+            <td><strong>3</strong></td>
+            <td><strong>4</strong></td>
+            <td>Frag Needed &amp; DF Set</td>
+            <td>Router</td>
+            <td>Packet size exceeds link MTU, but IP header specifies Don't Fragment (DF = 1). Core of PMTUD!</td>
+          </tr>
+          <tr>
+            <td><strong>3</strong></td>
+            <td><strong>13</strong></td>
+            <td>Admin Prohibited</td>
+            <td>Router / Firewall</td>
+            <td>Packet blocked by an Access Control List (ACL) rule or firewall policy.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Figure 17.13 — Path MTU Discovery (PMTUD) Using ICMP Type 3, Code 4</div>
+    <pre>
+   [ CLIENT ]                      [ ROUTER R1 ]                   [ SERVER ]
+   Outgoing MTU = 1500             MTU = 1500  Link MTU = 1400     MTU = 1500
+        │                              │                               │
+        │ 1. IP Packet (1500 Bytes)    │                               │
+        │    Flags: DF = 1             │                               │
+        ├─────────────────────────────►│                               │
+        │                              │ 2. Router R1 evaluates:       │
+        │                              │    • Packet (1500) > Link MTU (1400)
+        │                              │    • DF flag = 1 -> Cannot fragment!
+        │                              │    • DROPS packet!            │
+        │                              │                               │
+        │ 3. ICMP Type 3, Code 4       │                               │
+        │    "Fragmentation Needed"    │                               │
+        │    Next-Hop MTU = 1400       │                               │
+        │◄─────────────────────────────┤                               │
+        │                                                              │
+        │ 4. Client learns Path MTU = 1400                             │
+        │    Reduces TCP MSS to 1360                                   │
+        │                                                              │
+        │ 5. Resends IP Packet (1400 Bytes, DF=1)                      │
+        ├──────────────────────────────►├─────────────────────────────►│
+    </pre>
+  </div>
+
+  <div class="calc-box">
+    <div class="calc-title">Worked Analysis: Path MTU Discovery (PMTUD) RFC 1191 Mechanics</div>
+    <div class="calc-step">
+      <strong>Step 1: The Problem with Router Fragmentation</strong><br>
+      In IPv4, in-flight router fragmentation consumes heavy CPU resources, introduces buffering latency, and wastes bandwidth (if one fragment drops, the entire datagram must be retransmitted). Modern operating systems set the <strong>DF (Don't Fragment) bit = 1</strong> on all outgoing TCP packets.
+    </div>
+    <div class="calc-step">
+      <strong>Step 2: The ICMP RFC 1191 Extension (Next-Hop MTU)</strong><br>
+      In early RFC 792, bytes 4–7 of the ICMP header were unused (zeros). RFC 1191 updated Type 3, Code 4 so bytes 6–7 carry the <strong>Next-Hop MTU (16 bits)</strong> of the bottleneck link.
+    </div>
+    <div class="calc-step">
+      <strong>Step 3: Convergence</strong><br>
+      When the client receives Type 3 Code 4 specifying Next-Hop MTU = 1400, it updates its routing cache. All subsequent segments to that destination IP are clamped to:
+      $$\text{TCP MSS} = \text{Next-Hop MTU} - (\text{IP Header 20B} + \text{TCP Header 20B}) = 1400 - 40 = \mathbf{1360\text{ bytes}}.$$
+    </div>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">3. Important Invariants</div>
+    <ul class="concept-features">
+      <li><strong>PMTU Black Holes:</strong> If an overly aggressive corporate firewall drops all ICMP Type 3 messages, PMTUD breaks completely. Small TCP handshakes (SYN/ACK) succeed, but large bulk data transfers hang indefinitely (known as a <em>PMTU Black Hole</em>).</li>
+      <li><strong>Code 3 vs Code 1 Origin:</strong> Code 0, 1, 4 are generated almost exclusively by <em>routers</em> along the path, whereas Code 2 and 3 are generated exclusively by the <em>destination end-host</em>.</li>
+    </ul>
+  </div>
+
+  <div class="warning-box">
+    <div class="warning-title">Common Exam Trap</div>
+    <p>
+      <strong>Question:</strong> "If a target machine is powered off, what ICMP message is returned?"<br>
+      <strong>Trap:</strong> Answering "Port Unreachable (Code 3)".<br>
+      <strong>Correct Answer:</strong> <strong>Host Unreachable (Type 3, Code 1)</strong>, sent by the <em>last-hop router</em> after its ARP requests expire. Port Unreachable is only sent if the target host is <em>online</em>, received the packet, but found no software listening on that port!
+    </p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-title">GATE Core Table to Memorize</div>
+    <p>
+      Code 0 = Network &middot; Code 1 = Host &middot; Code 2 = Protocol &middot; Code 3 = Port &middot; Code 4 = Frag Needed &amp; DF Set.
+    </p>
+  </div>
+
+  <div class="study-resources">
+    <div class="study-resources-title">Curated 3-Tier Study Resources</div>
+    <div class="resource-grid">
+      <div class="resource-card">
+        <div class="resource-tag text">Standard Textbook</div>
+        <strong>Kurose &amp; Ross (8th Ed.)</strong>
+        <p>Section 5.6: "ICMP: The Internet Control Message Protocol" — Analysis of PMTUD and error types.</p>
+        <span class="resource-link">Chapter 5 &middot; Pages 410–415</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag rfc">IETF RFC Standard</div>
+        <strong>RFC 1191 Path MTU Discovery</strong>
+        <p>The standard defining Next-Hop MTU reporting in ICMP Type 3 Code 4 packets.</p>
+        <span class="resource-link">RFC 1191 &middot; Standards Track</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag gate">GATE Classical Drill</div>
+        <strong>GATE CS 2013 PMTUD Tracing</strong>
+        <p>Calculate the maximum payload size transmitted by a TCP sender across three links with MTUs 1500, 620, and 1500.</p>
+        <span class="resource-link">GATE CS &middot; Transport / Network Layer</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="s17-14" class="section-in-uni content-section" data-chapter="17" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="high" data-search-section="Time Exceeded Type 11 Code 0 transit TTL expired Code 1 fragment reassembly timeout">
+  <div class="section-header">
+    <div class="section-tag">Section 17.14</div>
+    <h2 class="section-title">Time Exceeded, TTL and Traceroute <button class="bookmark-btn" data-id="s17-14" data-label="Time Exceeded, TTL and Traceroute" title="Bookmark">🔖</button></h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+    <span>Syllabus Topic: <strong>ICMP Type 11 Codes, Routing Loop Mitigation &amp; Traceroute Engineering</strong></span>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">1. Technical Definition &amp; The Type 11 Codes</div>
+    <p class="concept-p">
+      An <strong>ICMP Time Exceeded (Type 11)</strong> message is transmitted to notify the sender that an IP datagram was discarded because a time limit was breached. It defines exactly two codes:
+    </p>
+    <ul class="concept-features">
+      <li><strong>Code 0: Time to Live Exceeded in Transit</strong> — A router decremented the IP packet's TTL field to <code>0</code>, preventing infinite routing loops.</li>
+      <li><strong>Code 1: Fragment Reassembly Time Exceeded</strong> — The destination host failed to receive all fragments of a fragmented datagram before its reassembly timer (typically 30–60 seconds) expired; all received fragments are purged.</li>
+    </ul>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">2. Why It Exists: Turning a Destruction Mechanism into a Diagnostic Tool</div>
+    <p class="concept-p">
+      The primary purpose of TTL decrementing is to cleanse the Internet of looping packets caused by transient routing convergence errors. However, computer scientist Van Jacobson realized that by deliberately sending packets with <strong>artificially low TTL values ($1, 2, 3, \dots$)</strong>, routers along the path can be forced to identify themselves via ICMP Type 11 Code 0 messages, inventing the ubiquitous diagnostic utility <strong>traceroute</strong>.
+    </p>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Figure 17.14 — Step-by-Step Traceroute Packet Timeline</div>
+    <pre>
+   [ SENDER ]                    [ ROUTER R1 ]            [ ROUTER R2 ]            [ DESTINATION ]
+   192.168.1.10                  10.1.1.1                 10.2.2.1                 142.250.190.46
+        │                              │                        │                        │
+        │ 1. Probe 1: TTL = 1          │                        │                        │
+        ├─────────────────────────────►│ (TTL decrements to 0!) │                        │
+        │                              │ DROPS packet!          │                        │
+        │ 2. ICMP Type 11, Code 0      │                        │                        │
+        │    Src IP = 10.1.1.1         │                        │                        │
+        │◄─────────────────────────────┤ (Sender records R1 IP & calculates RTT_1)       │
+        │                                                       │                        │
+        │ 3. Probe 2: TTL = 2                                   │                        │
+        ├──────────────────────────────►├──────────────────────►│ (TTL decrements to 0!) │
+        │                                                       │ DROPS packet!          │
+        │ 4. ICMP Type 11, Code 0                               │                        │
+        │    Src IP = 10.2.2.1                                  │                        │
+        │◄──────────────────────────────────────────────────────┤ (Sender records R2 IP) │
+        │                                                                                │
+        │ 5. Probe 3: TTL = 3                                                            │
+        ├──────────────────────────────►├──────────────────────►├───────────────────────►│
+        │                                                                                │ Arrives with
+        │                                                                                │ TTL = 1!
+        │                                                                                │ Target port 33434
+        │                                                                                │ has no listener.
+        │ 6. ICMP Type 3, Code 3 (Port Unreachable)                                      │
+        │◄───────────────────────────────────────────────────────────────────────────────┤
+        │ (Sender receives Port Unreachable -> Concludes destination reached! Terminates)│
+    </pre>
+  </div>
+
+  <div class="calc-box">
+    <div class="calc-title">Worked Analysis: Traceroute Mechanics (Unix UDP vs Windows Tracert)</div>
+    <div class="calc-step">
+      <strong>Mechanism A: Unix / Linux / macOS <code>traceroute</code> (UDP Probes)</strong><br>
+      • Transmits UDP datagrams targeted at high, unassigned ports (starting at <code>33434</code>, incremented per probe).<br>
+      • Intermediate routers respond with: <strong>ICMP Type 11, Code 0 (TTL Exceeded)</strong>.<br>
+      • Final destination host responds with: <strong>ICMP Type 3, Code 3 (Port Unreachable)</strong> because no service listens on port 33434! This signals traceroute that the destination has been reached.
+    </div>
+    <div class="calc-step">
+      <strong>Mechanism B: Windows <code>tracert</code> (ICMP Echo Probes)</strong><br>
+      • Transmits <strong>ICMP Echo Requests (Type 8)</strong> with incrementing TTL.<br>
+      • Intermediate routers respond with: <strong>ICMP Type 11, Code 0</strong>.<br>
+      • Final destination host responds with: <strong>ICMP Echo Reply (Type 0)</strong>!
+    </div>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">3. Important Invariants</div>
+    <ul class="concept-features">
+      <li><strong>Asymmetric Path Reality:</strong> The IP address displayed in traceroute for hop $k$ is the IP address of router $R_k$'s <em>incoming interface</em> facing the sender. Furthermore, the return ICMP error may travel along a completely different return route (asymmetric routing).</li>
+      <li><strong>Fragment Reassembly Constraint:</strong> Code 1 (Fragment Reassembly Time Exceeded) is <em>only generated by the final destination host</em>, because intermediate routers never reassemble fragments!</li>
+    </ul>
+  </div>
+
+  <div class="warning-box">
+    <div class="warning-title">High-Yield Exam Trap</div>
+    <p>
+      <strong>Question:</strong> "Why do intermediate routers respond with ICMP Type 11 Code 0, but the final host in Unix traceroute responds with Type 3 Code 3?"<br>
+      <strong>Answer:</strong> Intermediate routers decrement TTL in transit; when TTL hits 0, they discard and send Type 11. When the packet reaches the final host, the host does <em>not</em> decrement TTL (it is the destination, not forwarding). It inspects the UDP port, finds no active listener, and generates Type 3 Code 3 (Port Unreachable)!
+    </p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-title">What Causes <code>* * * Request timed out</code> in Traceroute?</div>
+    <p>
+      An asterisk (<code>*</code>) means no ICMP response arrived within the timeout window. This happens when: (1) The router rate-limits ICMP generation to protect its control-plane CPU, (2) A firewall drops UDP probes or outbound ICMP error packets, or (3) Return path asymmetric routing failure.
+    </p>
+  </div>
+
+  <div class="study-resources">
+    <div class="study-resources-title">Curated 3-Tier Study Resources</div>
+    <div class="resource-grid">
+      <div class="resource-card">
+        <div class="resource-tag text">Standard Textbook</div>
+        <strong>Tanenbaum (6th Ed.)</strong>
+        <p>Section 5.6.4: "Internet Control Message Protocol: Traceroute and Ping Implementation".</p>
+        <span class="resource-link">Chapter 5 &middot; Pages 473–478</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag rfc">IETF RFC Standard</div>
+        <strong>RFC 1393 Traceroute using an IP Option</strong>
+        <p>Historic analysis of alternative traceroute implementations and TTL expiration behavior.</p>
+        <span class="resource-link">RFC 1393 &middot; Experimental</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag gate">GATE Classical Drill</div>
+        <strong>GATE CS 2012 / 2020 Traceroute</strong>
+        <p>Calculate the minimum number of packets exchanged across a 4-hop network during a full 3-probe-per-hop traceroute execution.</p>
+        <span class="resource-link">GATE CS &middot; Diagnostics &amp; Protocols</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="s17-15" class="section-in-uni content-section" data-chapter="17" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="high" data-search-section="Redirect Type 5 Source Quench Type 4 router informing host optimal gateway deprecated">
+  <div class="section-header">
+    <div class="section-tag">Section 17.15</div>
+    <h2 class="section-title">Echo Request / Echo Reply and Ping <button class="bookmark-btn" data-id="s17-15" data-label="Echo Request / Echo Reply and Ping" title="Bookmark">🔖</button></h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+    <span>Syllabus Topic: <strong>ICMP Query Messages, Round-Trip Time (RTT) &amp; The Ping Architecture</strong></span>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">1. Technical Definition &amp; The Query Pair</div>
+    <p class="concept-p">
+      The <strong>ICMP Echo Request (Type 8, Code 0)</strong> and <strong>ICMP Echo Reply (Type 0, Code 0)</strong> constitute the fundamental query-response mechanism of the network layer used by the <code>ping</code> utility to test end-to-end IP reachability, measure Round-Trip Time (RTT), and calculate packet loss percentages.
+    </p>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">2. Why It Exists: Active End-to-End L3 Health Verification</div>
+    <p class="concept-p">
+      Unlike error-reporting messages (which are passive and triggered only by failures), Echo Request/Reply is an <strong>active diagnostic tool</strong>. A network engineer can verify whether a remote server is reachable, whether the routing fabric in both directions is operational, and whether network congestion is inducing packet loss or jitter.
+    </p>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Figure 17.15 — ICMP Echo Request / Reply Header Format and Ping Architecture</div>
+    <pre>
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+| Type (8 or 0) |    Code (0)   |          Checksum             |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|        Identifier (16 bits)   |    Sequence Number (16 bits)  |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                               |
+|        Optional Data Payload (Timestamp / Pattern Bytes)      |
+|               (Copied unmodified into Echo Reply)             |
+|                                                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    </pre>
+  </div>
+
+  <div class="calc-box">
+    <div class="calc-title">Worked Analysis: Identifier, Sequence Number &amp; RTT Calculation</div>
+    <div class="calc-step">
+      <strong>1. Identifier Field (16 bits):</strong><br>
+      Set by the sending OS to the <strong>Process ID (PID)</strong> of the running <code>ping</code> program. This allows multiple concurrent ping processes running on the same machine to demultiplex and receive only their own replies!
+    </div>
+    <div class="calc-step">
+      <strong>2. Sequence Number Field (16 bits):</strong><br>
+      Monotonically incremented by 1 for each probe sent ($0, 1, 2, \dots$). Detects dropped packets and packet reordering.
+    </div>
+    <div class="calc-step">
+      <strong>3. Round-Trip Time (RTT) Measurement Math:</strong><br>
+      The sender places a high-resolution timestamp $t_{\text{send}}$ inside the Optional Data Payload. The receiver echoes the payload back bit-for-bit without modifying it. Upon receiving the reply at local time $t_{\text{recv}}$:
+      $$\text{RTT} = t_{\text{recv}} - t_{\text{send}}.$$
+      This elegant design requires zero state storage on the ping server!
+    </div>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">3. Important Invariants</div>
+    <ul class="concept-features">
+      <li><strong>Payload Mirroring Invariant:</strong> The target host is mandated by RFC 792 to echo back the <em>exact data payload</em> contained in the Echo Request.</li>
+      <li><strong>Checksum Invalidation:</strong> Because the Type field changes from <code>8</code> (Request) to <code>0</code> (Reply), the 16-bit ICMP checksum <em>must always be recalculated</em> by the responding host.</li>
+    </ul>
+  </div>
+
+  <div class="warning-box">
+    <div class="warning-title">Common Exam Trap</div>
+    <p>
+      <strong>Question:</strong> "If a ping to a remote server fails with 100% packet loss, does that guarantee the server is down?"<br>
+      <strong>Answer:</strong> <strong>No!</strong> Many enterprise web servers and firewalls intentionally configure rules to drop ICMP Echo Requests (Type 8) to mitigate ping floods and reconnaissance scans, while remaining 100% functional on HTTP/HTTPS ports 80/443.
+    </p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-title">Historical Trivia: Origin of the Name "Ping"</div>
+    <p>
+      Written by Mike Muuss in December 1983, the name was inspired by the sound of <strong>sonar pulse reflection</strong> ("ping") in submarines, where sound waves propagate out, bounce off a distant vessel, and return to reveal distance.
+    </p>
+  </div>
+
+  <div class="study-resources">
+    <div class="study-resources-title">Curated 3-Tier Study Resources</div>
+    <div class="resource-grid">
+      <div class="resource-card">
+        <div class="resource-tag text">Standard Textbook</div>
+        <strong>Forouzan (5th Ed.)</strong>
+        <p>Section 19.3: "Query Messages: Echo Request and Echo Reply".</p>
+        <span class="resource-link">Chapter 19 &middot; Pages 558–561</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag rfc">IETF RFC Standard</div>
+        <strong>RFC 792 Echo Specifications</strong>
+        <p>Review the exact byte definitions and checksum algorithms for Echo messages.</p>
+        <span class="resource-link">RFC 792 &middot; Echo/Reply Format</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag gate">GATE Classical Drill</div>
+        <strong>GATE CS 2018 RTT Analysis</strong>
+        <p>Calculate the average RTT, standard deviation, and packet loss given a series of 5 ICMP Echo Reply timestamps.</p>
+        <span class="resource-link">GATE CS &middot; Network Diagnostics</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="s17-16" class="section-in-uni content-section" data-chapter="17" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="high" data-search-section="Path MTU Discovery PMTUD DF bit Packet Too Big Type 3 Code 4 MSS black holes">
+  <div class="section-header">
+    <div class="section-tag">Section 17.16</div>
+    <h2 class="section-title">ICMPv4 vs ICMPv6 <button class="bookmark-btn" data-id="s17-16" data-label="ICMPv4 vs ICMPv6" title="Bookmark">🔖</button></h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+    <span>Syllabus Topic: <strong>RFC 4443 Architecture, Protocol Consolidation &amp; The Packet Too Big Message</strong></span>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">1. Technical Definition &amp; Architectural Expansion</div>
+    <p class="concept-p">
+      <strong>ICMPv6</strong>, specified in <strong>RFC 4443</strong> (assigned IPv6 Next Header value <strong>58</strong>), is a vastly expanded and consolidated protocol that not only handles diagnostic and error reporting for IPv6, but also absorbs the functionality of three separate IPv4 protocols: <strong>ARP</strong> (Address Resolution), <strong>IGMP</strong> (Internet Group Management), and <strong>ICMP Router Discovery (IRDP)</strong>.
+    </p>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">2. Why It Exists: Structural Protocol Unification</div>
+    <p class="concept-p">
+      In IPv4, the network layer required a fragmented patchwork of protocols: IPv4 for data, ARP for L2 resolution, IGMP for multicast groups, and ICMP for errors.
+    </p>
+    <p class="concept-p">
+      IPv6 unifies all of these functions directly inside ICMPv6. In IPv6, you <em>cannot</em> run a functioning network stack without ICMPv6; blocking ICMPv6 entirely breaks address resolution, SLAAC auto-configuration, and path MTU discovery!
+    </p>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Figure 17.16 — Comprehensive ICMPv4 vs ICMPv6 Comparison Matrix</div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Feature / Parameter</th>
+            <th>ICMPv4 (RFC 792)</th>
+            <th>ICMPv6 (RFC 4443)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Assigned IP Protocol / Next Header</strong></td>
+            <td>Protocol <code>1</code></td>
+            <td>Next Header <code>58</code></td>
+          </tr>
+          <tr>
+            <td><strong>Address Resolution (L3 &rarr; L2)</strong></td>
+            <td>Delegated to ARP (RFC 826) via L2 broadcast</td>
+            <td>Built-in: <strong>Neighbor Discovery (NDP)</strong> via Multicast (Types 135/136)</td>
+          </tr>
+          <tr>
+            <td><strong>Router Discovery</strong></td>
+            <td>Optional extension (IRDP - RFC 1256)</td>
+            <td>Built-in: <strong>Router Solicitation / Advertisement</strong> (Types 133/134)</td>
+          </tr>
+          <tr>
+            <td><strong>Multicast Group Management</strong></td>
+            <td>Separate protocol: <strong>IGMP</strong></td>
+            <td>Built-in: <strong>Multicast Listener Discovery (MLD)</strong> (Types 130/131/132)</td>
+          </tr>
+          <tr>
+            <td><strong>Path MTU Discovery Message</strong></td>
+            <td>Type 3, Code 4 (Frag Needed &amp; DF set)</td>
+            <td>Dedicated Message: <strong>Packet Too Big (Type 2, Code 0)</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Echo Request / Echo Reply</strong></td>
+            <td>Type 8 / Type 0</td>
+            <td>Type 128 / Type 129</td>
+          </tr>
+          <tr>
+            <td><strong>Checksum Calculation</strong></td>
+            <td>Covers ICMP message only (No pseudo-header)</td>
+            <td>Mandatory: Includes <strong>IPv6 Pseudo-Header</strong> (Prevents misdelivery)</td>
+          </tr>
+          <tr>
+            <td><strong>Error Payload Inclusion</strong></td>
+            <td>IP header + exactly 64 bits (8B) of payload</td>
+            <td>IP header + as much payload as fits within <strong>1280-byte minimum MTU</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="calc-box">
+    <div class="calc-title">Deep Dive: The ICMPv6 "Packet Too Big" (Type 2) Revolution</div>
+    <div class="calc-step">
+      <strong>Why It is Essential:</strong><br>
+      In IPv6, <strong>intermediate routers are strictly forbidden from performing fragmentation</strong>. All fragmentation must be performed by the sending source host!
+    </div>
+    <div class="calc-step">
+      <strong>The Operational Flow:</strong><br>
+      1. Host sends an IPv6 packet of size 1500 bytes.<br>
+      2. Router encounters a bottleneck link with $\text{MTU} = 1280$ bytes.<br>
+      3. Router drops the packet and emits <strong>ICMPv6 Type 2 (Packet Too Big)</strong>, including the exact MTU value <code>1280</code> in bytes 4–7 of the ICMPv6 header.<br>
+      4. The source host clamps its transmission size or attaches an IPv6 Fragment Extension Header.
+    </div>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">3. Important Invariants</div>
+    <ul class="concept-features">
+      <li><strong>Type Partitioning Rule:</strong> In ICMPv6, the Type numbers are strictly split:<br>
+        • Types <code>0</code> to <code>127</code> are <strong>Error Messages</strong> (e.g. Type 1 Dest Unreach, Type 2 Packet Too Big, Type 3 Time Exceeded).<br>
+        • Types <code>128</code> to <code>255</code> are <strong>Informational / Query Messages</strong> (e.g. Type 128 Echo Request, Type 135 Neighbor Solicitation).
+      </li>
+      <li><strong>Mandatory Pseudo-Header:</strong> In ICMPv6, because the outer IPv6 base header lacks a checksum, the ICMPv6 checksum calculation <em>must include the 40-byte IPv6 pseudo-header</em> (Source IP, Destination IP, Upper-Layer Packet Length, Next Header 58).</li>
+    </ul>
+  </div>
+
+  <div class="warning-box">
+    <div class="warning-title">High-Yield GATE &amp; University Trap</div>
+    <p>
+      <strong>Question:</strong> "What are the ICMP Type numbers for Ping (Echo Request / Echo Reply) in IPv6?"<br>
+      <strong>Trap:</strong> Answering Type 8 and Type 0 (those are IPv4!).<br>
+      <strong>Correct Answer:</strong> In IPv6, Echo Request is <strong>Type 128</strong> and Echo Reply is <strong>Type 129</strong>.
+    </p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-title">University Semester Exam Focus</div>
+    <p>
+      In university exams, "Compare and contrast ICMPv4 and ICMPv6" is one of the most frequently asked 10-mark questions. Structure your answer using the 5 pillars: (1) Protocol number, (2) Integration of ARP/IGMP, (3) Packet Too Big vs Frag Needed, (4) Echo Type values, and (5) Mandatory pseudo-header checksum.
+    </p>
+  </div>
+
+  <div class="study-resources">
+    <div class="study-resources-title">Curated 3-Tier Study Resources</div>
+    <div class="resource-grid">
+      <div class="resource-card">
+        <div class="resource-tag text">Standard Textbook</div>
+        <strong>Kurose &amp; Ross (8th Ed.)</strong>
+        <p>Section 5.6.2: "ICMPv6: Protocol Consolidation and Error Reporting".</p>
+        <span class="resource-link">Chapter 5 &middot; Pages 414–418</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag rfc">IETF RFC Standard</div>
+        <strong>RFC 4443 ICMPv6 Specification</strong>
+        <p>The core standard governing Internet Control Message Protocol for IPv6.</p>
+        <span class="resource-link">IETF RFC 4443 &middot; Standard 89</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag gate">GATE Classical Drill</div>
+        <strong>GATE CS 2017 IPv6 Header &amp; ICMP</strong>
+        <p>Identify the Next Header field value when an IPv6 datagram encapsulates an ICMPv6 Packet Too Big message.</p>
+        <span class="resource-link">GATE CS &middot; Advanced IP Protocols</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="s17-17" class="section-in-uni content-section" data-chapter="17" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="high" data-search-section="Ping ICMP Echo Request Type 8 Echo Reply Type 0 Traceroute TTL increment UDP probes">
+  <div class="section-header">
+    <div class="section-tag">Section 17.17</div>
+    <h2 class="section-title">Worked End-to-End Address-Mapping Example <button class="bookmark-btn" data-id="s17-17" data-label="Worked End-to-End Address-Mapping Example" title="Bookmark">🔖</button></h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+    <span>Syllabus Topic: <strong>Complete Multi-Hop Walkthrough: ARP, Routing, ICMP Echo &amp; MAC Rewriting</strong></span>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">1. Scenario Topology &amp; Physical Configuration</div>
+    <p class="concept-p">
+      To synthesize all concepts in this chapter, consider an end-to-end communication trace: <strong>Host A</strong> on subnet 1 pings <strong>Host B</strong> on subnet 2 through intermediate router <strong>Router R1</strong>. All ARP caches are initially completely empty (cold start).
+    </p>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Figure 17.17 — Network Topology for End-to-End Synthesis Trace</div>
+    <pre>
+   [ HOST A ]                                 [ ROUTER R1 ]                                 [ HOST B ]
+   IP:  192.168.1.10                          eth0 (Subnet 1):                              IP:  10.0.0.50
+   MAC: AA:AA:AA:AA:AA:AA                     IP:  192.168.1.1                              MAC: BB:BB:BB:BB:BB:BB
+   Mask: 255.255.255.0                        MAC: R1:R1:R1:R1:R1:01                        Mask: 255.255.255.0
+   Gateway: 192.168.1.1                                                                     Gateway: 10.0.0.1
+                                              eth1 (Subnet 2):
+                                              IP:  10.0.0.1
+                                              MAC: R1:R1:R1:R1:R1:02
+    </pre>
+  </div>
+
+  <div class="calc-box">
+    <div class="calc-title">Phase-by-Phase Comprehensive Packet Trace</div>
+
+    <div class="calc-step">
+      <strong>PHASE 1: Host A Initiates Ping to 10.0.0.50</strong><br>
+      • Step 1.1: Host A compares $(10.0.0.50 \ \&amp; \ 255.255.255.0) = 10.0.0.0 \neq 192.168.1.0$. Remote destination detected!<br>
+      • Step 1.2: Host A consults route table: Next hop is Default Gateway <code>192.168.1.1</code>.<br>
+      • Step 1.3: Host A consults ARP cache for <code>192.168.1.1</code> &rarr; <em>MISS</em>. Puts ICMP Echo Request on hold in buffer.<br>
+      • Step 1.4: Host A broadcasts <strong>ARP Request</strong> on Subnet 1:
+      <pre>
+Frame: [Dst MAC: FF:FF:FF:FF:FF:FF] [Src MAC: AA:AA:AA:AA:AA:AA] [Type: 0x0806]
+ARP:   [Op: 1] [Sender MAC: AA:AA:AA:AA:AA:AA] [Sender IP: 192.168.1.10]
+               [Target MAC: 00:00:00:00:00:00] [Target IP: 192.168.1.1]
+      </pre>
+    </div>
+
+    <div class="calc-step">
+      <strong>PHASE 2: Router R1 Answers Host A</strong><br>
+      • Step 2.1: Router R1 receives broadcast on <code>eth0</code>, updates its ARP cache: <code>192.168.1.10 &rarr; AA:AA:AA:AA:AA:AA</code>.<br>
+      • Step 2.2: R1 sends unicast <strong>ARP Reply</strong> to Host A:
+      <pre>
+Frame: [Dst MAC: AA:AA:AA:AA:AA:AA] [Src MAC: R1:R1:R1:R1:R1:01] [Type: 0x0806]
+ARP:   [Op: 2] [Sender MAC: R1:R1:R1:R1:R1:01] [Sender IP: 192.168.1.1]
+               [Target MAC: AA:AA:AA:AA:AA:AA] [Target IP: 192.168.1.10]
+      </pre>
+      • Step 2.3: Host A caches <code>192.168.1.1 &rarr; R1:R1:R1:R1:R1:01</code>.
+    </div>
+
+    <div class="calc-step">
+      <strong>PHASE 3: Host A Transmits ICMP Echo Request to Router R1</strong><br>
+      • Host A dequeues pending ICMP packet, encapsulates into Ethernet frame:
+      <pre>
+Frame: [Dst MAC: R1:R1:R1:R1:R1:01] [Src MAC: AA:AA:AA:AA:AA:AA] [Type: 0x0800]
+IP:    [Src IP: 192.168.1.10] [Dst IP: 10.0.0.50] [TTL: 64] [Protocol: 1 (ICMP)]
+ICMP:  [Type: 8 (Echo Request)] [Code: 0] [ID: 0x1234] [Seq: 1]
+      </pre>
+    </div>
+
+    <div class="calc-step">
+      <strong>PHASE 4: Router R1 Resolves Host B on Subnet 2</strong><br>
+      • Step 4.1: R1 receives frame, strips L2 header, decrements TTL ($64 \to 63$), updates IP checksum.<br>
+      • Step 4.2: FIB lookup: <code>10.0.0.50</code> is directly connected on <code>eth1</code>.<br>
+      • Step 4.3: R1 consults ARP cache for <code>10.0.0.50</code> &rarr; <em>MISS</em>. Puts ICMP packet on hold.<br>
+      • Step 4.4: R1 broadcasts <strong>ARP Request</strong> on Subnet 2:
+      <pre>
+Frame: [Dst MAC: FF:FF:FF:FF:FF:FF] [Src MAC: R1:R1:R1:R1:R1:02] [Type: 0x0806]
+ARP:   [Op: 1] [Sender MAC: R1:R1:R1:R1:R1:02] [Sender IP: 10.0.0.1]
+               [Target MAC: 00:00:00:00:00:00] [Target IP: 10.0.0.50]
+      </pre>
+      • Step 4.5: Host B receives broadcast, caches <code>10.0.0.1 &rarr; R1:R1:R1:R1:R1:02</code>, replies unicast with <code>BB:BB:BB:BB:BB:BB</code>.<br>
+      • Step 4.6: R1 receives reply, caches Host B's MAC.
+    </div>
+
+    <div class="calc-step">
+      <strong>PHASE 5: Router R1 Forwards ICMP Echo Request to Host B</strong><br>
+      • Router R1 encapsulates the decremented packet onto Subnet 2:
+      <pre>
+Frame: [Dst MAC: BB:BB:BB:BB:BB:BB] [Src MAC: R1:R1:R1:R1:R1:02] [Type: 0x0800]
+IP:    [Src IP: 192.168.1.10 (SAME!)] [Dst IP: 10.0.0.50 (SAME!)] [TTL: 63]
+ICMP:  [Type: 8 (Echo Request)] [Code: 0] [ID: 0x1234] [Seq: 1]
+      </pre>
+    </div>
+
+    <div class="calc-step">
+      <strong>PHASE 6: Host B Emits ICMP Echo Reply (Fast Path)</strong><br>
+      • Step 6.1: Host B generates ICMP Echo Reply (Type 0, Code 0). Dst IP is <code>192.168.1.10</code> (remote).<br>
+      • Step 6.2: Host B already cached Gateway R1's MAC in Phase 4! <strong>Zero ARP needed!</strong><br>
+      • Step 6.3: Transmits frame to R1 <code>eth1</code>. R1 decrements TTL ($64 \to 63$), looks up <code>192.168.1.10</code> on <code>eth0</code>.<br>
+      • Step 6.4: R1 already cached Host A's MAC in Phase 2! <strong>Zero ARP needed!</strong><br>
+      • Step 6.5: R1 forwards Echo Reply to Host A. Ping completes successfully!
+    </div>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">2. Grand Total Wire Traffic Summary</div>
+    <ul class="concept-features">
+      <li><strong>Total Packets on Cold Start:</strong> Exactly <strong>6 packets</strong> (2 on Subnet 1 for ARP, 1 ICMP Request to R1, 2 on Subnet 2 for ARP, 1 ICMP Request to B, plus the 2 return Echo Reply frames).</li>
+      <li><strong>Steady State Traffic:</strong> Once all ARP caches are populated, subsequent pings require exactly <strong>2 packets per hop</strong> (1 Echo Request + 1 Echo Reply) with <em>zero ARP overhead</em>.</li>
+    </ul>
+  </div>
+
+  <div class="warning-box">
+    <div class="warning-title">The "First Ping Dropped" Phenomenon</div>
+    <p>
+      In Cisco packet tracer and production ping utilities, you often observe:
+      <code>Request timed out. Reply from 10.0.0.50... Success rate is 80% (4/5)</code>.<br>
+      This occurs because the very first ICMP packet is sometimes discarded while intermediate switches and routers wait for the two sequential ARP requests to complete!
+    </p>
+  </div>
+
+  <div class="tip-box">
+    <div class="tip-title">University 10-Mark Exam Strategy</div>
+    <p>
+      When answering an end-to-end trace question, draw a clear table with columns: <strong>Hop, Frame Src MAC, Frame Dst MAC, Packet Src IP, Packet Dst IP, TTL</strong>. Showing that MACs change while IPs remain constant guarantees full marks.
+    </p>
+  </div>
+
+  <div class="study-resources">
+    <div class="study-resources-title">Curated 3-Tier Study Resources</div>
+    <div class="resource-grid">
+      <div class="resource-card">
+        <div class="resource-tag text">Standard Textbook</div>
+        <strong>Forouzan (5th Ed.)</strong>
+        <p>Section 19.4: "A Complete Example of IP and ICMP Interaction".</p>
+        <span class="resource-link">Chapter 19 &middot; Pages 562–566</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag rfc">IETF Architecture Reference</div>
+        <strong>RFC 1122 Section 3.2.2</strong>
+        <p>Host Requirements: Complete state machine for IP packet forwarding and ARP resolution.</p>
+        <span class="resource-link">RFC 1122 &middot; Requirements for Internet Hosts</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag gate">GATE Classical Drill</div>
+        <strong>GATE CS 2014 Comprehensive Trace</strong>
+        <p>A host transmits a packet across 2 routers to a server. Determine the total number of broadcast frames generated.</p>
+        <span class="resource-link">GATE CS &middot; Packet Journey Analysis</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="s17-18" class="section-in-uni content-section" data-chapter="17" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="high" data-search-section="ICMPv6 Type 1-4 errors Type 128-129 echo neighbor discovery NDP comparison RFC 4443">
+  <div class="section-header">
+    <div class="section-tag">Section 17.18</div>
+    <h2 class="section-title">High-Yield Traps, References &amp; Self-Check <button class="bookmark-btn" data-id="s17-18" data-label="High-Yield Traps, References &amp; Self-Check" title="Bookmark">🔖</button></h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 University Exam &amp; GATE Revision</span>
+    <span>Syllabus Topic: <strong>Master Summary, Exam Traps &amp; Self-Assessment Checklist</strong></span>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">1. Top 10 High-Yield Exam Traps &amp; Fallacies</div>
+    <ol class="concept-features">
+      <li><strong>ARP Over IP Fallacy:</strong> Believing ARP is encapsulated in an IP header. <em>Reality:</em> ARP runs directly over Data Link Layer frames with EtherType <code>0x0806</code>.</li>
+      <li><strong>ICMP as Transport Protocol Fallacy:</strong> Believing ICMP is Layer 4. <em>Reality:</em> ICMP is an integral part of Layer 3 (Network Layer) with IP Protocol number 1.</li>
+      <li><strong>Broadcast Crossing Routers Fallacy:</strong> Believing ARP requests can cross a router. <em>Reality:</em> Routers strictly terminate broadcast domains; ARP requests never leave their local subnet.</li>
+      <li><strong>Remote ARP Target Fallacy:</strong> Believing a host sends an ARP request for a remote server's IP. <em>Reality:</em> A host only ever ARPs for its local <em>Default Gateway</em> when communicating off-link.</li>
+      <li><strong>ICMP Error Recursion Fallacy:</strong> Believing an error in delivering an ICMP message triggers another ICMP message. <em>Reality:</em> RFC 792 strictly forbids generating an ICMP error in response to an ICMP error.</li>
+      <li><strong>IPv6 Broadcast Fallacy:</strong> Stating that IPv6 uses broadcast for address mapping. <em>Reality:</em> IPv6 completely eliminated broadcast; NDP uses <em>Solicited-Node Multicast</em>.</li>
+      <li><strong>Traceroute TTL Decrement on Destination:</strong> Believing the destination host drops packets with TTL=1. <em>Reality:</em> Destination hosts do not decrement TTL; they accept the packet and check port numbers.</li>
+      <li><strong>Ping Failure Equals Server Offline:</strong> Assuming a dropped ping means the server is dead. <em>Reality:</em> Firewalls routinely drop ICMP Type 8 while web applications run normally.</li>
+      <li><strong>Inner vs Outer Header Confusion:</strong> Mixing up the outer router IP with the inner quoted originating IP in ICMP error messages.</li>
+      <li><strong>Switch CAM vs Host ARP Table:</strong> Confusing a switch's CAM table (MAC &rarr; Port) with a host's ARP table (IP &rarr; MAC).</li>
+    </ol>
+  </div>
+
+  <div class="diagram-box">
+    <div class="diagram-title">Figure 17.18 — Master Protocol Comparison Summary</div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Protocol</th>
+            <th>Layer</th>
+            <th>Carried In</th>
+            <th>Addressing Mode</th>
+            <th>Primary Objective</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>ARP</strong></td>
+            <td>Layer 2.5</td>
+            <td>Ethernet Frame (0x0806)</td>
+            <td>Broadcast Req, Unicast Rep</td>
+            <td>Map 32-bit IPv4 to 48-bit MAC</td>
+          </tr>
+          <tr>
+            <td><strong>RARP</strong></td>
+            <td>Layer 2.5</td>
+            <td>Ethernet Frame (0x8035)</td>
+            <td>Broadcast Req, Unicast Rep</td>
+            <td>Diskless host IP bootstrap (Legacy)</td>
+          </tr>
+          <tr>
+            <td><strong>DHCP</strong></td>
+            <td>Layer 7</td>
+            <td>UDP (Ports 67, 68)</td>
+            <td>Broadcast &amp; Unicast (DORA)</td>
+            <td>Dynamic IP lease &amp; network config</td>
+          </tr>
+          <tr>
+            <td><strong>NDP (IPv6)</strong></td>
+            <td>Layer 3</td>
+            <td>ICMPv6 (Next Header 58)</td>
+            <td>Solicited-Node Multicast</td>
+            <td>IPv6 address resolution &amp; SLAAC</td>
+          </tr>
+          <tr>
+            <td><strong>ICMPv4</strong></td>
+            <td>Layer 3</td>
+            <td>IPv4 Datagram (Proto 1)</td>
+            <td>Unicast (Errors &amp; Queries)</td>
+            <td>Error reporting, PMTUD, ping, traceroute</td>
+          </tr>
+          <tr>
+            <td><strong>ICMPv6</strong></td>
+            <td>Layer 3</td>
+            <td>IPv6 Datagram (Proto 58)</td>
+            <td>Multicast &amp; Unicast</td>
+            <td>Consolidated errors, NDP, MLD</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="concept-card">
+    <div class="concept-title">2. End-of-Chapter Self-Assessment Checklist</div>
+    <ul class="concept-features">
+      <li>[ ] Can you draw the 28-byte RFC 826 ARP packet layout from memory, including HTYPE, PTYPE, HLEN, PLEN, and Opcode?</li>
+      <li>[ ] Can you explain why ARP requests are Layer-2 broadcast while ARP replies are Layer-2 unicast?</li>
+      <li>[ ] Do you understand why a host ARPs for the Default Gateway's MAC instead of the destination IP when sending packets off-subnet?</li>
+      <li>[ ] Can you describe the 3 functions of Gratuitous ARP (DAD, CAM updates, neighbor cache updates)?</li>
+      <li>[ ] Can you explain how Man-in-the-Middle attacks use ARP spoofing and how Dynamic ARP Inspection (DAI) prevents them?</li>
+      <li>[ ] Do you know why IPv6 replaced ARP with NDP, and how Solicited-Node Multicast saves CPU cycles?</li>
+      <li>[ ] Can you list all 4 non-negotiable rules governing when ICMP error messages must NEVER be sent?</li>
+      <li>[ ] Can you explain what fields are contained in an ICMP error payload and why the first 64 bits of transport payload are crucial?</li>
+      <li>[ ] Do you know the difference between ICMP Type 3 Code 0, Code 1, Code 3, and Code 4?</li>
+      <li>[ ] Can you trace the exact packet timeline of Unix UDP traceroute vs Windows ICMP tracert?</li>
+      <li>[ ] Can you explain why ICMPv6 Type 2 (Packet Too Big) is indispensable given that IPv6 routers never fragment?</li>
+    </ul>
+  </div>
+
+  <div class="study-resources">
+    <div class="study-resources-title">Curated 3-Tier Study Resources</div>
+    <div class="resource-grid">
+      <div class="resource-card">
+        <div class="resource-tag text">Standard Textbook</div>
+        <strong>Tanenbaum, Wetherall (6th Ed.)</strong>
+        <p>Chapter 5 Summary &amp; Review Problems: Comprehensive review of network-layer control protocols.</p>
+        <span class="resource-link">Chapter 5 &middot; Pages 485–492</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag rfc">IETF RFC Standard</div>
+        <strong>RFC 1812 Router Architecture</strong>
+        <p>Sections 4.3.2 and 5.2.7: ICMP generation rules and error handling requirements.</p>
+        <span class="resource-link">RFC 1812 &middot; Standards Track</span>
+      </div>
+      <div class="resource-card">
+        <div class="resource-tag gate">GATE Master Drill</div>
+        <strong>GATE CS 2000–2024 Cumulative Drill</strong>
+        <p>Practice 25 previous-years GATE questions on ARP frame sizes, ICMP codes, PMTUD, and traceroute TTL mechanics.</p>
+        <span class="resource-link">GATE CS &middot; Question Bank</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+    <!-- PREV / NEXT NAV -->
+    <div class="prev-next">
+      <a href="ch16-ipv6.html" class="nav-btn">&larr; Ch 16: IPv6 Architecture</a>
+      <a href="ch18-routers-switches-firewalls.html" class="nav-btn primary">Next: Ch 18 Routers, Switches &amp; Firewalls &rarr;</a>
+    </div>
+  </div>
+</main>
+
+<!-- MOBILE NAV -->
+<nav id="mobile-nav">
+  <button class="mobile-nav-btn" onclick="SidebarManager?.toggle()"><span class="icon">☰</span>Menu</button>
+  <a href="../index.html" class="mobile-nav-btn"><span class="icon">🏠</span>Home</a>
+  <a href="ch17-address-mapping-icmp.html" class="mobile-nav-btn active"><span class="icon">📖</span>Chapters</a>
+  <a href="../exams/mock-exam.html" class="mobile-nav-btn"><span class="icon">📝</span>Exams</a>
+  <button class="mobile-nav-btn" onclick="SearchManager?.open()"><span class="icon">🔍</span>Search</button>
+</nav>
+
+<!-- SEARCH MODAL -->
+<div id="search-modal">
+  <div class="search-box">
+    <div class="search-input-wrap">
+      <span class="s-icon">🔍</span>
+      <input id="search-input" type="text" placeholder="Search chapters, topics, protocols…" autocomplete="off">
+    </div>
+    <div id="search-results"></div>
+    <div class="search-hint">
+      <span><kbd>↵</kbd> to navigate</span>
+      <span><kbd>Esc</kbd> to close</span>
+      <span><kbd>Ctrl+K</kbd> to open</span>
+    </div>
+  </div>
+</div>
+
+<!-- TTS FLOATING PANEL -->
+<div id="tts-panel">
+  <div class="tts-controls">
+    <button class="tts-btn" id="tts-play" title="Play/Pause">▶</button>
+    <button class="tts-btn" id="tts-stop" title="Stop">⏹</button>
+    <div class="tts-speed">
+      <span>Speed</span>
+      <input type="range" id="tts-rate" min="0.5" max="2" step="0.1" value="1">
+      <span id="tts-rate-label">1.0x</span>
+    </div>
+  </div>
+  <div class="tts-voice">
+    <select id="tts-voice-select"><option>Loading voices…</option></select>
+  </div>
+</div>
+
+<!-- SCRIPTS -->
+<div id="toast-container"></div>
+<script src="../assets/js/state.js"></script>
+<script src="../assets/js/core.js"></script>
+<script src="../assets/js/modes.js"></script>
+<script src="../assets/js/tts.js"></script>
+<script src="../assets/js/timer-settings.js"></script>
+<script src="../assets/js/timer.js"></script>
+<script src="../assets/js/timer-analytics.js"></script>
+<script src="../assets/js/timer-notifications.js"></script>
+<script src="../assets/js/timer-ui.js"></script>
+<script src="../assets/js/print.js"></script>
+<script src="../assets/js/notes.js"></script>
+<script src="../assets/js/glossary.js"></script>
+</body>
+</html>

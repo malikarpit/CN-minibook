@@ -1,0 +1,2650 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<!-- ⚡ Arpit | CN MiniBook 2026 -->
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="Arpit">
+<meta name="description" content="Chapter 16: IPv6 Architecture, Addressing & Protocols — CN MiniBook. 128-bit address space, canonical zero compression rules (RFC 5952), fixed 40-byte base header, daisy-chained extension headers, source-only fragmentation with Path MTU Discovery, Neighbor Discovery Protocol (NDP), SLAAC with EUI-64 bit flipping, and comprehensive IPv4 vs IPv6 comparisons.">
+<title>Ch 16 — IPv6 Architecture, Addressing &amp; Protocols | CN MiniBook 🌐 Arpit</title>
+<link rel="manifest" href="../manifest.json">
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/animations.css">
+<link rel="stylesheet" href="../assets/css/timer.css">
+<link rel="stylesheet" href="../assets/css/chapters.css">
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<!-- HEADER -->
+<header id="main-header">
+  <div class="header-left">
+    <button id="sidebar-toggle" class="icon-btn" title="Toggle Sidebar (S)">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </button>
+    <div class="brand-logo">
+      <div class="brand-icon">🌐</div>
+      <div class="brand-text"><span class="main">CN MiniBook</span><span class="sub">Computer Networks</span></div>
+    </div>
+  </div>
+  <span class="header-chapter-title">Ch 16 — IPv6 Architecture, Addressing &amp; Protocols</span>
+  <div class="header-right">
+    <button id="search-btn" class="icon-btn" title="Search (Ctrl+K)">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.35-4.35"></path></svg>
+    </button>
+    <button id="tts-toggle" class="icon-btn" title="Read Aloud">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"></path></svg>
+    </button>
+    <button id="print-btn" title="Print / Save as PDF (Ctrl+P)" aria-label="Print"><svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg><span class="print-label">PDF</span></button>
+    <button id="reading-mode-btn" class="icon-btn" title="Reading Mode (F)" aria-pressed="false" aria-label="Toggle reading mode">📖</button>
+    <button id="theme-toggle" class="icon-btn" title="Toggle Theme (T)"></button>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<div id="sidebar-overlay"></div>
+<aside id="sidebar">
+  <nav class="sidebar-nav">
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Navigation</div>
+      <a href="../index.html" class="sidebar-link"><span class="link-icon">🏠</span>Home</a>
+      <a href="../progress.html" class="sidebar-link"><span class="link-icon">📊</span>Dashboard</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Chapter 16 — Sections</div>
+      <a href="#s16-why" class="sidebar-link active"><span class="link-icon">💡</span>16.1 Why IPv6 Was Needed</a>
+      <a href="#s16-space" class="sidebar-link"><span class="link-icon">🌌</span>16.2 128-Bit Address Space</a>
+      <a href="#s16-notation" class="sidebar-link"><span class="link-icon">🔢</span>16.3 Address Notation</a>
+      <a href="#s16-compression" class="sidebar-link"><span class="link-icon">✂️</span>16.4 Zero Compression &amp; ::</a>
+      <a href="#s16-prefix" class="sidebar-link"><span class="link-icon">📐</span>16.5 Prefix &amp; /64 Boundary</a>
+      <a href="#s16-types" class="sidebar-link"><span class="link-icon">🎭</span>16.6 IPv6 Address Types</a>
+      <a href="#s16-scopes" class="sidebar-link"><span class="link-icon">🌐</span>16.7 GUA, Link-Local &amp; Anycast</a>
+      <a href="#s16-header" class="sidebar-link"><span class="link-icon">📋</span>16.8 40-Byte Base Header</a>
+      <a href="#s16-flow" class="sidebar-link"><span class="link-icon">🌊</span>16.9 Traffic Class &amp; Flow Label</a>
+      <a href="#s16-next-hop" class="sidebar-link"><span class="link-icon">🔗</span>16.10 Next Header &amp; Hop Limit</a>
+      <a href="#s16-addrs" class="sidebar-link"><span class="link-icon">🏷️</span>16.11 128-Bit Source &amp; Dest</a>
+      <a href="#s16-ext-headers" class="sidebar-link"><span class="link-icon">🧩</span>16.12 Extension Headers</a>
+      <a href="#s16-frag" class="sidebar-link"><span class="link-icon">✂️</span>16.13 Source-Only Fragmentation</a>
+      <a href="#s16-compare-frag" class="sidebar-link"><span class="link-icon">⚖️</span>16.14 IPv4 vs IPv6 Fragmentation</a>
+      <a href="#s16-ndp" class="sidebar-link"><span class="link-icon">🤝</span>16.15 Neighbor Discovery (NDP)</a>
+      <a href="#s16-slaac" class="sidebar-link"><span class="link-icon">🪄</span>16.16 SLAAC &amp; EUI-64 ID</a>
+      <a href="#s16-icmpv6" class="sidebar-link"><span class="link-icon">📡</span>16.17 ICMPv6 Architecture</a>
+      <a href="#s16-drills" class="sidebar-link"><span class="link-icon">🛠️</span>16.18 Worked IPv6 Drills</a>
+      <a href="#s16-summary" class="sidebar-link"><span class="link-icon">🏁</span>16.19 Master Matrix &amp; Summary</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label part-label part-i">Part I — Introduction</div>
+      <a href="ch01-fundamentals.html" class="sidebar-link"><span class="link-icon">📡</span>Ch 1 — Fundamentals</a>
+      <a href="ch02-types-topologies.html" class="sidebar-link"><span class="link-icon">🔗</span>Ch 2 — Types &amp; Topologies</a>
+      <a href="ch03-models-addressing.html" class="sidebar-link"><span class="link-icon">📦</span>Ch 3 — Models &amp; Addressing</a>
+      <a href="ch04-devices-sdn.html" class="sidebar-link"><span class="link-icon">🔌</span>Ch 4 — Devices &amp; SDN</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label part-label part-ii">Part II — Physical Layer</div>
+      <a href="ch05-physical-fundamentals.html" class="sidebar-link"><span class="link-icon">📶</span>Ch 5 — Physical Fundamentals</a>
+      <a href="ch06-media-signaling.html" class="sidebar-link"><span class="link-icon">🔌</span>Ch 6 — Media &amp; Line Coding</a>
+      <a href="ch07-modulation-switching.html" class="sidebar-link"><span class="link-icon">📻</span>Ch 7 — Modulation &amp; Switching</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label part-label part-iii">Part III — Data Link Layer</div>
+      <a href="ch08-dll-fundamentals.html" class="sidebar-link"><span class="link-icon">🔧</span>Ch 8 — DLL Fundamentals</a>
+      <a href="ch09-protocols-sliding.html" class="sidebar-link"><span class="link-icon">🔄</span>Ch 9 — Protocols &amp; Sliding Window</a>
+      <a href="ch10-mac-ethernet.html" class="sidebar-link"><span class="link-icon">🌐</span>Ch 10 — MAC &amp; Ethernet</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label part-label part-iv">Part IV — Network Layer</div>
+      <a href="ch11-network-layer-foundations.html" class="sidebar-link part-iv"><span class="link-icon">🗺️</span>Ch 11 — Network Layer Foundations</a>
+      <a href="ch12-shortest-path-routing.html" class="sidebar-link part-iv"><span class="link-icon">🧭</span>Ch 12 — Shortest Path Routing</a>
+      <a href="ch13-link-state-distance-vector.html" class="sidebar-link part-iv"><span class="link-icon">🔁</span>Ch 13 — Link-State &amp; Distance-Vector</a>
+      <a href="ch14-logical-addressing-ipv4.html" class="sidebar-link part-iv"><span class="link-icon">🏷️</span>Ch 14 — Logical Addressing &amp; IPv4</a>
+      <a href="ch15-ipv4-internals.html" class="sidebar-link part-iv"><span class="link-icon">📦</span>Ch 15 — IPv4 Internals</a>
+      <a href="ch16-ipv6.html" class="sidebar-link active part-iv"><span class="link-icon">🚀</span>Ch 16 — IPv6 Architecture</a>
+      <a href="ch17-address-mapping-icmp.html" class="sidebar-link part-iv"><span class="link-icon">🔎</span>Ch 17 — Address Mapping &amp; ICMP</a>
+      <a href="ch18-routers-switches-firewalls.html" class="sidebar-link part-iv"><span class="link-icon">🛡️</span>Ch 18 — Routers, Switches &amp; Firewalls</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">My Notes</div>
+      <div id="notes-sidebar-list"></div>
+    </div>
+    </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-brand-mark"><div class="mark">🌐</div><span>Arpit · CN MiniBook 2026</span></div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main id="main-content">
+<div class="content-inner">
+    <div class="chapter-hero">
+      <div class="chapter-part-banner part-iv"><span class="part-banner-badge">Part IV</span><span>Network Layer</span></div>
+<div class="hero-badge">
+        <span class="part-badge part-iv">Part IV · Network Layer</span>
+        <span class="weight-badge high">High Exam Weightage</span>
+        <span class="time-badge">⏱️ 38 min read</span>
+      </div>
+      <h1 class="chapter-title">IPv6 Architecture, Addressing &amp; Protocols</h1>
+      <p class="chapter-desc">The next-generation Internet Protocol. Comprehensive exploration of the astronomical $2^{128}$ address space, canonical hexadecimal zero compression (RFC 5952), the elimination of broadcast, Unicast/Multicast/Anycast scopes, the streamlined 40-byte fixed base header, daisy-chained extension headers, source-only fragmentation with Path MTU Discovery, Neighbor Discovery Protocol (NDP), Stateless Address Autoconfiguration (SLAAC) with EUI-64 bit flipping, ICMPv6, and a master 12-dimension IPv4 vs IPv6 comparison.</p>
+      <div class="hero-actions">
+        <button id="focus-toggle-btn" class="action-btn" title="Toggle University Exam Filter">
+          <span class="btn-icon">🎓</span><span class="btn-text">Filter: Uni Exam Focus</span>
+        </button>
+        <button id="bookmark-btn" class="action-btn" title="Bookmark Chapter">
+          <span class="btn-icon">🔖</span><span class="btn-text">Bookmark</span>
+        </button>
+        <button id="notes-toggle-btn" class="action-btn" title="Chapter Notes">
+          <span class="btn-icon">📝</span><span class="btn-text">Notes</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- OBJECTIVES & STUDY PATH -->
+    <div class="concept-card">
+      <h3>🎯 Learning Objectives</h3>
+      <ul>
+        <li><strong>Astronomical Address Scale:</strong> Grasp the mathematical magnitude of $2^{128}$ addresses ($\approx 3.4 \times 10^{38}$) and why IPv6 banishes NAT workarounds.</li>
+        <li><strong>Hexadecimal Canonical Notation:</strong> Master RFC 5952 zero suppression and double colon (<code>::</code>) rules with zero ambiguity.</li>
+        <li><strong>Address Scoping &amp; Types:</strong> Distinguish Global Unicast (GUA), Link-Local (<code>fe80::/10</code>), Unique Local (ULA), Scoped Multicast (<code>ff00::/8</code>), and Anycast.</li>
+        <li><strong>Fixed 40-Byte Base Header:</strong> Contrast the streamlined 8-field IPv6 header against IPv4, analyzing why removal of IHL and Checksum accelerates line-rate hardware forwarding.</li>
+        <li><strong>Source-Only Fragmentation:</strong> Trace Path MTU Discovery (PMTUD) and understand why routers never fragment IPv6 datagrams in flight.</li>
+        <li><strong>NDP &amp; SLAAC Mechanics:</strong> Map how ICMPv6 Neighbor Solicitation/Advertisement replaces ARP, and how EUI-64 transforms 48-bit MAC addresses into 64-bit Interface IDs.</li>
+      </ul>
+    </div>
+
+    <!-- TABLE OF CONTENTS -->
+    
+  <!-- OFFICIAL UNIVERSITY SYLLABUS CALLOUT -->
+  <div class="uni-syllabus-callout">
+    <div class="uni-callout-title">🎓 Official University Syllabus — UNIT II</div>
+    <div><strong>Network Layer:</strong> Next Generation IP (IPv6): IPv6 motivation, address representation, 128-bit address space, address types (unicast, multicast, anycast), IPv6 fixed 40-byte base header, extension header chaining, fragmentation header, NDP, and SLAAC.</div>
+  </div>
+
+  <!-- UNIVERSITY SYLLABUS FILTER SWITCH -->
+  <div class="uni-mode-toggle-card">
+    <div>
+      <div class="uni-mode-title">
+        <span>🎓</span> University Exam Focus Filter
+      </div>
+      <div class="uni-mode-desc">
+        Focus specifically on sections prescribed in Delhi University syllabus vs supplementary deep-dives.
+      </div>
+    </div>
+    <div class="uni-filter-switch">
+      <button class="uni-toggle-btn active" id="filter-all-btn" data-mode="all" onclick="ModeManager.apply('all')">📚 Show All Content</button>
+      <button class="uni-toggle-btn" id="filter-uni-btn" data-mode="uni" onclick="ModeManager.apply('uni')">🎓 Focus Uni Syllabus Only</button>
+    </div>
+  </div>
+
+  <div class="toc-card">
+      <div class="toc-header">
+        <div class="toc-part-tag part-iv">Part IV · Network Layer</div>
+        <div class="toc-title"><span>📑</span>Table of Contents</div>
+      </div>
+      <div class="toc-grid">
+        <a class="toc-item in-uni" href="#s16-why"><span class="toc-num">16.1</span>Why IPv6 Was Needed <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s16-space"><span class="toc-num">16.2</span>128-Bit Address Space <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s16-notation"><span class="toc-num">16.3</span>Address Notation <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s16-compression"><span class="toc-num">16.4</span>Zero Compression &amp; :: <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s16-prefix"><span class="toc-num">16.5</span>Prefix &amp; /64 Boundary <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s16-types"><span class="toc-num">16.6</span>IPv6 Address Types <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s16-scopes"><span class="toc-num">16.7</span>GUA, Link-Local &amp; Anycast <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s16-header"><span class="toc-num">16.8</span>40-Byte Base Header <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s16-flow"><span class="toc-num">16.9</span>Traffic Class &amp; Flow Label <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s16-next-hop"><span class="toc-num">16.10</span>Next Header &amp; Hop Limit <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s16-addrs"><span class="toc-num">16.11</span>128-Bit Source &amp; Dest <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s16-ext-headers"><span class="toc-num">16.12</span>Extension Headers <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s16-frag"><span class="toc-num">16.13</span>Source-Only Fragmentation <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s16-compare-frag"><span class="toc-num">16.14</span>IPv4 vs IPv6 Fragmentation <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s16-ndp"><span class="toc-num">16.15</span>Neighbor Discovery (NDP) <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s16-slaac"><span class="toc-num">16.16</span>SLAAC &amp; EUI-64 ID <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s16-icmpv6"><span class="toc-num">16.17</span>ICMPv6 Architecture <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s16-drills"><span class="toc-num">16.18</span>Worked IPv6 Drills <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s16-summary"><span class="toc-num">16.19</span>Master Matrix &amp; Summary <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      </div>
+    </div>
+
+
+    <!-- 16.1 Why IPv6 Was Needed -->
+    <section id="s16-why" class="section-in-uni content-section" data-chapter="16" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="IPv6 motivation address depletion NAT limitations header complexity security QoS">
+      <div class="section-header">
+        <span class="section-number">16.1</span>
+        <h2>Why IPv6 Was Needed <button class="bookmark-btn" data-id="s16-why" data-label="Why IPv6 Was Needed" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>Why IPv6 Was Needed</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p><strong>Internet Protocol version 6 (IPv6)</strong>, defined in RFC 2460 and finalized in RFC 8200 (Internet Standard), is the successor to IPv4, engineered to overcome the finite numerical exhaustion of 32-bit addressing by introducing a 128-bit address space, streamlined header processing, native autoconfiguration, and enhanced security architecture.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why It Was Needed: The Four Existential Drivers</h3>
+        <div class="concept-grid">
+          <div class="concept-card">
+            <h4>1. Mathematical Exhaustion of IPv4</h4>
+            <p>IPv4 provides $2^{32} \approx 4.29 \text{ billion}$ total addresses. With over 8 billion humans and $>25\text{ billion}$ connected smartphones, IoT sensors, servers, and connected vehicles, IPv4 ran out of unallocated blocks (IANA pool exhausted in February 2011).</p>
+          </div>
+          <div class="concept-card">
+            <h4>2. Breaking the End-to-End Principle via NAT</h4>
+            <p>Network Address Translation (NAT) kept IPv4 alive by sharing one public IP among hundreds of devices. However, NAT broke the fundamental architectural axiom of the Internet: peer-to-peer transparency. NAT hinders VoIP, WebRTC, gaming, and IPSec end-to-end encryption.</p>
+          </div>
+          <div class="concept-card">
+            <h4>3. Global Routing Table Explosion</h4>
+            <p>Because IPv4 blocks were fragmented and patched together with CIDR, core BGP routing tables grew beyond 950,000 routes, straining router memory (TCAM) and slowing convergence.</p>
+          </div>
+          <div class="concept-card">
+            <h4>4. Operational Configuration Complexity</h4>
+            <p>IPv4 requires manual configuration or stateful DHCP servers on every subnet. The massive growth of mobile devices demanded zero-touch plug-and-play autoconfiguration.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ascii-box">
+THE CRISIS THAT FORCED IPv6:
+  World Population:          ~8.0 Billion Humans
+  Connected Devices:         ~30+ Billion (Smartphones, IoT, Servers, Cars)
+  IPv4 Total Space:          ~4.29 Billion Addresses ($2^{32}$)
+  Usable IPv4 (minus res.):  ~3.7 Billion Addresses
+-------------------------------------------------------------------------
+Result: Even with aggressive Carrier-Grade NAT (CGNAT), IPv4 addresses
+are completely exhausted. The Internet CANNOT expand further without IPv6!
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Architectural Dimension</th>
+              <th>IPv4 Reality</th>
+              <th>IPv6 Solution</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Address Space</strong></td>
+              <td>32 bits ($4.29 \times 10^9$ addresses)</td>
+              <td><strong>128 bits</strong> ($3.4 \times 10^{38}$ addresses)</td>
+            </tr>
+            <tr>
+              <td><strong>End-to-End Connectivity</strong></td>
+              <td>Broken by NAT / Port Address Translation</td>
+              <td><strong>Restored</strong>: Every device has globally unique public IP</td>
+            </tr>
+            <tr>
+              <td><strong>Address Configuration</strong></td>
+              <td>Manual static or DHCPv4 server required</td>
+              <td><strong>Stateless Address Autoconfiguration (SLAAC)</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Security Architecture</strong></td>
+              <td>IPsec retrofitted as an optional add-on</td>
+              <td>IPsec designed as integral, native architectural component</td>
+            </tr>
+            <tr>
+              <td><strong>Broadcast Overhead</strong></td>
+              <td>Heavy broadcast storms (ARP, DHCP, RIP)</td>
+              <td><strong>Broadcast completely eliminated</strong>; replaced by scoped Multicast</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="confusion-box">
+        <h3>3. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "IPv6 was created simply by making the IPv4 header bigger."<br>
+        <strong>Reality:</strong> Completely false! The IPv6 base header is actually <strong>simpler and more streamlined</strong> than IPv4! It eliminated 6 redundant IPv4 fields (IHL, Identification, Flags, Fragment Offset, Header Checksum, Options), fixing the base header at exactly 40 bytes to accelerate hardware ASIC line-rate forwarding.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>4. University Exam &amp; GATE Tips</h3>
+        <p>Exam question: <em>"What is the primary motivation for migrating to IPv6?"</em><br>
+        While address depletion ($2^{32} \to 2^{128}$) is the primary catalyst, top-scoring answers always mention: (1) Restoration of the End-to-End Principle (eliminating NAT), (2) Streamlined 40-byte fixed header without checksum, (3) Plug-and-play autoconfiguration (SLAAC), and (4) Elimination of broadcast traffic.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Authoritative standards and historical perspectives on the birth of IPv6.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc8200" target="_blank" rel="noopener noreferrer">
+            📘 RFC 8200 - Internet Protocol, Version 6 (IPv6) Specification
+            <small>The ratified Full Internet Standard specification replacing RFC 2460.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=aor29pGvHd8" target="_blank" rel="noopener noreferrer">
+            🎥 Why IPv6? The Real Architectural Reasons
+            <small>Visual lecture explaining the restoration of the end-to-end principle and NAT elimination.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/ipv6" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on IPv6 Motivation and Foundations
+            <small>Conceptual questions testing the architectural drivers of the next-generation protocol.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 16.2 IPv6 Address Size & Address Space -->
+    <section id="s16-space" class="section-in-uni content-section" data-chapter="16" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="IPv6 128-bit address space 3.4x10^38 addresses address scaling comparison IPv4 32-bit">
+      <div class="section-header">
+        <span class="section-number">16.2</span>
+        <h2>IPv6 Address Size &amp; Address Space <button class="bookmark-btn" data-id="s16-space" data-label="IPv6 Address Size &amp; Address Space" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>IPv6 Address Size & Address Space</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p>An <strong>IPv6 Address</strong> is an unsigned 128-bit binary integer uniquely identifying an interface or group of interfaces in an IPv6 network, expanding the theoretical address space from IPv4's $2^{32}$ to exactly $2^{128}$ distinct addresses.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Grasping the Astronomical Scale of $2^{128}$</h3>
+        <p>The number of distinct IPv6 addresses is:</p>
+        <div class="math-block">
+          $$2^{128} = 340,282,366,920,938,463,463,374,607,431,768,211,456 \approx 3.4028 \times 10^{38}$$
+        </div>
+        <p>This is <strong>340 undecillion, 282 decillion</strong> addresses. To put this unimaginable number into physical perspective:</p>
+        <div class="concept-grid">
+          <div class="concept-card">
+            <h4>Relative to IPv4</h4>
+            <p>IPv6 is not "4 times larger" than IPv4 because address bits operate exponentially! IPv6 is $2^{96}$ times larger than IPv4:
+            $$2^{96} \approx 7.92 \times 10^{28} \text{ times larger!}$$</p>
+          </div>
+          <div class="concept-card">
+            <h4>Surface of the Earth</h4>
+            <p>The total surface area of Earth is $\approx 5.1 \times 10^{14}\text{ m}^2$. IPv6 provides approximately <strong>$6.65 \times 10^{23}$ addresses per square meter</strong> of the entire planet!</p>
+          </div>
+          <div class="concept-card">
+            <h4>Grains of Sand</h4>
+            <p>Every grain of sand on all the beaches and deserts on Earth could be assigned millions of unique IPv6 addresses.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ascii-box">
+MATHEMATICAL COMPARISON OF ADDRESS SPACES:
+IPv4 (32 bits):
+[ 32 bits ] = 4,294,967,296 addresses  (A small puddle)
+
+IPv6 (128 bits):
+[ 128 bits ] = 3.4 x 10^38 addresses   (An infinite cosmic ocean)
+Growth factor: 2^(128 - 32) = 2^96 = 79,228,162,514,264,337,593,543,950,336 times!
+      </div>
+
+      <div class="example-box">
+        <h3>3. Address Allocation Philosophy: Liberal Sizing</h3>
+        <p>In IPv4, conservation was paramount. Subnets were squeezed into $/30$ (2 hosts) and $/29$ (6 hosts). In IPv6, the standard end-user residential allocation is a <strong>$/64$</strong> block:</p>
+        <div class="math-block">
+          $$\text{Addresses in a single } /64 \text{ subnet} = 2^{64} = 18,446,744,073,709,551,616 \approx 1.84 \times 10^{19}$$
+        </div>
+        <p>A single home Wi-Fi subnet in IPv6 contains <strong>over 4 billion times the entire IPv4 Internet</strong>! ISP allocations grant enterprises a $/48$ block (yielding $65,536$ distinct $/64$ subnets). Address conservation anxiety is permanently eliminated.</p>
+      </div>
+
+      <div class="confusion-box">
+        <h3>4. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "Since 128 is 4 times 32, IPv6 can hold 4 times as many computers as IPv4."<br>
+        <strong>Reality:</strong> Catastrophic mathematical error! Address space scales as $2^n$, not $n$. Adding just 1 bit doubles the space. Adding 96 bits multiplies the space by $2^{96} \approx 7.9 \times 10^{28}$. It is an astronomically incomprehensible expansion.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>5. University Exam &amp; GATE Tips</h3>
+        <p>Standard exam question: <em>"Calculate the ratio of the IPv6 address space to the IPv4 address space."</em><br>
+        Answer: $\frac{2^{128}}{2^{32}} = 2^{128 - 32} = \mathbf{2^{96}} \approx \mathbf{7.92 \times 10^{28}}$. Always express the exponent as $128 - 32 = 96$.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Engineering resources on IPv6 address metrics and mathematical comparisons.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc4291" target="_blank" rel="noopener noreferrer">
+            📘 RFC 4291 - IP Version 6 Addressing Architecture
+            <small>The foundational standard defining 128-bit address representation and allocation.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=aor29pGvHd8" target="_blank" rel="noopener noreferrer">
+            🎥 The Unimaginable Scale of IPv6 Visualization
+            <small>Visual comparison illustrating the astronomical leap from $2^{32}$ to $2^{128}$.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/ipv6-address-space" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on IPv6 Address Calculations
+            <small>Past entrance exam questions deriving address ratios and subnet capacities.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 16.3 IPv6 Address Notation -->
+    <section id="s16-notation" class="section-in-uni content-section" data-chapter="16" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="IPv6 hexadecimal representation 8 groups of 4 hex digits colons notation format">
+      <div class="section-header">
+        <span class="section-number">16.3</span>
+        <h2>IPv6 Address Notation <button class="bookmark-btn" data-id="s16-notation" data-label="IPv6 Address Notation" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>IPv6 Address Notation</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p>The standard human-readable representation of an IPv6 address is <strong>colon-hexadecimal notation</strong>, where the 128 bits are divided into <strong>eight 16-bit groups</strong> (known as <strong>hextets</strong> or quads), each represented as four hexadecimal digits ($0$&ndash;$9$, $a$&ndash;$f$) separated by colons (<code>:</code>).</p>
+      </div>
+
+      <div class="ascii-box">
+THE 128-BIT COLON-HEXADECIMAL STRUCTURE:
+ 16 bits   16 bits   16 bits   16 bits   16 bits   16 bits   16 bits   16 bits
++---------+---------+---------+---------+---------+---------+---------+---------+
+| Group 1 | Group 2 | Group 3 | Group 4 | Group 5 | Group 6 | Group 7 | Group 8 |
++---------+---------+---------+---------+---------+---------+---------+---------+
+   2001   :  0db8   :  85a3   :  0000   :  0000   :  8a2e   :  0370   :  7334
+
+Total: 8 Hextets * 16 bits = 128 bits
+Total Characters: 32 Hexadecimal Digits + 7 Colons = 39 Characters Maximum
+      </div>
+
+      <div class="example-box">
+        <h3>2. Bit-Level Hexadecimal Decomposition</h3>
+        <p>Each individual hexadecimal digit represents exactly 4 binary bits (a nibble):</p>
+        <div class="math-block">
+          $$\text{Hex } 2 = 0010_2, \quad \text{Hex } 0 = 0000_2, \quad \text{Hex } 0 = 0000_2, \quad \text{Hex } 1 = 0001_2$$
+          $$\implies \text{Hextet } 2001_{16} = 0010\ 0000\ 0000\ 0001_2 \quad (16\text{ bits})$$
+        </div>
+        <p>Since each hextet contains 4 hex digits, each group represents $4 \times 4 = 16\text{ bits}$. Eight groups yield $8 \times 16 = \mathbf{128\text{ bits}}$.</p>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Evaluation Property</th>
+              <th>IPv4 Address Notation</th>
+              <th>IPv6 Address Notation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Number Base</strong></td>
+              <td>Decimal (Base 10)</td>
+              <td><strong>Hexadecimal (Base 16)</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Delimiting Character</strong></td>
+              <td>Period (<code>.</code>)</td>
+              <td><strong>Colon (<code>:</code>)</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Number of Groups</strong></td>
+              <td>4 Groups (Octets / Bytes)</td>
+              <td><strong>8 Groups (Hextets / Words)</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Bits per Group</strong></td>
+              <td>8 bits ($0$ to $255$)</td>
+              <td><strong>16 bits (<code>0000</code> to <code>ffff</code>)</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Case Sensitivity (RFC 5952)</strong></td>
+              <td>Not applicable</td>
+              <td><strong>Lowercase canonical</strong> (<code>a</code> through <code>f</code>)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="confusion-box">
+        <h3>3. Common Confusion: URL Colon Collisions</h3>
+        <p><strong>The Port Number Collision Problem:</strong><br>
+        In HTTP URLs, a colon separates the host from the TCP port number (e.g., <code>http://192.168.1.1:8080/</code>). Because IPv6 addresses inherently contain colons, a raw URL like <code>http://2001:db8::1:8080/</code> is ambiguous! Does <code>8080</code> belong to the IP address or the port?</p>
+        <p><strong>RFC 3986 Solution:</strong> In URLs, IPv6 addresses <strong>must be enclosed in square brackets</strong>:<br>
+        <code>http://[2001:db8::1]:8080/</code></p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>4. University Exam &amp; GATE Tips</h3>
+        <p>Examiners often write addresses with uppercase letters (e.g. <code>2001:0DB8::1</code>). While routers accept both upper and lower case, <strong>RFC 5952 mandates lowercase hexadecimal</strong> as the canonical Internet standard (<code>2001:0db8::1</code>). Always write lowercase on formal exam sheets.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Official IETF standards defining canonical IPv6 address representation.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc5952" target="_blank" rel="noopener noreferrer">
+            📘 RFC 5952 - A Recommendation for IPv6 Text Representation
+            <small>The standard establishing canonical zero suppression and lowercase formatting rules.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=hN7m4qF_wA4" target="_blank" rel="noopener noreferrer">
+            🎥 IPv6 Address Anatomy and Hextets Explained
+            <small>Visual video breaking down 16-bit groups and hex-to-binary conversions.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/ipv6-representation" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on IPv6 Notation and Syntax
+            <small>Questions testing valid hexadecimal groupings and bracketed URL formats.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 16.4 Compression Rules: Zero Suppression & :: -->
+    <section id="s16-compression" class="section-in-uni content-section" data-chapter="16" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="IPv6 address compression leading zeros suppression double colon rule single occurrence">
+      <div class="section-header">
+        <span class="section-number">16.4</span>
+        <h2>Compression Rules: Zero Suppression &amp; &ldquo;::&rdquo; <button class="bookmark-btn" data-id="s16-compression" data-label="Compression Rules: Zero Suppression &amp; &ldquo;::&rdquo;" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>Compression Rules: Zero Suppression & “::”</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p><strong>IPv6 Address Compression</strong> is the standardized syntactic procedure defined in RFC 4291 and refined in RFC 5952 that shortens verbose 39-character IPv6 addresses by applying two mathematical rules: <strong>Leading Zero Suppression</strong> within individual hextets, and <strong>Double Colon (<code>::</code>) Replacement</strong> for the longest contiguous sequence of all-zero hextets.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. The Two Canonical Compression Rules</h3>
+        <div class="concept-grid">
+          <div class="concept-card">
+            <h4>Rule 1: Leading Zero Suppression</h4>
+            <p>Within any 16-bit hextet, leading zeros are omitted. However, each hextet must contain at least one digit (a hextet of <code>0000</code> compresses to <code>0</code>). Trailing zeros can <strong>never</strong> be omitted!</p>
+            <ul>
+              <li><code>0db8</code> $\to$ <code>db8</code></li>
+              <li><code>0001</code> $\to$ <code>1</code></li>
+              <li><code>0000</code> $\to$ <code>0</code></li>
+              <li><code>0500</code> $\to$ <code>500</code> (never <code>5</code>!)</li>
+            </ul>
+          </div>
+          <div class="concept-card">
+            <h4>Rule 2: Double Colon (<code>::</code>) Replacement</h4>
+            <p>A single contiguous sequence of two or more consecutive all-zero hextets (<code>0:0:0...</code>) can be replaced by a double colon (<code>::</code>).<br>
+            <strong>The Cardinal Invariant:</strong> The double colon (<code>::</code>) can appear <strong>at most ONCE</strong> in an entire address!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ascii-box">
+STEP-BY-STEP COMPRESSION TRACE:
+
+Original Full Address (39 Chars):
+  2001 : 0db8 : 0000 : 0000 : 0000 : 0000 : 1428 : 57ab
+
+Step 1: Omit Leading Zeros (Rule 1):
+  2001 :  db8 :    0 :    0 :    0 :    0 : 1428 : 57ab
+
+Step 2: Replace Longest Consecutive Zero Run with :: (Rule 2):
+  2001 :  db8 :: 1428 : 57ab
+
+Final Canonical Form (RFC 5952):
+  2001:db8::1428:57ab   (Reduced from 39 chars to 19 chars!)
+      </div>
+
+      <div class="example-box">
+        <h3>3. RFC 5952 Canonical Tie-Breaking Rules</h3>
+        <p>What if an address contains multiple separate runs of zeros?</p>
+        <ol>
+          <li><strong>Unequal Zero Runs:</strong> You must compress the <strong>longest</strong> sequence of zero hextets.
+            $$\text{Example: } 2001:\text{db8}:0:0:1:0:0:0:1 \implies 2001:\text{db8}:0:0:1::1$$
+            <em>(The 3-hextet run is compressed; the 2-hextet run remains as <code>0:0</code>.)</em>
+          </li>
+          <li><strong>Equal Zero Runs (Tie-Breaker):</strong> If two zero runs have the identical length, compress the <strong>first (leftmost)</strong> sequence.
+            $$\text{Example: } 2001:\text{db8}:0:0:1:0:0:2 \implies 2001:\text{db8}::1:0:0:2$$
+          </li>
+          <li><strong>Single Zero Hextet:</strong> A single isolated hextet of zeros (<code>:0:</code>) should <strong>not</strong> be compressed to <code>::</code> (e.g. <code>2001:db8:0:1:1:1:1:1</code> stays as <code>:0:</code>).</li>
+        </ol>
+      </div>
+
+      <div class="example-box">
+        <h3>4. Step-by-Step Expansion Trace (Decompressing <code>::</code>)</h3>
+        <p>To decompress an abbreviated address like <code>fe80::1</code> back to its full 128-bit form:</p>
+        <ol>
+          <li>Count the visible hextets: <code>fe80</code> (1) and <code>1</code> (1) = <strong>2 visible hextets</strong>.</li>
+          <li>A complete IPv6 address must contain exactly <strong>8 hextets</strong>.</li>
+          <li>Missing zero hextets = $8 - 2 = \mathbf{6\text{ hextets of zeros}}$.</li>
+          <li>Expand <code>::</code> into 6 groups of <code>0000</code>, and pad visible hextets with leading zeros:
+            $$\mathbf{fe80:0000:0000:0000:0000:0000:0000:0001}$$
+          </li>
+        </ol>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Uncompressed Full Address</th>
+              <th>Compressed Canonical Address</th>
+              <th>Notes / Rules Applied</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>0000:0000:0000:0000:0000:0000:0000:0000</code></td>
+              <td><code>::</code></td>
+              <td>Unspecified Address (equivalent to IPv4 <code>0.0.0.0</code>)</td>
+            </tr>
+            <tr>
+              <td><code>0000:0000:0000:0000:0000:0000:0000:0001</code></td>
+              <td><code>::1</code></td>
+              <td>Loopback Address (equivalent to IPv4 <code>127.0.0.1</code>)</td>
+            </tr>
+            <tr>
+              <td><code>fe80:0000:0000:0000:0202:b3ff:fe1e:8329</code></td>
+              <td><code>fe80::202:b3ff:fe1e:8329</code></td>
+              <td>Standard Link-Local Address with EUI-64</td>
+            </tr>
+            <tr>
+              <td><code>ff02:0000:0000:0000:0000:0000:0000:0001</code></td>
+              <td><code>ff02::1</code></td>
+              <td>All-Nodes Multicast (equivalent to local broadcast)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="confusion-box">
+        <h3>5. Common Confusion &amp; Traps</h3>
+        <p><strong>The Two Double Colons Fatal Error:</strong><br>
+        Can you write <code>2001::1::2</code>? <strong>NEVER!</strong> This is an illegal, ambiguous address. If an address had two <code>::</code> markers, a parser could not tell whether it means 2 zeros on the left and 3 on the right, or 4 on the left and 1 on the right! <code>::</code> can be used <strong>at most ONCE</strong>.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>6. University Exam &amp; GATE Tips</h3>
+        <p>University exams frequently feature multiple-choice questions asking: <em>"Which of the following is an INVALID IPv6 address?"</em><br>
+        Scan immediately for two fatal conditions: (1) Any address containing two double colons (<code>::</code>), or (2) Any hextet containing characters beyond hex (e.g. letter <code>g</code> or <code>z</code>), or (3) Any hextet containing $>4$ digits.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Engineering resources and interactive tools for mastering IPv6 zero compression.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc5952" target="_blank" rel="noopener noreferrer">
+            📘 RFC 5952 Section 4 - Text Representation Recommendation
+            <small>Formal specification of canonical zero runs and tie-breaking algorithms.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=s_Ntt6eTn94" target="_blank" rel="noopener noreferrer">
+            🎥 IPv6 Zero Compression Rules Tutorial
+            <small>Step-by-step video practicing compression and expansion of complex addresses.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/ipv6-compression" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on IPv6 Address Compression
+            <small>Past entrance exam questions identifying valid and invalid compressed formats.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 16.5 Prefix Notation & Interface Identifiers -->
+    <section id="s16-prefix" class="section-in-uni content-section" data-chapter="16" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Prefix notation /64 standard boundary network prefix subnet ID interface identifier IID">
+      <div class="section-header">
+        <span class="section-number">16.5</span>
+        <h2>Prefix Notation &amp; The /64 Boundary <button class="bookmark-btn" data-id="s16-prefix" data-label="Prefix Notation &amp; The /64 Boundary" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>Prefix Notation & The /64 Boundary</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p>An IPv6 address is partitioned hierarchically into two 64-bit halves: the <strong>Network Prefix (Routing Prefix + Subnet ID)</strong>, which identifies the autonomous network domain, and the <strong>Interface Identifier (Interface ID / IID)</strong>, which uniquely identifies the host's physical or virtual interface on that specific local link.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why the /64 Boundary is Architecturally Sacred</h3>
+        <p>In IPv4, subnet masks were flexible and varied wildly (/24, /27, /30). In IPv6, RFC 4291 and RFC 7421 establish that <strong>all standard local area networks and end-user subnets MUST use a prefix length of exactly /64</strong>:</p>
+        <div class="concept-grid">
+          <div class="concept-card">
+            <h4>1. Native SLAAC Compatibility</h4>
+            <p>Stateless Address Autoconfiguration (SLAAC) requires exactly 64 bits to construct the host address from 64-bit IEEE EUI-64 or privacy extensions (RFC 4941).</p>
+          </div>
+          <div class="concept-card">
+            <h4>2. Hardware Forwarding Optimization</h4>
+            <p>A fixed /64 boundary simplifies line-rate router hardware parsing: core routers match on the high 64 bits; access switches deliver on the low 64 bits.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ascii-box">
+THE CANONICAL 64/64 SPLIT OF AN IPv6 ADDRESS:
+ 0                               63 64                             127
++----------------------------------+----------------------------------+
+|      NETWORK PREFIX (64 bits)    |     INTERFACE IDENTIFIER (64b)   |
++----------------------------------+----------------------------------+
+<--------- High 64 Bits ----------> <--------- Low 64 Bits ----------->
+ Used for GLOBAL ROUTING            Used for LOCAL LINK DELIVERY
+ Fixed across all hosts on this LAN  Generated via SLAAC / EUI-64 / DHCP
+
+GLOBAL UNICAST PREFIX BREAKDOWN (/48 to /64):
++-------------------------------+---------------+---------------------+
+|  Global Routing Prefix (48b)  | Subnet ID(16b)| Interface ID (64b)  |
++-------------------------------+---------------+---------------------+
+ Allocated by ISP to Enterprise  2^16 = 65,536   2^64 = 1.84 x 10^19
+ (e.g. 2001:db8:abcd::/48)       Unique Subnets  Hosts per single LAN!
+      </div>
+
+      <div class="example-box">
+        <h3>3. Enterprise Subnetting from a /48 Allocation</h3>
+        <p>When an ISP grants an organization a standard <strong>/48 block</strong> (e.g. <code>2001:db8:cafe::/48</code>):</p>
+        <ul>
+          <li>The organization owns Bits 48 through 63 (the 4th hextet), providing a <strong>16-bit Subnet ID</strong>.</li>
+          <li>Number of unique departmental subnets available:
+            $$2^{16} = \mathbf{65,536\text{ distinct } /64\text{ subnets!}}$$
+          </li>
+          <li>Departmental Allocations:
+            <ul>
+              <li>Subnet 0 (Engineering): <code>2001:db8:cafe:0000::/64</code> $\to$ <code>2001:db8:cafe::/64</code></li>
+              <li>Subnet 1 (Finance): <code>2001:db8:cafe:0001::/64</code> $\to$ <code>2001:db8:cafe:1::/64</code></li>
+              <li>Subnet 2 (Server DMZ): <code>2001:db8:cafe:0002::/64</code> $\to$ <code>2001:db8:cafe:2::/64</code></li>
+              <li>Subnet 65535 (WAN Links): <code>2001:db8:cafe:ffff::/64</code></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <div class="confusion-box">
+        <h3>4. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "We only have 10 computers on our LAN, so we should configure a /120 subnet to conserve addresses."<br>
+        <strong>Reality:</strong> Catastrophic operational mistake! Subnetting smaller than /64 (e.g. /112 or /120) completely <strong>breaks SLAAC autoconfiguration</strong>, breaks IPv6 privacy extensions, and is strictly deprecated by RFC 7421. Address conservation is irrelevant in IPv6; always use /64 for subnets.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>5. University Exam &amp; GATE Tips</h3>
+        <p>Exam question: <em>"An organization is allocated prefix 2001:db8:1234::/48. How many /64 subnets can it create?"</em><br>
+        Subnet bits = $64 - 48 = 16\text{ bits}$. Number of subnets = $2^{16} = \mathbf{65,536\text{ subnets}}$.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Engineering RFC documentation on the /64 boundary and prefix allocations.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc7421" target="_blank" rel="noopener noreferrer">
+            📘 RFC 7421 - Analysis of the 64-bit Boundary in IPv6
+            <small>Detailed IETF engineering analysis of why the /64 boundary is architecturally mandatory.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=F_fDkJN3R4w" target="_blank" rel="noopener noreferrer">
+            🎥 IPv6 Subnetting and /64 Boundary Tutorial
+            <small>Whiteboard walkthrough demonstrating how enterprises allocate /48 and /64 prefixes.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/ipv6-subnetting" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on IPv6 Prefix Allocations
+            <small>Past entrance exam questions deriving subnet counts and prefix boundaries.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 16.6 IPv6 Address Types -->
+    <section id="s16-types" class="section-in-uni content-section" data-chapter="16" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="IPv6 address types unicast anycast multicast absence of broadcast addresses">
+      <div class="section-header">
+        <span class="section-number">16.6</span>
+        <h2>IPv6 Address Types <button class="bookmark-btn" data-id="s16-types" data-label="IPv6 Address Types" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>IPv6 Address Types</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p>IPv6 classifies all 128-bit addresses into three fundamental transmission categories: <strong>Unicast</strong> (one-to-one), <strong>Multicast</strong> (one-to-many), and <strong>Anycast</strong> (one-to-nearest), with the monumental architectural elimination of the traditional <strong>Broadcast</strong> address.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why Broadcast Was Permanently Eliminated</h3>
+        <p>In IPv4, broadcast frames (such as ARP Requests and DHCP Discovers) hit every single machine on the physical broadcast domain. Even if a computer had zero interest in the packet, its network interface card had to interrupt the operating system CPU to parse the frame. Broadcast storms could freeze an entire enterprise network. In IPv6:</p>
+        <p><strong>Architectural Decision:</strong> Broadcast is <strong>100% abolished</strong>. All functions formerly performed by broadcast (ARP, neighbor discovery, router discovery) are handled by <strong>Scoped Multicast Groups</strong>. Only devices that have explicitly registered interest in a multicast group process the packets; all other network cards filter them out in hardware!</p>
+      </div>
+
+      <div class="ascii-box">
+THE THREE TRANSMISSION PARADIGMS OF IPv6:
+
+1. UNICAST (One-to-One):
+   [ Sender ] ====================================> [ Single Target Host ]
+
+2. MULTICAST (One-to-Many):
+   [ Sender ] -----------> [ Router ]
+                              |---> [ Target Host 1 (Subscribed) ]
+                              |---> [ Target Host 2 (Subscribed) ]
+                              X     [ Host 3 (Not subscribed - Ignored!) ]
+
+3. ANYCAST (One-to-Nearest):
+   [ Sender ] ====================================> [ Nearest Mirror (BGP Hop) ]
+   (Identical IP shared by servers worldwide; router delivers to topologically closest!)
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Address Category</th>
+              <th>Transmission Scope</th>
+              <th>Target Audience</th>
+              <th>Common Use Cases</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Unicast</strong></td>
+              <td>One-to-One</td>
+              <td>A single unique network interface</td>
+              <td>Standard web browsing, SSH, file transfer</td>
+            </tr>
+            <tr>
+              <td><strong>Multicast</strong></td>
+              <td>One-to-Many</td>
+              <td>A set of interfaces subscribed to a multicast group</td>
+              <td>Neighbor Discovery, OSPF hello, IPTV streaming</td>
+            </tr>
+            <tr>
+              <td><strong>Anycast</strong></td>
+              <td>One-to-Nearest</td>
+              <td>Multiple interfaces sharing 1 IP; delivered to <strong>topologically closest</strong></td>
+              <td>DNS Root Servers, Content Delivery Networks (Cloudflare/Fastly)</td>
+            </tr>
+            <tr>
+              <td><strong>Broadcast</strong></td>
+              <td><span style="color: #ef4444; font-weight: bold;">DOES NOT EXIST</span></td>
+              <td><strong>Completely eliminated in IPv6</strong></td>
+              <td>Replaced by All-Nodes Multicast (<code>ff02::1</code>)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="confusion-box">
+        <h3>3. Common Confusion: Anycast vs Multicast</h3>
+        <p><strong>Anycast Syntax:</strong><br>
+        Students often look for a special prefix for Anycast addresses. <strong>There is no distinct prefix for Anycast!</strong> Anycast addresses are syntactically indistinguishable from standard Unicast addresses. An address becomes an Anycast address purely by configuration: multiple servers in different global cities configure the exact same Unicast IP and advertise it into BGP.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>4. University Exam &amp; GATE Tips</h3>
+        <p>A guaranteed multiple choice exam question: <em>"Which transmission type supported in IPv4 is missing in IPv6?"</em><br>
+        Answer: <strong>Broadcast</strong>. If an option says "Anycast", that is newly added in IPv6; Broadcast is the one eliminated.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Engineering RFC specifications on IPv6 transmission categories.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc4291#section-2.4" target="_blank" rel="noopener noreferrer">
+            📘 RFC 4291 Section 2.4 - Address Type Identification
+            <small>Formal specification of Unicast, Anycast, and Multicast address categorization.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=F_fDkJN3R4w" target="_blank" rel="noopener noreferrer">
+            🎥 Unicast, Multicast, and Anycast in IPv6 Explained
+            <small>Visual explanation of why broadcast was eliminated and how anycast routes to nearest.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/ipv6-address-types" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on IPv6 Address Types
+            <small>Past entrance exam questions testing anycast properties and multicast replacements.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 16.7 Global Unicast, Link-Local & Anycast -->
+    <section id="s16-scopes" class="section-in-uni content-section" data-chapter="16" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Address scopes global unicast 2000::/3 link-local fe80::/10 unique local fc00::/7 anycast">
+      <div class="section-header">
+        <span class="section-number">16.7</span>
+        <h2>Global Unicast, Link-Local &amp; Anycast Scopes <button class="bookmark-btn" data-id="s16-scopes" data-label="Global Unicast, Link-Local &amp; Anycast Scopes" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>Global Unicast, Link-Local & Anycast Scopes</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p>IPv6 implements an explicit, multi-tiered <strong>Address Scoping Architecture</strong>, where a single network interface is assigned multiple concurrent IPv6 addresses operating across distinct topological boundaries: <strong>Link-Local</strong> (confined to the immediate physical link), <strong>Unique Local</strong> (confined to a private enterprise campus), and <strong>Global Unicast</strong> (globally routable across the public Internet).</p>
+      </div>
+
+      <div class="ascii-box">
+IPv6 ADDRESS SCOPING TAXONOMY:
++-------------------------------------------------------------------------------+
+| GLOBAL UNICAST ADDRESS (GUA): 2000::/3  (Publicly Routable across Internet)  |
+|   +-----------------------------------------------------------------------+   |
+|   | UNIQUE LOCAL ADDRESS (ULA):   fc00::/7  (Private Enterprise Campus)   |   |
+|   |   +---------------------------------------------------------------+   |   |
+|   |   | LINK-LOCAL ADDRESS (LLA): fe80::/10 (Local Physical Link Only)|   |   |
+|   |   +---------------------------------------------------------------+   |   |
+|   +-----------------------------------------------------------------------+   |
++-------------------------------------------------------------------------------+
+A single IPv6 network interface typically has AT LEAST two addresses simultaneously:
+1. fe80::... (Link-Local for neighbor discovery and next-hop router communication)
+2. 2001:... (Global Unicast for web browsing and Internet traffic)
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Address Scope Name</th>
+              <th>Binary Prefix</th>
+              <th>Hex Prefix</th>
+              <th>Forwarded Across Routers?</th>
+              <th>Operational Function</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Global Unicast (GUA)</strong></td>
+              <td><code>001...</code></td>
+              <td><code>2000::/3</code></td>
+              <td><span style="color: #22c55e; font-weight: bold;">YES</span> (Public Internet)</td>
+              <td>Globally routable public Internet addresses (spans <code>2000::</code> to <code>3fff::</code>).</td>
+            </tr>
+            <tr>
+              <td><strong>Link-Local (LLA)</strong></td>
+              <td><code>1111 1110 10..</code></td>
+              <td><code>fe80::/10</code></td>
+              <td><span style="color: #ef4444; font-weight: bold;">NO</span> (Link boundary)</td>
+              <td>Mandatory on every IPv6 interface. Used for NDP, SLAAC, and router next-hops.</td>
+            </tr>
+            <tr>
+              <td><strong>Unique Local (ULA)</strong></td>
+              <td><code>1111 110.</code></td>
+              <td><code>fc00::/7</code></td>
+              <td>Within Enterprise Only</td>
+              <td>RFC 4193 private enterprise addresses (equivalent to IPv4 RFC 1918). Usually <code>fd00::/8</code>.</td>
+            </tr>
+            <tr>
+              <td><strong>Multicast</strong></td>
+              <td><code>1111 1111</code></td>
+              <td><code>ff00::/8</code></td>
+              <td>Depends on Scope Nibble</td>
+              <td>One-to-many communication; replaces IPv4 broadcast.</td>
+            </tr>
+            <tr>
+              <td><strong>Loopback</strong></td>
+              <td>127 zeros, one 1</td>
+              <td><code>::1/128</code></td>
+              <td><span style="color: #ef4444; font-weight: bold;">NO</span> (Local OS only)</td>
+              <td>Local host software testing (equivalent to IPv4 <code>127.0.0.1</code>).</td>
+            </tr>
+            <tr>
+              <td><strong>Unspecified</strong></td>
+              <td>128 zeros</td>
+              <td><code>::/128</code></td>
+              <td><span style="color: #ef4444; font-weight: bold;">NO</span></td>
+              <td>Used as source address during initial DAD boot before address verification.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="example-box">
+        <h3>2. Deep-Dive: Well-Known Scoped Multicast Groups (<code>ff00::/8</code>)</h3>
+        <p>An IPv6 multicast address has the format <code>ffXY::Z</code>, where $X$ is 4 bits of flags and $Y$ is the <strong>4-bit Scope Field</strong>:</p>
+        <ul>
+          <li><code>Scope = 1</code>: Interface-local (stays inside local device).</li>
+          <li><code>Scope = 2</code>: <strong>Link-local</strong> (flooded on physical switch LAN; never crossed by router).</li>
+          <li><code>Scope = 5</code>: Site-local (routable across campus routers).</li>
+          <li><code>Scope = e</code>: Global (worldwide multicast).</li>
+        </ul>
+
+        <h4>High-Yield Well-Known Multicast Groups:</h4>
+        <div class="table-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Multicast Address</th>
+                <th>Target Group</th>
+                <th>IPv4 Historical Equivalent</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>ff02::1</code></td>
+                <td><strong>All Nodes on the Link</strong></td>
+                <td>Limited Broadcast (<code>255.255.255.255</code>)</td>
+              </tr>
+              <tr>
+                <td><code>ff02::2</code></td>
+                <td><strong>All Routers on the Link</strong></td>
+                <td>IPv4 All-Routers Multicast (<code>224.0.0.2</code>)</td>
+              </tr>
+              <tr>
+                <td><code>ff02::5</code> / <code>ff02::6</code></td>
+                <td>OSPFv3 Routers / OSPFv3 Designated Routers</td>
+                <td><code>224.0.0.5</code> / <code>224.0.0.6</code></td>
+              </tr>
+              <tr>
+                <td><code>ff02::1:2</code></td>
+                <td>All DHCPv6 Relay Agents &amp; Servers</td>
+                <td>DHCP Broadcast</td>
+              </tr>
+              <tr>
+                <td><code>ff02::1:ffXX:XXXX</code></td>
+                <td><strong>Solicited-Node Multicast</strong> (last 24 bits of host IP)</td>
+                <td>Replaces ARP Request broadcast!</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="confusion-box">
+        <h3>3. Common Confusion &amp; Traps</h3>
+        <p><strong>The Link-Local Ambiguity Problem:</strong><br>
+        Because every physical interface automatically generates a <code>fe80::...</code> address using the exact same prefix, your operating system cannot tell which physical port to send a ping to if you simply type <code>ping fe80::1</code>!<br>
+        <strong>Requirement:</strong> Pinging a link-local address requires specifying the <strong>Zone ID (Interface Scope)</strong>:<br>
+        - On Linux/macOS: <code>ping6 fe80::1%eth0</code><br>
+        - On Windows: <code>ping fe80::1%12</code> (where 12 is the interface index).</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>4. University Exam &amp; GATE Tips</h3>
+        <p>Exam question: <em>"Identify the purpose of fe80::/10 vs 2000::/3."</em><br>
+        Answer: <code>fe80::/10</code> is a Link-Local Unicast address automatically assigned to every interface for communication within the local link and cannot be routed across a router boundary. <code>2000::/3</code> is a Global Unicast Address assigned for globally routable public Internet communication.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Foundational RFC standards on IPv6 address scopes and multicast architectures.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc4291#section-2.5" target="_blank" rel="noopener noreferrer">
+            📘 RFC 4291 Section 2.5 - IPv6 Unicast Address Architectures
+            <small>Specification of Link-Local, Global Unicast, and Unique Local format definitions.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=F_fDkJN3R4w" target="_blank" rel="noopener noreferrer">
+            🎥 IPv6 Address Scopes: GUA, Link-Local, and Multicast
+            <small>Clear animation explaining how multiple IPv6 addresses coexist on a single NIC.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/ipv6-scopes" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on IPv6 Scopes and Prefixes
+            <small>Multiple-choice problems matching IPv6 prefixes to their operational scopes.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 16.8 The IPv6 Base Header -->
+    <section id="s16-header" class="section-in-uni content-section" data-chapter="16" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Fixed 40-byte base header simplified processing no checksum 8 fields efficiency">
+      <div class="section-header">
+        <span class="section-number">16.8</span>
+        <h2>The IPv6 Base Header <button class="bookmark-btn" data-id="s16-header" data-label="The IPv6 Base Header" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>The IPv6 Base Header</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p>The <strong>IPv6 Base Header</strong> is the fixed-length, 40-byte protocol header prepended to every IPv6 datagram, streamlined from IPv4's 14 fields down to <strong>8 fields</strong> to eliminate routing overhead and maximize line-rate hardware forwarding throughput.</p>
+      </div>
+
+      <div class="ascii-box">
+THE 40-BYTE FIXED IPv6 BASE HEADER:
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|Version| Traffic Class |           Flow Label                  |  Row 1 (Bytes 0-3)
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|         Payload Length        |  Next Header  |   Hop Limit   |  Row 2 (Bytes 4-7)
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                               |  Row 3-6 (Bytes 8-23)
++                                                               +
+|                                                               |  Source Address
++                    Source IPv6 Address                        +  (128 bits = 16 Bytes)
+|                                                               |
++                                                               +
+|                                                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                               |  Row 7-10 (Bytes 24-39)
++                                                               +
+|                                                               |  Destination Address
++                 Destination IPv6 Address                      +  (128 bits = 16 Bytes)
+|                                                               |
++                                                               +
+|                                                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+Total Fixed Size: Exactly 40 Bytes (No IHL needed!)
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Field Name</th>
+              <th>Bit Size</th>
+              <th>Byte Position</th>
+              <th>IPv4 Functional Equivalent</th>
+              <th>Architectural Purpose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Version</strong></td>
+              <td>4 bits</td>
+              <td>Byte 0 [0-3]</td>
+              <td>Version (4)</td>
+              <td>Strictly set to binary <code>0110</code> (Decimal 6).</td>
+            </tr>
+            <tr>
+              <td><strong>Traffic Class</strong></td>
+              <td>8 bits</td>
+              <td>Bytes 0&ndash;1</td>
+              <td>Type of Service / DS</td>
+              <td>6-bit DSCP (QoS classification) + 2-bit ECN (congestion marking).</td>
+            </tr>
+            <tr>
+              <td><strong>Flow Label</strong></td>
+              <td>20 bits</td>
+              <td>Bytes 1&ndash;3</td>
+              <td><span style="color: #22c55e; font-weight: bold;">NEW IN IPv6</span></td>
+              <td>Identifies non-default QoS flows; enables hardware ECMP without parsing Layer 4.</td>
+            </tr>
+            <tr>
+              <td><strong>Payload Length</strong></td>
+              <td>16 bits</td>
+              <td>Bytes 4&ndash;5</td>
+              <td>Total Length (Modified)</td>
+              <td>Length of payload + extension headers in bytes (<strong>excludes 40B base header!</strong>).</td>
+            </tr>
+            <tr>
+              <td><strong>Next Header</strong></td>
+              <td>8 bits</td>
+              <td>Byte 6</td>
+              <td>Protocol</td>
+              <td>Identifies type of following extension header or transport protocol (TCP/UDP).</td>
+            </tr>
+            <tr>
+              <td><strong>Hop Limit</strong></td>
+              <td>8 bits</td>
+              <td>Byte 7</td>
+              <td>Time to Live (TTL)</td>
+              <td>Decremented by 1 per router; drops packet when reaching 0 (honest name!).</td>
+            </tr>
+            <tr>
+              <td><strong>Source Address</strong></td>
+              <td>128 bits</td>
+              <td>Bytes 8&ndash;23</td>
+              <td>Source IP Address (32b)</td>
+              <td>128-bit originator address (16 bytes).</td>
+            </tr>
+            <tr>
+              <td><strong>Destination Address</strong></td>
+              <td>128 bits</td>
+              <td>Bytes 24&ndash;39</td>
+              <td>Destination IP Address (32b)</td>
+              <td>128-bit recipient address (16 bytes).</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why the Fixed 40-Byte Size Accelerates Hardware Forwarding</h3>
+        <p>In IPv4, because options made the header variable (20 to 60 bytes), every router had to read the 4-bit IHL field, calculate the multiplication, and parse dynamic field boundaries. In IPv6:</p>
+        <ul>
+          <li>The base header is <strong>guaranteed to be exactly 40 bytes</strong> for all packets on Earth.</li>
+          <li>Hardware ASICs can hardcode the byte offsets: Destination IP is <em>always</em> at Byte 24, Next Header is <em>always</em> at Byte 6.</li>
+          <li>Routers pipeline memory fetches in hardware with zero branching instructions.</li>
+        </ul>
+      </div>
+
+      <div class="confusion-box">
+        <h3>3. Common Confusion: What Happened to the Checksum?</h3>
+        <p><strong>The Missing Checksum Mystery:</strong><br>
+        Students notice immediately: <em>"Where is the Header Checksum in IPv6?"</em><br>
+        <strong>Answer:</strong> It was completely eliminated! Recalculating the checksum at every hop in IPv4 was a major CPU bottleneck. Because Layer 2 (Ethernet CRC) and Layer 4 (TCP/UDP checksums) already verify bit integrity, removing the Layer 3 checksum dramatically accelerates router line-rate throughput.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>4. University Exam &amp; GATE Tips</h3>
+        <p>GATE frequently asks: <em>"Which fields from the IPv4 header were removed in the IPv6 base header?"</em><br>
+        Answer: Exactly 6 fields were eliminated: (1) <strong>IHL</strong>, (2) <strong>Identification</strong>, (3) <strong>Flags</strong>, (4) <strong>Fragment Offset</strong>, (5) <strong>Header Checksum</strong>, and (6) <strong>Options &amp; Padding</strong>.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Engineering RFC specifications on the IPv6 base header architecture.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc8200#section-3" target="_blank" rel="noopener noreferrer">
+            📘 RFC 8200 Section 3 - IPv6 Header Format
+            <small>Authoritative standard defining the 8 fields and 40-byte fixed layout.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=F_fDkJN3R4w" target="_blank" rel="noopener noreferrer">
+            🎥 The IPv6 Header Format Explained in Detail
+            <small>Visual comparison highlighting why IPv6 is simpler to process than IPv4.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/ipv6-header" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on IPv6 Header Fields
+            <small>Over 30 questions analyzing field removals, sizes, and hardware parsing advantages.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 16.9 Version, Traffic Class & Flow Label -->
+    <section id="s16-flow" class="section-in-uni content-section" data-chapter="16" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Version 6 Traffic Class 8 bits Flow Label 20 bits QoS real-time packet streams">
+      <div class="section-header">
+        <span class="section-number">16.9</span>
+        <h2>Version, Traffic Class &amp; Flow Label <button class="bookmark-btn" data-id="s16-flow" data-label="Version, Traffic Class &amp; Flow Label" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>Version, Traffic Class & Flow Label</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p>Row 1 of the IPv6 base header (Bytes 0 through 3) contains three control fields: the 4-bit <strong>Version</strong> field (identifying protocol revision 6), the 8-bit <strong>Traffic Class</strong> field (providing QoS classification and congestion notification), and the innovative 20-bit <strong>Flow Label</strong> field (enabling per-flow state-free quality-of-service and load-balancing).</p>
+      </div>
+
+      <div class="ascii-box">
+ROW 1 OF IPv6 BASE HEADER (32 BITS):
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|Version| Traffic Class |           Flow Label                  |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+<-- 4b-> <--- 8 bits ---> <-------------- 20 bits -------------->
+ 0110(6)  6b DSCP + 2b ECN Identifies packets in the same flow
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Deep-Dive: The 20-Bit Flow Label (RFC 6437)</h3>
+        <p>In IPv4, routers seeking to perform Equal-Cost Multi-Path (ECMP) load balancing or Quality of Service (QoS) had to parse deep into the packet to inspect Layer 4 TCP/UDP port numbers. This broke when packets were encrypted (IPsec ESP) or fragmented. IPv6 solved this with the <strong>Flow Label</strong>:</p>
+        <ul>
+          <li>A <strong>Flow</strong> is a sequence of packets sent from a specific source to a specific destination requiring identical router handling (e.g. real-time audio/video streaming, high-frequency trading).</li>
+          <li>The source host assigns a pseudo-random 20-bit label ($0$ to $2^{20} - 1 = 1,048,575$).</li>
+          <li><strong>Router Hardware Benefit:</strong> Routers hash on <code>(Source IP, Dest IP, Flow Label)</code> entirely within the first 40 bytes! Routers achieve perfect flow-consistent load balancing without ever parsing past the base header, even if the payload is fully encrypted!</li>
+        </ul>
+      </div>
+
+      <div class="example-box">
+        <h3>3. Flow Label Invariants (RFC 6437)</h3>
+        <ul>
+          <li><strong>Immutability:</strong> The Flow Label <strong>must not be modified</strong> by intermediate routers as the packet traverses the Internet. It is set by the source host and preserved end-to-end.</li>
+          <li><strong>Default Value:</strong> Hosts that do not support flow labeling set the field to all zeros (<code>0x00000</code>).</li>
+          <li><strong>Flow Expiration:</strong> When a communication stream finishes, the source must not reuse that Flow Label for another destination for at least 120 seconds.</li>
+        </ul>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Evaluation Feature</th>
+              <th>IPv4 Traffic Handling</th>
+              <th>IPv6 Traffic Handling</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>QoS Field</strong></td>
+              <td>8-bit Type of Service (ToS) / DiffServ</td>
+              <td>8-bit Traffic Class (DSCP + ECN)</td>
+            </tr>
+            <tr>
+              <td><strong>Flow Identification</strong></td>
+              <td>Deep packet inspection into Layer 4 ports</td>
+              <td><strong>Native 20-bit Flow Label in Layer 3 header</strong></td>
+            </tr>
+            <tr>
+              <td><strong>ECMP Load Balancing</strong></td>
+              <td>5-tuple lookup (fails if IPsec encrypted)</td>
+              <td>3-tuple lookup (works natively over encrypted IPsec)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="confusion-box">
+        <h3>4. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "Flow Label reserves bandwidth like an ATM virtual circuit."<br>
+        <strong>Reality:</strong> Flow Label does NOT set up stateful virtual circuits! IPv6 remains strictly a connectionless datagram protocol. The Flow Label is purely a routing hint that enables stateless hash consistency across multipath router links.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>5. University Exam &amp; GATE Tips</h3>
+        <p>Exam question: <em>"What is the size and purpose of the Flow Label field in IPv6?"</em><br>
+        Answer: Size is strictly <strong>20 bits</strong>. Its purpose is to allow intermediate routers to classify and load-balance packets belonging to the same communication stream without inspecting Layer 4 transport headers or decrypting IPsec payloads.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Engineering specifications on IPv6 flow labels and load balancing algorithms.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc6437" target="_blank" rel="noopener noreferrer">
+            📘 RFC 6437 - IPv6 Flow Label Specification
+            <small>Authoritative IETF specification on pseudo-random flow label generation and ECMP hashing.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=F_fDkJN3R4w" target="_blank" rel="noopener noreferrer">
+            🎥 IPv6 Flow Label and Traffic Class Architecture
+            <small>Video tutorial explaining how routers use the 20-bit label for wire-speed switching.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/flow-label" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on IPv6 Flow Label
+            <small>Past entrance exam questions on bit sizes, field locations, and routing functions.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 16.10 Payload Length, Next Header & Hop Limit -->
+    <section id="s16-next-hop" class="section-in-uni content-section" data-chapter="16" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Payload Length 16 bits Next Header protocol chaining Hop Limit TTL replacement">
+      <div class="section-header">
+        <span class="section-number">16.10</span>
+        <h2>Payload Length, Next Header &amp; Hop Limit <button class="bookmark-btn" data-id="s16-next-hop" data-label="Payload Length, Next Header &amp; Hop Limit" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>Payload Length, Next Header & Hop Limit</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p>Row 2 of the IPv6 base header (Bytes 4 through 7) contains three fundamental transmission metrics: the 16-bit <strong>Payload Length</strong> (size of payload following the 40-byte base header), the 8-bit <strong>Next Header</strong> field (identifying the immediately following extension header or transport protocol), and the 8-bit <strong>Hop Limit</strong> (an anti-loop counter replacing IPv4's TTL).</p>
+      </div>
+
+      <div class="ascii-box">
+ROW 2 OF IPv6 BASE HEADER (32 BITS):
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|         Payload Length        |  Next Header  |   Hop Limit   |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+<---------- 16 bits -----------> <--- 8 bits ---> <--- 8 bits --->
+ Bytes of data AFTER 40B base     Protocol / Ext   Decremented by 1
+ Max: 65,535B (or Jumbo 4GB)      Header Pointer   Drops when 0
+      </div>
+
+      <div class="example-box">
+        <h3>2. Crucial Contrast: Payload Length vs IPv4 Total Length</h3>
+        <p>Pay close attention to how length is defined between the two protocols:</p>
+        <ul>
+          <li><strong>IPv4 Total Length:</strong> Includes the IPv4 Header ($20\text{B}$) <strong>PLUS</strong> the payload.
+            $$\text{IPv4 Total Length} = \text{Header} + \text{Payload}$$
+          </li>
+          <li><strong>IPv6 Payload Length:</strong> <strong>EXCLUDES</strong> the 40-byte base header! It measures <em>only</em> the bytes that follow the base header (which includes any Extension Headers plus the transport segment).
+            $$\text{IPv6 Total Bytes on Wire} = 40 + \text{Payload Length}$$
+          </li>
+        </ul>
+
+        <h4>Jumbograms (RFC 2675):</h4>
+        <p>What if a supercomputing data center needs to transmit a packet larger than 65,535 bytes? In IPv6, the Payload Length field is set to <strong>0</strong>, and a <strong>Jumbo Payload Hop-by-Hop Option</strong> carries a 32-bit length field, supporting packets up to <strong>4 Gigabytes</strong> ($4,294,967,295$ bytes)!</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>3. Next Header: The Daisy-Chain Pointer</h3>
+        <p>The 8-bit Next Header field uses the <strong>exact same numerical values as the IPv4 Protocol field</strong> (RFC 1700), but adds extension header types:</p>
+        <div class="table-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Next Header Decimal</th>
+                <th>Header / Protocol Name</th>
+                <th>Category</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>0</strong></td>
+                <td><strong>Hop-by-Hop Options</strong></td>
+                <td>Extension Header</td>
+                <td>Must be inspected by every router along the path (e.g. Jumbograms, Router Alert).</td>
+              </tr>
+              <tr>
+                <td><strong>43</strong></td>
+                <td><strong>Routing Header</strong></td>
+                <td>Extension Header</td>
+                <td>Source routing / Segment Routing (SRv6).</td>
+              </tr>
+              <tr>
+                <td><strong>44</strong></td>
+                <td><strong>Fragment Header</strong></td>
+                <td>Extension Header</td>
+                <td>Contains fragmentation offset and identification.</td>
+              </tr>
+              <tr>
+                <td><strong>50</strong></td>
+                <td><strong>ESP</strong></td>
+                <td>Extension Header</td>
+                <td>Encapsulating Security Payload (IPsec encryption).</td>
+              </tr>
+              <tr>
+                <td><strong>51</strong></td>
+                <td><strong>AH</strong></td>
+                <td>Extension Header</td>
+                <td>Authentication Header (IPsec data integrity).</td>
+              </tr>
+              <tr>
+                <td><strong>60</strong></td>
+                <td><strong>Destination Options</strong></td>
+                <td>Extension Header</td>
+                <td>Processed only by the final destination.</td>
+              </tr>
+              <tr>
+                <td><strong>6</strong></td>
+                <td><strong>TCP</strong></td>
+                <td>Transport Protocol</td>
+                <td>Transmission Control Protocol payload follows.</td>
+              </tr>
+              <tr>
+                <td><strong>17</strong></td>
+                <td><strong>UDP</strong></td>
+                <td>Transport Protocol</td>
+                <td>User Datagram Protocol payload follows.</td>
+              </tr>
+              <tr>
+                <td><strong>58</strong></td>
+                <td><strong>ICMPv6</strong></td>
+                <td>Control Protocol</td>
+                <td>Internet Control Message Protocol for IPv6 follows.</td>
+              </tr>
+              <tr>
+                <td><strong>59</strong></td>
+                <td><strong>No Next Header</strong></td>
+                <td>Terminal Marker</td>
+                <td>Nothing follows this header (raw packet testing).</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="confusion-box">
+        <h3>4. Common Confusion: Hop Limit vs TTL</h3>
+        <p><strong>Is Hop Limit different from TTL?</strong><br>
+        Operationally, they are identical: both decrement by 1 at every router hop and drop the packet when reaching zero (triggering an ICMPv6 Time Exceeded Type 3 message). The IETF simply renamed it <strong>Hop Limit</strong> to reflect architectural reality: it was always a hop counter, never a real-time clock in seconds!</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>5. University Exam &amp; GATE Tips</h3>
+        <p>A classic exam calculation: <em>"An IPv6 packet has Payload Length = 800 bytes. What is the total size of the packet transmitted on the physical Ethernet wire?"</em><br>
+        Answer: $\text{Total Size} = 40\text{ (Base Header)} + 800\text{ (Payload Length)} = \mathbf{840\text{ bytes}}$. If you write 800, you will lose marks for forgetting that Payload Length excludes the 40-byte base header!</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Engineering RFC standards on Next Header numbers and Hop Limit semantics.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc8200#section-4" target="_blank" rel="noopener noreferrer">
+            📘 RFC 8200 Section 4 - IPv6 Extension Headers
+            <small>Specification of Next Header chaining and hop-by-hop processing rules.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=F_fDkJN3R4w" target="_blank" rel="noopener noreferrer">
+            🎥 Next Header and Payload Length Breakdown
+            <small>Step-by-step video tracing how extension headers are daisy-chained together.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/next-header" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on Next Header Values
+            <small>Exam questions matching Next Header decimal numbers to transport protocols.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 16.11 128-Bit Source & Destination Addresses -->
+    <section id="s16-addrs" class="section-in-uni content-section" data-chapter="16" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="128-bit source and destination addresses wire representation immutable transit">
+      <div class="section-header">
+        <span class="section-number">16.11</span>
+        <h2>128-Bit Source &amp; Destination Addresses <button class="bookmark-btn" data-id="s16-addrs" data-label="128-Bit Source &amp; Destination Addresses" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>128-Bit Source & Destination Addresses</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p>The lower 32 bytes (Bytes 8 through 39) of the 40-byte IPv6 base header are dedicated to addressing: the 128-bit <strong>Source Address</strong> (originating interface) and the 128-bit <strong>Destination Address</strong> (final recipient interface or anycast/multicast group).</p>
+      </div>
+
+      <div class="ascii-box">
+LOWER 32 BYTES OF IPv6 BASE HEADER (80% OF HEADER REAL ESTATE!):
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                               |  Bytes 8-23
++                                                               +
+|                                                               |  Source Address
++                    Source IPv6 Address                        +  (128 bits = 16 Bytes)
+|                                                               |
++                                                               +
+|                                                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                               |  Bytes 24-39
++                                                               +
+|                                                               |  Destination Address
++                 Destination IPv6 Address                      +  (128 bits = 16 Bytes)
+|                                                               |
++                                                               +
+|                                                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+Notice: 32 out of 40 bytes (80%) are strictly addressing!
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why Addresses Occupy 80% of the Header</h3>
+        <p>In IPv4, addresses occupied only $8$ out of $20$ bytes ($40\%$). In IPv6, addresses occupy $32$ out of $40$ bytes ($80\%$). This reflects a deliberate, enlightened engineering trade-off:</p>
+        <ul>
+          <li>The rest of the header was ruthlessly stripped down to only 8 bytes of control overhead (Version, Traffic Class, Flow Label, Length, Next Header, Hop Limit).</li>
+          <li>By dedicating the overwhelming majority of the header to addressing, the Internet gained an address space that will comfortably endure for centuries of human and interplanetary technological growth.</li>
+        </ul>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Protocol</th>
+              <th>Total Header Size</th>
+              <th>Address Bytes</th>
+              <th>Address Percentage</th>
+              <th>Control Overhead Bytes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>IPv4 Base Header</strong></td>
+              <td>20 Bytes</td>
+              <td>8 Bytes (Source + Dest)</td>
+              <td>40%</td>
+              <td>12 Bytes</td>
+            </tr>
+            <tr>
+              <td><strong>IPv6 Base Header</strong></td>
+              <td><strong>40 Bytes</strong></td>
+              <td><strong>32 Bytes (Source + Dest)</strong></td>
+              <td><strong>80%</strong></td>
+              <td><strong>Only 8 Bytes!</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="confusion-box">
+        <h3>3. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "Can the destination address be an IPv6 broadcast address?"<br>
+        <strong>Reality:</strong> Broadcast does not exist in IPv6! If a packet is addressed to all nodes, the destination address is the <strong>All-Nodes Multicast Address</strong> (<code>ff02::1</code>), which is a multicast address, not a broadcast address.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>4. University Exam &amp; GATE Tips</h3>
+        <p>Remember that a multicast address (starting with <code>ff00::/8</code>) can <strong>NEVER be used as a Source Address</strong> in an IPv6 packet! A source address must always be a Unicast address. Any router receiving a packet with a multicast source address must immediately drop it.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Engineering specifications on IPv6 addressing real estate and header efficiency.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc8200#page-7" target="_blank" rel="noopener noreferrer">
+            📘 RFC 8200 - Source and Destination Address Requirements
+            <small>Formal specification of source and destination address constraints in IPv6.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=F_fDkJN3R4w" target="_blank" rel="noopener noreferrer">
+            🎥 IPv6 Address Anatomy and Header Layout
+            <small>Visual explanation of why 80% of the IPv6 base header is dedicated to addressing.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/ipv6-addresses" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on IPv6 Address Bytes
+            <small>Past entrance exam questions calculating address percentages and header overheads.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 16.12 Extension Headers Daisy Chain -->
+    <section id="s16-ext-headers" class="section-in-uni content-section" data-chapter="16" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Extension headers daisy chaining Next Header pointer Hop-by-Hop Routing Fragment ESP AH">
+      <div class="section-header">
+        <span class="section-number">16.12</span>
+        <h2>Extension Headers Daisy Chain <button class="bookmark-btn" data-id="s16-ext-headers" data-label="Extension Headers Daisy Chain" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>Extension Headers Daisy Chain</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p><strong>IPv6 Extension Headers</strong> are optional control headers inserted sequentially between the 40-byte IPv6 base header and the upper-layer transport protocol payload, linked together in a linked-list <strong>daisy chain</strong> using the 8-bit <strong>Next Header</strong> field.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why the Daisy Chain is an Architectural Masterpiece</h3>
+        <p>In IPv4, all options had to be crammed into the base header (up to 40 bytes), forcing all intermediate routers to inspect options whether they cared about them or not. In IPv6:</p>
+        <ul>
+          <li>Intermediate routers <strong>ignore extension headers completely</strong> (except Hop-by-Hop options)!</li>
+          <li>Routers simply read the 40-byte base header and forward the packet at line rate.</li>
+          <li>Only the destination host (or specific milestone routers) unrolls the linked list to parse extension headers.</li>
+          <li><strong>Zero Size Cap:</strong> Unlike IPv4's rigid 40-byte option limit, IPv6 extension headers can be as long as necessary, bounded only by the packet MTU!</li>
+        </ul>
+      </div>
+
+      <div class="ascii-box">
+THE IPv6 EXTENSION HEADER DAISY CHAIN (Linked List):
+
++-------------------+     +-------------------+     +-------------------+
+| IPv6 Base Header  |     |  Routing Header   |     |  TCP Segment      |
+| Next Header = 43  |===> |  Next Header = 6  |===> |  (Transport Data) |
++-------------------+     +-------------------+     +-------------------+
+ (40 Bytes)                (Extension Header)        (Payload)
+      </div>
+
+      <div class="example-box">
+        <h3>3. Standard RFC 8200 Recommended Header Ordering</h3>
+        <p>When multiple extension headers are present in a single datagram, RFC 8200 specifies that they <strong>must appear in strictly standardized order</strong>:</p>
+        <ol>
+          <li><strong>IPv6 Base Header:</strong> Always first (40 bytes).</li>
+          <li><strong>Hop-by-Hop Options Header (Code 0):</strong> Must be first extension header because it must be inspected by every router along the path.</li>
+          <li><strong>Destination Options Header (Code 60):</strong> Options to be processed by the first destination in the Routing header.</li>
+          <li><strong>Routing Header (Code 43):</strong> Segment Routing / source routing directives.</li>
+          <li><strong>Fragment Header (Code 44):</strong> Reassembly information (Offset, ID, M-flag).</li>
+          <li><strong>Authentication Header (AH, Code 51):</strong> IPsec integrity verification.</li>
+          <li><strong>Encapsulating Security Payload (ESP, Code 50):</strong> IPsec payload encryption.</li>
+          <li><strong>Destination Options Header (Code 60):</strong> Options for the final ultimate destination host.</li>
+          <li><strong>Upper-Layer Header:</strong> Transport protocol (TCP Code 6, UDP Code 17, ICMPv6 Code 58).</li>
+        </ol>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Extension Header</th>
+              <th>Next Header Code</th>
+              <th>Who Inspects It?</th>
+              <th>Primary Operational Purpose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Hop-by-Hop Options</strong></td>
+              <td><code>0</code></td>
+              <td><strong>Every router along path</strong></td>
+              <td>Jumbograms (RFC 2675), Router Alert.</td>
+            </tr>
+            <tr>
+              <td><strong>Routing</strong></td>
+              <td><code>43</code></td>
+              <td>Milestone routers</td>
+              <td>Segment Routing (SRv6), Source routing paths.</td>
+            </tr>
+            <tr>
+              <td><strong>Fragment</strong></td>
+              <td><code>44</code></td>
+              <td><strong>Final Destination ONLY</strong></td>
+              <td>Carries fragmentation offset and 32-bit ID.</td>
+            </tr>
+            <tr>
+              <td><strong>ESP / AH</strong></td>
+              <td><code>50</code> / <code>51</code></td>
+              <td>IPsec endpoints</td>
+              <td>VPN encryption and cryptographic authentication.</td>
+            </tr>
+            <tr>
+              <td><strong>Destination Options</strong></td>
+              <td><code>60</code></td>
+              <td>Final Destination</td>
+              <td>Mobile IPv6 home address, specialized end-to-end options.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="confusion-box">
+        <h3>4. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "Intermediate routers parse the Fragment Extension Header."<br>
+        <strong>Reality:</strong> False! Intermediate routers do not parse the Fragment header; it has Next Header code 44, so intermediate routers treat it simply as opaque data payload and forward it directly to the destination.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>5. University Exam &amp; GATE Tips</h3>
+        <p>Exam question: <em>"Which IPv6 extension header must be processed by intermediate routers along the path?"</em><br>
+        Answer: Only the <strong>Hop-by-Hop Options Header (Next Header = 0)</strong>. All other extension headers are ignored by intermediate transit routers and parsed only at the destination.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Engineering RFC standards on extension header chaining and order invariants.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc8200#section-4.1" target="_blank" rel="noopener noreferrer">
+            📘 RFC 8200 Section 4.1 - Extension Header Order
+            <small>The definitive standard establishing recommended order and daisy-chain parsing rules.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=F_fDkJN3R4w" target="_blank" rel="noopener noreferrer">
+            🎥 IPv6 Extension Headers Architecture Video
+            <small>Visual explanation of the linked-list daisy chain and fast router forwarding.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/extension-headers" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on Extension Header Chaining
+            <small>Questions testing valid header sequences, Next Header codes, and router inspection rules.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 16.13 IPv6 Source-Only Fragmentation -->
+    <section id="s16-frag" class="section-in-uni content-section" data-chapter="16" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Source-only fragmentation Path MTU Discovery PMTUD Packet Too Big ICMPv6">
+      <div class="section-header">
+        <span class="section-number">16.13</span>
+        <h2>IPv6 Source-Only Fragmentation &amp; PMTUD <button class="bookmark-btn" data-id="s16-frag" data-label="IPv6 Source-Only Fragmentation &amp; PMTUD" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>IPv6 Source-Only Fragmentation & PMTUD</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p>In IPv6, <strong>intermediate routers are strictly prohibited from performing fragmentation</strong> during packet forwarding. Fragmentation is performed <strong>exclusively by the originating source host</strong>, which discovers the minimum link MTU along the entire transmission path using <strong>Path MTU Discovery (PMTUD, RFC 1981)</strong> and fragments the payload using the <strong>Fragment Extension Header (Next Header = 44)</strong>.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why Routers Never Fragment in IPv6</h3>
+        <p>In IPv4, in-flight router fragmentation introduced catastrophic performance bottlenecks: router CPUs had to slice packets, copy headers, compute checksums, and update routing state, while destination hosts suffered throughput collapse if a single piece was lost. IPv6 completely eliminates router fragmentation to ensure routers operate as pure, line-rate hardware forwarders.</p>
+      </div>
+
+      <div class="ascii-box">
+PATH MTU DISCOVERY (PMTUD) WORKFLOW:
+
+[ Source Host ]                             [ Intermediate Router ]
+      |                                                |
+      | === (Sends Packet: Size 1500 Bytes) =========> | (Egress MTU = 1280B!)
+      |                                                | Packet exceeds link MTU!
+      |                                                | Router CANNOT fragment!
+      | <== [ ICMPv6 Packet Too Big (Type 2) ] ========| DROPS PACKET & Returns:
+      |     (Contains Link MTU = 1280 Bytes!)          | "Packet Too Big, MTU=1280"
+      |
+[ Source updates Path MTU cache to 1280B ]
+[ Source fragments locally using Fragment Header ]
+      |
+      | === (Sends Fragment 1: <= 1280B) ============> | Forwarded at line rate!
+      | === (Sends Fragment 2: <= 1280B) ============> | Forwarded at line rate!
+      </div>
+
+      <div class="example-box">
+        <h3>3. The IPv6 Fragment Extension Header (8 Bytes)</h3>
+        <p>When a source host fragments a packet, it prepends the 8-byte <strong>Fragment Header (Code 44)</strong> directly before the fragmented payload chunk:</p>
+        <div class="ascii-box">
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  Next Header  |   Reserved    |      Fragment Offset    |Res|M|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         Identification                        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+<-- 8 bits ----> <-- 8 bits ---> <---------- 13 bits -----> 2b 1b
+ Code of Next     Must be 0       Offset in 8-byte units     M-flag
+ Header Protocol                  (Same 8-byte rule!)       (More)
+<-------------------------- 32 bits ---------------------------->
+ Identification: 32-bit tag (Expanded from IPv4's 16 bits!)
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <h3>4. Critical Invariants of IPv6 Fragmentation</h3>
+        <ul>
+          <li><strong>32-Bit Identification:</strong> In IPv4, high-speed Gigabit links wrapped the 16-bit ID field in seconds, causing duplicate ID collisions. IPv6 expanded Identification to <strong>32 bits</strong> ($4.29\text{ billion}$ distinct tags).</li>
+          <li><strong>IPv6 Minimum MTU (1,280 Bytes):</strong> RFC 8200 mandates that <strong>every link in an IPv6 network must support an MTU of at least 1,280 bytes</strong> (compared to IPv4's 576 bytes). If a physical medium cannot carry 1280 bytes natively (e.g. 6LoWPAN / IEEE 802.15.4), Layer 2 must implement its own link-layer fragmentation below IP!</li>
+        </ul>
+      </div>
+
+      <div class="confusion-box">
+        <h3>5. Common Confusion &amp; Traps</h3>
+        <p><strong>The "Black Hole Router" Problem:</strong><br>
+        If an intermediate network administrator misconfigures a firewall to block all ICMPv6 traffic, the <em>ICMPv6 Packet Too Big</em> message will be dropped! The source host will never discover the lower MTU, and packets will silently vanish into a "black hole". This is why blocking ICMPv6 is strictly prohibited in modern enterprise network design.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>6. University Exam &amp; GATE Tips</h3>
+        <p>Exam question: <em>"An IPv6 packet exceeds the egress MTU of a router. What does the router do?"</em><br>
+        Answer: The router <strong>discards the packet</strong> and returns an <strong>ICMPv6 Packet Too Big (Type 2, Code 0)</strong> error message containing the egress link's MTU to the source host. The router <em>never</em> fragments the packet.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Engineering RFC specifications on Path MTU Discovery and fragment headers.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc1981" target="_blank" rel="noopener noreferrer">
+            📘 RFC 1981 - Path MTU Discovery for IP version 6
+            <small>Authoritative standard on dynamic MTU probing using ICMPv6 Packet Too Big feedback.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=F_fDkJN3R4w" target="_blank" rel="noopener noreferrer">
+            🎥 IPv6 Fragmentation vs IPv4 Fragmentation
+            <small>Visual animation illustrating why routers do not fragment and how hosts probe MTU.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/ipv6-fragmentation" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on IPv6 Fragmentation
+            <small>Past entrance exam questions testing PMTUD mechanisms and Fragment Header formats.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 16.14 IPv4 vs IPv6 Fragmentation -->
+    <section id="s16-compare-frag" class="section-in-uni content-section" data-chapter="16" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="IPv4 vs IPv6 fragmentation comparison intermediate router vs source host PMTUD header">
+      <div class="section-header">
+        <span class="section-number">16.14</span>
+        <h2>IPv4 vs IPv6 Fragmentation Master Comparison <button class="bookmark-btn" data-id="s16-compare-frag" data-label="IPv4 vs IPv6 Fragmentation Master Comparison" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>IPv4 vs IPv6 Fragmentation Master Comparison</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. Architectural Synthesis</h3>
+        <p>The transition from IPv4 to IPv6 represents a profound philosophical shift in network engineering: migrating from <em>in-network reactive fragmentation</em> to <em>end-to-end proactive path discovery</em>. This section contrasts the two paradigms across all engineering dimensions.</p>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Evaluation Dimension</th>
+              <th>IPv4 Fragmentation Paradigm</th>
+              <th>IPv6 Fragmentation Paradigm</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Who Performs Fragmentation?</strong></td>
+              <td>Source host <strong>AND</strong> intermediate routers</td>
+              <td><strong>Source host ONLY</strong> (Routers NEVER fragment!)</td>
+            </tr>
+            <tr>
+              <td><strong>Router Action on $L > \text{MTU}$</strong></td>
+              <td>Fragments packet (if $\text{DF}=0$)</td>
+              <td><strong>Drops packet</strong> &amp; sends ICMPv6 Packet Too Big (Type 2)</td>
+            </tr>
+            <tr>
+              <td><strong>Fragmentation Fields Location</strong></td>
+              <td>Embedded directly inside <strong>Base Header</strong> (Row 2)</td>
+              <td>Carried in optional <strong>Fragment Extension Header</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Identification Field Size</strong></td>
+              <td>16 bits ($65,536$ unique tags)</td>
+              <td><strong>32 bits</strong> ($4.29 \text{ billion}$ unique tags)</td>
+            </tr>
+            <tr>
+              <td><strong>Minimum Required Path MTU</strong></td>
+              <td>576 Bytes (RFC 791)</td>
+              <td><strong>1,280 Bytes</strong> (RFC 8200)</td>
+            </tr>
+            <tr>
+              <td><strong>Header Overhead on Unfragmented</strong></td>
+              <td>Wastes 8 bytes of header space on every packet</td>
+              <td><strong>Zero overhead</strong> (Fragment Header only present when fragmented)</td>
+            </tr>
+            <tr>
+              <td><strong>Router CPU Overhead</strong></td>
+              <td>High (Must slice payload, compute checksums)</td>
+              <td><strong>Zero</strong> (Hardware line-rate forwarding preserved)</td>
+            </tr>
+            <tr>
+              <td><strong>Reassembly Location</strong></td>
+              <td>Final Destination Host Only</td>
+              <td>Final Destination Host Only</td>
+            </tr>
+            <tr>
+              <td><strong>Path MTU Discovery (PMTUD)</strong></td>
+              <td>Optional (TCP sets $\text{DF}=1$)</td>
+              <td><strong>Mandatory core mechanism</strong> (RFC 1981)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="ascii-box">
+PARADIGM COMPARISON:
+IPv4: "Routers fix the sender's mistake by slicing packets in-flight."
+      --> High router CPU, high memory buffers, reassembly drop storms.
+
+IPv6: "Routers enforce path limits; the sender must fix its own packet size."
+      --> Line-rate ASIC forwarding, zero router CPU interrupts.
+      </div>
+
+      <div class="confusion-box">
+        <h3>2. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "Because routers don't fragment in IPv6, IPv6 packets are never fragmented."<br>
+        <strong>Reality:</strong> False! Applications that send large UDP datagrams (e.g. DNS response over 1280 bytes) will still be fragmented <strong>by the sending host's operating system</strong> using the Fragment Extension Header. The difference is strictly <em>who</em> does the slicing: the sender does it, not intermediate routers.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>3. University Exam &amp; GATE Tips</h3>
+        <p>University exams frequently feature 10-mark comparison questions: <em>"Compare IPv4 and IPv6 fragmentation mechanisms on at least 5 points."</em><br>
+        High-scoring points: (1) Entity performing fragmentation, (2) Field location (base header vs extension header), (3) Identification field size (16b vs 32b), (4) Minimum path MTU (576B vs 1280B), and (5) Impact on router forwarding performance.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Academic papers and IETF engineering notes contrasting fragmentation architectures.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc8200#section-4.5" target="_blank" rel="noopener noreferrer">
+            📘 RFC 8200 Section 4.5 - Fragment Header
+            <small>Authoritative standard detailing the exact byte layout of the IPv6 fragment extension.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=F_fDkJN3R4w" target="_blank" rel="noopener noreferrer">
+            🎥 IPv4 vs IPv6 Fragmentation Detailed Analysis
+            <small>Educational video contrasting in-flight slicing with source-only Path MTU Discovery.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/ipv4-vs-ipv6-fragmentation" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on Fragmentation Differences
+            <small>Past entrance exam questions testing field comparisons and minimum MTU thresholds.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 16.15 Neighbor Discovery Protocol (NDP) -->
+    <section id="s16-ndp" class="section-in-uni content-section" data-chapter="16" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Neighbor Discovery Protocol NDP ICMPv6 messages Router Solicitation Advertisement NS NA">
+      <div class="section-header">
+        <span class="section-number">16.15</span>
+        <h2>Neighbor Discovery Protocol (NDP) <button class="bookmark-btn" data-id="s16-ndp" data-label="Neighbor Discovery Protocol (NDP)" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>Neighbor Discovery Protocol (NDP)</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p>The <strong>Neighbor Discovery Protocol (NDP)</strong>, defined in RFC 4861, is an essential suite of five ICMPv6 messages operating at the Network Layer that replaces IPv4's Address Resolution Protocol (ARP), ICMPv4 Router Discovery, and ICMPv4 Redirect with an integrated, secure, multicast-driven framework for local link node management.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why NDP Replaces ARP: Eliminating Broadcast Floods</h3>
+        <p>In IPv4, Address Resolution Protocol (ARP) sends a Layer 2 broadcast frame (<code>FF:FF:FF:FF:FF:FF</code>) across the entire Ethernet LAN to resolve an IP to a MAC address. Every connected device is forced to process the interrupt. In IPv6:</p>
+        <ul>
+          <li><strong>No Broadcast:</strong> NDP transmits <strong>Neighbor Solicitation (NS)</strong> messages to a specialized <strong>Solicited-Node Multicast Address</strong>.</li>
+          <li><strong>Hardware Filtering:</strong> Because the multicast address is derived from the target's last 24 bits of its IPv6 address, <em>only the target machine (or extremely rare hash collisions) listens to that multicast MAC address</em>! All other network interface cards discard the frame in hardware with zero CPU impact!</li>
+        </ul>
+      </div>
+
+      <div class="ascii-box">
+THE FIVE CORE ICMPv6 NEIGHBOR DISCOVERY MESSAGES:
+
+1. Neighbor Solicitation (NS - Type 135):
+   [ Host A ] === "Who has 2001:db8::2? Tell me your MAC!" ===> [ Target Host B ]
+   (Sent to Solicited-Node Multicast: ff02::1:ff00:2)
+
+2. Neighbor Advertisement (NA - Type 136):
+   [ Host B ] === "I have 2001:db8::2! My MAC is 00:1A:2B:3C:4D:5E" ===> [ Host A ]
+   (Sent via Unicast back to Host A!)
+
+3. Router Solicitation (RS - Type 133):
+   [ Booting Host ] === "Are there any routers on this link?" ===> [ ff02::2 (All Routers) ]
+
+4. Router Advertisement (RA - Type 134):
+   [ Router ] === "I am here! Network Prefix is 2001:db8:cafe::/64!" ===> [ ff02::1 (All Nodes) ]
+
+5. Redirect (Type 137):
+   [ Router ] === "For that destination, use Router R2 instead!" ===> [ Host A ]
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Operational Function</th>
+              <th>IPv4 Legacy Mechanism</th>
+              <th>IPv6 Modern Replacement (NDP)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Address Resolution (IP to MAC)</strong></td>
+              <td>ARP Request / ARP Reply (Broadcast)</td>
+              <td><strong>Neighbor Solicitation / Advertisement (Multicast)</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Router Discovery</strong></td>
+              <td>DHCPv4 or ICMP Router Discovery</td>
+              <td><strong>Router Solicitation / Advertisement (RS / RA)</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Duplicate Address Detection (DAD)</strong></td>
+              <td>Gratuitous ARP (Unreliable)</td>
+              <td><strong>Mandatory DAD via Neighbor Solicitation</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Next-Hop Redirection</strong></td>
+              <td>ICMPv4 Redirect (Type 5)</td>
+              <td><strong>ICMPv6 Redirect (Type 137)</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Protocol Layer</strong></td>
+              <td>Layer 2.5 (Raw Ethernet EtherType <code>0x0806</code>)</td>
+              <td><strong>Pure Layer 3 (ICMPv6 inside standard IPv6 datagram)</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="confusion-box">
+        <h3>3. Common Confusion: What is Solicited-Node Multicast?</h3>
+        <p><strong>Formula:</strong> <code>ff02::1:ffXX:XXXX</code><br>
+        Take the last 24 bits (6 hex digits) of the target's IPv6 address and append them to <code>ff02::1:ff</code>.<br>
+        <strong>Example:</strong> If resolving target IP <code>2001:db8:cafe:1::<strong>12:3456</strong></code>:<br>
+        The last 24 bits are <code>12:3456</code>. The Solicited-Node Multicast is:
+        $$\mathbf{ff02::1:ff12:3456}$$
+        The Ethernet switch maps this to multicast MAC <code>33:33:FF:12:34:56</code>. Only Host B listens to this MAC!</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>4. University Exam &amp; GATE Tips</h3>
+        <p>Exam question: <em>"At which layer does IPv6 address resolution operate compared to IPv4 ARP?"</em><br>
+        Answer: IPv4 ARP operates directly over Layer 2 Ethernet (EtherType <code>0x0806</code>). IPv6 NDP operates at <strong>Layer 3</strong>, encapsulated inside standard IPv6 packets carrying ICMPv6 messages (Next Header = 58). This allows NDP to be protected by standard IPsec encryption!</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Engineering RFC specifications on the Neighbor Discovery Protocol framework.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc4861" target="_blank" rel="noopener noreferrer">
+            📘 RFC 4861 - Neighbor Discovery for IP version 6 (IPv6)
+            <small>The definitive IETF specification of NS, NA, RS, RA, and Redirect messages.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=F_fDkJN3R4w" target="_blank" rel="noopener noreferrer">
+            🎥 IPv6 Neighbor Discovery Protocol (NDP) Animation
+            <small>Visual demonstration of how Solicited-Node Multicast eliminates broadcast storms.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/ndp" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on Neighbor Discovery Protocol
+            <small>Past entrance exam questions testing NDP message types and Solicited-Node multicast.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 16.16 SLAAC & EUI-64 Interface ID -->
+    <section id="s16-slaac" class="section-in-uni content-section" data-chapter="16" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Stateless Address Autoconfiguration SLAAC modified EUI-64 MAC address 48 to 64 bit u/l bit">
+      <div class="section-header">
+        <span class="section-number">16.16</span>
+        <h2>SLAAC &amp; EUI-64 Interface ID <button class="bookmark-btn" data-id="s16-slaac" data-label="SLAAC &amp; EUI-64 Interface ID" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>SLAAC & EUI-64 Interface ID</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p><strong>Stateless Address Autoconfiguration (SLAAC)</strong>, defined in RFC 4862, is an automated plug-and-play mechanism that allows an IPv6 host to configure its own globally unique IPv6 address without requiring a stateful DHCP server, by combining a 64-bit Network Prefix learned from a router with a 64-bit <strong>Interface Identifier (IID)</strong> generated via <strong>IEEE Modified EUI-64 format</strong> or privacy extensions.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why SLAAC Exists: Zero-Touch Plug &amp; Play</h3>
+        <p>In massive corporate campuses or mobile environments with millions of smartphones, configuring or maintaining stateful DHCP leases creates substantial operational overhead. SLAAC allows a host to simply plug into an Ethernet port or connect to Wi-Fi, listen for a <strong>Router Advertisement (RA)</strong>, append its own MAC-derived 64-bit identifier, and immediately communicate globally.</p>
+      </div>
+
+      <div class="ascii-box">
+THE MODIFIED EUI-64 DERIVATION (48-Bit MAC to 64-Bit IID):
+
+Original 48-bit MAC Address:
+    00 : 1A : 2B  :  3C : 4D : 5E
+   \------------/    \------------/
+      OUI (24b)        NIC ID (24b)
+
+Step 1: Split the MAC into two 24-bit halves:
+    [ 00 : 1A : 2B ]      [ 3C : 4D : 5E ]
+
+Step 2: Insert 16-bit constant 0xFFFE in the middle:
+    [ 00 : 1A : 2B ] + [ FF : FE ] + [ 3C : 4D : 5E ]
+    ===> 00:1A:2B:FF:FE:3C:4D:5E
+
+Step 3: Invert the 7th bit of the first byte (Universal/Local bit):
+    First byte = 0x00 = 0000 0000 in binary.
+    Bit 7 (from left, 0-indexed as b0..b7, or 7th bit): 0000 00[0]0 -> Invert to 1!
+    New byte   = 0000 0010 = 0x02!
+
+Final 64-bit Modified EUI-64 Interface ID:
+    021a:2bff:fe3c:4d5e
+      </div>
+
+      <div class="example-box">
+        <h3>3. Complete Step-by-Step EUI-64 Numerical Walkthrough</h3>
+        <p><strong>Problem:</strong> A network interface card has IEEE MAC address <code>00:14:22:01:23:45</code>. The local router advertises network prefix <code>2001:db8:acad:1::/64</code>. Derive the full 128-bit IPv6 address configured via SLAAC using Modified EUI-64 format.</p>
+
+        <h4>Step 1: Split MAC and Insert <code>FF:FE</code></h4>
+        <div class="math-block">
+          \text{Half 1: } 00:14:22, \quad \text{Half 2: } 01:23:45
+          $$\text{Combined with } \text{FF:FE} \implies 0014:22\mathbf{ff}:\mathbf{fe}01:2345$$
+        </div>
+
+        <h4>Step 2: Invert the 7th Bit (U/L Bit) of Byte 1</h4>
+        <ul>
+          <li>Byte 1 is <code>0x00</code>. In binary: $0000\ 0000_2$.</li>
+          <li>In IEEE standards, bit positions in the first octet are numbered from left to right: $b_7 b_6 b_5 b_4 b_3 b_2 b_1 b_0$ (where $b_1$ is the 7th bit, known as the Universal/Local bit).</li>
+          <li>Invert bit 1: $0000\ 00\mathbf{0}0_2 \implies 0000\ 00\mathbf{1}0_2 = \mathbf{0x02}$.</li>
+          <li><em>(Mental shortcut: If the second hex character is $0, 4, 8, C$, add 2; if $2, 6, A, E$, subtract 2!)</em></li>
+        </ul>
+
+        <h4>Step 3: Assemble the 64-Bit Interface ID</h4>
+        <div class="math-block">
+          $$\text{Interface ID} = \mathbf{0214:22ff:fe01:2345}$$
+        </div>
+
+        <h4>Step 4: Concatenate with the /64 Network Prefix</h4>
+        <div class="math-block">
+          $$\text{Full IPv6 Address} = \mathbf{2001:db8:acad:1:0214:22ff:fe01:2345}$$
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <h3>4. Duplicate Address Detection (DAD)</h3>
+        <p>Before an interface is allowed to actually use its newly generated SLAAC address, RFC 4862 mandates <strong>Duplicate Address Detection (DAD)</strong>:</p>
+        <ol>
+          <li>The interface joins the Solicited-Node Multicast group for its prospective address.</li>
+          <li>The interface sends a <strong>Neighbor Solicitation</strong> for its own tentative IP with source address set to <code>::</code> (Unspecified).</li>
+          <li>If another host responds with a Neighbor Advertisement, an IP collision exists! The interface disables IPv6 and alerts the system administrator.</li>
+          <li>If zero responses arrive within the timeout window, the address is certified unique and transitions to the active state.</li>
+        </ol>
+      </div>
+
+      <div class="confusion-box">
+        <h3>5. Common Confusion &amp; Traps</h3>
+        <p><strong>The Privacy Problem &amp; RFC 4941:</strong><br>
+        Because EUI-64 embeds the physical MAC address directly into the public IPv6 address, a laptop moving between home, campus, and coffee shops could be permanently tracked across the world by web advertisers! Modern operating systems (Windows, iOS, Android, macOS) by default use <strong>RFC 4941 Privacy Extensions</strong>, generating random, rotating Interface IDs for outbound web connections while keeping EUI-64 for stable server addressing.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>6. University Exam &amp; GATE Tips</h3>
+        <p>EUI-64 bit flipping is one of the most common numerical questions in competitive networking exams! Memorize the hex flip pairs:
+        <code>0 &harr; 2</code>, <code>4 &harr; 6</code>, <code>8 &harr; A</code>, <code>C &harr; E</code>.<br>
+        Example: MAC starting with <code>00</code> becomes <code>02</code>. MAC starting with <code>F0</code> becomes <code>F2</code>. MAC starting with <code>02</code> becomes <code>00</code>.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Engineering RFC specifications on SLAAC and EUI-64 bit inversion rules.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc4862" target="_blank" rel="noopener noreferrer">
+            📘 RFC 4862 - IPv6 Stateless Address Autoconfiguration
+            <small>The standard specification for router advertisements, prefix learning, and DAD.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=F_fDkJN3R4w" target="_blank" rel="noopener noreferrer">
+            🎥 EUI-64 Step-by-Step Conversion Drill
+            <small>Whiteboard tutorial practicing MAC-to-IPv6 conversions with the 7th bit inversion rule.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/eui-64" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on EUI-64 and SLAAC
+            <small>Past entrance exam questions calculating IPv6 addresses from given Ethernet MAC addresses.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 16.17 IPv6 and ICMPv6 Architecture -->
+    <section id="s16-icmpv6" class="section-in-uni content-section" data-chapter="16" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="ICMPv6 protocol mandatory role error messages informational messages NDP MLD">
+      <div class="section-header">
+        <span class="section-number">16.17</span>
+        <h2>IPv6 and ICMPv6 Architecture <button class="bookmark-btn" data-id="s16-icmpv6" data-label="IPv6 and ICMPv6 Architecture" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>IPv6 and ICMPv6 Architecture</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p>The <strong>Internet Control Message Protocol for IPv6 (ICMPv6)</strong>, defined in RFC 4443, is an indispensable core component of the IPv6 protocol suite (carried with <strong>Next Header = 58</strong>) that combines operational error reporting, network diagnostics (ping/traceroute), neighbor discovery, multicast management, and mobile IPv6 signaling into a unified control plane.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why ICMPv6 is Mandatory (Unlike ICMPv4)</h3>
+        <p>In IPv4, ICMP was an optional companion protocol; network administrators frequently blocked all ICMP traffic with few immediate side effects. In IPv6:</p>
+        <p><strong>Fundamental Truth:</strong> <strong>IPv6 CANNOT FUNCTION without ICMPv6!</strong> If you filter ICMPv6, Address Resolution (NDP) breaks, Path MTU Discovery breaks, Autoconfiguration (SLAAC) breaks, and Multicast breaks. ICMPv6 is an integral part of the network layer itself.</p>
+      </div>
+
+      <div class="ascii-box">
+ICMPv6 MESSAGE CLASSIFICATION (Bit 7 Determines Category):
+
+Type Codes 0 to 127 (High bit = 0): ERROR MESSAGES
+  Type 1:   Destination Unreachable (No route, admin prohibited, port unreachable)
+  Type 2:   Packet Too Big (Crucial for Path MTU Discovery!)
+  Type 3:   Time Exceeded (Hop limit exceeded / Fragment reassembly time exceeded)
+  Type 4:   Parameter Problem (Erroneous header field or unrecognized Next Header)
+
+Type Codes 128 to 255 (High bit = 1): INFORMATIONAL MESSAGES
+  Type 128: Echo Request (Ping)
+  Type 129: Echo Reply (Ping response)
+  Type 133: Router Solicitation (NDP)
+  Type 134: Router Advertisement (NDP / SLAAC)
+  Type 135: Neighbor Solicitation (NDP / ARP replacement)
+  Type 136: Neighbor Advertisement (NDP / ARP replacement)
+  Type 137: Redirect (NDP)
+  Type 143: Multicast Listener Discovery (MLD - replaces IGMP)
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>ICMPv6 Type</th>
+              <th>Message Name</th>
+              <th>Category</th>
+              <th>Vital Network Function</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>Type 1</code></td>
+              <td><strong>Destination Unreachable</strong></td>
+              <td>Error</td>
+              <td>Signals unroutable prefix, firewall drop, or unreachable UDP port.</td>
+            </tr>
+            <tr>
+              <td><code>Type 2</code></td>
+              <td><strong>Packet Too Big</strong></td>
+              <td>Error</td>
+              <td><strong>Drives PMTUD</strong>; informs sender of bottleneck MTU.</td>
+            </tr>
+            <tr>
+              <td><code>Type 3</code></td>
+              <td><strong>Time Exceeded</strong></td>
+              <td>Error</td>
+              <td>Code 0 = Hop Limit 0 (Traceroute); Code 1 = Reassembly timer expired.</td>
+            </tr>
+            <tr>
+              <td><code>Type 4</code></td>
+              <td><strong>Parameter Problem</strong></td>
+              <td>Error</td>
+              <td>Points to corrupted header byte or illegal Next Header code.</td>
+            </tr>
+            <tr>
+              <td><code>Type 128 / 129</code></td>
+              <td><strong>Echo Request / Reply</strong></td>
+              <td>Informational</td>
+              <td>Standard network connectivity test (<code>ping6</code>).</td>
+            </tr>
+            <tr>
+              <td><code>Type 133 / 134</code></td>
+              <td><strong>Router Solicit / Advert</strong></td>
+              <td>Informational</td>
+              <td>Drives stateless autoconfiguration (SLAAC) and default gateway learning.</td>
+            </tr>
+            <tr>
+              <td><code>Type 135 / 136</code></td>
+              <td><strong>Neighbor Solicit / Advert</strong></td>
+              <td>Informational</td>
+              <td>Replaces ARP; executes Duplicate Address Detection (DAD).</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="confusion-box">
+        <h3>3. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "ICMPv6 error messages can be generated in response to other ICMPv6 error messages."<br>
+        <strong>Reality:</strong> Strictly prohibited! To prevent infinite message loops, an ICMPv6 error message is <strong>never</strong> generated in response to another error message, never in response to a packet with a multicast destination, and never in response to a link-layer broadcast.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>4. University Exam &amp; GATE Tips</h3>
+        <p>Memorize the Type 2 message: <strong>ICMPv6 Packet Too Big (Type 2)</strong>. There is NO equivalent dedicated message type in IPv4 (IPv4 crammed it under Type 3 Code 4). In IPv6, it has its own dedicated top-level Type 2 code because of its vital role in Path MTU Discovery.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Engineering RFC specifications on the ICMPv6 message format and error semantics.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc4443" target="_blank" rel="noopener noreferrer">
+            📘 RFC 4443 - ICMPv6 for the Internet Protocol Version 6
+            <small>The foundational standard defining error message formats and rate-limiting rules.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=F_fDkJN3R4w" target="_blank" rel="noopener noreferrer">
+            🎥 ICMPv6 Architecture and Message Types Explained
+            <small>Visual tutorial breaking down Error vs Informational message ranges.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/icmpv6" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on ICMPv6 Architecture
+            <small>Past entrance exam questions testing Type codes and operational constraints.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 16.18 Worked IPv6 Address Exercises -->
+    <section id="s16-drills" class="section-in-uni content-section" data-chapter="16" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="IPv6 address compression and expansion numerical drills prefix calculations">
+      <div class="section-header">
+        <span class="section-number">16.18</span>
+        <h2>Worked IPv6 Address Exercises &amp; Drills <button class="bookmark-btn" data-id="s16-drills" data-label="Worked IPv6 Address Exercises &amp; Drills" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>Worked IPv6 Address Exercises & Drills</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>Quantitative Mastery Drills</h3>
+        <p>Work through these three rigorous practical exercises modeling typical high-weightage university end-semester and competitive engineering exam questions.</p>
+      </div>
+
+      <div class="example-box">
+        <h3>Problem 1: Complex Canonical Zero Compression (RFC 5952)</h3>
+        <p><strong>Problem:</strong> Compress the following raw IPv6 addresses into their strictly canonical RFC 5952 representation:</p>
+        <ul>
+          <li><strong>Address A:</strong> <code>2001:0db8:0000:0000:0000:0000:0000:0001</code></li>
+          <li><strong>Address B:</strong> <code>fe80:0000:0000:0001:0000:0000:0000:0020</code></li>
+          <li><strong>Address C:</strong> <code>2001:0db8:0000:0001:0000:0000:0002:0003</code></li>
+        </ul>
+
+        <h4>Solutions:</h4>
+        <ol>
+          <li><strong>Address A:</strong>
+            <ul>
+              <li>Omit leading zeros: <code>2001:db8:0:0:0:0:0:1</code>.</li>
+              <li>There are 5 consecutive zero hextets (Hextets 3 through 7). Replace with <code>::</code>.</li>
+              <li>Canonical Form: $\mathbf{2001:db8::1}$.</li>
+            </ul>
+          </li>
+          <li><strong>Address B:</strong>
+            <ul>
+              <li>Omit leading zeros: <code>fe80:0:0:1:0:0:0:20</code>.</li>
+              <li>There are two runs of zeros: Run 1 has 2 zeros (Hextets 2-3); Run 2 has 3 zeros (Hextets 5-7).</li>
+              <li>By RFC 5952, compress the <strong>longest</strong> run (Run 2).</li>
+              <li>Canonical Form: $\mathbf{fe80:0:0:1::20}$.</li>
+            </ul>
+          </li>
+          <li><strong>Address C:</strong>
+            <ul>
+              <li>Omit leading zeros: <code>2001:db8:0:1:0:0:2:3</code>.</li>
+              <li>There is an isolated zero (Hextet 3) and a 2-zero run (Hextets 5-6).</li>
+              <li>Compress the 2-zero run: $\mathbf{2001:db8:0:1::2:3}$.</li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+
+      <div class="example-box">
+        <h3>Problem 2: EUI-64 Interface ID Derivation (GATE Level)</h3>
+        <p><strong>Problem:</strong> A host network interface card has IEEE 802 MAC address <code>34:56:FE:12:34:56</code>. Derive its SLAAC Link-Local IPv6 address using the Modified EUI-64 format.</p>
+
+        <h4>Solution:</h4>
+        <ol>
+          <li>Link-Local prefix is <code>fe80::/64</code>.</li>
+          <li>Split MAC address in half: <code>34:56:FE</code> and <code>12:34:56</code>.</li>
+          <li>Insert <code>FF:FE</code> in the middle:
+            $$\text{EUI-64 before bit flip} = 3456:\text{fe}\mathbf{ff}:\mathbf{fe}12:3456$$
+          </li>
+          <li>Invert the 7th bit (Universal/Local bit) of Byte 1 (<code>0x34</code>):
+            <ul>
+              <li>$0x34 = 0011\ 0100_2$.</li>
+              <li>Invert bit 1 (7th bit from left): $0011\ 01\mathbf{1}0_2 = \mathbf{0x36}$.</li>
+            </ul>
+          </li>
+          <li>Resulting Interface Identifier: $\mathbf{3656:feff:fe12:3456}$.</li>
+          <li>Combine with Link-Local Prefix:
+            $$\mathbf{fe80::3656:feff:fe12:3456}$$
+          </li>
+        </ol>
+      </div>
+
+      <div class="example-box">
+        <h3>Problem 3: Enterprise IPv6 Subnetting Calculation</h3>
+        <p><strong>Problem:</strong> An ISP allocates global routing prefix <code>2001:db8:abcd::/48</code> to a corporate enterprise. The enterprise requires 4 separate subnets for its regional offices. Provide the canonical subnet prefixes for the first four subnets, and state the total host capacity of each subnet.</p>
+
+        <h4>Solution:</h4>
+        <ol>
+          <li>Standard IPv6 subnets use a $/64$ prefix. Subnet bits available = $64 - 48 = 16\text{ bits}$ (located in the 4th hextet).</li>
+          <li>Subnet 1 (Index 0): <code>2001:db8:abcd:0000::/64</code> $\to$ $\mathbf{2001:db8:abcd::/64}$.</li>
+          <li>Subnet 2 (Index 1): <code>2001:db8:abcd:0001::/64</code> $\to$ $\mathbf{2001:db8:abcd:1::/64}$.</li>
+          <li>Subnet 3 (Index 2): <code>2001:db8:abcd:0002::/64</code> $\to$ $\mathbf{2001:db8:abcd:2::/64}$.</li>
+          <li>Subnet 4 (Index 3): <code>2001:db8:abcd:0003::/64</code> $\to$ $\mathbf{2001:db8:abcd:3::/64}$.</li>
+          <li>Host Capacity per Subnet: Host bits = $128 - 64 = 64\text{ bits}$. Total capacity = $2^{64} = \mathbf{18,446,744,073,709,551,616\text{ hosts}}$ per subnet!</li>
+        </ol>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Practice numericals and interactive solvers for IPv6 addressing exercises.</div>
+        <div class="resource-grid">
+          <a href="https://www.geeksforgeeks.org/ipv6-address-types-and-formats/" target="_blank" rel="noopener noreferrer">
+            📘 GeeksforGeeks: IPv6 Formats and Compression Exercises
+            <small>Comprehensive repository of worked compression and expansion practice problems.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=F_fDkJN3R4w" target="_blank" rel="noopener noreferrer">
+            🎥 Solving IPv6 Subnetting &amp; EUI-64 Numericals
+            <small>Blackboard video tutorial solving university exam questions step by step.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/ipv6-exercises" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on IPv6 Address Calculations
+            <small>Collection of past entrance exam questions on bit manipulation and prefix extraction.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 16.19 High-Yield Traps, Comparison & Summary -->
+    <section id="s16-summary" class="section-in-uni content-section" data-chapter="16" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="IPv6 exam traps double colon only once fixed 40 bytes no router fragmentation master summary">
+      <div class="section-header">
+        <span class="section-number">16.19</span>
+        <h2>High-Yield Traps, Comparison &amp; Summary <button class="bookmark-btn" data-id="s16-summary" data-label="High-Yield Traps, Comparison &amp; Summary" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>High-Yield Traps, Comparison & Summary</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. IPv4 vs IPv6 Master Comparison Matrix</h3>
+        <p>This master matrix synthesizes the complete architectural evolution from IPv4 to IPv6 across 12 fundamental networking dimensions.</p>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Architectural Dimension</th>
+              <th>IPv4 (RFC 791)</th>
+              <th>IPv6 (RFC 8200)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Address Length</strong></td>
+              <td>32 bits (4 bytes)</td>
+              <td><strong>128 bits (16 bytes)</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Total Address Space</strong></td>
+              <td>$2^{32} \approx 4.29 \times 10^9$ addresses</td>
+              <td><strong>$2^{128} \approx 3.4 \times 10^{38}$ addresses</strong> ($2^{96}\times$ larger!)</td>
+            </tr>
+            <tr>
+              <td><strong>Address Representation</strong></td>
+              <td>Dotted-Decimal (e.g. <code>192.168.1.1</code>)</td>
+              <td><strong>Colon-Hexadecimal</strong> (e.g. <code>2001:db8::1</code>)</td>
+            </tr>
+            <tr>
+              <td><strong>Base Header Size</strong></td>
+              <td>Variable: 20 to 60 bytes (IHL required)</td>
+              <td><strong>Fixed: Exactly 40 bytes</strong> (No IHL needed)</td>
+            </tr>
+            <tr>
+              <td><strong>Header Checksum</strong></td>
+              <td>Present (recomputed at every router hop)</td>
+              <td><strong>ELIMINATED</strong> (accelerates line-rate forwarding)</td>
+            </tr>
+            <tr>
+              <td><strong>Transmission Types</strong></td>
+              <td>Unicast, Multicast, <strong>Broadcast</strong></td>
+              <td>Unicast, Multicast, <strong>Anycast</strong> (<strong>Broadcast ELIMINATED!</strong>)</td>
+            </tr>
+            <tr>
+              <td><strong>Address Resolution</strong></td>
+              <td>ARP (Layer 2 Broadcast floods)</td>
+              <td><strong>NDP (Layer 3 ICMPv6 Scoped Multicast)</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Address Configuration</strong></td>
+              <td>Manual Static or Stateful DHCPv4 server</td>
+              <td><strong>Stateless Autoconfiguration (SLAAC)</strong> or DHCPv6</td>
+            </tr>
+            <tr>
+              <td><strong>Fragmentation Location</strong></td>
+              <td>Intermediate Routers <strong>AND</strong> Source Host</td>
+              <td><strong>Source Host ONLY</strong> (Path MTU Discovery)</td>
+            </tr>
+            <tr>
+              <td><strong>Minimum Required MTU</strong></td>
+              <td>576 Bytes</td>
+              <td><strong>1,280 Bytes</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Optional Parameters</strong></td>
+              <td>Options in base header (capped at 40B)</td>
+              <td><strong>Daisy-chained Extension Headers</strong> (no size limit)</td>
+            </tr>
+            <tr>
+              <td><strong>Security Architecture</strong></td>
+              <td>IPsec optional add-on</td>
+              <td><strong>IPsec designed natively</strong> into protocol foundation</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. The IPv6 Trap Catalog</h3>
+        <div class="concept-grid">
+          <div class="concept-card">
+            <h4>Trap 1: Double Colon Duplication</h4>
+            <p><strong>The Trap:</strong> Writing an address like <code>2001::1::2</code>.<br>
+            <strong>The Reality:</strong> Double colon (<code>::</code>) can appear <strong>at most ONCE</strong> in an entire address. Multiple double colons introduce mathematical ambiguity and are syntactically illegal.</p>
+          </div>
+
+          <div class="concept-card">
+            <h4>Trap 2: Broadcast Selection</h4>
+            <p><strong>The Trap:</strong> Believing IPv6 has a broadcast address.<br>
+            <strong>The Reality:</strong> Broadcast was completely eliminated! Any exam question asking for an "IPv6 broadcast address" is a trick; the equivalent is the All-Nodes Multicast (<code>ff02::1</code>).</p>
+          </div>
+
+          <div class="concept-card">
+            <h4>Trap 3: Router Fragmentation</h4>
+            <p><strong>The Trap:</strong> Calculating fragment packets generated by an intermediate IPv6 router.<br>
+            <strong>The Reality:</strong> Routers NEVER fragment in IPv6! A router that receives an oversized packet drops it and returns an ICMPv6 Packet Too Big message.</p>
+          </div>
+
+          <div class="concept-card">
+            <h4>Trap 4: Payload Length Invariant</h4>
+            <p><strong>The Trap:</strong> Adding the 40-byte base header into the Payload Length field.<br>
+            <strong>The Reality:</strong> In IPv6, Payload Length <strong>excludes the 40-byte base header</strong>. It measures only the bytes following the base header.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <h3>3. Chapter Summary: Core Takeaways</h3>
+        <ul>
+          <li><strong>128-Bit Addressing:</strong> Provides $3.4 \times 10^{38}$ addresses, banishing NAT workarounds and restoring end-to-end peer transparency.</li>
+          <li><strong>Canonical Representation:</strong> RFC 5952 mandates lowercase hex digits, leading zero suppression, and replacing the single longest run of zero hextets with <code>::</code> once.</li>
+          <li><strong>40-Byte Fixed Base Header:</strong> Fixed layout eliminates IHL, Checksum, and fragmentation fields, optimizing line-rate ASIC hardware parsing.</li>
+          <li><strong>Source-Only Fragmentation:</strong> Path MTU Discovery (PMTUD) dynamically identifies link bottlenecks, enforcing minimum path MTU of 1,280 bytes.</li>
+          <li><strong>NDP &amp; SLAAC:</strong> ICMPv6 replaces ARP broadcast with hardware-filtered Solicited-Node Multicast, while SLAAC and Modified EUI-64 enable zero-touch plug-and-play addressing.</li>
+        </ul>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Curated references and course progression links.</div>
+        <div class="resource-grid">
+          <a href="ch15-ipv4-internals.html">
+            📘 Chapter 15: IPv4 Internals &amp; Datagram Processing
+            <small>Review IPv4 header fields, checksum calculation, and router fragmentation.</small>
+          </a>
+          <a href="../exams/mock-exam.html">
+            📝 Computer Networks 100 MCQ Mock Exam
+            <small>Test your mastery across all Network Layer concepts and protocol mechanics.</small>
+          </a>
+          <a href="../index.html">
+            🏠 MiniBook Course Overview &amp; Syllabus
+            <small>View complete syllabus map, unit progress, and mock exam schedules.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+  <!-- PREV/NEXT NAV -->
+  <div class="prev-next">
+    <a href="ch15-ipv4-internals.html" class="nav-btn">&larr; Ch 15: IPv4 Internals</a>
+    <a href="ch17-address-mapping-icmp.html" class="nav-btn primary">Next: Ch 17 Address Mapping &amp; ICMP &rarr;</a>
+  </div>
+
+</div>
+</main>
+
+<!-- FLOATING MODE PANEL -->
+<div id="mode-panel">
+  <button class="mode-btn active" data-mode="all">📚 All</button>
+  <button class="mode-btn uni-btn" data-mode="uni">🎓 Uni</button>
+  <button class="mode-btn gate-btn" data-mode="gate">⚡ GATE</button>
+  <button class="mode-btn adv-btn" data-mode="advanced">🔬 Adv</button>
+</div>
+
+<!-- TTS FLOATING PANEL -->
+<div id="tts-panel">
+  <div class="tts-controls">
+    <button class="tts-btn" id="tts-play" title="Play/Pause">▶</button>
+    <button class="tts-btn" id="tts-stop" title="Stop">⏹</button>
+    <div class="tts-speed"><span>Speed</span><input type="range" id="tts-rate" min="0.5" max="2" step="0.1" value="1"><span id="tts-rate-label">1.0x</span></div>
+  </div>
+  <div class="tts-voice"><select id="tts-voice-select"><option>Loading voices…</option></select></div>
+</div>
+
+<!-- SEARCH MODAL -->
+<div id="search-modal">
+  <div class="search-box">
+    <div class="search-input-wrap"><span class="s-icon">🔍</span><input id="search-input" type="text" placeholder="Search chapters, topics, protocols…" autocomplete="off"></div>
+    <div id="search-results"></div>
+    <div class="search-hint"><span><kbd>↵</kbd> to navigate</span><span><kbd>Esc</kbd> to close</span><span><kbd>Ctrl+K</kbd> to open</span></div>
+  </div>
+</div>
+
+<!-- MOBILE NAV -->
+<nav id="mobile-nav">
+  <button class="mobile-nav-btn" onclick="SidebarManager?.toggle()"><span class="icon">☰</span>Menu</button>
+  <a href="../index.html" class="mobile-nav-btn"><span class="icon">🏠</span>Home</a>
+  <a href="ch16-ipv6.html" class="mobile-nav-btn active"><span class="icon">📖</span>Chapters</a>
+  <a href="../exams/mock-exam.html" class="mobile-nav-btn"><span class="icon">📝</span>Exams</a>
+  <button class="mobile-nav-btn" onclick="SearchManager?.open()"><span class="icon">🔍</span>Search</button>
+</nav>
+
+<div id="toast-container"></div>
+<script src="../assets/js/state.js"></script>
+<script src="../assets/js/core.js"></script>
+<script src="../assets/js/modes.js"></script>
+<script src="../assets/js/tts.js"></script>
+<script src="../assets/js/timer-settings.js"></script>
+<script src="../assets/js/timer.js"></script>
+<script src="../assets/js/timer-analytics.js"></script>
+<script src="../assets/js/timer-notifications.js"></script>
+<script src="../assets/js/timer-ui.js"></script>
+<script src="../assets/js/print.js"></script>
+<script src="../assets/js/notes.js"></script>
+<script src="../assets/js/glossary.js"></script>
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>

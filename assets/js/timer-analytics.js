@@ -8,6 +8,7 @@ window.PomoAnalytics = (() => {
 
   let _history = [];   // array of session entry objects
   let _streak  = { current: 0, longest: 0, lastDate: null };
+  let _initialized = false;
 
   // ── Storage ───────────────────────────────────────────────────────────────
   function _saveHistory() {
@@ -17,21 +18,33 @@ window.PomoAnalytics = (() => {
     try { localStorage.setItem(STREAK_KEY, JSON.stringify(_streak)); } catch (_) {}
   }
   function _loadHistory() {
-    try { _history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); } catch (_) { _history = []; }
+    try {
+      const parsed = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+      _history = Array.isArray(parsed) ? parsed.filter(e => e && typeof e === 'object').slice(-MAX_ENTRIES) : [];
+    } catch (_) { _history = []; }
   }
   function _loadStreak() {
     try {
-      _streak = JSON.parse(localStorage.getItem(STREAK_KEY) || 'null')
-             || { current: 0, longest: 0, lastDate: null };
+      const parsed = JSON.parse(localStorage.getItem(STREAK_KEY) || 'null');
+      _streak = parsed && typeof parsed === 'object' ? {
+        current: Math.max(0, Number(parsed.current) || 0),
+        longest: Math.max(0, Number(parsed.longest) || 0),
+        lastDate: typeof parsed.lastDate === 'string' ? parsed.lastDate : null,
+      } : { current: 0, longest: 0, lastDate: null };
     } catch (_) { _streak = { current: 0, longest: 0, lastDate: null }; }
   }
 
   // ── Helpers ───────────────────────────────────────────────────────────────
-  function _todayKey() { return new Date().toISOString().slice(0, 10); }
-
-  function _dateKey(msSinceEpoch) {
-    return new Date(msSinceEpoch).toISOString().slice(0, 10);
+  function _localDateKey(date = new Date()) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
   }
+
+  function _todayKey() { return _localDateKey(new Date()); }
+
+  function _dateKey(msSinceEpoch) { return _localDateKey(new Date(msSinceEpoch)); }
 
   // ── Streak logic ──────────────────────────────────────────────────────────
   function _updateStreak() {
@@ -49,7 +62,9 @@ window.PomoAnalytics = (() => {
   // ── Record ────────────────────────────────────────────────────────────────
   function recordSession(data) {
     const entry = {
-      id:        Date.now() + Math.random(), // unique enough
+      id:        (globalThis.crypto && typeof globalThis.crypto.randomUUID === 'function')
+        ? globalThis.crypto.randomUUID()
+        : `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`,
       phase:     data.phase,
       date:      _todayKey(),
       timestamp: data.timestamp || Date.now(),
@@ -73,8 +88,11 @@ window.PomoAnalytics = (() => {
   function getWeekData() {
     const days = [];
     for (let i = 6; i >= 0; i--) {
-      const key   = _dateKey(Date.now() - i * 86400000);
-      const label = new Date(key + 'T12:00:00').toLocaleDateString('en', { weekday: 'short' });
+      const d = new Date();
+      d.setHours(12, 0, 0, 0);
+      d.setDate(d.getDate() - i);
+      const key   = _localDateKey(d);
+      const label = d.toLocaleDateString(undefined, { weekday: 'short' });
       const count = _history.filter(e => e.date === key && e.phase === 'work' && !e.skipped).length;
       days.push({ date: key, label, count });
     }
@@ -83,8 +101,8 @@ window.PomoAnalytics = (() => {
 
   function getStats() {
     const todayDone  = getTodaySessions().length;
-    const goal       = window.PomoSettings.get('sessionGoal');
-    const workSec    = window.PomoSettings.get('workDuration');
+    const goal       = Math.max(1, Number(window.PomoSettings.get('sessionGoal')) || 1);
+    const workSec    = Math.max(0, Number(window.PomoSettings.get('workDuration')) || 0);
     const allWork    = _history.filter(e => e.phase === 'work' && !e.skipped);
     return {
       today:             todayDone,
@@ -100,14 +118,18 @@ window.PomoAnalytics = (() => {
   // ── Export ────────────────────────────────────────────────────────────────
   function exportCSV() {
     const header = ['ID', 'Date', 'Phase', 'Timestamp_ISO', 'Sessions_Cumulative', 'Skipped'];
-    const rows   = _history.map(e => [
+    const escapeCell = value => {
+      const text = String(value ?? '');
+      return /[\",\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+    };
+    const rows = _history.map(e => [
       e.id, e.date, e.phase,
       new Date(e.timestamp).toISOString(),
       e.sessions, e.skipped,
     ]);
     _download('pomo-history.csv',
-      [header, ...rows].map(r => r.join(',')).join('\n'),
-      'text/csv');
+      [header, ...rows].map(r => r.map(escapeCell).join(',')).join('\n'),
+      'text/csv;charset=utf-8');
   }
 
   function exportJSON() {
@@ -136,6 +158,8 @@ window.PomoAnalytics = (() => {
 
   // ── Init ──────────────────────────────────────────────────────────────────
   function init() {
+    if (_initialized) return;
+    _initialized = true;
     _loadHistory();
     _loadStreak();
     PomoBus.on('analytics:session_end', recordSession);

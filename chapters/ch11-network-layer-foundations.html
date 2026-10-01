@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<!-- ⚡ Arpit | CN MiniBook 2026 -->
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="Arpit">
+<meta name="description" content="Chapter 11: Network Layer Foundations & Design Issues — CN MiniBook. Store-and-forward packet switching, routing vs forwarding, data plane vs control plane, longest prefix match, and datagram vs virtual circuits.">
+<title>Ch 11 — Network Layer Foundations | CN MiniBook 🌐 Arpit</title>
+<link rel="manifest" href="../manifest.json">
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/animations.css">
+<link rel="stylesheet" href="../assets/css/timer.css">
+<link rel="stylesheet" href="../assets/css/chapters.css">
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<!-- HEADER -->
+<header id="main-header">
+  <div class="header-left">
+    <button id="sidebar-toggle" class="icon-btn" title="Toggle Sidebar (S)">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </button>
+    <div class="brand-logo">
+      <div class="brand-icon">🌐</div>
+      <div class="brand-text"><span class="main">CN MiniBook</span><span class="sub">Computer Networks</span></div>
+    </div>
+  </div>
+  <span class="header-chapter-title">Ch 11 — Network Layer Foundations</span>
+  <div class="header-right">
+    <button id="search-btn" class="icon-btn" title="Search (Ctrl+K)">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.35-4.35"></path></svg>
+    </button>
+    <button id="tts-toggle" class="icon-btn" title="Read Aloud">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"></path></svg>
+    </button>
+    <button id="print-btn" title="Print / Save as PDF (Ctrl+P)" aria-label="Print"><svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg><span class="print-label">PDF</span></button>
+    <button id="reading-mode-btn" class="icon-btn" title="Reading Mode (F)" aria-pressed="false" aria-label="Toggle reading mode">📖</button>
+    <button id="theme-toggle" class="icon-btn" title="Toggle Theme (T)"></button>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<div id="sidebar-overlay"></div>
+<aside id="sidebar">
+  <nav class="sidebar-nav">
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Navigation</div>
+      <a href="../index.html" class="sidebar-link"><span class="link-icon">🏠</span>Home</a>
+      <a href="../progress.html" class="sidebar-link"><span class="link-icon">📊</span>Dashboard</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Chapter 11 — Sections</div>
+      <a href="#s11-overview" class="sidebar-link active"><span class="link-icon">📦</span>11.1 Frames to Packets</a>
+      <a href="#s11-need" class="sidebar-link"><span class="link-icon">🎯</span>11.2 Why Network Layer?</a>
+      <a href="#s11-design" class="sidebar-link"><span class="link-icon">📐</span>11.3 Design Issues</a>
+      <a href="#s11-services" class="sidebar-link"><span class="link-icon">🤝</span>11.4 Service Models</a>
+      <a href="#s11-routing-forwarding" class="sidebar-link"><span class="link-icon">🔄</span>11.5 Routing vs Forwarding</a>
+      <a href="#s11-plane" class="sidebar-link"><span class="link-icon">⚖️</span>11.6 Data vs Control Plane</a>
+      <a href="#s11-routing-table" class="sidebar-link"><span class="link-icon">📑</span>11.7 Routing Tables &amp; LPM</a>
+      <a href="#s11-metrics" class="sidebar-link"><span class="link-icon">📏</span>11.8 Routing Metrics &amp; Cost</a>
+      <a href="#s11-packet" class="sidebar-link"><span class="link-icon">🚶</span>11.9 Hop-by-Hop Pipeline</a>
+      <a href="#s11-datagram" class="sidebar-link"><span class="link-icon">🔌</span>11.10 Datagram vs VC</a>
+      <a href="#s11-best-effort" class="sidebar-link"><span class="link-icon">🛡️</span>11.11 Best-Effort Delivery</a>
+      <a href="#s11-example" class="sidebar-link"><span class="link-icon">🔍</span>11.12 End-to-End Walkthrough</a>
+      <a href="#s11-protocols" class="sidebar-link"><span class="link-icon">🗺️</span>11.13 Routing Protocols Fit</a>
+      <a href="#s11-traps" class="sidebar-link"><span class="link-icon">⚠️</span>11.14 High-Yield Traps</a>
+      <a href="#s11-summary" class="sidebar-link"><span class="link-icon">🏁</span>11.15 Summary &amp; Self-Check</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label part-label part-i">Part I — Introduction</div>
+      <a href="ch01-fundamentals.html" class="sidebar-link"><span class="link-icon">📡</span>Ch 1 — Fundamentals</a>
+      <a href="ch02-types-topologies.html" class="sidebar-link"><span class="link-icon">🔗</span>Ch 2 — Types &amp; Topologies</a>
+      <a href="ch03-models-addressing.html" class="sidebar-link"><span class="link-icon">📦</span>Ch 3 — Models &amp; Addressing</a>
+      <a href="ch04-devices-sdn.html" class="sidebar-link"><span class="link-icon">🔌</span>Ch 4 — Devices &amp; SDN</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label part-label part-ii">Part II — Physical Layer</div>
+      <a href="ch05-physical-fundamentals.html" class="sidebar-link"><span class="link-icon">📶</span>Ch 5 — Physical Fundamentals</a>
+      <a href="ch06-media-signaling.html" class="sidebar-link"><span class="link-icon">🔌</span>Ch 6 — Media &amp; Line Coding</a>
+      <a href="ch07-modulation-switching.html" class="sidebar-link"><span class="link-icon">📻</span>Ch 7 — Modulation &amp; Switching</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label part-label part-iii">Part III — Data Link Layer</div>
+      <a href="ch08-dll-fundamentals.html" class="sidebar-link"><span class="link-icon">🔧</span>Ch 8 — DLL Fundamentals</a>
+      <a href="ch09-protocols-sliding.html" class="sidebar-link"><span class="link-icon">🔄</span>Ch 9 — Protocols &amp; Sliding Window</a>
+      <a href="ch10-mac-ethernet.html" class="sidebar-link"><span class="link-icon">🌐</span>Ch 10 — MAC &amp; Ethernet</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label part-label part-iv">Part IV — Network Layer</div>
+      <a href="ch11-network-layer-foundations.html" class="sidebar-link active part-iv"><span class="link-icon">🗺️</span>Ch 11 — Network Layer Foundations</a>
+      <a href="ch12-shortest-path-routing.html" class="sidebar-link part-iv"><span class="link-icon">🧭</span>Ch 12 — Shortest Path Routing</a>
+      <a href="ch13-link-state-distance-vector.html" class="sidebar-link part-iv"><span class="link-icon">🔁</span>Ch 13 — Link-State &amp; Distance-Vector</a>
+      <a href="ch14-logical-addressing-ipv4.html" class="sidebar-link part-iv"><span class="link-icon">🏷️</span>Ch 14 — Logical Addressing &amp; IPv4</a>
+      <a href="ch15-ipv4-internals.html" class="sidebar-link part-iv"><span class="link-icon">📦</span>Ch 15 — IPv4 Internals</a>
+      
+      <a href="ch17-address-mapping-icmp.html" class="sidebar-link part-iv"><span class="link-icon">🔎</span>Ch 17 — Address Mapping &amp; ICMP</a>
+      <a href="ch18-routers-switches-firewalls.html" class="sidebar-link part-iv"><span class="link-icon">🛡️</span>Ch 18 — Routers, Switches &amp; Firewalls</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">My Notes</div>
+      <div id="notes-sidebar-list"></div>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-brand-mark"><div class="mark">🌐</div><span>Arpit · CN MiniBook 2026</span></div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main id="main-content">
+<div class="content-inner">
+
+  <!-- CHAPTER HERO -->
+  <div class="chapter-hero">
+    <div class="chapter-breadcrumb">
+      <a href="../index.html">Home</a><span>›</span><span>Part IV — Network Layer</span><span>›</span><span>Chapter 11</span>
+    </div>
+    <div class="chapter-num">🗺️ Chapter 11 · Part IV — Network Layer</div>
+    <div class="chapter-part-banner part-iv">
+      <span class="part-banner-badge">Part IV</span>
+      <span>Network Layer</span>
+    </div>
+    <h1 class="chapter-title">Network Layer Foundations &amp; Design Issues</h1>
+    <div class="chapter-meta">
+      <span class="chapter-meta-item">🎓 Uni Unit II: Network Layer Design Issues</span>
+      <span>⏱️ 55 min read</span>
+      <span>📚 15 Sections</span>
+      <span>🎓 First-Principles + End-Sem Core</span>
+      <span>⚡ Routing vs Forwarding, Control Plane &amp; Datagrams</span>
+    </div>
+  </div>
+
+  <!-- UNIVERSITY SYLLABUS CALLOUT -->
+  <div class="uni-syllabus-callout">
+    <div class="uni-callout-title">🎓 Official University Syllabus — UNIT II</div>
+    <div><strong>Network Layer:</strong> Network layer design issues, store-and-forward packet switching, routing vs forwarding, connectionless (datagram) vs connection-oriented (virtual-circuit) service models, routing metrics, and packet lifecycle.</div>
+  </div>
+
+  <!-- UNIVERSITY SYLLABUS FILTER SWITCH -->
+  <div class="uni-mode-toggle-card">
+    <div>
+      <div class="uni-mode-title">
+        <span>🎓</span> University Exam Focus Filter
+      </div>
+      <div class="uni-mode-desc">
+        Focus specifically on sections prescribed in University syllabus vs supplementary deep-dives.
+      </div>
+    </div>
+    <div class="uni-filter-switch">
+      <button class="uni-toggle-btn active" id="filter-all-btn" data-mode="all" onclick="ModeManager.apply('all')">📚 Show All Content</button>
+      <button class="uni-toggle-btn" id="filter-uni-btn" data-mode="uni" onclick="ModeManager.apply('uni')">🎓 Focus Uni Syllabus</button>
+    </div>
+  </div>
+
+  <!-- TABLE OF CONTENTS -->
+  <div class="toc-card">
+    <div class="toc-part-tag part-iv">Part IV · Network Layer</div>
+    <div class="toc-title"><span>📑</span>Table of Contents</div>
+    <div class="toc-grid">
+      <a href="#s11-overview" class="toc-item in-uni"><span class="toc-num">11.1</span>From Frames to Packets <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s11-need" class="toc-item in-uni"><span class="toc-num">11.2</span>Why the Network Layer Exists <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s11-design" class="toc-item in-uni"><span class="toc-num">11.3</span>Network-Layer Design Issues <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s11-services" class="toc-item in-uni"><span class="toc-num">11.4</span>Services &amp; Service Models <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s11-routing-forwarding" class="toc-item in-uni"><span class="toc-num">11.5</span>Routing vs Forwarding <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s11-plane" class="toc-item in-uni"><span class="toc-num">11.6</span>Data Plane vs Control Plane <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s11-routing-table" class="toc-item in-uni"><span class="toc-num">11.7</span>Routing Tables &amp; LPM <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s11-metrics" class="toc-item in-uni"><span class="toc-num">11.8</span>Routing Metrics &amp; Path Cost <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s11-packet" class="toc-item in-uni"><span class="toc-num">11.9</span>Packet Forwarding Pipeline <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s11-datagram" class="toc-item in-uni"><span class="toc-num">11.10</span>Datagram vs Virtual-Circuit <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s11-best-effort" class="toc-item in-uni"><span class="toc-num">11.11</span>Best-Effort Delivery Limits <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s11-example" class="toc-item in-uni"><span class="toc-num">11.12</span>End-to-End Packet Lifecycle <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s11-protocols" class="toc-item in-uni"><span class="toc-num">11.13</span>How Routing Protocols Fit In <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s11-traps" class="toc-item in-uni"><span class="toc-num">11.14</span>High-Yield Traps &amp; Distinctions <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      <a href="#s11-summary" class="toc-item in-uni"><span class="toc-num">11.15</span>Chapter Summary &amp; Quick Review <span class="toc-uni-tag">🎓 Uni Core</span></a>
+    </div>
+  </div>
+
+  <!-- LEARNING OBJECTIVES CALLOUT -->
+  <div class="callout info">
+    <span class="callout-icon">🎯</span>
+    <div><strong>After studying this chapter you will be able to:</strong>
+      <ul>
+        <li>Explain how the Network Layer expands local hop-by-hop framing into global end-to-end packet internetworking.</li>
+        <li>Distinguish <strong>routing</strong> (control plane path computation) from <strong>forwarding</strong> (data plane hardware switching).</li>
+        <li>Contrast connectionless <strong>datagram</strong> networks (the Internet) with connection-oriented <strong>virtual-circuit</strong> networks (ATM/X.25).</li>
+        <li>Trace how routers execute <strong>Longest Prefix Match (LPM)</strong> lookups in Forwarding Information Bases (FIB).</li>
+        <li>Follow the exact byte-level modifications of an IP packet across multiple router hops (TTL decrement, checksum recalculation, MAC address rewrite).</li>
+        <li>Synthesize why IP provides "best-effort" service without native guarantees for loss, latency, or order.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- STUDY PATH -->
+  <div class="study-path">
+    <strong>🧭 How to study this chapter (Foundations to Architecture):</strong>
+    <div class="path">
+      <span>1. Local Frames to Global Packets</span> → 
+      <span>2. Design Issues &amp; Service Models</span> → 
+      <span>3. Routing vs Forwarding</span> → 
+      <span>4. Forwarding Pipeline &amp; LPM</span> → 
+      <span>5. Datagram vs Virtual-Circuit</span>
+    </div>
+    <div><strong>Exam Lens:</strong> Sections 11.5 (Routing vs Forwarding), 11.7 (Longest Prefix Match), 11.9 (Router Pipeline &amp; TTL/Checksum Rewrites), and 11.10 (Datagram vs Virtual Circuit Matrix) are high-yield questions for university exams, marked <code>data-midsem="endsem"</code>.</div>
+  </div>
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 11.1: FROM FRAMES TO PACKETS -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s11-overview" class="section-in-uni content-section" data-chapter="11" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="core" data-search-section="Network Layer frames to packets hop by hop vs end to end Layer 2 vs Layer 3 router packet forwarding MAC rewrite IP invariant">
+  <div class="section-heading">
+    <h2 class="prose">11.1 From Frames to Packets: Bridging the L2 / L3 Chasm
+      <button class="bookmark-btn" data-id="s11-overview" data-label="11.1 From Frames to Packets" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Unit II</span>
+    <span>Prescribed syllabus topic: <strong>Network Layer Design Issues: Overview, Scope &amp; Hop-by-Hop to End-to-End Transition</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Network Layer (OSI Layer 3) — First-Principles Definition</div>
+      <p>The <strong>Network Layer</strong> is responsible for the <strong>host-to-host delivery of data packets</strong> across multiple, heterogeneous, interconnected physical networks (internetworks). While the Data Link Layer (Layer 2) moves a <em>frame</em> across a single physical wire or local broadcast domain, the Network Layer moves an <em>IP datagram</em> end-to-end from the original source computer to the ultimate destination computer across intermediate routers.</p>
+    </div>
+
+    <h3>1. The Central Invariant: What Changes vs What Stays Constant</h3>
+    <p>A profound source of confusion in computer networking is understanding what fields are modified during packet transit across the Internet:</p>
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 11.1: Hop-by-Hop Frame Rewriting vs Invariant End-to-End IP Header</div>
+      <pre>
+  [ Host A ]                 [ Router R1 ]                [ Router R2 ]                 [ Host B ]
+ (192.168.1.10)             (Gigabit Eth)                (Fiber Optic)                 (10.0.0.50)
+  MAC: AA:AA:AA             MAC1: BB:BB:BB               MAC3: DD:DD:DD                MAC: FF:FF:FF
+       |                     MAC2: CC:CC:CC               MAC4: EE:EE:EE                     ^
+       |                           |                            |                            |
+       |==== Frame 1 (Ethernet) ==>|                            |                            |
+       | Dest MAC: BB:BB:BB (R1)   |==== Frame 2 (PPP / HDLC) =>|                            |
+       | Src MAC:  AA:AA:AA (Host) | Dest MAC: DD:DD:DD (R2)    |==== Frame 3 (Ethernet) ====|
+       |                           | Src MAC:  CC:CC:CC (R1)    | Dest MAC: FF:FF:FF (Host)  |
+       |                           |                            | Src MAC:  EE:EE:EE (R2)    |
+       +---------------------------+----------------------------+----------------------------+
+       |   IP PAYLOAD REMAINS CONSTANT END-TO-END (Source IP = 192.168.1.10, Dest IP = 10.0.0.50)    |
+       +-------------------------------------------------------------------------------------+
+      </pre>
+    </div>
+
+    <h3>2. Scope Distinction Matrix</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Architectural Layer</th>
+          <th>Protocol Data Unit</th>
+          <th>Addressing Used</th>
+          <th>Delivery Scope</th>
+          <th>Device Performing Lookup</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Layer 2 (Data Link)</strong></td>
+          <td><strong>Frame</strong></td>
+          <td>Physical 48-bit MAC</td>
+          <td><strong>Hop-by-Hop</strong> (Single local link / broadcast domain)</td>
+          <td>L2 Switch / Bridge (Rewritten every hop)</td>
+        </tr>
+        <tr>
+          <td><strong>Layer 3 (Network)</strong></td>
+          <td><strong>Packet (Datagram)</strong></td>
+          <td>Logical 32-bit IPv4 / 128-bit IPv6</td>
+          <td><strong>Host-to-Host</strong> (End-to-End across arbitrary networks)</td>
+          <td>L3 Router (Constant source &amp; dest IP)</td>
+        </tr>
+        <tr>
+          <td><strong>Layer 4 (Transport)</strong></td>
+          <td><strong>Segment / Datagram</strong></td>
+          <td>16-bit Port Number</td>
+          <td><strong>Process-to-Process</strong> (Software application sockets)</td>
+          <td>End Hosts (Operating System kernel)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout tip">
+      <div class="callout-title">⚡ The Postal Envelope Analogy</div>
+      <p>Think of an <strong>IP Packet</strong> as a letter with a permanent delivery address written in ink: <em>"To: Alice, Mumbai. From: Bob, New York."</em><br>
+      As the letter travels, it is placed inside an airline cargo container (Frame 1 across ocean), then a regional postal truck (Frame 2 across highway), then a local courier's bicycle bag (Frame 3 down the street). The container (Layer 2 frame) changes at every transfer depot, but the letter inside (Layer 3 IP packet) remains untouched!</p>
+    </div>
+
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Foundational textbook reading on the network layer abstraction.</div>
+      <div class="resource-grid">
+        <a href="https://www.pearson.com/en-us/subject-catalog/p/computer-networking/P200000009493" target="_blank" rel="noopener noreferrer">
+          📘 Kurose &amp; Ross — Section 4.1 Overview of Network Layer
+          <small>Forwarding and routing; data plane vs control plane distinction.</small>
+        </a>
+        <a href="https://www.mheducation.com/highered/product/data-communications-and-networking-with-tcp-ip-protocol-suite-forouzan.html" target="_blank" rel="noopener noreferrer">
+          📘 Forouzan — Chapter 18 Network Layer Introduction
+          <small>Packet switching, network-layer services, and performance.</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=OyBIburQl6s" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — Network Layer Overview
+          <small>Video lecture on host-to-host delivery and packet encapsulation.</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 11.2: WHY THE NETWORK LAYER EXISTS -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s11-need" class="section-in-uni content-section" data-chapter="11" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="core" data-search-section="Why network layer exists heterogeneous networks flat MAC scalability broadcast storm addressing fragmentation">
+  <div class="section-heading">
+    <h2 class="prose">11.2 Why the Network Layer Exists: Limitations of Layer 2
+      <button class="bookmark-btn" data-id="s11-need" data-label="11.2 Why Network Layer?" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Unit II</span>
+    <span>Prescribed syllabus topic: <strong>Network Layer Foundations: Need for Internetworking &amp; Scalability Limits of Layer 2</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">The Problem of Scale &amp; Heterogeneity — First Principles</div>
+      <p>A single global network cannot be built purely out of Layer 2 switches. As a network grows beyond a few thousand machines, flat Layer 2 Ethernet switches collapse due to: <strong>(1) Broadcast Storms</strong>, <strong>(2) Giant Flat MAC Routing Tables</strong>, and <strong>(3) Incompatibility of Heterogeneous Media</strong>. The Network Layer was invented to divide the world into independent subnets and connect them via logical hierarchical addressing.</p>
+    </div>
+
+    <h3>1. The Three Fatal Limitations of Flat Layer 2 Networks</h3>
+    <ul>
+      <li><strong>1. The Flat Addressing Bottleneck:</strong> MAC addresses are flat 48-bit numbers with zero geographical or topological hierarchy (e.g., <code>00:1A:2B:3C:4D:5E</code> could be located in Tokyo, London, or Delhi). If the global Internet ran on Layer 2 switches, every single switch on Earth would need to store a forwarding entry for all 15 billion connected devices—requiring terabytes of ultrafast TCAM memory per port!</li>
+      <li><strong>2. Broadcast Storm Catastrophe:</strong> In Layer 2, ARP requests, DHCP discoveries, and unknown unicasts are broadcast to all ports. In a worldwide L2 network, billions of broadcasts per second would saturate all link bandwidth, crashing every computer's CPU with interrupt overload.</li>
+      <li><strong>3. Heterogeneous Physical Media &amp; MTU Mismatches:</strong> Different physical technologies have different Maximum Transmission Units (e.g., Ethernet MTU = 1500 bytes, Wi-Fi MTU = 2304 bytes, mobile LTE MTU = 1420 bytes, FDDI = 4352 bytes). Layer 2 has no native mechanism to fragment and reassemble oversized frames when crossing between media.</li>
+    </ul>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 11.2: Layer 3 Unifying Heterogeneous Layer 2 Networks</div>
+      <pre>
+   +-------------------------------------------------------------------------+
+   |                     Unified Global IP Network Layer                     |
+   +-------------------------------------------------------------------------+
+        |                     |                     |                    |
+        v                     v                     v                    v
+   +----------+          +----------+          +----------+         +----------+
+   | Ethernet |          |  Wi-Fi   |          | Cellular |         | Optical  |
+   | (802.3)  |          | (802.11) |          | (4G/5G)  |         | (SONET)  |
+   | MTU 1500 |          | MTU 2304 |          | MTU 1420 |         | MTU 4096 |
+   +----------+          +----------+          +----------+         +----------+
+      </pre>
+    </div>
+
+    <h3>2. The Three Fundamental Duties of the Network Layer</h3>
+    <ol>
+      <li><strong>Hierarchical Addressing (IPv4/IPv6):</strong> Divides addresses into Network ID and Host ID, allowing routers to aggregate millions of hosts into a single route entry.</li>
+      <li><strong>Routing &amp; Path Selection:</strong> Running distributed algorithms to determine the best path across complex mesh topologies.</li>
+      <li><strong>Packet Fragmentation &amp; Reassembly:</strong> Dividing large IP datagrams into smaller fragments when traversing networks with smaller MTUs.</li>
+    </ol>
+
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Textbook sections on internetworking challenges and flat vs hierarchical addressing.</div>
+      <div class="resource-grid">
+        <a href="https://www.pearson.com/en-gb/subject-catalog/p/computer-networks-global-edition/P200000005535/9781292498621" target="_blank" rel="noopener noreferrer">
+          📘 Tanenbaum &amp; Wetherall — Section 5.1 Network Layer Design Issues
+          <small>Store-and-forward packet switching and service to transport layer.</small>
+        </a>
+        <a href="https://www.pearson.com/en-us/subject-catalog/p/computer-networking/P200000009493" target="_blank" rel="noopener noreferrer">
+          📘 Kurose &amp; Ross — Section 4.1
+          <small>Why internetworking requires a network layer over heterogeneous links.</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=OyBIburQl6s" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — Need for Network Layer
+          <small>Video lecture on broadcast domain isolation and hierarchical routing.</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 11.3: NETWORK-LAYER DESIGN ISSUES -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s11-design" class="section-in-uni content-section" data-chapter="11" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="core" data-search-section="Network layer design issues store and forward packet switching transport layer interface router topology independence">
+  <div class="section-heading">
+    <h2 class="prose">11.3 Network-Layer Major Design Issues
+      <button class="bookmark-btn" data-id="s11-design" data-label="11.3 Design Issues" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Unit II</span>
+    <span>Prescribed syllabus topic: <strong>Network Layer Design Issues: Store-and-Forward Switching &amp; Transport Abstraction</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Store-and-Forward Packet Switching — Core Axiom</div>
+      <p>In modern packet-switched networks, host machines deliver packets to their local router. Each router completely receives and buffers the entire packet (<strong>Store</strong>), verifies its checksum for transmission errors, consults its forwarding table to determine the outgoing link, and then transmits the packet onto the next link (<strong>Forward</strong>).</p>
+    </div>
+
+    <h3>1. The Three Primary Design Goals of the Network Layer</h3>
+    <ul>
+      <li><strong>1. Independence from Router Technologies:</strong> The services provided to the Transport Layer must be completely decoupled from the physical transmission technology (whether links are coaxial, optical fiber, wireless RF, or satellite).</li>
+      <li><strong>2. Shielding Transport Layer from Topology Details:</strong> The Transport Layer should not know or care how many intermediate routers exist, what network topology connects them, or which specific path packets traverse.</li>
+      <li><strong>3. Uniform Global Addressing:</strong> Network addresses provided to the Transport Layer must follow a uniform, global numbering plan (e.g., standard 32-bit IPv4 or 128-bit IPv6), regardless of whether individual underlying LANs use Ethernet MACs, Token Ring tokens, or point-to-point serial interfaces.</li>
+    </ul>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 11.3: Store-and-Forward Packet Switching Pipeline</div>
+      <pre>
+    [ Incoming Link ] ---> [ Input Port Buffer ]
+                                  |
+                                  | (1. Store full packet)
+                                  | (2. Verify Header Checksum)
+                                  v
+                       [ Route Lookup Engine ]
+                       (Lookup Destination IP in Forwarding Table)
+                                  |
+                                  | (3. Decrement TTL)
+                                  | (4. Recalculate Checksum)
+                                  v
+    [ Outgoing Link ] <--- [ Output Queue Buffer ] <--- (Switch Fabric)
+                                (Forward to Next Hop)
+      </pre>
+    </div>
+
+    <h3>2. Why "Cut-Through" Switching Is Rare in WAN Routers</h3>
+    <p>Unlike enterprise Layer 2 data center switches that occasionally use <em>cut-through switching</em> (forwarding a frame before the entire frame is received), Network Layer routers almost universally employ <strong>store-and-forward switching</strong> because:</p>
+    <ul>
+      <li>The outgoing link speed often differs from the incoming link speed (e.g., receiving on 10 Gbps fiber, forwarding to 1 Gbps link requires buffering).</li>
+      <li>A corrupted packet must be dropped immediately rather than wasting thousands of kilometers of subsequent WAN bandwidth.</li>
+    </ul>
+
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Primary textbook references on network layer design issues.</div>
+      <div class="resource-grid">
+        <a href="https://www.pearson.com/en-gb/subject-catalog/p/computer-networks-global-edition/P200000005535/9781292498621" target="_blank" rel="noopener noreferrer">
+          📘 Tanenbaum &amp; Wetherall — Section 5.1.1 Store-and-Forward
+          <small>Classic design issues: services provided to transport layer.</small>
+        </a>
+        <a href="https://www.mheducation.com/highered/product/data-communications-and-networking-with-tcp-ip-protocol-suite-forouzan.html" target="_blank" rel="noopener noreferrer">
+          📘 Forouzan — Section 18.1 Packet Switching
+          <small>Store-and-forward vs circuit switching latency models.</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=OyBIburQl6s" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — Network Layer Design Issues
+          <small>Video explanation of the store-and-forward switching model.</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 11.4: SERVICES & SERVICE MODELS -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s11-services" class="section-in-uni content-section" data-chapter="11" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="core" data-search-section="Services service models connectionless connection oriented QoS guarantees best effort ATM vs Internet">
+  <div class="section-heading">
+    <h2 class="prose">11.4 Network-Layer Services &amp; Service Models
+      <button class="bookmark-btn" data-id="s11-services" data-label="11.4 Service Models" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Unit II</span>
+    <span>Prescribed syllabus topic: <strong>Network Layer Design Issues: Services Provided to Transport Layer &amp; Service Models</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Network Layer Service Model — First-Principles Definition</div>
+      <p>A <strong>Service Model</strong> defines the formal performance guarantees and operational contract that the network layer provides to higher layers for transmitting packets from end to end. The two historic competing paradigms are: <strong>Connectionless Service (Datagram Networks)</strong> and <strong>Connection-Oriented Service (Virtual-Circuit Networks)</strong>.</p>
+    </div>
+
+    <h3>1. Potential Services the Network Layer *Could* Provide</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Candidate Guarantee</th>
+          <th>Definition</th>
+          <th>Provided by Internet IP?</th>
+          <th>Provided by ATM / IntServ?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Guaranteed Delivery</strong></td>
+          <td>Guarantees that every packet will eventually arrive at the destination.</td>
+          <td>❌ <strong>No</strong> (Best-effort; packets can be dropped)</td>
+          <td>✅ Yes (in guaranteed classes)</td>
+        </tr>
+        <tr>
+          <td><strong>Bounded Latency / Delay</strong></td>
+          <td>Guarantees packet delivery within a deterministic time bound (e.g., $\le 40\text{ ms}$).</td>
+          <td>❌ <strong>No</strong> (Unpredictable queuing delay)</td>
+          <td>✅ Yes (CBR - Constant Bit Rate)</td>
+        </tr>
+        <tr>
+          <td><strong>In-Order Packet Delivery</strong></td>
+          <td>Guarantees packets arrive in the exact order transmitted.</td>
+          <td>❌ <strong>No</strong> (Packets can take different paths)</td>
+          <td>✅ Yes (All packets follow same circuit)</td>
+        </tr>
+        <tr>
+          <td><strong>Guaranteed Minimal Bandwidth</strong></td>
+          <td>Guarantees a reserved transmission rate (e.g., dedicated 10 Mbps).</td>
+          <td>❌ <strong>No</strong> (All flows share capacity dynamically)</td>
+          <td>✅ Yes (Hard bandwidth reservations)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>2. The Internet Philosophy: "Dumb Network, Smart Edges"</h3>
+    <div class="callout tip">
+      <div class="callout-title">💡 The End-to-End Argument (Saltzer, Reed, Clark 1981)</div>
+      <p>The architects of the Internet made a deliberate, brilliant engineering choice: <strong>Keep the core routers simple, fast, and stateless</strong>, providing only an unadorned <strong>Best-Effort Datagram Service</strong>. All complexity (retransmission timers, sequence reordering, flow control, congestion control, and cryptographic encryption) is pushed to the <strong>end hosts</strong> (Layer 4 TCP and Layer 7 TLS).<br>
+      This allowed the Internet to scale exponentially to billions of nodes and easily run over any physical link.</p>
+    </div>
+
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Foundational papers on the end-to-end design principle of the Internet.</div>
+      <div class="resource-grid">
+        <a href="https://www.pearson.com/en-us/subject-catalog/p/computer-networking/P200000009493" target="_blank" rel="noopener noreferrer">
+          📘 Kurose &amp; Ross — Section 4.1.2 What Service Model?
+          <small>Comparison of Internet best-effort model vs ATM service models.</small>
+        </a>
+        <a href="https://web.mit.edu/Saltzer/www/publications/endtoend/endtoend.pdf" target="_blank" rel="noopener noreferrer">
+          🌐 Saltzer, Reed &amp; Clark (1981) — End-to-End Arguments
+          <small>The seminal paper defining modern Internet architecture.</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=OyBIburQl6s" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — Network Layer Service Models
+          <small>Video lecture on connectionless vs connection-oriented design.</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 11.5: ROUTING VS FORWARDING -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s11-routing-forwarding" class="section-in-uni content-section" data-chapter="11" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="core" data-search-section="Routing vs Forwarding difference control plane data plane path computation switch fabric lookup nanoseconds">
+  <div class="section-heading">
+    <h2 class="prose">11.5 Routing vs Forwarding: The Cardinal Distinction
+      <button class="bookmark-btn" data-id="s11-routing-forwarding" data-label="11.5 Routing vs Forwarding" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Unit II</span>
+    <span>Prescribed syllabus topic: <strong>Network Layer: Fundamental Distinction between Routing and Forwarding</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Routing vs. Forwarding — Core Axiomatic Definitions</div>
+      <p>• <strong>Routing (Path Determination):</strong> The network-wide process of running distributed routing algorithms (such as OSPF, Dijkstra, BGP) to determine the <strong>optimal end-to-end paths</strong> that packets should take from source to destination across the entire network topology.<br>
+      • <strong>Forwarding (Packet Switching):</strong> The strictly <strong>local, per-router action</strong> of moving a packet from an incoming interface port to the appropriate outgoing interface port based on a forwarding table lookup.</p>
+    </div>
+
+    <h3>1. Conceptual Comparison Matrix</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Attribute</th>
+          <th>Routing (Control Plane)</th>
+          <th>Forwarding (Data Plane)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Scope</strong></td>
+          <td><strong>Global / Network-wide</strong> (Involves coordination across all routers).</td>
+          <td><strong>Local / Per-Router</strong> (Confined inside a single router chassis).</td>
+        </tr>
+        <tr>
+          <td><strong>Execution Plane</strong></td>
+          <td><strong>Control Plane</strong> (Brain).</td>
+          <td><strong>Data / Forwarding Plane</strong> (Muscle).</td>
+        </tr>
+        <tr>
+          <td><strong>Time Scale</strong></td>
+          <td>Seconds, minutes, or hours (Runs periodically or on topology change).</td>
+          <td><strong>Nanoseconds to Microseconds</strong> (Runs on every single packet).</td>
+        </tr>
+        <tr>
+          <td><strong>Implementation</strong></td>
+          <td>Software (General-purpose router CPU running OSPF/BGP daemons).</td>
+          <td>Dedicated Hardware (ASICs, TCAM memories, high-speed switch fabric).</td>
+        </tr>
+        <tr>
+          <td><strong>Core Output</strong></td>
+          <td>Computes the <strong>Routing Table (RIB)</strong>.</td>
+          <td>Executes lookup in <strong>Forwarding Table (FIB)</strong>.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 11.5: The Relationship Between Routing and Forwarding</div>
+      <pre>
+   +-------------------------------------------------------------------------+
+   |  CONTROL PLANE: Routing Algorithm (OSPF, BGP, Dijkstra)                 |
+   |  - Gathers link states / distance vectors                               |
+   |  - Computes global shortest paths                                       |
+   |  - Populates the Routing Information Base (RIB)                         |
+   +-------------------------------------------------------------------------+
+                                      |
+                         Downloads optimized lookup table
+                                      v
+   +-------------------------------------------------------------------------+
+   |  DATA PLANE: Forwarding Engine                                          |
+   |                                                                         |
+   |   Incoming Packet         [ Forwarding Table (FIB) ]     Outgoing Link  |
+   |  =================> [ Match Dest IP -> Output Port 3 ] ===============> |
+   |  (Nanosecond ASIC)                                                      |
+   +-------------------------------------------------------------------------+
+      </pre>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-title">⚡ The Highway &amp; Trip Analogy</div>
+      <p>• <strong>Routing</strong> is like sitting down before a road trip with a map or GPS and planning: <em>"To get from Delhi to Mumbai, I will take National Highway 48 through Jaipur and Ahmedabad."</em> (Global path planning).<br>
+      • <strong>Forwarding</strong> is when you arrive at a physical highway cloverleaf junction and take Exit 3 toward Ahmedabad based on the road sign. (Local switching action at an intersection).</p>
+    </div>
+
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Primary textbook chapters analyzing routing and forwarding separation.</div>
+      <div class="resource-grid">
+        <a href="https://www.pearson.com/en-us/subject-catalog/p/computer-networking/P200000009493" target="_blank" rel="noopener noreferrer">
+          📘 Kurose &amp; Ross — Section 4.1.1 Forwarding and Routing
+          <small>The definitive breakdown of control vs data plane boundaries.</small>
+        </a>
+        <a href="https://www.mheducation.com/highered/product/data-communications-and-networking-with-tcp-ip-protocol-suite-forouzan.html" target="_blank" rel="noopener noreferrer">
+          📘 Forouzan — Section 18.2 Forwarding of IP Packets
+          <small>Direct vs indirect forwarding and forwarding tables.</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=OyBIburQl6s" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — Routing vs Forwarding
+          <small>Video lecture on operational differences and router architecture.</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 11.6: DATA PLANE VS CONTROL PLANE -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s11-plane" class="section-in-uni content-section" data-chapter="11" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="core" data-search-section="Data plane vs control plane per router distributed control vs centralized SDN software defined networking OpenFlow controller">
+  <div class="section-heading">
+    <h2 class="prose">11.6 Data Plane vs. Control Plane Architecture
+      <button class="bookmark-btn" data-id="s11-plane" data-label="11.6 Data vs Control Plane" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Unit II</span>
+    <span>Prescribed syllabus topic: <strong>Network Layer Architecture: Data Plane vs Control Plane &amp; SDN Paradigm</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Data Plane &amp; Control Plane — First-Principles Definitions</div>
+      <p>• <strong>Data Plane (Forwarding Plane):</strong> The hardware subsystem within a router responsible for processing and moving individual IP datagrams from input ports to output ports at line speed (nanoseconds).<br>
+      • <strong>Control Plane:</strong> The network-wide intelligence that coordinates how packets should be forwarded among routers along the end-to-end path, historically implemented via distributed routing algorithms and modernly via centralized Software-Defined Network (SDN) controllers.</p>
+    </div>
+
+    <h3>1. The Two Approaches to Control Plane Architecture</h3>
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 11.6: Traditional Distributed Control vs. Centralized SDN Control</div>
+      <pre>
+   TRADITIONAL DISTRIBUTED CONTROL:          MODERN SOFTWARE-DEFINED (SDN):
+   (Every router has brain + muscle)         (Dumb switches + Centralized Brain)
+
+      [ OSPF/BGP ]      [ OSPF/BGP ]                +-----------------------+
+           |                 |                      |   SDN CONTROLLER      |
+           v                 v                      | (Global Network View) |
+      [ Router 1 ] <---> [ Router 2 ]               +-----------------------+
+      (Data Plane)       (Data Plane)                    |             |
+                                              OpenFlow   |             | OpenFlow
+                                                         v             v
+                                                    [ Switch 1 ]  [ Switch 2 ]
+                                                    (Data Plane)  (Data Plane)
+      </pre>
+    </div>
+
+    <h3>2. Architectural Comparison</h3>
+    <ul>
+      <li><strong>Traditional Per-Router Control:</strong> Routing algorithms run as software daemons on the general-purpose CPU of every individual router. Routers exchange messages (OSPF LSAs, RIP updates) with neighbors and compute their own local forwarding tables. Highly resilient (no single point of failure), but slow to adapt and difficult to configure uniformly.</li>
+      <li><strong>Software-Defined Networking (SDN):</strong> The control plane is physically decoupled from the data plane. A centralized software controller (running on powerful cloud servers) calculates optimal paths globally and programs the forwarding tables (flow tables) into simple, commodity data-plane switches via standardized protocols like <strong>OpenFlow</strong>. Enables dynamic traffic engineering, instant network virtualization, and fine-grained security policies.</li>
+    </ul>
+
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">In-depth reading on control and data plane separation.</div>
+      <div class="resource-grid">
+        <a href="https://www.pearson.com/en-us/subject-catalog/p/computer-networking/P200000009493" target="_blank" rel="noopener noreferrer">
+          📘 Kurose &amp; Ross — Chapter 4 (Data Plane) &amp; Chapter 5 (Control Plane)
+          <small>The modern two-chapter split explaining planes and SDN.</small>
+        </a>
+        <a href="https://www.opennetworking.org/" target="_blank" rel="noopener noreferrer">
+          🌐 Open Networking Foundation — SDN Architecture
+          <small>OpenFlow protocol standards and control plane abstractions.</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=OyBIburQl6s" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — Control Plane vs Data Plane
+          <small>Video lecture on router hardware architecture and ASIC switching.</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 11.7: ROUTING TABLES & LPM -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s11-routing-table" class="section-in-uni content-section" data-chapter="11" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="core" data-search-section="Routing tables Forwarding table FIB Longest Prefix Match LPM CIDR prefix subnet mask default route 0.0.0.0/0">
+  <div class="section-heading">
+    <h2 class="prose">11.7 Routing Tables &amp; Longest Prefix Match (LPM)
+      <button class="bookmark-btn" data-id="s11-routing-table" data-label="11.7 Routing Tables & LPM" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Network Layer Forwarding: Routing Tables, CIDR Prefixes &amp; Longest Prefix Match (LPM)</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Longest Prefix Match (LPM) — Core Forwarding Rule</div>
+      <p>When a router receives an IP datagram, it extracts the destination IP address and searches its Forwarding Information Base (FIB) for matching destination network prefixes. When a destination IP matches multiple route entries of varying prefix lengths, the router <strong>strictly selects the entry with the longest (most specific) subnet mask (prefix length)</strong>.</p>
+    </div>
+
+    <h3>1. Anatomy of a Forwarding Table</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Destination Prefix</th>
+          <th>Prefix Length</th>
+          <th>Next-Hop Gateway</th>
+          <th>Outgoing Interface</th>
+          <th>Metric</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>192.168.1.0/24</code></td>
+          <td>24 bits</td>
+          <td>Directly Connected</td>
+          <td><code>eth0</code></td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td><code>10.0.0.0/8</code></td>
+          <td>8 bits</td>
+          <td><code>192.168.1.1</code></td>
+          <td><code>eth0</code></td>
+          <td>10</td>
+        </tr>
+        <tr>
+          <td><code>10.1.0.0/16</code></td>
+          <td>16 bits</td>
+          <td><code>192.168.1.2</code></td>
+          <td><code>eth1</code></td>
+          <td>5</td>
+        </tr>
+        <tr>
+          <td><code>10.1.2.0/24</code></td>
+          <td>24 bits</td>
+          <td><code>192.168.1.3</code></td>
+          <td><code>eth2</code></td>
+          <td>2</td>
+        </tr>
+        <tr>
+          <td><code>0.0.0.0/0</code> (Default)</td>
+          <td>0 bits</td>
+          <td><code>192.168.1.254</code></td>
+          <td><code>eth3</code></td>
+          <td>1</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>2. Worked Numerical: Step-by-Step LPM Lookup</h3>
+    <div class="worked-example">
+      <div class="example-title">📝 Worked Numerical 11.1 — Tracing Longest Prefix Match</div>
+      <p>Suppose a router with the forwarding table above receives three packets with different destination IPs:</p>
+      
+      <p><strong>Packet 1 Destination: <code>10.1.2.55</code></strong></p>
+      <ul>
+        <li>Matches <code>10.0.0.0/8</code> (matches first 8 bits).</li>
+        <li>Matches <code>10.1.0.0/16</code> (matches first 16 bits).</li>
+        <li>Matches <code>10.1.2.0/24</code> (matches first 24 bits).</li>
+        <li>Matches <code>0.0.0.0/0</code> (matches 0 bits).</li>
+        <li><strong>LPM Decision:</strong> The longest prefix is <strong><code>/24</code></strong>. Packet 1 is forwarded out interface <strong><code>eth2</code></strong>!</li>
+      </ul>
+
+      <p><strong>Packet 2 Destination: <code>10.1.99.4</code></strong></p>
+      <ul>
+        <li>Matches <code>10.0.0.0/8</code> (8 bits).</li>
+        <li>Matches <code>10.1.0.0/16</code> (16 bits).</li>
+        <li>Does NOT match <code>10.1.2.0/24</code> (third byte is 99, not 2).</li>
+        <li><strong>LPM Decision:</strong> The longest prefix is <strong><code>/16</code></strong>. Packet 2 is forwarded out interface <strong><code>eth1</code></strong>!</li>
+      </ul>
+
+      <p><strong>Packet 3 Destination: <code>172.16.5.1</code></strong></p>
+      <ul>
+        <li>Does NOT match any specific rule.</li>
+        <li>Matches the <strong>Default Route (<code>0.0.0.0/0</code>)</strong> (0 bits).</li>
+        <li><strong>LPM Decision:</strong> Forwarded out interface <strong><code>eth3</code></strong> to the gateway of last resort!</li>
+      </ul>
+    </div>
+
+    <h3>3. Hardware Implementation: How Routers Do This at 100 Gbps</h3>
+    <p>Searching millions of prefixes in software takes too long. Modern routers use <strong>Ternary Content Addressable Memory (TCAM)</strong>. A TCAM compares an incoming 32-bit IP address against all 1,000,000 table prefixes simultaneously in <strong>a single clock cycle (1 nanosecond)</strong>, instantly returning the interface of the longest match!</p>
+
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Primary textbook references on CIDR and longest prefix matching.</div>
+      <div class="resource-grid">
+        <a href="https://www.pearson.com/en-us/subject-catalog/p/computer-networking/P200000009493" target="_blank" rel="noopener noreferrer">
+          📘 Kurose &amp; Ross — Section 4.2.1 Longest Prefix Matching
+          <small>Address aggregation and TCAM lookup hardware.</small>
+        </a>
+        <a href="https://www.mheducation.com/highered/product/data-communications-and-networking-with-tcp-ip-protocol-suite-forouzan.html" target="_blank" rel="noopener noreferrer">
+          📘 Forouzan — Section 18.2 Forwarding Techniques
+          <small>Classless addressing and hierarchical routing tables.</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=OyBIburQl6s" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — Longest Prefix Match
+          <small>Step-by-step video on binary subnet mask matching.</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 11.8: ROUTING METRICS & PATH COST -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s11-metrics" class="section-in-uni content-section" data-chapter="11" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="core" data-search-section="Routing metrics path cost hop count bandwidth delay reliability load MTU administrative distance">
+  <div class="section-heading">
+    <h2 class="prose">11.8 Routing Metrics &amp; Path Cost Modeling
+      <button class="bookmark-btn" data-id="s11-metrics" data-label="11.8 Routing Metrics & Cost" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Routing Algorithms: Routing Metrics, Path Cost Formulations &amp; Administrative Distance</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Routing Metric — First-Principles Definition</div>
+      <p>A <strong>Routing Metric</strong> is a quantitative numerical value assigned to network links and paths by a routing algorithm. It is used by routers to rank competing paths and select the "shortest" (optimal) route to a given destination. Under the standard <strong>additive path cost model</strong>, the total cost of a multi-hop path $P$ is the algebraic sum of the individual edge metrics along that path:</p>
+      <div class="formula-math">C(P) = \sum_{e \in P} \text{Cost}(e)</div>
+    </div>
+
+    <h3>1. Common Routing Metrics in Protocol Engineering</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>What It Measures</th>
+          <th>Protocol Using It</th>
+          <th>Pros / Cons</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Hop Count</strong></td>
+          <td>Total number of intermediate routers traversed.</td>
+          <td><strong>RIP</strong> (Routing Information Protocol)</td>
+          <td>Extremely simple, but treats a 10 Mbps satellite link the same as a 100 Gbps fiber line!</td>
+        </tr>
+        <tr>
+          <td><strong>Bandwidth (Inverse Capacity)</strong></td>
+          <td>Higher capacity link receives a lower numerical cost.</td>
+          <td><strong>OSPF</strong> ($\text{Cost} = \frac{\text{Ref BW}}{\text{Link BW}}$)</td>
+          <td>Routes traffic through fastest physical pipes; highly realistic.</td>
+        </tr>
+        <tr>
+          <td><strong>Delay (Latency)</strong></td>
+          <td>Propagation and queuing delay across link in milliseconds.</td>
+          <td>QoS Routing, BGP (MED)</td>
+          <td>Excellent for real-time voice/video; can oscillate if queuing delay is dynamic.</td>
+        </tr>
+        <tr>
+          <td><strong>Composite Metric</strong></td>
+          <td>Weighted combination of Bandwidth, Delay, Reliability, and Load.</td>
+          <td><strong>EIGRP</strong> (Cisco proprietary)</td>
+          <td>Comprehensive; mathematically complex to tune.</td>
+        </tr>
+        <tr>
+          <td><strong>Monetary Cost / Policy</strong></td>
+          <td>Business relationship agreements (Peering, Transit).</td>
+          <td><strong>BGP</strong> (Border Gateway Protocol)</td>
+          <td>Dominates inter-domain Internet routing; ignores pure physics for business policy.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>2. Administrative Distance (AD): Resolving Conflicting Protocols</h3>
+    <p>When a router runs multiple routing protocols simultaneously (e.g., both OSPF and BGP learn a route to <code>10.0.0.0/8</code>), it uses <strong>Administrative Distance (AD)</strong>—a measure of route trustworthiness (lower is more trusted):</p>
+    <ul>
+      <li>Directly Connected: $\text{AD} = 0$ (Absolute trust)</li>
+      <li>Static Route: $\text{AD} = 1$</li>
+      <li>eBGP (External BGP): $\text{AD} = 20$</li>
+      <li>EIGRP (Internal): $\text{AD} = 90$</li>
+      <li>OSPF: $\text{AD} = 110$</li>
+      <li>RIP: $\text{AD} = 120$</li>
+      <li>iBGP (Internal BGP): $\text{AD} = 200$</li>
+    </ul>
+
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Primary texts on metric formulation and administrative distance.</div>
+      <div class="resource-grid">
+        <a href="https://www.pearson.com/en-us/subject-catalog/p/computer-networking/P200000009493" target="_blank" rel="noopener noreferrer">
+          📘 Kurose &amp; Ross — Section 5.2 Routing Algorithms
+          <small>Link costs, metrics, and shortest path graph models.</small>
+        </a>
+        <a href="https://www.ciscopress.com/articles/article.asp?p=31388" target="_blank" rel="noopener noreferrer">
+          📘 Cisco Press — What Is Administrative Distance?
+          <small>Authoritative reference on route selection across protocols.</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=OyBIburQl6s" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — Routing Metrics &amp; Path Cost
+          <small>Video explanation of hop count vs bandwidth cost formulas.</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 11.9: PACKET FORWARDING PIPELINE -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s11-packet" class="section-in-uni content-section" data-chapter="11" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="core" data-search-section="Packet forwarding pipeline TTL decrement checksum recalculation ARP next hop MAC rewrite router hardware">
+  <div class="section-heading">
+    <h2 class="prose">11.9 Packet Forwarding: The Hop-by-Hop Router Pipeline
+      <button class="bookmark-btn" data-id="s11-packet" data-label="11.9 Hop-by-Hop Pipeline" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Network Layer Forwarding: Router Internal Pipeline &amp; Header Field Modifications</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">The Router Ingress-to-Egress Pipeline — First Principles</div>
+      <p>When an IP datagram arrives at a router interface, the router does not simply copy bits blindly. It executes a rigorous, multi-stage <strong>7-step verification, modification, and re-encapsulation pipeline</strong> before the packet is allowed to leave on an outbound wire.</p>
+    </div>
+
+    <h3>The 7-Step Router Ingress-to-Egress Pipeline</h3>
+    <ol>
+      <li><strong>1. Layer 2 Frame De-capsulation:</strong> The input network interface card (NIC) checks the frame's destination MAC address. If it matches the router's MAC (or broadcast), the NIC validates the CRC Frame Check Sequence. If valid, the L2 header and trailer are stripped, extracting the enclosed IPv4 packet.</li>
+      <li><strong>2. IPv4 Header Verification:</strong> The router checks the IP Version field (must be $4$), verifies the Header Length (IHL $\ge 5$), and computes the <strong>Header Checksum</strong>. If corrupted, the packet is silently dropped!</li>
+      <li><strong>3. Time-to-Live (TTL) Decrement:</strong>
+        <div class="formula-math">\text{TTL}_{\text{new}} = \text{TTL}_{\text{old}} - 1</div>
+        <p>If $\text{TTL}_{\text{new}} \le 0$, the packet is <strong>dropped immediately</strong>, and the router generates an <code>ICMP Time Exceeded (Type 11)</code> error packet back to the sender! This prevents packets from circulating forever in routing loops.</p>
+      </li>
+      <li><strong>4. Header Checksum Recalculation:</strong> Because the TTL field was decremented, the IP header was modified! The router <strong>must recompute or incrementally update the 16-bit Header Checksum</strong>. (An un-updated checksum would cause all downstream routers to drop the packet as corrupt!).</li>
+      <li><strong>5. Route Lookup (LPM):</strong> The router searches its Forwarding Information Base (FIB) using Longest Prefix Match on the destination IP to determine:
+        <ul>
+          <li>The <strong>Outgoing Interface</strong> (e.g., <code>eth1</code>).</li>
+          <li>The <strong>Next-Hop IP Address</strong> (or direct delivery if destination is on local subnet).</li>
+        </ul>
+      </li>
+      <li><strong>6. Next-Hop MAC Resolution (ARP Lookup):</strong> The router checks its local <strong>ARP Cache table</strong> to resolve the Next-Hop IP address into a 48-bit physical MAC address. (If absent, an ARP Request is broadcast).</li>
+      <li><strong>7. Layer 2 Re-encapsulation &amp; Transmission:</strong> The router wraps the modified IP datagram into a <strong>brand new Layer 2 frame</strong>:
+        <ul>
+          <li>Source MAC = This router's outbound interface MAC.</li>
+          <li>Destination MAC = Next-hop router's interface MAC.</li>
+          <li>Computes a fresh CRC-32 FCS and blasts the bits onto the wire!</li>
+        </ul>
+      </li>
+    </ol>
+
+    <div class="callout danger">
+      <div class="callout-title">⚠️ Universal Exam Trap: Does a Router Modify IP Addresses?</div>
+      <p><strong>NO!</strong> In standard routing, a router NEVER modifies the Source IP or Destination IP addresses! The only fields modified in the IP header are:
+      1. <strong>TTL</strong> (decremented by 1).
+      2. <strong>Header Checksum</strong> (recalculated).<br>
+      *(The ONLY exception is Network Address Translation [NAT], which occurs at border gateway firewalls).*</p>
+    </div>
+
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Primary documentation on router forwarding hardware and RFC 1812 router requirements.</div>
+      <div class="resource-grid">
+        <a href="https://datatracker.ietf.org/doc/html/rfc1812" target="_blank" rel="noopener noreferrer">
+          🌐 IETF RFC 1812 — Requirements for IP Version 4 Routers
+          <small>Official Internet standard specifying the 7-step forwarding pipeline.</small>
+        </a>
+        <a href="https://www.pearson.com/en-us/subject-catalog/p/computer-networking/P200000009493" target="_blank" rel="noopener noreferrer">
+          📘 Kurose &amp; Ross — Section 4.3 What's Inside a Router?
+          <small>Input ports, switching fabric, and output port buffering.</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=OyBIburQl6s" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — Packet Forwarding Pipeline
+          <small>Video walkthrough of TTL decrements, checksum updates, and ARP.</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 11.10: DATAGRAM VS VIRTUAL-CIRCUIT -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s11-datagram" class="section-in-uni content-section" data-chapter="11" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="core" data-search-section="Datagram networks vs Virtual Circuit VC networks connectionless vs connection oriented state in routers failure resilience ATM vs IP">
+  <div class="section-heading">
+    <h2 class="prose">11.10 Datagram vs. Virtual-Circuit Networks
+      <button class="bookmark-btn" data-id="s11-datagram" data-label="11.10 Datagram vs VC" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Network Layer Design: Comparison of Datagram (Connectionless) and Virtual-Circuit (Connection-Oriented) Networks</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Datagram vs Virtual-Circuit — First-Principles Definitions</div>
+      <p>• <strong>Datagram Network (Connectionless):</strong> Each packet is treated as an independent entity carrying complete destination addressing. Routers maintain <strong>zero connection state</strong>; packets from the same flow may follow different routes and arrive out of order. (Used by the global Internet / IP).<br>
+      • <strong>Virtual-Circuit Network (Connection-Oriented):</strong> Requires a dedicated <strong>call setup phase</strong> before data can flow. Routers maintain <strong>per-connection state</strong> (VC tables). All packets in a session follow the exact same path and carry short Virtual Circuit Identifiers (VCIs) rather than full destination addresses. (Used by legacy ATM, Frame Relay, and X.25).</p>
+    </div>
+
+    <h3>Master Architectural Comparison Matrix</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Architectural Issue</th>
+          <th>Datagram Network (Internet IP)</th>
+          <th>Virtual-Circuit Network (ATM / X.25)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Circuit Setup Phase</strong></td>
+          <td>❌ <strong>None</strong> (Send packets immediately).</td>
+          <td>✅ <strong>Mandatory</strong> (Setup request $\to$ Setup reply).</td>
+        </tr>
+        <tr>
+          <td><strong>Router State Storage</strong></td>
+          <td><strong>Zero per-flow state</strong> (Only prefix forwarding table).</td>
+          <td><strong>Per-connection state</strong> in every intermediate switch.</td>
+        </tr>
+        <tr>
+          <td><strong>Addressing in Packets</strong></td>
+          <td>Full 32-bit/128-bit global destination IP address.</td>
+          <td>Short local Virtual Circuit Identifier (VCI, e.g., 16 bits).</td>
+        </tr>
+        <tr>
+          <td><strong>Packet Routing &amp; Paths</strong></td>
+          <td>Each packet routed independently; paths may diverge dynamically.</td>
+          <td>All packets in a session traverse the exact same route.</td>
+        </tr>
+        <tr>
+          <td><strong>Packet Ordering</strong></td>
+          <td>Packets may arrive out of order.</td>
+          <td>Strict in-order packet delivery guaranteed.</td>
+        </tr>
+        <tr>
+          <td><strong>Effect of Router Failure</strong></td>
+          <td><strong>Minimal:</strong> Subsequent packets dynamically rerouted around dead router.</td>
+          <td><strong>Catastrophic:</strong> Entire virtual circuit terminates; call must be re-established.</td>
+        </tr>
+        <tr>
+          <td><strong>Quality of Service (QoS)</strong></td>
+          <td>Difficult (Best-effort sharing).</td>
+          <td>Easy (Dedicated bandwidth and buffer reservation at setup).</td>
+        </tr>
+        <tr>
+          <td><strong>Complexity Location</strong></td>
+          <td>At network edges (End systems / Hosts).</td>
+          <td>Inside the network core (Switches / Routers).</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout tip">
+      <div class="callout-title">⚡ Why Did Datagram Networks Win the Internet War?</div>
+      <p>In the 1990s, telecommunications giants bet heavily on Virtual-Circuit ATM, while computer scientists championed Datagram IP. Datagram IP triumphed globally because of <strong>Robustness to Node Failures (Fate-Sharing)</strong>: In a datagram network, as long as the endpoints survive, any operational path through the mesh can keep the conversation alive. In a VC network, if router 3 of 10 crashes, all 50,000 circuits traversing it die immediately.</p>
+    </div>
+
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Primary textbook chapters comparing datagram and virtual-circuit networks.</div>
+      <div class="resource-grid">
+        <a href="https://www.pearson.com/en-gb/subject-catalog/p/computer-networks-global-edition/P200000005535/9781292498621" target="_blank" rel="noopener noreferrer">
+          📘 Tanenbaum &amp; Wetherall — Section 5.1.2 Datagram vs Virtual Circuits
+          <small>The classic comparison table and architectural rationale.</small>
+        </a>
+        <a href="https://www.pearson.com/en-us/subject-catalog/p/computer-networking/P200000009493" target="_blank" rel="noopener noreferrer">
+          📘 Kurose &amp; Ross — Section 4.1.2 Connectionless vs Connection-Oriented
+          <small>VC setup mechanics and why the Internet uses datagrams.</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=OyBIburQl6s" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — Datagram vs Virtual Circuit
+          <small>Video lecture on per-flow state, setup delay, and failure recovery.</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 11.11: BEST-EFFORT DELIVERY -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s11-best-effort" class="section-in-uni content-section" data-chapter="11" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="core" data-search-section="Best-effort delivery IP guarantees packet loss reordering duplication jitter buffer overflow TCP offloading">
+  <div class="section-heading">
+    <h2 class="prose">11.11 Best-Effort Delivery: What IP Does NOT Guarantee
+      <button class="bookmark-btn" data-id="s11-best-effort" data-label="11.11 Best-Effort Delivery" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Network Layer Design: Best-Effort Service Model &amp; Non-Guaranteed Attributes</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Best-Effort Delivery Model — First-Principles Definition</div>
+      <p>The Internet Protocol (IP) provides an unadorned <strong>Best-Effort Delivery Service</strong>. "Best-effort" means the network hardware will make a genuine, reasonable physical attempt to forward packets toward their destination, but it provides <strong>absolutely zero mathematical guarantees</strong> regarding packet arrival, timing, fidelity, or sequential ordering.</p>
+    </div>
+
+    <h3>The 5 Cardinal Non-Guarantees of the Internet Protocol</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Anomaly / Phenomenon</th>
+          <th>Physical Network Cause</th>
+          <th>How It Is Solved in the Architecture</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1. Packet Loss</strong></td>
+          <td>Router input/output buffer queues fill to capacity during congestion; tail-drop drops new packets.</td>
+          <td><strong>Layer 4 (TCP):</strong> Retransmission countdown timers and ACKs.</td>
+        </tr>
+        <tr>
+          <td><strong>2. Out-of-Order Delivery</strong></td>
+          <td>Successive packets from the same flow traverse different ECMP paths or take route changes.</td>
+          <td><strong>Layer 4 (TCP):</strong> Sequence numbers and receiver reassembly buffers.</td>
+        </tr>
+        <tr>
+          <td><strong>3. Duplicate Packet Delivery</strong></td>
+          <td>Premature sender timeouts or link-layer retransmissions create ghost duplicate datagrams.</td>
+          <td><strong>Layer 4 (TCP):</strong> Discards duplicate sequence numbers.</td>
+        </tr>
+        <tr>
+          <td><strong>4. Unbounded Delay / Latency</strong></td>
+          <td>Dynamic queuing delays in deep router buffers across intermediate ISPs.</td>
+          <td>Application buffers (e.g., video streaming pre-buffering).</td>
+        </tr>
+        <tr>
+          <td><strong>5. Delay Jitter (Variance)</strong></td>
+          <td>Variable traffic burstiness causing uneven packet inter-arrival gaps.</td>
+          <td>Jitter buffers at Layer 7 application endpoints.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout warning">
+      <div class="callout-title">⚠️ Why Best-Effort Made IP Invincible</div>
+      <p>By promising virtually nothing, IP can run over literally <em>anything</em>: Ethernet, fiber optics, radio waves, satellite transponders, powerline cables, and even carrier pigeons (RFC 1149). Any network layer requiring tight delay or packet-loss guarantees would fail whenever it encountered a lossy wireless hop.</p>
+    </div>
+
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Primary textbook references on best-effort service boundaries.</div>
+      <div class="resource-grid">
+        <a href="https://www.pearson.com/en-us/subject-catalog/p/computer-networking/P200000009493" target="_blank" rel="noopener noreferrer">
+          📘 Kurose &amp; Ross — Section 4.1.2 What Service Model?
+          <small>Why best-effort works so effectively in practice.</small>
+        </a>
+        <a href="https://www.mheducation.com/highered/product/data-communications-and-networking-with-tcp-ip-protocol-suite-forouzan.html" target="_blank" rel="noopener noreferrer">
+          📘 Forouzan — Section 18.1 Service Model
+          <small>Network layer unreliability and Layer 4 compensation.</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=OyBIburQl6s" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — Best-Effort Delivery
+          <small>Video lecture on IP packet loss, jitter, and delay.</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 11.12: END-TO-END PACKET LIFECYCLE -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s11-example" class="section-in-uni content-section" data-chapter="11" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="core" data-search-section="End to end packet lifecycle walkthrough Host A to Host B router R1 R2 MAC rewrite ARP lookup default gateway TTL decrement">
+  <div class="section-heading">
+    <h2 class="prose">11.12 End-to-End Packet Lifecycle: Concrete Multi-Hop Trace
+      <button class="bookmark-btn" data-id="s11-example" data-label="11.12 End-to-End Walkthrough" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Network Layer Forwarding: Complete End-to-End Packet Traversal Trace</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">End-to-End Packet Traversal — First Principles Walkthrough</div>
+      <p>To master the network layer, one must trace every single field transformation as an IP datagram leaves <strong>Host A</strong> (IP: <code>192.168.1.10</code>), traverses intermediate routers <strong>R1</strong> and <strong>R2</strong>, and reaches <strong>Host B</strong> (IP: <code>10.0.0.50</code>).</p>
+    </div>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 11.12: The End-to-End Traversal Topology</div>
+      <pre>
+   [ Host A ] --------------> [ Router R1 ] --------------> [ Router R2 ] --------------> [ Host B ]
+   IP: 192.168.1.10           eth0: 192.168.1.1          eth0: 172.16.1.2           IP: 10.0.0.50
+   MAC: AA:AA:AA              MAC: BB:BB:BB (eth0)       MAC: DD:DD:DD (eth0)       MAC: FF:FF:FF
+                              eth1: 172.16.1.1           eth1: 10.0.0.1
+                              MAC: CC:CC:CC (eth1)       MAC: EE:EE:EE (eth1)
+      </pre>
+    </div>
+
+    <h3>Step-by-Step Packet Lifecycle Trace</h3>
+    <ol>
+      <li><strong>Host A Generates Packet:</strong>
+        <ul>
+          <li>Source IP = <code>192.168.1.10</code>, Destination IP = <code>10.0.0.50</code>, $\text{TTL} = 64$.</li>
+          <li>Host A performs bitwise AND: $\text{Dest IP} \land \text{Subnet Mask} \ne \text{Local Subnet}$.</li>
+          <li>Conclusion: Destination is remote! Host A must forward the packet to its <strong>Default Gateway (Router R1: <code>192.168.1.1</code>)</strong>.</li>
+          <li>Host A checks ARP cache for R1's MAC address $\to$ gets <code>BB:BB:BB</code>.</li>
+          <li>Host A encapsulates datagram into an Ethernet frame:
+            $$\text{Src MAC} = \mathbf{AA:AA:AA}, \quad \text{Dest MAC} = \mathbf{BB:BB:BB}$$
+          </li>
+        </ul>
+      </li>
+      <li><strong>Hop 1 — Router R1 Processes Packet:</strong>
+        <ul>
+          <li>R1 receives frame on <code>eth0</code>; validates CRC; strips Ethernet header.</li>
+          <li>Checks IP checksum $\to$ valid. Decrements TTL from $64 \to \mathbf{63}$. Recalculates IP checksum.</li>
+          <li>Performs LPM lookup for <code>10.0.0.50</code> $\to$ matches route: <em>Next-Hop is Router R2 (<code>172.16.1.2</code>) via interface <code>eth1</code></em>.</li>
+          <li>R1 checks ARP cache for R2's MAC $\to$ gets <code>DD:DD:DD</code>.</li>
+          <li>R1 encapsulates packet into a new Ethernet frame:
+            $$\text{Src MAC} = \mathbf{CC:CC:CC}, \quad \text{Dest MAC} = \mathbf{DD:DD:DD}$$
+          </li>
+        </ul>
+      </li>
+      <li><strong>Hop 2 — Router R2 Processes Packet:</strong>
+        <ul>
+          <li>R2 receives frame on <code>eth0</code>; validates CRC; strips Ethernet header.</li>
+          <li>Checks IP checksum $\to$ valid. Decrements TTL from $63 \to \mathbf{62}$. Recalculates IP checksum.</li>
+          <li>Performs LPM lookup for <code>10.0.0.50</code> $\to$ matches local subnet on <code>eth1</code> (Direct Delivery!).</li>
+          <li>R2 checks ARP cache for Host B's MAC $\to$ gets <code>FF:FF:FF</code>.</li>
+          <li>R2 encapsulates packet into a third Ethernet frame:
+            $$\text{Src MAC} = \mathbf{EE:EE:EE}, \quad \text{Dest MAC} = \mathbf{FF:FF:FF}$$
+          </li>
+        </ul>
+      </li>
+      <li><strong>Host B Receives Packet:</strong>
+        <ul>
+          <li>Host B accepts frame; validates CRC; strips Ethernet header.</li>
+          <li>Inspects IP header: Destination IP matches Host B's own IP (<code>10.0.0.50</code>)!</li>
+          <li>Checks Protocol field (e.g., $6$ for TCP) and delivers payload up to Layer 4!</li>
+        </ul>
+      </li>
+    </ol>
+
+    <div class="callout tip">
+      <div class="callout-title">⚡ Summary of Field Evolution</div>
+      <ul>
+        <li><strong>Source IP:</strong> <code>192.168.1.10</code> (Constant throughout!)</li>
+        <li><strong>Destination IP:</strong> <code>10.0.0.50</code> (Constant throughout!)</li>
+        <li><strong>TTL:</strong> $64 \to 63 \to 62$ (Decremented by 1 at each router).</li>
+        <li><strong>MAC Addresses:</strong> Rewritten at every single hop!</li>
+      </ul>
+    </div>
+
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Step-by-step traces of end-to-end packet traversal.</div>
+      <div class="resource-grid">
+        <a href="https://www.pearson.com/en-us/subject-catalog/p/computer-networking/P200000009493" target="_blank" rel="noopener noreferrer">
+          📘 Kurose &amp; Ross — Section 4.3 End-to-End Walkthrough
+          <small>Complete packet header lifecycle across subnets.</small>
+        </a>
+        <a href="https://www.ciscopress.com/articles/article.asp?p=3089352" target="_blank" rel="noopener noreferrer">
+          📘 Cisco Press — Packet Forwarding Process
+          <small>Hardware ASIC pipeline and ARP table lookups.</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=OyBIburQl6s" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — End-to-End Packet Delivery
+          <small>Video animation of MAC rewrites and constant IP addresses.</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 11.13: HOW ROUTING PROTOCOLS FIT IN -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s11-protocols" class="section-in-uni content-section" data-chapter="11" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="core" data-search-section="Routing protocols classification IGP vs EGP intra domain inter domain RIP OSPF BGP autonomous systems">
+  <div class="section-heading">
+    <h2 class="prose">11.13 How Routing Protocols Fit In: Global Taxonomy
+      <button class="bookmark-btn" data-id="s11-protocols" data-label="11.13 Routing Protocols Fit" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Routing Protocols Taxonomy: Interior vs Exterior Routing &amp; Autonomous Systems</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Autonomous System (AS) &amp; Routing Taxonomy — Definitions</div>
+      <p>An <strong>Autonomous System (AS)</strong> is a collection of connected IP routing prefixes under the control of a single administrative entity (such as an ISP, university, or enterprise network) that presents a common, unified routing policy to the Internet. Routing protocols are fundamentally partitioned into <strong>Intra-AS (IGP)</strong> and <strong>Inter-AS (EGP)</strong> protocols.</p>
+    </div>
+
+    <h3>Master Taxonomy of Dynamic Routing Protocols</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Classification</th>
+          <th>Protocol</th>
+          <th>Underlying Algorithm</th>
+          <th>Routing Metric Used</th>
+          <th>Primary Domain</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td rowspan="3"><strong>Interior Gateway Protocols (IGP)</strong><br><em>(Inside a single Autonomous System)</em></td>
+          <td><strong>RIP</strong> (Routing Information Protocol)</td>
+          <td><strong>Distance-Vector</strong> (Bellman-Ford)</td>
+          <td>Hop Count (Max 15 hops)</td>
+          <td>Small enterprise networks</td>
+        </tr>
+        <tr>
+          <td><strong>OSPF</strong> (Open Shortest Path First)</td>
+          <td><strong>Link-State</strong> (Dijkstra algorithm)</td>
+          <td>Cost / Bandwidth Inverse</td>
+          <td>Large enterprise networks &amp; ISP backbones</td>
+        </tr>
+        <tr>
+          <td><strong>IS-IS</strong> (Intermediate System to Intermediate System)</td>
+          <td><strong>Link-State</strong> (Dijkstra algorithm)</td>
+          <td>Cost / Configured metric</td>
+          <td>Tier-1 ISP core transit networks</td>
+        </tr>
+        <tr>
+          <td><strong>Exterior Gateway Protocol (EGP)</strong><br><em>(Between Autonomous Systems)</em></td>
+          <td><strong>BGP-4</strong> (Border Gateway Protocol)</td>
+          <td><strong>Path-Vector</strong></td>
+          <td>AS-Path length, Business Peering Policy</td>
+          <td>The global Internet backbone</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="diagram-box">
+      <div class="diagram-title">Figure 11.13: Hierarchy of Autonomous Systems and Routing Protocols</div>
+      <pre>
+   +------------------------------------+       BGP-4       +------------------------------------+
+   |  Autonomous System 1 (AS 100)      | <===============> |  Autonomous System 2 (AS 200)      |
+   |                                    |                   |                                    |
+   |   [ Router A ] <---> [ Router B ]  |                   |   [ Router D ] <---> [ Router E ]  |
+   |        ^                   ^       |                   |        ^                   ^       |
+   |        |   OSPF (IGP)      |       |                   |        |   IS-IS (IGP)     |       |
+   |        v                   v       |                   |        v                   v       |
+   |   [ Router C ] <---> [ Border Rtr ]|                   |   [ Router F ] <---> [ Border Rtr ]|
+   +------------------------------------+                   +------------------------------------+
+      </pre>
+    </div>
+
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Primary texts on autonomous systems and routing protocol classifications.</div>
+      <div class="resource-grid">
+        <a href="https://www.pearson.com/en-us/subject-catalog/p/computer-networking/P200000009493" target="_blank" rel="noopener noreferrer">
+          📘 Kurose &amp; Ross — Section 5.3 &amp; 5.4 Intra-AS and Inter-AS Routing
+          <small>OSPF, BGP, and Autonomous Systems architecture.</small>
+        </a>
+        <a href="https://www.mheducation.com/highered/product/data-communications-and-networking-with-tcp-ip-protocol-suite-forouzan.html" target="_blank" rel="noopener noreferrer">
+          📘 Forouzan — Chapter 20 Unicast Routing Protocols
+          <small>Detailed breakdown of RIP, OSPF, and BGP mechanics.</small>
+        </a>
+        <a href="https://www.youtube.com/watch?v=OyBIburQl6s" target="_blank" rel="noopener noreferrer">
+          ▶️ Neso Academy — Classification of Routing Protocols
+          <small>Video lecture on IGP, EGP, Distance-Vector, and Link-State.</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 11.14: HIGH-YIELD TRAPS & DISTINCTIONS -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s11-traps" class="section-in-uni content-section" data-chapter="11" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="core" data-search-section="High yield exam traps distinctions routing table vs forwarding table default route 0.0.0.0/0 IP address rewrite myths TTL ICMP">
+  <div class="section-heading">
+    <h2 class="prose">11.14 High-Yield Traps &amp; Examination Distinctions
+      <button class="bookmark-btn" data-id="s11-traps" data-label="11.14 High-Yield Traps" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Network Layer Design: Common Misconceptions, Pitfalls &amp; Exam Traps</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Exam Preparation Synthesis</div>
+      <p>Network layer examination questions frequently target subtle architectural misconceptions. Below are the top 5 traps tested in university semester papers and competitive entrance exams.</p>
+    </div>
+
+    <h3>Top 5 High-Yield Examination Traps</h3>
+
+    <div class="callout danger">
+      <div class="callout-title">⚠️ Trap 1: The "IP Rewrite" Myth</div>
+      <p><strong>False belief:</strong> Students think routers replace the source IP address with their own IP at each hop.<br>
+      <strong>Reality:</strong> Routers <strong>NEVER modify the source or destination IP addresses</strong> in normal routing! MAC addresses change at every single hop; IP addresses remain permanently invariant from end to end (unless passing through a NAT firewall).</p>
+    </div>
+
+    <div class="callout danger">
+      <div class="callout-title">⚠️ Trap 2: Routing Table (RIB) vs Forwarding Table (FIB)</div>
+      <p><strong>Misconception:</strong> Confusing the routing table with the forwarding table.<br>
+      • <strong>Routing Table (RIB):</strong> Maintained in software by the control plane CPU; contains all known candidate paths, administrative distances, and metrics from multiple routing protocols.<br>
+      • <strong>Forwarding Table (FIB):</strong> Downloaded into ultra-fast hardware ASICs in the data plane; contains only the <em>single best active next-hop</em> for each prefix for line-rate switching.</p>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">⚠️ Trap 3: Default Route (0.0.0.0/0) Priority</div>
+      <p><strong>Misconception:</strong> Assuming <code>0.0.0.0/0</code> will match everything first because it matches any IP.<br>
+      <strong>Reality:</strong> Under <strong>Longest Prefix Match (LPM)</strong>, <code>0.0.0.0/0</code> has a prefix length of <strong>0 bits</strong>—the absolute shortest possible prefix! Therefore, it is checked <strong>LAST</strong>, functioning solely as the "gateway of last resort" when no other prefix matches.</p>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">⚠️ Trap 4: TTL Decrement Location &amp; Traceroute Magic</div>
+      <p>When does a router drop a packet due to TTL? A router decrements TTL upon packet reception. If TTL becomes $0$, the router <strong>drops the packet and sends an ICMP Type 11 (Time Exceeded)</strong> to the sender. This exact mechanism is how <code>traceroute</code> maps Internet topology!</p>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-title">⚠️ Trap 5: Packet Loss in Best-Effort Delivery</div>
+      <p><strong>Question:</strong> <em>"If a router drops an IP packet due to buffer overflow, does the router retransmit the packet?"</em><br>
+      <strong>Answer: ABSOLUTELY NOT!</strong> IP is an unreliable best-effort protocol. Routers drop packets silently and move on. Recovery is exclusively the responsibility of end-system transport protocols (like TCP).</p>
+    </div>
+
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Summary cheat sheets and practice exam questions.</div>
+      <div class="resource-grid">
+        <a href="https://www.pearson.com/en-gb/subject-catalog/p/computer-networks-global-edition/P200000005535/9781292498621" target="_blank" rel="noopener noreferrer">
+          📘 Tanenbaum &amp; Wetherall — Chapter 5 Review
+          <small>End-of-chapter conceptual problem sets on network design.</small>
+        </a>
+        <a href="https://www.mheducation.com/highered/product/data-communications-and-networking-with-tcp-ip-protocol-suite-forouzan.html" target="_blank" rel="noopener noreferrer">
+          📘 Forouzan — Chapter 18 Review Questions
+          <small>Multiple-choice and descriptive university exam questions.</small>
+        </a>
+        <a href="../exams/mock-exam.html">
+          📝 CN MiniBook — Practice Exams
+          <small>Interactive self-testing on network layer design issues.</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SECTION 11.15: CHAPTER SUMMARY & SELF-CHECK -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<section id="s11-summary" class="section-in-uni content-section" data-chapter="11" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="core" data-search-section="Chapter 11 summary self check quick review formulas cheat sheet network layer foundations">
+  <div class="section-heading">
+    <h2 class="prose">11.15 Chapter Summary &amp; Quick Review
+      <button class="bookmark-btn" data-id="s11-summary" data-label="11.15 Chapter Summary" title="Bookmark">🔖</button>
+    </h2>
+  </div>
+  <div class="uni-req-banner">
+    <span class="uni-req-badge">🎓 Uni Required</span>
+    <span>Prescribed syllabus topic: <strong>Chapter 11 Revision, Key Takeaways &amp; Self-Check Exercises</strong></span>
+  </div>
+
+  <div class="prose">
+    <div class="def-box">
+      <div class="def-term">Chapter 11 Core Synthesis</div>
+      <p>The Network Layer transforms local hop-by-hop framing into global end-to-end packet delivery across heterogeneous internetworks. It cleanly separates the <strong>Control Plane</strong> (routing algorithms computing paths) from the <strong>Data Plane</strong> (hardware forwarding using Longest Prefix Match). The Internet's connectionless datagram design provides fault-tolerant, scalable best-effort delivery while pushing reliability complexity to the edge hosts.</p>
+    </div>
+
+    <h3>Master Concepts Cheat Sheet</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Concept</th>
+          <th>Core Principle</th>
+          <th>Key Invariant / Mechanism</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Layer 3 Scope</strong></td>
+          <td>Host-to-Host delivery</td>
+          <td>Source and Destination IP remain constant end-to-end.</td>
+        </tr>
+        <tr>
+          <td><strong>Layer 2 Scope</strong></td>
+          <td>Hop-by-Hop delivery</td>
+          <td>Source and Destination MAC are rewritten at every router hop.</td>
+        </tr>
+        <tr>
+          <td><strong>Forwarding</strong></td>
+          <td>Data plane (Hardware ASICs)</td>
+          <td>Local packet transfer in nanoseconds via Longest Prefix Match.</td>
+        </tr>
+        <tr>
+          <td><strong>Routing</strong></td>
+          <td>Control plane (Software CPU)</td>
+          <td>Global path computation via distributed algorithms (OSPF, BGP).</td>
+        </tr>
+        <tr>
+          <td><strong>Service Model</strong></td>
+          <td>Best-Effort Datagram</td>
+          <td>Zero per-flow router state; packets routed independently.</td>
+        </tr>
+        <tr>
+          <td><strong>Router Pipeline</strong></td>
+          <td>Store-and-forward</td>
+          <td>Verify checksum $\to$ Decrement TTL $\to$ Recompute checksum $\to$ LPM $\to$ ARP $\to$ Frame.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="study-resources">
+      <div class="resources-title">📚 References &amp; Further Learning</div>
+      <div class="resources-note">Summary cheat sheets and practice exams for Chapter 11.</div>
+      <div class="resource-grid">
+        <a href="https://www.pearson.com/en-us/subject-catalog/p/computer-networking/P200000009493" target="_blank" rel="noopener noreferrer">
+          📘 Kurose &amp; Ross — Chapter 4 Summary
+          <small>Network layer data plane core summary and exercises.</small>
+        </a>
+        <a href="https://www.mheducation.com/highered/product/data-communications-and-networking-with-tcp-ip-protocol-suite-forouzan.html" target="_blank" rel="noopener noreferrer">
+          📘 Forouzan — Chapter 18 Key Terms &amp; Summary
+          <small>Complete network layer glossary and review questions.</small>
+        </a>
+        <a href="../exams/mock-exam.html">
+          📝 CN MiniBook — Practice Exams
+          <small>Interactive self-testing on Network Layer Foundations.</small>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<hr class="section-hr">
+
+  <!-- PREV/NEXT NAV -->
+  <div class="prev-next">
+    <a href="ch10-mac-ethernet.html" class="nav-btn">&larr; Ch 10: MAC Sublayer &amp; Ethernet</a>
+    <a href="ch12-shortest-path-routing.html" class="nav-btn primary">Next: Ch 12 Shortest Path Routing &rarr;</a>
+  </div>
+
+</div>
+</main>
+
+<!-- FLOATING MODE PANEL -->
+<div id="mode-panel">
+  <button class="mode-btn active" data-mode="all">📚 All</button>
+  <button class="mode-btn uni-btn" data-mode="uni">🎓 Uni</button>
+  <button class="mode-btn gate-btn" data-mode="gate">⚡ GATE</button>
+  <button class="mode-btn adv-btn" data-mode="advanced">🔬 Adv</button>
+</div>
+
+<!-- TTS FLOATING PANEL -->
+<div id="tts-panel">
+  <div class="tts-controls">
+    <button class="tts-btn" id="tts-play" title="Play/Pause">▶</button>
+    <button class="tts-btn" id="tts-stop" title="Stop">⏹</button>
+    <div class="tts-speed"><span>Speed</span><input type="range" id="tts-rate" min="0.5" max="2" step="0.1" value="1"><span id="tts-rate-label">1.0x</span></div>
+  </div>
+  <div class="tts-voice"><select id="tts-voice-select"><option>Loading voices…</option></select></div>
+</div>
+
+<!-- SEARCH MODAL -->
+<div id="search-modal">
+  <div class="search-box">
+    <div class="search-input-wrap"><span class="s-icon">🔍</span><input id="search-input" type="text" placeholder="Search chapters, topics, protocols…" autocomplete="off"></div>
+    <div id="search-results"></div>
+    <div class="search-hint"><span><kbd>↵</kbd> to navigate</span><span><kbd>Esc</kbd> to close</span><span><kbd>Ctrl+K</kbd> to open</span></div>
+  </div>
+</div>
+
+<!-- MOBILE NAV -->
+<nav id="mobile-nav">
+  <button class="mobile-nav-btn" onclick="SidebarManager?.toggle()"><span class="icon">☰</span>Menu</button>
+  <a href="../index.html" class="mobile-nav-btn"><span class="icon">🏠</span>Home</a>
+  <a href="ch11-network-layer-foundations.html" class="mobile-nav-btn active"><span class="icon">📖</span>Chapters</a>
+  <a href="../exams/mock-exam.html" class="mobile-nav-btn"><span class="icon">📝</span>Exams</a>
+  <button class="mobile-nav-btn" onclick="SearchManager?.open()"><span class="icon">🔍</span>Search</button>
+</nav>
+
+<div id="toast-container"></div>
+<script src="../assets/js/state.js"></script>
+<script src="../assets/js/core.js"></script>
+<script src="../assets/js/modes.js"></script>
+<script src="../assets/js/tts.js"></script>
+<script src="../assets/js/timer-settings.js"></script>
+<script src="../assets/js/timer.js"></script>
+<script src="../assets/js/timer-analytics.js"></script>
+<script src="../assets/js/timer-notifications.js"></script>
+<script src="../assets/js/timer-ui.js"></script>
+<script src="../assets/js/print.js"></script>
+<script src="../assets/js/notes.js"></script>
+<script src="../assets/js/glossary.js"></script>
+</body>
+</html>

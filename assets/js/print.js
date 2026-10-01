@@ -1,131 +1,120 @@
 /**
- * ⚡ Arpit | print.js — OS MiniBook 2026
- * PrintManager: Clean PDF/Print export with DOM preparation & restore
+ * Engineering Minibooks · print/export controller
+ * Preserves PrintManager.init() and PrintManager.print().
  */
 'use strict';
 
-const PrintManager = (() => {
-  let _openDetails = [];
-  let _originalTitle = '';
-  let _initialized = false;
-  let _cleanupTimer = null;
-  let _afterPrintHandler = null;
+(() => {
+  let initialized = false;
+  let printing = false;
+  let cleanupTimer = null;
+  let previousTitle = '';
+  let previousDetails = [];
 
-  /** Expand all collapsed details/summary elements so they print fully */
-  function expandAll() {
-    _openDetails = [];
-    document.querySelectorAll('details').forEach(el => {
-      if (!el.open) {
-        _openDetails.push(el);
-        el.open = true;
-      }
+  function rememberAndOpenDetails() {
+    previousDetails = [];
+    document.querySelectorAll('details').forEach(details => {
+      const wasOpen = details.open;
+      previousDetails.push({ details, wasOpen });
+      details.open = true;
     });
   }
 
-  /** Restore details to their pre-print state */
   function restoreDetails() {
-    _openDetails.forEach(el => { el.open = false; });
-    _openDetails = [];
+    previousDetails.forEach(({ details, wasOpen }) => { details.open = wasOpen; });
+    previousDetails = [];
   }
 
-  /** Inject a clean print header into the page */
-  function injectPrintHeader() {
-    const existing = document.getElementById('print-header-inject');
-    if (existing) existing.remove();
+  function chapterTitle() {
+    return (document.querySelector('.chapter-title, h1.chapter-title')?.textContent ||
+      document.querySelector('h1')?.textContent ||
+      document.title || 'Engineering Minibooks').trim();
+  }
 
-    const chapterTitle = document.querySelector('.chapter-title, h1.chapter-title')?.textContent
-      || document.querySelector('h1')?.textContent
-      || document.title;
+  function injectHeader() {
+    document.getElementById('print-header-inject')?.remove();
 
-    const now = new Date().toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' });
-
-    const div = document.createElement('div');
-    div.id = 'print-header-inject';
-    div.innerHTML = `
-      <div class="print-book-header">
-        <div class="print-logo">A⚡ OS MiniBook</div>
-        <div class="print-meta">University of Delhi · B.Tech CSE Sem IV · 2026 · Arpit</div>
-      </div>
-      <h1 class="print-chapter-title">${chapterTitle}</h1>
-      <div class="print-date">Exported: ${now}</div>
-      <hr class="print-divider">
-    `;
     const main = document.getElementById('main-content');
-    if (main) main.insertBefore(div, main.firstChild);
+    if (!main) return;
+
+    const wrap = document.createElement('div');
+    wrap.id = 'print-header-inject';
+    wrap.setAttribute('aria-hidden', 'true');
+
+    const brand = document.createElement('div');
+    brand.className = 'print-book-header';
+
+    const book = document.createElement('div');
+    book.className = 'print-logo';
+    book.textContent = 'ENGINEERING MINIBOOKS';
+
+    const meta = document.createElement('div');
+    meta.className = 'print-meta';
+    meta.textContent = 'Computer Networks';
+
+    brand.append(book, meta);
+
+    const title = document.createElement('h1');
+    title.className = 'print-chapter-title';
+    title.textContent = chapterTitle();
+
+    const date = document.createElement('div');
+    date.className = 'print-date';
+    date.textContent = `Exported ${new Intl.DateTimeFormat('en-IN', { dateStyle: 'long' }).format(new Date())}`;
+
+    const rule = document.createElement('hr');
+    rule.className = 'print-divider';
+
+    wrap.append(brand, title, date, rule);
+    main.insertBefore(wrap, main.firstChild);
   }
 
-  /** Remove the injected print header */
-  function removePrintHeader() {
+  function removeHeader() {
     document.getElementById('print-header-inject')?.remove();
   }
 
-  /** Main print trigger */
+  function cleanup() {
+    if (!printing) return;
+    printing = false;
+    if (cleanupTimer) { clearTimeout(cleanupTimer); cleanupTimer = null; }
+    restoreDetails();
+    removeHeader();
+    document.body.classList.remove('print-mode');
+    if (previousTitle) document.title = previousTitle;
+    previousTitle = '';
+    window.removeEventListener('afterprint', cleanup);
+  }
+
   function print() {
-    if (document.body.classList.contains('print-mode')) return;
+    if (printing) return;
+    printing = true;
+    previousTitle = document.title;
 
-    // 1. Set a custom print title
-    _originalTitle = document.title;
-    const chTitle = document.querySelector('.chapter-title, h1')?.textContent || 'OS MiniBook';
-    document.title = `${chTitle} — OS MiniBook ⚡ Arpit`;
-
-    // 2. Prepare DOM
-    expandAll();
-    injectPrintHeader();
+    rememberAndOpenDetails();
+    injectHeader();
     document.body.classList.add('print-mode');
+    document.title = `${chapterTitle()} — Engineering Minibooks`;
 
-    // 3. Show toast
-    if (window.Toast) Toast.show('🖨️ Opening print dialog…', 'info');
+    window.addEventListener('afterprint', cleanup, { once: true });
 
-    // 4. Trigger print after a short delay so CSS reflows finish
-    setTimeout(() => {
-      const cleanup = () => {
-        if (_cleanupTimer) {
-          clearTimeout(_cleanupTimer);
-          _cleanupTimer = null;
-        }
-        restoreDetails();
-        removePrintHeader();
-        document.body.classList.remove('print-mode');
-        document.title = _originalTitle;
-        if (_afterPrintHandler) {
-          window.removeEventListener('afterprint', _afterPrintHandler);
-          _afterPrintHandler = null;
-        }
-      };
-      _afterPrintHandler = cleanup;
-      window.addEventListener('afterprint', _afterPrintHandler);
-
-      window.print();
-
-      // Fallback cleanup in case afterprint doesn't fire (some browsers)
-      _cleanupTimer = setTimeout(cleanup, 3000);
-    }, 350);
+    window.setTimeout(() => {
+      try { window.print(); }
+      catch (error) { console.warn('Print request failed:', error); cleanup(); return; }
+      cleanupTimer = window.setTimeout(cleanup, 12000);
+    }, 120);
   }
 
   function init() {
-    if (_initialized) return;
-    _initialized = true;
-
+    if (initialized) return;
+    initialized = true;
     const btn = document.getElementById('print-btn');
-    if (btn && !btn.dataset.printBound) {
+    if (btn && btn.dataset.printBound !== '1') {
       btn.dataset.printBound = '1';
       btn.addEventListener('click', print);
     }
-
-    // Keyboard shortcut: Ctrl+P overridden to use our clean version
-    if (!document.body.dataset.printShortcutBound) {
-      document.body.dataset.printShortcutBound = '1';
-      document.addEventListener('keydown', e => {
-        if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
-          e.preventDefault();
-          print();
-        }
-      });
-    }
   }
 
-  return { init, print };
+  const API = { init, print };
+  window.PrintManager = API;
+  document.addEventListener('DOMContentLoaded', init, { once: true });
 })();
-
-window.PrintManager = PrintManager;
-document.addEventListener('DOMContentLoaded', () => PrintManager.init());

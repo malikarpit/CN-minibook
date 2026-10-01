@@ -1,0 +1,2778 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<!-- ⚡ Arpit | CN MiniBook 2026 -->
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="Arpit">
+<meta name="description" content="Chapter 14: Logical Addressing & IPv4 — CN MiniBook. Complete breakdown of 32-bit IPv4 structure, CIDR prefix notation, subnet masks, network & broadcast boundaries, VLSM subnetting numerical drills, classful legacy, private RFC 1918 space, special addresses, and Longest Prefix Match (LPM) TCAM forwarding.">
+<title>Ch 14 — Logical Addressing &amp; IPv4 | CN MiniBook 🌐 Arpit</title>
+<link rel="manifest" href="../manifest.json">
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/components.css">
+<link rel="stylesheet" href="../assets/css/animations.css">
+<link rel="stylesheet" href="../assets/css/timer.css">
+<link rel="stylesheet" href="../assets/css/chapters.css">
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<!-- HEADER -->
+<header id="main-header">
+  <div class="header-left">
+    <button id="sidebar-toggle" class="icon-btn" title="Toggle Sidebar (S)">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </button>
+    <div class="brand-logo">
+      <div class="brand-icon">🌐</div>
+      <div class="brand-text"><span class="main">CN MiniBook</span><span class="sub">Computer Networks</span></div>
+    </div>
+  </div>
+  <span class="header-chapter-title">Ch 14 — Logical Addressing &amp; IPv4</span>
+  <div class="header-right">
+    <button id="search-btn" class="icon-btn" title="Search (Ctrl+K)">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.35-4.35"></path></svg>
+    </button>
+    <button id="tts-toggle" class="icon-btn" title="Read Aloud">
+      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"></path></svg>
+    </button>
+    <button id="print-btn" title="Print / Save as PDF (Ctrl+P)" aria-label="Print"><svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg><span class="print-label">PDF</span></button>
+    <button id="reading-mode-btn" class="icon-btn" title="Reading Mode (F)" aria-pressed="false" aria-label="Toggle reading mode">📖</button>
+    <button id="theme-toggle" class="icon-btn" title="Toggle Theme (T)"></button>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<div id="sidebar-overlay"></div>
+<aside id="sidebar">
+  <nav class="sidebar-nav">
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Navigation</div>
+      <a href="../index.html" class="sidebar-link"><span class="link-icon">🏠</span>Home</a>
+      <a href="../progress.html" class="sidebar-link"><span class="link-icon">📊</span>Dashboard</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Chapter 14 — Sections</div>
+      <a href="#s14-why" class="sidebar-link active"><span class="link-icon">💡</span>14.1 Why Logical Addressing</a>
+      <a href="#s14-structure" class="sidebar-link"><span class="link-icon">🧱</span>14.2 IPv4 Address Structure</a>
+      <a href="#s14-prefix" class="sidebar-link"><span class="link-icon">✂️</span>14.3 Prefix &amp; Host Portion</a>
+      <a href="#s14-cidr" class="sidebar-link"><span class="link-icon">📐</span>14.4 CIDR &amp; Slash Notation</a>
+      <a href="#s14-mask" class="sidebar-link"><span class="link-icon">🎭</span>14.5 Subnet Mask &amp; AND</a>
+      <a href="#s14-range" class="sidebar-link"><span class="link-icon">🎯</span>14.6 Network, Broadcast &amp; Range</a>
+      <a href="#s14-subnetting" class="sidebar-link"><span class="link-icon">🔢</span>14.7 Subnetting Core Math</a>
+      <a href="#s14-num1" class="sidebar-link"><span class="link-icon">📝</span>14.8 Worked Numerical: /24 &rarr; /26</a>
+      <a href="#s14-num2" class="sidebar-link"><span class="link-icon">🔍</span>14.9 Find Subnet of Host</a>
+      <a href="#s14-hostreq" class="sidebar-link"><span class="link-icon">👥</span>14.10 Subnetting by Host Count</a>
+      <a href="#s14-classful" class="sidebar-link"><span class="link-icon">🏛️</span>14.11 Classful Legacy View</a>
+      <a href="#s14-private" class="sidebar-link"><span class="link-icon">🔒</span>14.12 Private IPv4 Space</a>
+      <a href="#s14-special" class="sidebar-link"><span class="link-icon">⭐</span>14.13 Special IPv4 Addresses</a>
+      <a href="#s14-lpm" class="sidebar-link"><span class="link-icon">⚡</span>14.14 Longest Prefix Match</a>
+      <a href="#s14-aggregation" class="sidebar-link"><span class="link-icon">📦</span>14.15 Route Aggregation</a>
+      <a href="#s14-compare" class="sidebar-link"><span class="link-icon">⚖️</span>14.16 IP vs MAC vs Port</a>
+      <a href="#s14-drill" class="sidebar-link"><span class="link-icon">🛠️</span>14.17 Addressing Numerical Drill</a>
+      <a href="#s14-traps" class="sidebar-link"><span class="link-icon">🪤</span>14.18 High-Yield Traps</a>
+      <a href="#s14-summary" class="sidebar-link"><span class="link-icon">🏁</span>14.19 Summary &amp; Reference</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label part-label part-i">Part I — Introduction</div>
+      <a href="ch01-fundamentals.html" class="sidebar-link"><span class="link-icon">📡</span>Ch 1 — Fundamentals</a>
+      <a href="ch02-types-topologies.html" class="sidebar-link"><span class="link-icon">🔗</span>Ch 2 — Types &amp; Topologies</a>
+      <a href="ch03-models-addressing.html" class="sidebar-link"><span class="link-icon">📦</span>Ch 3 — Models &amp; Addressing</a>
+      <a href="ch04-devices-sdn.html" class="sidebar-link"><span class="link-icon">🔌</span>Ch 4 — Devices &amp; SDN</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label part-label part-ii">Part II — Physical Layer</div>
+      <a href="ch05-physical-fundamentals.html" class="sidebar-link"><span class="link-icon">📶</span>Ch 5 — Physical Fundamentals</a>
+      <a href="ch06-media-signaling.html" class="sidebar-link"><span class="link-icon">🔌</span>Ch 6 — Media &amp; Line Coding</a>
+      <a href="ch07-modulation-switching.html" class="sidebar-link"><span class="link-icon">📻</span>Ch 7 — Modulation &amp; Switching</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label part-label part-iii">Part III — Data Link Layer</div>
+      <a href="ch08-dll-fundamentals.html" class="sidebar-link"><span class="link-icon">🔧</span>Ch 8 — DLL Fundamentals</a>
+      <a href="ch09-protocols-sliding.html" class="sidebar-link"><span class="link-icon">🔄</span>Ch 9 — Protocols &amp; Sliding Window</a>
+      <a href="ch10-mac-ethernet.html" class="sidebar-link"><span class="link-icon">🌐</span>Ch 10 — MAC &amp; Ethernet</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label part-label part-iv">Part IV — Network Layer</div>
+      <a href="ch11-network-layer-foundations.html" class="sidebar-link part-iv"><span class="link-icon">🗺️</span>Ch 11 — Network Layer Foundations</a>
+      <a href="ch12-shortest-path-routing.html" class="sidebar-link part-iv"><span class="link-icon">🧭</span>Ch 12 — Shortest Path Routing</a>
+      <a href="ch13-link-state-distance-vector.html" class="sidebar-link part-iv"><span class="link-icon">🔁</span>Ch 13 — Link-State &amp; Distance-Vector</a>
+      <a href="ch14-logical-addressing-ipv4.html" class="sidebar-link active part-iv"><span class="link-icon">🏷️</span>Ch 14 — Logical Addressing &amp; IPv4</a>
+      <a href="ch15-ipv4-internals.html" class="sidebar-link part-iv"><span class="link-icon">📦</span>Ch 15 — IPv4 Internals</a>
+      
+      <a href="ch17-address-mapping-icmp.html" class="sidebar-link part-iv"><span class="link-icon">🔎</span>Ch 17 — Address Mapping &amp; ICMP</a>
+      <a href="ch18-routers-switches-firewalls.html" class="sidebar-link part-iv"><span class="link-icon">🛡️</span>Ch 18 — Routers, Switches &amp; Firewalls</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">My Notes</div>
+      <div id="notes-sidebar-list"></div>
+    </div>
+    </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-brand-mark"><div class="mark">🌐</div><span>Arpit · CN MiniBook 2026</span></div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main id="main-content">
+<div class="content-inner">
+    <div class="chapter-hero">
+      <div class="chapter-part-banner part-iv"><span class="part-banner-badge">Part IV</span><span>Network Layer</span></div>
+<div class="hero-badge">
+        <span class="part-badge part-iv">Part IV · Network Layer</span>
+        <span class="weight-badge high">High Exam Weightage</span>
+        <span class="time-badge">⏱️ 38 min read</span>
+      </div>
+      <h1 class="chapter-title">Logical Addressing &amp; IPv4</h1>
+      <p class="chapter-desc">The universal 32-bit hierarchical address architecture of the global Internet. First-principles mastery of dotted-decimal representation, CIDR prefix notation, subnet masks, bitwise AND arithmetic, network and broadcast calculation, Variable Length Subnet Masking (VLSM) numerical drills, classful legacy, private RFC 1918 space, special addresses, and hardware Longest Prefix Match (LPM) TCAM packet forwarding.</p>
+      <div class="hero-actions">
+        <button id="focus-toggle-btn" class="action-btn" title="Toggle University Exam Filter">
+          <span class="btn-icon">🎓</span><span class="btn-text">Filter: Uni Exam Focus</span>
+        </button>
+        <button id="bookmark-btn" class="action-btn" title="Bookmark Chapter">
+          <span class="btn-icon">🔖</span><span class="btn-text">Bookmark</span>
+        </button>
+        <button id="notes-toggle-btn" class="action-btn" title="Chapter Notes">
+          <span class="btn-icon">📝</span><span class="btn-text">Notes</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- OBJECTIVES & STUDY PATH -->
+    <div class="concept-card">
+      <h3>🎯 Learning Objectives</h3>
+      <ul>
+        <li><strong>Physical vs Logical:</strong> Understand why physical MAC addresses cannot scale to global routing and why topological hierarchical logical addressing is mandatory.</li>
+        <li><strong>32-Bit Arithmetic:</strong> Master octet-to-binary conversion, CIDR slash notation ($/n$), and the mathematical partition between network prefix and host bits.</li>
+        <li><strong>Subnet Calculation:</strong> Calculate with zero hesitation the Network ID, First Usable Host, Last Usable Host, Directed Broadcast Address, and Total Host Capacity ($2^h - 2$).</li>
+        <li><strong>Subnetting &amp; VLSM:</strong> Perform variable length subnetting allocations by borrowing bits, minimizing address wastage across heterogeneous host requirements.</li>
+        <li><strong>Router Forwarding (LPM):</strong> Trace how modern router data planes evaluate multiple overlapping prefix matches in TCAM to forward packets on the longest mask.</li>
+        <li><strong>Addressing Master Matrix:</strong> Contrast Layer 2 MAC addresses, Layer 3 IP addresses, and Layer 4 Port numbers across scope, lifespan, and resolution protocols.</li>
+      </ul>
+    </div>
+
+    <!-- TABLE OF CONTENTS -->
+    
+  <!-- OFFICIAL UNIVERSITY SYLLABUS CALLOUT -->
+  <div class="uni-syllabus-callout">
+    <div class="uni-callout-title">🎓 Official University Syllabus — UNIT II</div>
+    <div><strong>Network Layer:</strong> Logical addressing and Internet protocols: IPv4 addressing, classful vs classless addressing (CIDR), subnetting, supernetting, variable length subnet masking (VLSM), address allocation, and Longest Prefix Match (LPM) forwarding.</div>
+  </div>
+
+  <!-- UNIVERSITY SYLLABUS FILTER SWITCH -->
+  <div class="uni-mode-toggle-card">
+    <div>
+      <div class="uni-mode-title">
+        <span>🎓</span> University Exam Focus Filter
+      </div>
+      <div class="uni-mode-desc">
+        Focus specifically on sections prescribed in Delhi University syllabus vs supplementary deep-dives.
+      </div>
+    </div>
+    <div class="uni-filter-switch">
+      <button class="uni-toggle-btn active" id="filter-all-btn" data-mode="all" onclick="ModeManager.apply('all')">📚 Show All Content</button>
+      <button class="uni-toggle-btn" id="filter-uni-btn" data-mode="uni" onclick="ModeManager.apply('uni')">🎓 Focus Uni Syllabus Only</button>
+    </div>
+  </div>
+
+  <div class="toc-card">
+      <div class="toc-header">
+        <div class="toc-part-tag part-iv">Part IV · Network Layer</div>
+        <div class="toc-title"><span>📑</span>Table of Contents</div>
+      </div>
+      <div class="toc-grid">
+        <a class="toc-item in-uni" href="#s14-why"><span class="toc-num">14.1</span>Why Logical Addressing <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s14-structure"><span class="toc-num">14.2</span>IPv4 Address Structure <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s14-prefix"><span class="toc-num">14.3</span>Prefix &amp; Host Portion <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s14-cidr"><span class="toc-num">14.4</span>CIDR &amp; Slash Notation <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s14-mask"><span class="toc-num">14.5</span>Subnet Mask &amp; AND <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s14-range"><span class="toc-num">14.6</span>Network, Broadcast &amp; Range <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s14-subnetting"><span class="toc-num">14.7</span>Subnetting Core Math <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s14-num1"><span class="toc-num">14.8</span>Worked Numerical: /24 &rarr; /26 <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s14-num2"><span class="toc-num">14.9</span>Find Subnet of Host <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s14-hostreq"><span class="toc-num">14.10</span>Subnetting by Host Count <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s14-classful"><span class="toc-num">14.11</span>Classful Legacy View <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s14-private"><span class="toc-num">14.12</span>Private IPv4 Space <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s14-special"><span class="toc-num">14.13</span>Special IPv4 Addresses <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s14-lpm"><span class="toc-num">14.14</span>Longest Prefix Match <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s14-aggregation"><span class="toc-num">14.15</span>Route Aggregation <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s14-compare"><span class="toc-num">14.16</span>IP vs MAC vs Port <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s14-drill"><span class="toc-num">14.17</span>Addressing Numerical Drill <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s14-traps"><span class="toc-num">14.18</span>High-Yield Traps <span class="toc-uni-tag">🎓 Uni Core</span></a>
+        <a class="toc-item in-uni" href="#s14-summary"><span class="toc-num">14.19</span>Summary &amp; Reference <span class="toc-uni-tag">🎓 Uni Core</span></a>
+      </div>
+    </div>
+
+
+    <!-- 14.1 Why Logical Addressing Exists -->
+    <section id="s14-why" class="section-in-uni content-section" data-chapter="14" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Logical addressing Layer 3 IP address network prefix host identifier encapsulation forwarding">
+      <div class="section-header">
+        <span class="section-number">14.1</span>
+        <h2>Why Logical Addressing Exists <button class="bookmark-btn" data-id="s14-why" data-label="Why Logical Addressing Exists" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>Why Logical Addressing Exists</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p>A <strong>Logical Address (Network Layer Address)</strong> is a globally unique, topologically hierarchical, software-assigned identifier that denotes an end-system's attachment point within an interconnected internetwork, decoupled from underlying physical hardware identifiers (such as MAC addresses).</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why It Exists (The Failure of Flat Addressing at Scale)</h3>
+        <p>Every Network Interface Card (NIC) leaves the manufacturing plant with a permanently burned-in 48-bit IEEE MAC address. Why could the global Internet not simply route packets directly using MAC addresses?</p>
+        <div class="concept-grid">
+          <div class="concept-card">
+            <h4>1. Flat vs Hierarchical Topology</h4>
+            <p>MAC addresses are <em>flat</em>. Vendor OUI assignments are geographically random. A laptop manufactured by Dell in Taiwan has a MAC address structurally indistinguishable from a Dell server in London or a desktop in New York.</p>
+          </div>
+          <div class="concept-card">
+            <h4>2. Memory Explosion in Core Routers</h4>
+            <p>If routers forwarded on flat MAC addresses, every Internet router would require an entry in its forwarding table for every connected device on Earth (>20 billion devices). That would demand petabytes of ultra-expensive TCAM per router!</p>
+          </div>
+          <div class="concept-card">
+            <h4>3. Broadcast Storm Catastrophe</h4>
+            <p>Without network boundaries, resolving a destination would require global broadcast floods across the entire planet, causing instantaneous global network collapse.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ascii-box">
+FLAT ADDRESSING (MAC - Local Only):
+[Dell Laptop in Tokyo]     MAC: 00:14:22:01:23:45   (No geographic clue)
+[Dell Server in Boston]    MAC: 00:14:22:88:99:AA   (Identical OUI prefix!)
+Result: Routers must store ALL individual host addresses worldwide!
+
+HIERARCHICAL LOGICAL ADDRESSING (IP - Global Internet):
+[Postal Analogy: Country -> State -> City -> Street -> House Number]
+IPv4 Address:  [ Network Prefix: 24 bits ] [ Host ID: 8 bits ]
+               \-------------------------/ \-----------------/
+                 Locates the Network           Locates Device
+                 (Core routers only store      (Local router only
+                  the Network Prefix!)          delivers Host ID)
+      </div>
+
+      <div class="example-box">
+        <h3>3. The Postal Address Analogy</h3>
+        <p>Consider sending a letter from Mumbai to a house in Seattle, USA:</p>
+        <ul>
+          <li>The international post office in Mumbai reads only the country: <strong>USA</strong>.</li>
+          <li>The US postal hub reads only the state and city: <strong>Washington, Seattle</strong>.</li>
+          <li>The Seattle local distribution center reads the zip code and street name.</li>
+          <li>Only the local mail carrier on that specific street looks at the recipient's name and apartment number.</li>
+        </ul>
+        <p>Logical IP addressing works identically: global core routers forward packets by inspecting only the <em>Network Prefix</em>. Only the final router directly attached to the destination local area network inspects the <em>Host Identifier</em> to perform local MAC resolution via ARP.</p>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Evaluation Dimension</th>
+              <th>Physical Address (Layer 2 MAC)</th>
+              <th>Logical Address (Layer 3 IP)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Addressing Scheme</strong></td>
+              <td>Flat (OUI Vendor ID + Serial Number)</td>
+              <td>Hierarchical (Network Prefix + Host ID)</td>
+            </tr>
+            <tr>
+              <td><strong>Assignment</strong></td>
+              <td>Burned-in at hardware manufacturing (ROM/EEPROM)</td>
+              <td>Configured dynamically via DHCP or statically by admin</td>
+            </tr>
+            <tr>
+              <td><strong>Routability Scope</strong></td>
+              <td>Local Link Only (Broadcast Domain / L2 Switch)</td>
+              <td>Globally Routable across Heterogeneous Networks</td>
+            </tr>
+            <tr>
+              <td><strong>Portability</strong></td>
+              <td>Remains fixed regardless of geographic relocation</td>
+              <td>Changes whenever the device moves to a new subnet</td>
+            </tr>
+            <tr>
+              <td><strong>Core Router Memory</strong></td>
+              <td>$O(\text{Total Devices}) \approx 20\text{ Billion entries}$</td>
+              <td>$O(\text{Aggregated Networks}) \approx 950\text{k CIDR prefixes}$</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="confusion-box">
+        <h3>4. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "My IP address belongs to my laptop, so it stays with me when I walk from my home Wi-Fi to campus Wi-Fi."<br>
+        <strong>Reality:</strong> False! Your MAC address stays with your laptop, but your IP address is a <em>location identifier</em> assigned by the local network. When you move to campus, campus DHCP gives you a new IP belonging to the university's network prefix.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>5. University Exam &amp; GATE Tips</h3>
+        <p>Exam question: <em>"Why are both IP and MAC addresses needed in an internetwork?"</em><br>
+        Answer: IP provides global hierarchical routing across heterogeneous networks without core router state explosion. MAC provides link-local hop-by-hop delivery across shared physical broadcast media (Ethernet/Wi-Fi) between adjacent interfaces.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Curated references explaining why logical addressing is essential to internetworking.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc791" target="_blank" rel="noopener noreferrer">
+            📘 RFC 791 - Internet Protocol Specification
+            <small>DARPA Internet Program Protocol Specification defining logical IP addressing.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=7_-qWPNerVE" target="_blank" rel="noopener noreferrer">
+            🎥 IP Address vs MAC Address Explained
+            <small>Visual explanation of why routers cannot route packets on MAC addresses alone.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/ip-addressing" target="_blank" rel="noopener noreferrer">
+            📝 GATE Overflow: IP Addressing Concept Questions
+            <small>Conceptual questions testing the division between physical and logical addresses.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 14.2 IPv4 Address Structure -->
+    <section id="s14-structure" class="section-in-uni content-section" data-chapter="14" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="IPv4 address structure 32-bit dotted-decimal notation octets binary representation">
+      <div class="section-header">
+        <span class="section-number">14.2</span>
+        <h2>IPv4 Address Structure <button class="bookmark-btn" data-id="s14-structure" data-label="IPv4 Address Structure" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>IPv4 Address Structure</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p>An <strong>IPv4 Address</strong> is an unsigned 32-bit binary integer uniquely identifying a network interface in an IP network, commonly represented for human readability in <strong>dotted-decimal notation</strong> as four decimal numbers (each ranging from 0 to 255) separated by periods.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Architectural Breakdown: 32 Bits &amp; 4 Octets</h3>
+        <p>The total address space of IPv4 is exactly:</p>
+        <div class="math-block">
+          $$2^{32} = 4,294,967,296 \text{ distinct addresses} \approx 4.29 \text{ billion}$$
+        </div>
+        <p>The 32 bits are divided into <strong>four 8-bit groups</strong> known as <strong>octets</strong> (or bytes). Each octet can represent integer values from $00000000_2$ (decimal 0) to $11111111_2$ (decimal 255).</p>
+      </div>
+
+      <div class="ascii-box">
+32-Bit Binary Stream:
+ 11000000 . 10101000 . 00001010 . 00000001
++--------+ +--------+ +--------+ +--------+
+| Octet 1| | Octet 2| | Octet 3| | Octet 4|
+| 8 bits | | 8 bits | | 8 bits | | 8 bits |
++--------+ +--------+ +--------+ +--------+
+    |          |          |          |
+   192   .    168   .     10    .    1     (Dotted-Decimal)
+
+Total Length: 4 Octets * 8 bits = 32 bits
+      </div>
+
+      <div class="example-box">
+        <h3>3. Octet-to-Decimal Binary Conversion Drill</h3>
+        <p>To convert an 8-bit octet $b_7 b_6 b_5 b_4 b_3 b_2 b_1 b_0$ to decimal, we evaluate positional powers of 2:</p>
+        <div class="math-block">
+          $$\text{Value} = b_7 \cdot 128 + b_6 \cdot 64 + b_5 \cdot 32 + b_4 \cdot 16 + b_3 \cdot 8 + b_2 \cdot 4 + b_1 \cdot 2 + b_0 \cdot 1$$
+        </div>
+
+        <h4>Worked Example: Convert $192.168.10.1$ to Binary</h4>
+        <ul>
+          <li><strong>192:</strong> $128 + 64 = 11000000_2$</li>
+          <li><strong>168:</strong> $128 + 32 + 8 = 10101000_2$</li>
+          <li><strong>10:</strong> $8 + 2 = 00001010_2$</li>
+          <li><strong>1:</strong> $1 = 00000001_2$</li>
+          <li><strong>Full 32-bit Integer:</strong> <code>11000000101010000000101000000001</code> ($= 3,232,238,081_{10}$).</li>
+        </ul>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Bit Position (from MSB)</th>
+              <th>Bit Weight</th>
+              <th>Cumulative Sum if All 1s</th>
+              <th>Common Subnet Mask Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Bit 1</td>
+              <td>128 ($2^7$)</td>
+              <td>128</td>
+              <td>128 (e.g. /25)</td>
+            </tr>
+            <tr>
+              <td>Bit 2</td>
+              <td>64 ($2^6$)</td>
+              <td>192</td>
+              <td>192 (e.g. /26)</td>
+            </tr>
+            <tr>
+              <td>Bit 3</td>
+              <td>32 ($2^5$)</td>
+              <td>224</td>
+              <td>224 (e.g. /27)</td>
+            </tr>
+            <tr>
+              <td>Bit 4</td>
+              <td>16 ($2^4$)</td>
+              <td>240</td>
+              <td>240 (e.g. /28)</td>
+            </tr>
+            <tr>
+              <td>Bit 5</td>
+              <td>8 ($2^3$)</td>
+              <td>248</td>
+              <td>248 (e.g. /29)</td>
+            </tr>
+            <tr>
+              <td>Bit 6</td>
+              <td>4 ($2^2$)</td>
+              <td>252</td>
+              <td>252 (e.g. /30)</td>
+            </tr>
+            <tr>
+              <td>Bit 7</td>
+              <td>2 ($2^1$)</td>
+              <td>254</td>
+              <td>254 (e.g. /31)</td>
+            </tr>
+            <tr>
+              <td>Bit 8</td>
+              <td>1 ($2^0$)</td>
+              <td>255</td>
+              <td>255 (e.g. /32 or full octet)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="concept-card">
+        <h3>4. Critical Invariants of IPv4 Addressing</h3>
+        <ul>
+          <li><strong>Interfaces, Not Hosts:</strong> IP addresses are assigned to <em>network interfaces</em>, not to physical machines. A router with 4 Ethernet ports has at least 4 distinct IP addresses. A multihomed laptop on Wi-Fi and Ethernet has 2 distinct IP addresses.</li>
+          <li><strong>Fixed Length:</strong> Every IPv4 address is strictly 32 bits long. Variable Length Subnet Masking changes the <em>interpretation</em> of prefix vs host bits, never the total 32-bit length.</li>
+        </ul>
+      </div>
+
+      <div class="confusion-box">
+        <h3>5. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "An IPv4 address contains four numbers, so any decimal numbers like 192.168.300.1 are valid."<br>
+        <strong>Reality:</strong> Each octet is strictly an 8-bit unsigned integer ($2^8 = 256$ possibilities). Valid values range exclusively from <strong>0 to 255</strong>. Any value $\ge 256$ is syntactically invalid and will be rejected by any IP parser.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>6. University Exam &amp; GATE Tips</h3>
+        <p>Memorize the 8 magic octet values: <code>128, 192, 224, 240, 248, 252, 254, 255</code>. You will write these numbers dozens of times in subnetting numericals. Recognizing their binary patterns instantly saves minutes during time-pressured exams.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Foundational resources on binary conversion and IPv4 representation.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc791#section-3.2" target="_blank" rel="noopener noreferrer">
+            📘 RFC 791 - IPv4 Address Formats
+            <small>Section 3.2: Formal specification of 32-bit internet host addressing.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=5WfiTHiU4x8" target="_blank" rel="noopener noreferrer">
+            🎥 IPv4 Addressing and Binary Conversion Drill
+            <small>Video tutorial practicing fast mental decimal-to-binary conversions for networking.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/ipv4" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on IPv4 Address Properties
+            <small>Past exam questions calculating total address spaces and binary representation.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 14.3 Network Prefix & Host Portion -->
+    <section id="s14-prefix" class="section-in-uni content-section" data-chapter="14" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Network prefix host portion hierarchy boundary netmask CIDR bits">
+      <div class="section-header">
+        <span class="section-number">14.3</span>
+        <h2>Network Prefix &amp; Host Portion <button class="bookmark-btn" data-id="s14-prefix" data-label="Network Prefix &amp; Host Portion" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>Network Prefix & Host Portion</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p>Every IPv4 address is partitioned into two distinct functional components: the <strong>Network Prefix (Net ID)</strong>, which identifies the specific logical network or broadcast domain, and the <strong>Host Portion (Host ID)</strong>, which identifies the specific network interface attached to that network.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why the Boundary Exists (Routing Efficiency)</h3>
+        <p>Without a clean partition between network and host, routers cannot aggregate routes. The two-level hierarchy allows Internet backbone routers to inspect only the high-order network bits, completely ignoring which individual computer or phone is communicating until the packet arrives at the local access router.</p>
+      </div>
+
+      <div class="ascii-box">
++------------------------------------+-----------------------------+
+|    NETWORK PREFIX (n bits)         |      HOST PORTION (h bits)  |
++------------------------------------+-----------------------------+
+<------------- n bits --------------> <--------- h = 32 - n bits -->
+ Identifies the Autonomous Subnet       Identifies Individual Device
+ Used by INTERNET CORE ROUTERS          Used by LOCAL ACCESS ROUTER
+ Identical for ALL hosts on this LAN    MUST be unique within this LAN
+      </div>
+
+      <div class="example-box">
+        <h3>3. Mathematical Relationship: The 32-Bit Invariant</h3>
+        <p>Let $n$ be the number of network prefix bits, and $h$ be the number of host bits. For every IPv4 network:</p>
+        <div class="math-block">
+          $$n + h = 32 \implies h = 32 - n$$
+        </div>
+        <p>The total number of IP addresses contained in the block is:</p>
+        <div class="math-block">
+          $$N_{\text{total}} = 2^h = 2^{32 - n}$$
+        </div>
+        <p>The number of <strong>assignable (usable) host addresses</strong> is:</p>
+        <div class="math-block">
+          $$N_{\text{usable}} = 2^h - 2 = 2^{32 - n} - 2$$
+        </div>
+        <p><em>(Why minus 2? The all-zeros host value is reserved for the Network ID, and the all-ones host value is reserved for the Directed Broadcast Address.)</em></p>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Prefix Length ($n$)</th>
+              <th>Host Bits ($h = 32 - n$)</th>
+              <th>Total Addresses ($2^h$)</th>
+              <th>Usable Host Addresses ($2^h - 2$)</th>
+              <th>Typical Practical Usage</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>/8</td>
+              <td>24</td>
+              <td>16,777,216</td>
+              <td>16,777,214</td>
+              <td>Very large enterprise, ISP, or Class A legacy</td>
+            </tr>
+            <tr>
+              <td>/16</td>
+              <td>16</td>
+              <td>65,536</td>
+              <td>65,534</td>
+              <td>Large university or corporate campus (Class B)</td>
+            </tr>
+            <tr>
+              <td>/24</td>
+              <td>8</td>
+              <td>256</td>
+              <td>254</td>
+              <td>Standard departmental LAN or home Wi-Fi (Class C)</td>
+            </tr>
+            <tr>
+              <td>/28</td>
+              <td>4</td>
+              <td>16</td>
+              <td>14</td>
+              <td>Small server rack or DMZ subnet</td>
+            </tr>
+            <tr>
+              <td>/30</td>
+              <td>2</td>
+              <td>4</td>
+              <td>2</td>
+              <td>Point-to-point router-to-router link</td>
+            </tr>
+            <tr>
+              <td>/32</td>
+              <td>0</td>
+              <td>1</td>
+              <td>1 (Host route)</td>
+              <td>Loopback interface or single-host route</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="concept-card">
+        <h3>4. The Local Neighborhood Invariant</h3>
+        <p>All devices residing on the same physical broadcast domain (same Layer 2 Ethernet switch or Wi-Fi SSID) <strong>must share the exact same network prefix</strong>. If Host A has IP <code>192.168.1.10/24</code> and Host B has IP <code>192.168.2.10/24</code>, they are on <em>different logical networks</em>. Even if they are plugged into the exact same physical switch, they cannot communicate without an intermediate Layer 3 router!</p>
+      </div>
+
+      <div class="confusion-box">
+        <h3>5. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "The network prefix boundary always falls on an octet period (e.g., after 8, 16, or 24 bits)."<br>
+        <strong>Reality:</strong> That was true under historical classful networking (1981–1993), but was abolished decades ago! Under CIDR, the prefix boundary can occur at <strong>any arbitrary bit position from /1 to /32</strong> (e.g., /19, /26, /29).</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>6. University Exam &amp; GATE Tips</h3>
+        <p>Watch out for the "-2" trap! If a question asks: <em>"How many hosts can be accommodated in a /26 network?"</em>, the answer is $2^{32-26} - 2 = 2^6 - 2 = 64 - 2 = \mathbf{62}$. If you write 64, marks will be deducted for forgetting the reserved network and broadcast addresses.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Engineering specifications on prefix partitioning and host capacities.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc4632" target="_blank" rel="noopener noreferrer">
+            📘 RFC 4632 - Classless Inter-domain Routing (CIDR)
+            <small>The definitive standard detailing arbitrary prefix boundaries and aggregation.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=vcArZ_vVq6w" target="_blank" rel="noopener noreferrer">
+            🎥 Network ID vs Host ID Deep Dive
+            <small>Clear animation illustrating bit boundaries and usable host ranges.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/network-prefix" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on Network vs Host Calculations
+            <small>Step-by-step questions deriving host capacities and prefix lengths.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 14.4 CIDR and Prefix Notation -->
+    <section id="s14-cidr" class="section-in-uni content-section" data-chapter="14" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Classless Inter-Domain Routing CIDR slash notation address aggregation address blocks">
+      <div class="section-header">
+        <span class="section-number">14.4</span>
+        <h2>CIDR and Prefix Notation <button class="bookmark-btn" data-id="s14-cidr" data-label="CIDR and Prefix Notation" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>CIDR and Prefix Notation</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p><strong>Classless Inter-Domain Routing (CIDR)</strong>, introduced in 1993 by RFC 1519 (updated by RFC 4632), is an addressing architecture that replaces rigid class boundaries (Class A, B, C) with variable-length prefix allocation, represented using <strong>slash notation</strong> (e.g., <code>192.168.1.0/24</code>) where <code>/n</code> indicates the exact number of contiguous leading 1-bits in the network mask.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why CIDR Was Introduced (The 1993 Internet Crisis)</h3>
+        <p>By early 1993, the Internet was facing two existential crises that threatened to collapse the global network within 12 to 18 months:</p>
+        <div class="concept-grid">
+          <div class="concept-card">
+            <h4>1. Rapid Exhaustion of Class B Space</h4>
+            <p>Class C networks were too small (max 254 hosts) for medium organizations, while Class B networks were massive (65,534 hosts). Any company needing 500 hosts requested a Class B, wasting over 65,000 addresses per grant!</p>
+          </div>
+          <div class="concept-card">
+            <h4>2. Global Routing Table Explosion</h4>
+            <p>Because companies had to stitch together dozens of Class C allocations, router forwarding tables grew exponentially, exceeding router memory and CPU processing limits.</p>
+          </div>
+        </div>
+        <p>CIDR solved both problems by allowing arbitrary block sizes (e.g., allocating a <code>/22</code> provides 1,024 addresses with zero wastage) and enabling <strong>route summarization (supernetting)</strong>.</p>
+      </div>
+
+      <div class="ascii-box">
+CLASSFUL RIGIDITY (Pre-1993):
+Class A:  /8   (16.7M hosts)  --> Massive waste for 99% of organizations
+Class B:  /16  (65,534 hosts) --> Exhausted almost immediately!
+Class C:  /24  (254 hosts)    --> Too small for medium enterprises!
+
+CLASSLESS FLEXIBILITY (CIDR - 1993 Onwards):
+Need 500 hosts?   Allocate a /23 (512 total addresses, 510 usable hosts)
+Need 1000 hosts?  Allocate a /22 (1024 total addresses, 1022 usable hosts)
+Need 2 hosts?     Allocate a /30 (4 total addresses, 2 usable hosts)
+Slash Notation:   IP / Prefix_Length  ===>  198.51.100.0/22
+      </div>
+
+      <div class="example-box">
+        <h3>3. Decoding Slash Notation ($/n$)</h3>
+        <p>When you see <code>10.20.30.40/20</code>:</p>
+        <ul>
+          <li>The <code>/20</code> signifies that the first <strong>20 bits</strong> belong to the network prefix.</li>
+          <li>The remaining $32 - 20 = \mathbf{12\text{ bits}}$ belong to the host portion.</li>
+          <li>Number of total IP addresses: $2^{12} = 4,096$.</li>
+          <li>Number of assignable hosts: $4,096 - 2 = \mathbf{4,094\text{ hosts}}$.</li>
+          <li>Subnet Mask in binary: 20 ones followed by 12 zeros:
+            <code>11111111.11111111.11110000.00000000</code> = <code>255.255.240.0</code>.
+          </li>
+        </ul>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>CIDR Prefix</th>
+              <th>Dotted-Decimal Subnet Mask</th>
+              <th>Total IP Addresses</th>
+              <th>Usable Host Capacity</th>
+              <th>Classful Equivalent (Obsolete)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>/8</strong></td>
+              <td>255.0.0.0</td>
+              <td>16,777,216</td>
+              <td>16,777,214</td>
+              <td>1 Class A</td>
+            </tr>
+            <tr>
+              <td><strong>/16</strong></td>
+              <td>255.255.0.0</td>
+              <td>65,536</td>
+              <td>65,534</td>
+              <td>1 Class B</td>
+            </tr>
+            <tr>
+              <td><strong>/20</strong></td>
+              <td>255.255.240.0</td>
+              <td>4,096</td>
+              <td>4,094</td>
+              <td>16 Class C blocks</td>
+            </tr>
+            <tr>
+              <td><strong>/22</strong></td>
+              <td>255.255.252.0</td>
+              <td>1,024</td>
+              <td>1,022</td>
+              <td>4 Class C blocks</td>
+            </tr>
+            <tr>
+              <td><strong>/24</strong></td>
+              <td>255.255.255.0</td>
+              <td>256</td>
+              <td>254</td>
+              <td>1 Class C</td>
+            </tr>
+            <tr>
+              <td><strong>/27</strong></td>
+              <td>255.255.255.224</td>
+              <td>32</td>
+              <td>30</td>
+              <td>1/8th Class C</td>
+            </tr>
+            <tr>
+              <td><strong>/30</strong></td>
+              <td>255.255.255.252</td>
+              <td>4</td>
+              <td>2</td>
+              <td>Point-to-Point WAN link</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="confusion-box">
+        <h3>4. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "Because 192.168.1.0 starts with 192, it must be a Class C network with mask 255.255.255.0."<br>
+        <strong>Reality:</strong> Outdated! In modern networking, classes do not exist. An address starting with 192 can have a <code>/16</code>, <code>/26</code>, or <code>/30</code> prefix. The IP address alone conveys zero boundary information; it is completely meaningless without its explicit CIDR prefix length or subnet mask.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>5. University Exam &amp; GATE Tips</h3>
+        <p>GATE frequently phrases questions as: <em>"An organization is granted a block of addresses with starting address 199.12.40.0/21. How many total addresses are in the block, and what is the last address?"</em><br>
+        Host bits = $32 - 21 = 11$. Total addresses = $2^{11} = 2,048$. The 3rd octet spans $2048 / 256 = 8$ blocks: $40$ to $47$. Last address = <code>199.12.47.255</code>.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Foundational RFCs and tutorials on Classless Inter-Domain Routing.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc1519" target="_blank" rel="noopener noreferrer">
+            📘 RFC 1519 - Classless Inter-Domain Routing (CIDR) Strategy
+            <small>Historical milestone document that saved the Internet routing architecture in 1993.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=s_Ntt6eTn94" target="_blank" rel="noopener noreferrer">
+            🎥 CIDR Explained with Practical Examples
+            <small>Step-by-step walkthrough of slash notation and block capacity calculations.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/cidr" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on CIDR Prefix Operations
+            <small>Over 40 solved exam problems on CIDR block allocation and supernetting.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 14.5 Subnet Mask & Bitwise AND -->
+    <section id="s14-mask" class="section-in-uni content-section" data-chapter="14" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Subnet mask bitwise AND operation destination network address host masking routing decision">
+      <div class="section-header">
+        <span class="section-number">14.5</span>
+        <h2>Subnet Mask &amp; Bitwise AND Operation <button class="bookmark-btn" data-id="s14-mask" data-label="Subnet Mask &amp; Bitwise AND Operation" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>Subnet Mask & Bitwise AND Operation</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p>A <strong>Subnet Mask</strong> is a 32-bit binary filter consisting of a continuous sequence of binary <strong>1s</strong> (representing the network and subnet bits) followed by a continuous sequence of binary <strong>0s</strong> (representing the host bits), utilized by IP network stacks and routers through a bitwise <code>AND</code> operation to extract the network identifier from an arbitrary destination IP address.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why It Exists: Hardware Extraction of Network IDs</h3>
+        <p>An IP address is just a single 32-bit number. When an operating system or router receives a packet with destination IP $D$, how does it know whether $D$ is on the local LAN or located across the Internet in Tokyo? It applies its configured subnet mask $M$ using the bitwise Boolean <code>AND</code> operator:</p>
+        <div class="math-block">
+          $$\text{Network ID} = \text{Destination IP} \ \mathbf{AND} \ \text{Subnet Mask}$$
+        </div>
+        <p>Because bitwise <code>AND</code> against 1 preserves the original bit ($b \land 1 = b$) and against 0 forces zero ($b \land 0 = 0$), the mask zeroes out all host bits while perfectly preserving all network bits.</p>
+      </div>
+
+      <div class="ascii-box">
+Bitwise Boolean AND Truth Table:
+  0 AND 0 = 0
+  0 AND 1 = 0
+  1 AND 0 = 0
+  1 AND 1 = 1  <-- Only true if BOTH bits are 1!
+
+Mathematical Property:
+  Bit b AND 1 = b  (Preserves network prefix bits!)
+  Bit b AND 0 = 0  (Clears host bits to zero!)
+
+Example Operation:
+IP Address:   192.168.  1. 77  --> 11000000 . 10101000 . 00000001 . 01001101
+Subnet Mask:  255.255.255.224  --> 11111111 . 11111111 . 11111111 . 11100000
+---------------------------------------------------------------------------------
+Bitwise AND:  192.168.  1. 64  --> 11000000 . 10101000 . 00000001 . 01000000
+Result: Network ID = 192.168.1.64
+      </div>
+
+      <div class="example-box">
+        <h3>3. Detailed Bitwise AND Trace</h3>
+        <p>Let's evaluate host <code>172.16.55.130</code> with subnet mask <code>255.255.240.0</code> (/20):</p>
+        <ol>
+          <li>Octet 1: $172 \land 255 = 172$ (since mask is all 1s).</li>
+          <li>Octet 2: $16 \land 255 = 16$ (since mask is all 1s).</li>
+          <li>Octet 3 (the split octet):
+            <ul>
+              <li>Host byte: $55 = 00110111_2$</li>
+              <li>Mask byte: $240 = 11110000_2$</li>
+              <li>Bitwise AND:
+                $$\begin{array}{r@{\quad}l}
+                00110111_2 & (55) \\
+                \land\ 11110000_2 & (240) \\
+                \hline
+                00110000_2 & (32 + 16 = 48)
+                \end{array}$$
+              </li>
+            </ul>
+          </li>
+          <li>Octet 4: $130 \land 0 = 0$ (since mask is all 0s).</li>
+          <li><strong>Calculated Subnet Network ID:</strong> <code>172.16.48.0</code>.</li>
+        </ol>
+      </div>
+
+      <div class="concept-card">
+        <h3>4. Invariant: Mask Contiguity Rule</h3>
+        <p>A standard IPv4 subnet mask <strong>must be strictly contiguous</strong>: all 1s followed by all 0s. A mask such as <code>11111111.11111111.00001111.00000000</code> is non-contiguous and strictly illegal in standard IP routing (though non-contiguous wildcard masks exist in Cisco Access Control Lists).</p>
+      </div>
+
+      <div class="confusion-box">
+        <h3>5. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "To find if two computers are on the same subnet, you only need to compare their IP addresses."<br>
+        <strong>Reality:</strong> Both Host A and Host B must perform the bitwise AND calculation using <em>their own subnet mask</em>. If Host A calculates $\text{IP}_B \land \text{Mask}_A = \text{Net}_A$, Host A believes B is local and sends an ARP request. If not, Host A forwards the packet to its Default Gateway!</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>6. University Exam &amp; GATE Tips</h3>
+        <p>Speed Trick for Subnet Math: Whenever an octet in the mask is <code>255</code>, copy the host octet unchanged. Whenever an octet in the mask is <code>0</code>, write <code>0</code>. You only ever have to do binary math on the <strong>single interesting octet</strong> where the mask is between 1 and 254!</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Engineering resources on bitwise operations and subnet mask logic.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc950" target="_blank" rel="noopener noreferrer">
+            📘 RFC 950 - Internet Standard Subnetting Procedure
+            <small>The foundational RFC defining subnet masks and bitwise AND routing logic.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=nmnNW8Prkpw" target="_blank" rel="noopener noreferrer">
+            🎥 Subnet Mask and Bitwise AND Explained
+            <small>Step-by-step video breakdown of binary AND logic in network interface routing.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/subnet-mask" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on Subnet Masks
+            <small>GATE exam problems calculating subnets and evaluating bitwise mask filters.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 14.6 Network Address, Broadcast Address & Host Range -->
+    <section id="s14-range" class="section-in-uni content-section" data-chapter="14" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Network address broadcast address directed broadcast host range usable hosts formula 2^h-2">
+      <div class="section-header">
+        <span class="section-number">14.6</span>
+        <h2>Network Address, Broadcast Address &amp; Host Range <button class="bookmark-btn" data-id="s14-range" data-label="Network Address, Broadcast Address &amp; Host Range" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>Network Address, Broadcast Address & Host Range</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p>Within every CIDR IP block, the total span of addresses is bounded by two architecturally reserved boundary addresses: the <strong>Network Address</strong> (where all host bits are set to binary 0) and the <strong>Directed Broadcast Address</strong> (where all host bits are set to binary 1). All addresses strictly between these boundaries constitute the <strong>Usable Host Range</strong>.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why the Two Boundary Addresses are Reserved</h3>
+        <div class="concept-grid">
+          <div class="concept-card">
+            <h4>1. Network Address (All Host Bits = 0)</h4>
+            <p>Represents the subnet itself as a collective entity in router forwarding tables. A packet cannot be addressed to a network ID as a source or destination because it does not denote an individual physical interface.</p>
+          </div>
+          <div class="concept-card">
+            <h4>2. Directed Broadcast Address (All Host Bits = 1)</h4>
+            <p>A special destination address that instructs the target subnet's local router to broadcast the packet out to every single host residing on that specific broadcast domain.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ascii-box">
+ANATOMY OF A CIDR IP BLOCK (/28: 16 Total Addresses):
+Prefix: 192.168.1.32 /28  (h = 4 host bits)
+
+Address 0:   192.168.1.0010 0000  (192.168.1.32) --> NETWORK ADDRESS (Reserved)
+Address 1:   192.168.1.0010 0001  (192.168.1.33) --> First Usable Host Address
+Address 2:   192.168.1.0010 0010  (192.168.1.34) --> Second Usable Host
+  ...
+Address 14:  192.168.1.0010 1110  (192.168.1.46) --> Last Usable Host Address
+Address 15:  192.168.1.0010 1111  (192.168.1.47) --> BROADCAST ADDRESS (Reserved)
+
+Summary: Total = 16, Usable = 14 (192.168.1.33 to 192.168.1.46)
+      </div>
+
+      <div class="example-box">
+        <h3>3. Systematic 4-Step Derivation Formula</h3>
+        <p>Given an arbitrary IP and prefix $A / n$:</p>
+        <ol>
+          <li><strong>Step 1 (Find Host Bits):</strong> $h = 32 - n$. Block size $S = 2^h$.</li>
+          <li><strong>Step 2 (Find Network Address):</strong> Apply bitwise AND with mask, or find the largest multiple of block size $S$ that is $\le$ the given octet value.
+            $$\text{Host bits in Network Address} = 000\dots 0_2$$
+          </li>
+          <li><strong>Step 3 (Find Broadcast Address):</strong>
+            $$\text{Broadcast Address} = \text{Network Address} + (S - 1)$$
+            $$\text{Host bits in Broadcast Address} = 111\dots 1_2$$
+          </li>
+          <li><strong>Step 4 (Usable Range):</strong>
+            $$\text{First Host} = \text{Network Address} + 1$$
+            $$\text{Last Host} = \text{Broadcast Address} - 1$$
+          </li>
+        </ol>
+      </div>
+
+      <div class="example-box">
+        <h3>4. Concrete Worked Example: <code>10.50.120.210/22</code></h3>
+        <ul>
+          <li><strong>Prefix Length:</strong> $n = 22 \implies h = 32 - 22 = 10\text{ host bits}$.</li>
+          <li><strong>Total Addresses:</strong> $S = 2^{10} = 1,024$ addresses.</li>
+          <li><strong>Octet Span:</strong> In the 3rd octet, block increment is $2^{10-8} = 2^2 = 4$.</li>
+          <li><strong>Network Address:</strong> For 3rd octet ($120$), the largest multiple of 4 is $120$. So Network Address = <code>10.50.120.0</code>.</li>
+          <li><strong>First Usable Host:</strong> $10.50.120.0 + 1 = \mathbf{10.50.120.1}$.</li>
+          <li><strong>Broadcast Address:</strong> $120 + 4 - 1 = 123$ in 3rd octet, $255$ in 4th octet = $\mathbf{10.50.123.255}$.</li>
+          <li><strong>Last Usable Host:</strong> $10.50.123.255 - 1 = \mathbf{10.50.123.254}$.</li>
+          <li><strong>Total Usable Hosts:</strong> $1,024 - 2 = \mathbf{1,022\text{ hosts}}$.</li>
+        </ul>
+      </div>
+
+      <div class="confusion-box">
+        <h3>5. Common Confusion: Broadcast Variations</h3>
+        <p><strong>Directed Broadcast vs Limited Broadcast:</strong></p>
+        <ul>
+          <li><strong>Directed Broadcast (e.g., <code>192.168.1.255</code>):</strong> Targets all hosts on a specific remote subnet. Routers by default drop directed broadcasts from the outside Internet to prevent Denial-of-Service amplification (Smurf attacks, RFC 2644).</li>
+          <li><strong>Limited Broadcast (<code>255.255.255.255</code>):</strong> Targets all hosts on the <em>local link only</em>. Never forwarded by any router across a network boundary under any circumstance. Used for local DHCP discovery.</li>
+        </ul>
+      </div>
+
+      <div class="exam-tip">
+        <h3>6. University Exam &amp; GATE Tips</h3>
+        <p>Beware of non-standard subnet sizes: For a <code>/31</code> point-to-point link (RFC 3021), $2^1 = 2$ total addresses. Under RFC 3021, there are <strong>zero</strong> reserved network or broadcast addresses; both addresses are usable for router endpoints. However, in standard university exams unless RFC 3021 is explicitly cited, always apply the classical $2^h - 2$ formula!</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Authoritative guides on network boundaries and broadcast protection.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc2644" target="_blank" rel="noopener noreferrer">
+            📘 RFC 2644 - Changing the Default for Directed Broadcasts
+            <small>Standard mandating routers to drop directed broadcasts to mitigate Smurf attacks.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=ZXxxG5r7e_s" target="_blank" rel="noopener noreferrer">
+            🎥 Network ID, Broadcast, and Host Range Calculation
+            <small>Visual whiteboard drill finding boundaries for arbitrary CIDR prefixes.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/broadcast-address" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on Broadcast &amp; Host Range
+            <small>Collection of past competitive questions deriving usable IP host ranges.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 14.7 Subnetting: The Core Calculation -->
+    <section id="s14-subnetting" class="section-in-uni content-section" data-chapter="14" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Subnetting borrowing host bits subnet mask calculation number of subnets formula 2^s">
+      <div class="section-header">
+        <span class="section-number">14.7</span>
+        <h2>Subnetting: The Core Calculation <button class="bookmark-btn" data-id="s14-subnetting" data-label="Subnetting: The Core Calculation" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>Subnetting: The Core Calculation</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p><strong>Subnetting</strong> is the algorithmic technique of partitioning a single contiguous parent network block into multiple smaller, logically independent subnetworks by &ldquo;borrowing&rdquo; bits from the host portion and converting them into additional subnet identifier bits.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why It Exists (Engineering Motivation)</h3>
+        <p>Without subnetting, an organization granted a <code>/24</code> block (254 hosts) would have to put all 254 devices onto a single broadcast domain. This creates severe performance degradation (ARP broadcast floods), eliminates internal departmental security segmentation (HR, Finance, Engineering all share traffic), and prevents multi-floor campus routing.</p>
+      </div>
+
+      <div class="ascii-box">
+ORIGINAL PARENT NETWORK (/24):
+[ Network Prefix: 24 bits ] [ Host Portion: 8 bits ]
+<-------------------------> <----------------------->
+Total Addresses = 2^8 = 256.  1 Single Broadcast Domain.
+
+AFTER BORROWING s = 2 HOST BITS FOR SUBNETTING (/26):
+[ Network Prefix: 24 bits ] [ Subnet: 2 bits ] [ Host Portion: 6 bits ]
+<-------------------------> <----------------> <---------------------->
+New Prefix Length = 24 + 2 = /26
+Subnets Created   = 2^s = 2^2 = 4 Subnets
+Addresses/Subnet  = 2^(h - s) = 2^6 = 64 Total Addresses (62 Usable)
+      </div>
+
+      <div class="example-box">
+        <h3>3. The Fundamental Subnetting Formulas</h3>
+        <p>Let $n$ be the original parent prefix length, and let $s$ be the number of host bits borrowed:</p>
+        <div class="math-block">
+          $$\text{New Prefix Length: } n_{\text{new}} = n + s$$
+          $$\text{Number of Subnets Created: } N_{\text{subnets}} = 2^s$$
+          $$\text{Remaining Host Bits: } h_{\text{new}} = 32 - n_{\text{new}} = h_{\text{orig}} - s$$
+          $$\text{Total Addresses per Subnet: } A_{\text{total}} = 2^{h_{\text{new}}}$$
+          $$\text{Usable Hosts per Subnet: } A_{\text{usable}} = 2^{h_{\text{new}}} - 2$$
+          $$\text{Block Increment (Step Size): } \Delta = 2^{h_{\text{new}}} \quad (\text{within the interesting octet})$$
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Bits Borrowed ($s$)</th>
+              <th>New Prefix (from /24)</th>
+              <th>Subnet Mask (Octet 4)</th>
+              <th>Subnets Created ($2^s$)</th>
+              <th>Total Addrs/Subnet ($2^{8-s}$)</th>
+              <th>Usable Hosts/Subnet</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>/25</td>
+              <td>255.255.255.128</td>
+              <td>2</td>
+              <td>128</td>
+              <td>126</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>/26</td>
+              <td>255.255.255.192</td>
+              <td>4</td>
+              <td>64</td>
+              <td>62</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>/27</td>
+              <td>255.255.255.224</td>
+              <td>8</td>
+              <td>32</td>
+              <td>30</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>/28</td>
+              <td>255.255.255.240</td>
+              <td>16</td>
+              <td>16</td>
+              <td>14</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>/29</td>
+              <td>255.255.255.248</td>
+              <td>32</td>
+              <td>8</td>
+              <td>6</td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td>/30</td>
+              <td>255.255.255.252</td>
+              <td>64</td>
+              <td>4</td>
+              <td>2</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="confusion-box">
+        <h3>4. The Obsolete "Subnet Zero" Rule</h3>
+        <p><strong>Historical Trap:</strong> In the early days of subnetting (RFC 950, 1985), network engineers avoided using the all-zeros subnet (&ldquo;Subnet Zero&rdquo;) and all-ones subnet because old software confused the subnet ID with the entire parent network ID. <strong>Since RFC 1878 (1995), Subnet Zero and the all-ones subnet are 100% valid and fully supported!</strong> Always assume all $2^s$ subnets are usable unless a legacy exam question explicitly mentions RFC 950.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>5. University Exam &amp; GATE Tips</h3>
+        <p>Whenever asked to subnet: immediately identify the <strong>interesting octet</strong>. If borrowing bits in a <code>/24</code>, the 4th octet is interesting. The block size $\Delta = 2^{\text{remaining host bits in that octet}}$. Every subnet begins at an exact multiple of $\Delta$ ($0, \Delta, 2\Delta, 3\Delta \dots$).</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Foundational standards and step-by-step subnet calculation references.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc1878" target="_blank" rel="noopener noreferrer">
+            📘 RFC 1878 - Variable Length Subnet Table For IPv4
+            <small>Official reference matrix detailing subnet masks, host capacities, and prefix lengths.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=s_Ntt6eTn94" target="_blank" rel="noopener noreferrer">
+            🎥 Subnetting Mastery: Fast Subnet Math Method
+            <small>Video tutorial teaching mental arithmetic for rapid exam subnetting calculations.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/subnetting" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on Subnetting Calculations
+            <small>Over 50 solved university and GATE exam questions on borrowing bits and subnet masks.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 14.8 Worked Subnetting Numerical: /24 -> /26 -->
+    <section id="s14-num1" class="section-in-uni content-section" data-chapter="14" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Subnetting numerical step-by-step /24 to /26 block size magic number subnets valid host range">
+      <div class="section-header">
+        <span class="section-number">14.8</span>
+        <h2>Worked Subnetting Numerical: /24 &rarr; /26 <button class="bookmark-btn" data-id="s14-num1" data-label="Worked Subnetting Numerical: /24 &rarr; /26" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>Worked Subnetting Numerical: /24 → /26</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. Complete End-to-End Problem Statement</h3>
+        <p><strong>Problem:</strong> An enterprise network administrator is assigned the base address block <code>192.168.10.0/24</code>. The organization needs to partition this block into <strong>four distinct departmental subnets</strong>: Human Resources, Engineering, Sales, and Server DMZ. Perform the complete mathematical subnetting derivation: find the new subnet mask, step size, network addresses, usable host ranges, and directed broadcast addresses for all four subnets.</p>
+      </div>
+
+      <div class="example-box">
+        <h3>2. Step-by-Step Mathematical Derivation</h3>
+        <ol>
+          <li><strong>Step 1: Calculate Required Subnet Bits ($s$):</strong>
+            $$\text{Subnets needed} = 4 \implies 2^s \ge 4 \implies s = 2\text{ bits}$$
+          </li>
+          <li><strong>Step 2: Calculate New Prefix Length &amp; Mask:</strong>
+            $$n_{\text{new}} = 24 + 2 = \mathbf{/26}$$
+            $$\text{New Subnet Mask: } 11111111.11111111.11111111.\mathbf{11000000}_2 = \mathbf{255.255.255.192}$$
+          </li>
+          <li><strong>Step 3: Calculate Remaining Host Bits ($h$) &amp; Block Size ($\Delta$):</strong>
+            $$h = 32 - 26 = 6\text{ bits}$$
+            $$\text{Total Addresses per Subnet} = 2^6 = \mathbf{64}$$
+            $$\text{Usable Hosts per Subnet} = 2^6 - 2 = \mathbf{62\text{ hosts}}$$
+            $$\text{Block Increment } \Delta = 64 \quad (\text{in Octet 4})$$
+          </li>
+        </ol>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Subnet Index</th>
+              <th>Department</th>
+              <th>Network ID</th>
+              <th>First Usable Host</th>
+              <th>Last Usable Host</th>
+              <th>Directed Broadcast</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Subnet 0</strong> ($00_2$)</td>
+              <td>Human Resources</td>
+              <td><code>192.168.10.0/26</code></td>
+              <td><code>192.168.10.1</code></td>
+              <td><code>192.168.10.62</code></td>
+              <td><code>192.168.10.63</code></td>
+            </tr>
+            <tr>
+              <td><strong>Subnet 1</strong> ($01_2$)</td>
+              <td>Engineering</td>
+              <td><code>192.168.10.64/26</code></td>
+              <td><code>192.168.10.65</code></td>
+              <td><code>192.168.10.126</code></td>
+              <td><code>192.168.10.127</code></td>
+            </tr>
+            <tr>
+              <td><strong>Subnet 2</strong> ($10_2$)</td>
+              <td>Sales</td>
+              <td><code>192.168.10.128/26</code></td>
+              <td><code>192.168.10.129</code></td>
+              <td><code>192.168.10.190</code></td>
+              <td><code>192.168.10.191</code></td>
+            </tr>
+            <tr>
+              <td><strong>Subnet 3</strong> ($11_2$)</td>
+              <td>Server DMZ</td>
+              <td><code>192.168.10.192/26</code></td>
+              <td><code>192.168.10.193</code></td>
+              <td><code>192.168.10.254</code></td>
+              <td><code>192.168.10.255</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="ascii-box">
+VISUAL PARTITION OF THE /24 ADDRESS SPACE (0 - 255):
+[ 0 ------------ 63 ][ 64 ---------- 127 ][ 128 --------- 191 ][ 192 --------- 255 ]
+|---|--------------| |---|--------------|  |---|--------------|  |---|--------------|
+Net  62 Usable     BC Net  62 Usable     BC Net   62 Usable    BC Net   62 Usable    BC
+.0   .1 to .62    .63 .64  .65 to .126  .127.128  .129 to .190.191 .192 .193 to .254 .255
+      </div>
+
+      <div class="concept-card">
+        <h3>3. Verification of Address Conservation</h3>
+        <p>Total addresses across all 4 subnets: $4 \times 64 = 256$, exactly matching the parent <code>/24</code> capacity. Usable host addresses: $4 \times 62 = 248$. Note that $4 \times 2 = 8$ addresses are consumed by network and broadcast overhead ($2$ per subnet).</p>
+      </div>
+
+      <div class="confusion-box">
+        <h3>4. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "Can we assign IP <code>192.168.10.63</code> to a PC in the HR subnet?"<br>
+        <strong>Reality:</strong> Never! Even though <code>.63</code> is not <code>.255</code>, it has all host bits set to 1 in its <code>/26</code> boundary ($00111111_2$). It is the <strong>directed broadcast address</strong> of Subnet 0. An operating system will refuse to assign it as an interface IP.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>5. University Exam Tip: Tabular Presentation</h3>
+        <p>Always draw this exact 6-column table on university answer sheets: <em>Subnet #, Department, Network Address, First Host, Last Host, Broadcast Address</em>. Examiners look specifically for the $+1$ on first host and $-1$ on broadcast.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Step-by-step video traces and online interactive subnet practice engines.</div>
+        <div class="resource-grid">
+          <a href="https://www.subnetting.net/Tutorial.aspx" target="_blank" rel="noopener noreferrer">
+            📘 Subnetting.net: Complete Tutorial &amp; Drill Engine
+            <small>Interactive problems practicing /24 to /26, /27, and /28 partitioning.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=rs39FWDhzDs" target="_blank" rel="noopener noreferrer">
+            🎥 Subnetting a Class C Network Worked Example
+            <small>Step-by-step derivation calculating 4 subnets from a /24 parent block.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/subnetting" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on Subnet Boundary Verification
+            <small>Past questions testing whether given IPs are valid hosts or boundary addresses.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 14.9 Worked Numerical: Find the Subnet of a Given Host -->
+    <section id="s14-num2" class="section-in-uni content-section" data-chapter="14" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Subnet calculation given host IP find subnet ID broadcast ID next subnet boundary">
+      <div class="section-header">
+        <span class="section-number">14.9</span>
+        <h2>Worked Numerical: Find the Subnet of a Given Host <button class="bookmark-btn" data-id="s14-num2" data-label="Worked Numerical: Find the Subnet of a Given Host" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>Worked Numerical: Find the Subnet of a Given Host</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. Problem Statement (Typical Exam Benchmark)</h3>
+        <p><strong>Problem:</strong> Given the host IP address <code>192.168.10.138/27</code>, determine:</p>
+        <ol>
+          <li>The Subnet Mask in dotted-decimal notation.</li>
+          <li>The Network ID (Subnet Address) to which this host belongs.</li>
+          <li>The Directed Broadcast Address of this subnet.</li>
+          <li>The First and Last Usable Host Addresses.</li>
+          <li>The Host Index (which host number within the subnet is this device?).</li>
+        </ol>
+      </div>
+
+      <div class="example-box">
+        <h3>2. Fast 5-Step Solution Walkthrough</h3>
+        <ol>
+          <li><strong>Step 1: Subnet Mask from Prefix:</strong>
+            Prefix is <code>/27</code>. There are 27 ones followed by 5 zeros:
+            $$\text{Octet 4: } 11100000_2 = 128 + 64 + 32 = \mathbf{224}$$
+            $$\text{Subnet Mask} = \mathbf{255.255.255.224}$$
+          </li>
+          <li><strong>Step 2: Block Size ($\Delta$):</strong>
+            Host bits $h = 32 - 27 = 5$.
+            $$\Delta = 2^5 = \mathbf{32}$$
+          </li>
+          <li><strong>Step 3: Network ID (Subnet Address):</strong>
+            The given host octet is <strong>138</strong>. We find the largest multiple of $\Delta = 32$ that is $\le 138$:
+            $$\text{Multiples of 32: } 0, 32, 64, 96, \mathbf{128}, 160\dots$$
+            Since $128 \le 138 < 160$, the subnet begins at <strong>128</strong>!
+            $$\mathbf{\text{Network ID} = 192.168.10.128/27}$$
+          </li>
+          <li><strong>Step 4: Broadcast Address &amp; Usable Host Range:</strong>
+            $$\text{Broadcast Address} = \text{Network ID} + (\Delta - 1) = 128 + 31 = \mathbf{192.168.10.159}$$
+            $$\text{First Usable Host} = 128 + 1 = \mathbf{192.168.10.129}$$
+            $$\text{Last Usable Host} = 159 - 1 = \mathbf{192.168.10.158}$$
+          </li>
+          <li><strong>Step 5: Host Index:</strong>
+            $$\text{Host Number} = \text{Host IP} - \text{First Usable IP} + 1 = 138 - 129 + 1 = \mathbf{10\text{th Usable Host}}$$
+          </li>
+        </ol>
+      </div>
+
+      <div class="ascii-box">
+BINARY VERIFICATION:
+Host IP:     192.168.10 . 10001010  (138)
+Mask /27:    255.255.255. 11100000  (224)
+---------------------------------------------
+Bitwise AND: 192.168.10 . 10000000  (128)  --> Network ID:   192.168.10.128
+Broadcast:   192.168.10 . 10011111  (159)  --> Broadcast ID: 192.168.10.159
+Host Bits:                ---01010  (10 in decimal) --> 10th Usable Host!
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Calculated Property</th>
+              <th>Value</th>
+              <th>Binary Representation (4th Octet)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Network ID</strong></td>
+              <td><code>192.168.10.128/27</code></td>
+              <td><code>1000 0000</code></td>
+            </tr>
+            <tr>
+              <td><strong>First Usable Host</strong></td>
+              <td><code>192.168.10.129</code></td>
+              <td><code>1000 0001</code></td>
+            </tr>
+            <tr>
+              <td><strong>Target Host IP</strong></td>
+              <td><code>192.168.10.138</code></td>
+              <td><code>1000 1010</code></td>
+            </tr>
+            <tr>
+              <td><strong>Last Usable Host</strong></td>
+              <td><code>192.168.10.158</code></td>
+              <td><code>1001 1110</code></td>
+            </tr>
+            <tr>
+              <td><strong>Broadcast Address</strong></td>
+              <td><code>192.168.10.159</code></td>
+              <td><code>1001 1111</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="confusion-box">
+        <h3>3. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "Can two hosts with IPs <code>192.168.10.158/27</code> and <code>192.168.10.161/27</code> communicate directly without a router?"<br>
+        <strong>Reality:</strong> NO! <code>.158</code> belongs to Subnet $128-159$, while <code>.161</code> belongs to the next Subnet ($160-191$). They are in completely separate subnets and require a router or Layer 3 switch to exchange packets.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>4. University Exam &amp; GATE Tips</h3>
+        <p>Rapid Mental Math Shortcut: $\text{Block Size} \Delta = 256 - \text{Mask Octet}$.<br>
+        Here: $\Delta = 256 - 224 = \mathbf{32}$. Divide host octet by $\Delta$: $138 / 32 = 4.3125$. Truncate to integer 4: $4 \times 32 = \mathbf{128}$. You find the network ID in 3 seconds!</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Practice questions and mental arithmetic tricks for finding subnets.</div>
+        <div class="resource-grid">
+          <a href="https://www.geeksforgeeks.org/find-the-network-address-from-given-ip-and-subnet-mask/" target="_blank" rel="noopener noreferrer">
+            📘 GeeksforGeeks: Find Network Address from IP and Mask
+            <small>Comprehensive code algorithms and mathematical derivations in C/Python.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=wMYP_p5U8Wk" target="_blank" rel="noopener noreferrer">
+            🎥 Finding Subnet of Host Under 10 Seconds
+            <small>Speed techniques for competitive engineering and certification exams.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/network-address" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions: Identify Subnet and Broadcast
+            <small>GATE questions testing exact boundary extraction from random host addresses.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 14.10 Subnetting by Required Number of Hosts -->
+    <section id="s14-hostreq" class="section-in-uni content-section" data-chapter="14" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Subnet design host requirements power of two rounding formula 2^h-2 minimum prefix length">
+      <div class="section-header">
+        <span class="section-number">14.10</span>
+        <h2>Subnetting by Required Number of Hosts <button class="bookmark-btn" data-id="s14-hostreq" data-label="Subnetting by Required Number of Hosts" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>Subnetting by Required Number of Hosts</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p><strong>Host-Driven Subnet Design (Variable Length Subnet Masking - VLSM)</strong> is the systematic engineering process of determining the minimal prefix length $/n$ (or maximum host bits $h$) required to satisfy an explicit host capacity constraint while minimizing unallocated IPv4 address waste.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. The Host Requirement Formula</h3>
+        <p>To support $N$ usable host interfaces on a subnetwork, the number of allocated host bits $h$ must satisfy the inequality:</p>
+        <div class="math-block">
+          $$2^h - 2 \ge N \implies 2^h \ge N + 2$$
+        </div>
+        <p>Solving for the minimum integer $h$:</p>
+        <div class="math-block">
+          $$h = \lceil \log_2(N + 2) \rceil$$
+          $$\text{New Prefix Length: } n = 32 - h$$
+        </div>
+      </div>
+
+      <div class="ascii-box">
+DECISION ALGORITHM: FINDING PREFIX FROM REQUIRED HOSTS
+Given Required Usable Hosts = N
+
+1. Add 2 for Network ID & Broadcast:  Needed = N + 2
+2. Find next power of 2 >= Needed:   Find 2^h >= Needed
+3. Deduce Host Bits h:               h = log2(2^h)
+4. Calculate Prefix Length:          n = 32 - h
+5. Deduce Subnet Mask:               Contiguous n ones, h zeros
+      </div>
+
+      <div class="example-box">
+        <h3>3. Worked Sizing Table for Common Enterprise Demands</h3>
+        <div class="table-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Hosts Needed ($N$)</th>
+                <th>$N + 2$</th>
+                <th>Next Power of 2 ($2^h$)</th>
+                <th>Host Bits ($h$)</th>
+                <th>Prefix ($n = 32 - h$)</th>
+                <th>Subnet Mask</th>
+                <th>Wasted Addresses</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>2</strong> (WAN link)</td>
+                <td>4</td>
+                <td>4 ($2^2$)</td>
+                <td>2</td>
+                <td><strong>/30</strong></td>
+                <td>255.255.255.252</td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <td><strong>10</strong> (Branch)</td>
+                <td>12</td>
+                <td>16 ($2^4$)</td>
+                <td>4</td>
+                <td><strong>/28</strong></td>
+                <td>255.255.255.240</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><strong>25</strong> (Sales Dept)</td>
+                <td>27</td>
+                <td>32 ($2^5$)</td>
+                <td>5</td>
+                <td><strong>/27</strong></td>
+                <td>255.255.255.224</td>
+                <td>5</td>
+              </tr>
+              <tr>
+                <td><strong>50</strong> (Engineering)</td>
+                <td>52</td>
+                <td>64 ($2^6$)</td>
+                <td>6</td>
+                <td><strong>/26</strong></td>
+                <td>255.255.255.192</td>
+                <td>12</td>
+              </tr>
+              <tr>
+                <td><strong>100</strong> (Floor 1 LAN)</td>
+                <td>102</td>
+                <td>128 ($2^7$)</td>
+                <td>7</td>
+                <td><strong>/25</strong></td>
+                <td>255.255.255.128</td>
+                <td>26</td>
+              </tr>
+              <tr>
+                <td><strong>500</strong> (Campus Wi-Fi)</td>
+                <td>502</td>
+                <td>1,024 ($2^{10}$)</td>
+                <td>10</td>
+                <td><strong>/22</strong></td>
+                <td>255.255.252.0</td>
+                <td>522</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <h3>4. Critical Case: The Boundary Trap at $N = 30$ vs $N = 31$</h3>
+        <ul>
+          <li>If $N = 30$: $N + 2 = 32$. $32 = 2^5$. $h = 5$. Prefix = <strong>/27</strong> ($32 - 2 = 30$ usable hosts). Perfect fit!</li>
+          <li>If $N = 31$: $N + 2 = 33$. Because $33 > 32$, we <strong>cannot</strong> use $h = 5$! We must jump to $2^6 = 64$ ($h = 6$). Prefix drops to <strong>/26</strong> ($62$ usable hosts). A single extra host forces a doubling of allocated address space!</li>
+        </ul>
+      </div>
+
+      <div class="confusion-box">
+        <h3>5. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "If I need 62 hosts, I need $h=7$ bits because $2^6 = 64$."<br>
+        <strong>Reality:</strong> $2^6 - 2 = 64 - 2 = \mathbf{62}$! Exactly 62 usable hosts can fit into a <code>/26</code> block without spilling into a <code>/25</code>. Always remember to subtract the 2 reserved addresses <em>after</em> raising 2 to the power $h$.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>6. University Exam &amp; GATE Tips</h3>
+        <p>In VLSM design problems with multiple subnets: <strong>Always allocate subnets in descending order of size</strong> (largest host requirement first, down to point-to-point <code>/30</code> links last). Allocating small subnets first causes address fragmentation, preventing subsequent large power-of-2 blocks from aligning on their required bit boundaries.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Engineering guidelines for VLSM and host requirement budgeting.</div>
+        <div class="resource-grid">
+          <a href="https://www.cisco.com/c/en/us/support/docs/ip/routing-information-protocol-rip/13788-3.html" target="_blank" rel="noopener noreferrer">
+            📘 Cisco Technical Note: IP Addressing and Subnetting
+            <small>Authoritative Cisco engineering guide to VLSM planning and host budgeting.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=F_Yv2n8m3rI" target="_blank" rel="noopener noreferrer">
+            🎥 VLSM Subnetting Step-by-Step Tutorial
+            <small>Solving complex variable length subnetting problems by ordering largest-to-smallest.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/vlsm" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on VLSM and Host Allocation
+            <small>Past engineering entrance exam problems allocating subnets without address overlap.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 14.11 Traditional Classful Addressing — Historical View -->
+    <section id="s14-classful" class="section-in-uni content-section" data-chapter="14" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Classful addressing Class A B C D E leading bits default subnet masks address waste">
+      <div class="section-header">
+        <span class="section-number">14.11</span>
+        <h2>Traditional Classful Addressing &mdash; Historical View <button class="bookmark-btn" data-id="s14-classful" data-label="Traditional Classful Addressing &mdash; Historical View" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>Traditional Classful Addressing — Historical View</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p><strong>Classful Addressing</strong> was the original Internet addressing architecture defined in RFC 791 (1981), where the 32-bit IPv4 address space was divided into five rigid, predefined classes (Class A, B, C, D, and E), determined strictly by the leading binary bit patterns of the first octet.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why It Was Replaced</h3>
+        <p>Classful addressing lacked granularity. There were no intermediate block sizes between Class C (254 hosts) and Class B (65,534 hosts). This inflexible rigid allocation caused astronomical waste, threatening complete IPv4 address exhaustion by 1994 until CIDR (RFC 1519) permanently abolished class boundaries in 1993.</p>
+      </div>
+
+      <div class="ascii-box">
+CLASSFUL BIT PATTERNS (Leading Bits of First Octet):
+Class A:  0.......  (0 to 127)     [ Net: 8  ] [ Host: 24 bits                 ]
+Class B:  10......  (128 to 191)   [ Net: 16       ] [ Host: 16 bits           ]
+Class C:  110.....  (192 to 223)   [ Net: 24             ] [ Host: 8 bits      ]
+Class D:  1110....  (224 to 239)   [ Multicast Group ID: 28 bits               ]
+Class E:  1111....  (240 to 255)   [ Reserved for Experimental / Future Use    ]
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Class</th>
+              <th>Leading Bits</th>
+              <th>1st Octet Range</th>
+              <th>Default Mask</th>
+              <th>Prefix</th>
+              <th>Number of Networks</th>
+              <th>Usable Hosts per Network</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Class A</strong></td>
+              <td><code>0</code></td>
+              <td>1 &ndash; 126 (0 &amp; 127 special)</td>
+              <td>255.0.0.0</td>
+              <td>/8</td>
+              <td>126 ($2^7 - 2$)</td>
+              <td>16,777,214 ($2^{24} - 2$)</td>
+            </tr>
+            <tr>
+              <td><strong>Class B</strong></td>
+              <td><code>10</code></td>
+              <td>128 &ndash; 191</td>
+              <td>255.255.0.0</td>
+              <td>/16</td>
+              <td>16,384 ($2^{14}$)</td>
+              <td>65,534 ($2^{16} - 2$)</td>
+            </tr>
+            <tr>
+              <td><strong>Class C</strong></td>
+              <td><code>110</code></td>
+              <td>192 &ndash; 223</td>
+              <td>255.255.255.0</td>
+              <td>/24</td>
+              <td>2,097,152 ($2^{21}$)</td>
+              <td>254 ($2^8 - 2$)</td>
+            </tr>
+            <tr>
+              <td><strong>Class D</strong></td>
+              <td><code>1110</code></td>
+              <td>224 &ndash; 239</td>
+              <td>None</td>
+              <td>None</td>
+              <td>Multicast Groups</td>
+              <td>Not applicable</td>
+            </tr>
+            <tr>
+              <td><strong>Class E</strong></td>
+              <td><code>1111</code></td>
+              <td>240 &ndash; 255</td>
+              <td>None</td>
+              <td>None</td>
+              <td>Experimental</td>
+              <td>Not applicable</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="concept-card">
+        <h3>3. Share of Total IPv4 Address Space</h3>
+        <ul>
+          <li><strong>Class A:</strong> $2^{31} = 2,147,483,648$ addresses = <strong>50%</strong> of the entire IPv4 Internet!</li>
+          <li><strong>Class B:</strong> $2^{30} = 1,073,741,824$ addresses = <strong>25%</strong> of the Internet.</li>
+          <li><strong>Class C:</strong> $2^{29} = 536,870,912$ addresses = <strong>12.5%</strong> of the Internet.</li>
+          <li><strong>Class D (Multicast):</strong> $2^{28} = 268,435,456$ addresses = <strong>6.25%</strong>.</li>
+          <li><strong>Class E (Reserved):</strong> $2^{28} = 268,435,456$ addresses = <strong>6.25%</strong>.</li>
+        </ul>
+      </div>
+
+      <div class="confusion-box">
+        <h3>4. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "Is network 127 a valid Class A network?"<br>
+        <strong>Reality:</strong> No! Network <code>127.0.0.0/8</code> was excluded from Class A network assignments and permanently reserved for <strong>Loopback Diagnostics</strong>. Similarly, network <code>0.0.0.0/8</code> represents "this host/network" and cannot be assigned to an interface.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>5. University Exam &amp; GATE Tips</h3>
+        <p>University exams frequently ask: <em>"Find the class and default mask of 200.10.20.30."</em><br>
+        Look strictly at the first octet: $200$. Since $192 \le 200 \le 223$, it is <strong>Class C</strong>, and its historical default mask is <strong>255.255.255.0</strong> (/24).</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Historical documentation and academic overviews of classful IPv4 architecture.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc791" target="_blank" rel="noopener noreferrer">
+            📘 RFC 791 - Classful Address Assignment Section
+            <small>The original 1981 specification establishing Classes A, B, and C.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=s_Ntt6eTn94" target="_blank" rel="noopener noreferrer">
+            🎥 Classful vs Classless Addressing Breakdown
+            <small>Educational video detailing why rigid classful routing failed to scale.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/classful-addressing" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on Class Identification
+            <small>Exam problems testing leading-bit rules and total network counts across classes.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 14.12 Private IPv4 Address Space -->
+    <section id="s14-private" class="section-in-uni content-section" data-chapter="14" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="RFC 1918 private IP addresses 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 NAT non-routable">
+      <div class="section-header">
+        <span class="section-number">14.12</span>
+        <h2>Private IPv4 Address Space (RFC 1918) <button class="bookmark-btn" data-id="s14-private" data-label="Private IPv4 Address Space (RFC 1918)" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>Private IPv4 Address Space (RFC 1918)</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p><strong>Private IPv4 Addresses</strong> are specific ranges of IPv4 addresses reserved by the Internet Assigned Numbers Authority (IANA) under <strong>RFC 1918</strong> for internal use within private enterprise and home networks, which are strictly non-routable across the public Internet backbone.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why Private Addresses Exist</h3>
+        <p>By 1996, the exponential growth of personal computers, printers, and internal servers meant that organizations could not obtain public IP addresses for every internal endpoint. RFC 1918 established that devices that do not need direct inbound Internet connectivity can reuse identical private address spaces across millions of private enterprises simultaneously, using <strong>Network Address Translation (NAT)</strong> to multiplex thousands of private devices behind a single public IP.</p>
+      </div>
+
+      <div class="ascii-box">
+PRIVATE RESIDENCE / ENTERPRISE             PUBLIC INTERNET           REMOTE WEB SERVER
+[Laptop:  192.168.1.10]
+[Phone:   192.168.1.15] === [ NAT Router ] === ( Public IP: ) === [ Google Server ]
+[SmartTV: 192.168.1.20]     (Transforms IP)     198.51.100.42       142.250.190.46
+                            (to Public IP)
+Private Space (RFC 1918)                         Public Internet (Globally Routable)
+Routers DROP private IPs!                        Core routers forward packets!
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>RFC 1918 Block</th>
+              <th>CIDR Prefix</th>
+              <th>Address Range</th>
+              <th>Total IP Capacity</th>
+              <th>Intended Enterprise Scale</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>10.0.0.0/8</strong></td>
+              <td>/8</td>
+              <td><code>10.0.0.0</code> &ndash; <code>10.255.255.255</code></td>
+              <td>16,777,216</td>
+              <td>Large multi-site multinational corporations, ISPs, clouds</td>
+            </tr>
+            <tr>
+              <td><strong>172.16.0.0/12</strong></td>
+              <td>/12</td>
+              <td><code>172.16.0.0</code> &ndash; <code>172.31.255.255</code></td>
+              <td>1,048,576</td>
+              <td>Medium to large enterprises, university campuses (16 contiguous /16s)</td>
+            </tr>
+            <tr>
+              <td><strong>192.168.0.0/16</strong></td>
+              <td>/16</td>
+              <td><code>192.168.0.0</code> &ndash; <code>192.168.255.255</code></td>
+              <td>65,536</td>
+              <td>Small office / Home office (SOHO), consumer Wi-Fi routers (256 /24s)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="concept-card">
+        <h3>3. The Internet Backbone Drop Rule</h3>
+        <p>Every Internet Service Provider (ISP) and Autonomous System core router is configured with strict ingress filtering access control lists (ACLs):</p>
+        <p><strong>Rule:</strong> Any packet arriving on a public Internet interface with a source or destination IP falling within RFC 1918 ranges is <strong>instantly dropped</strong>. Private addresses cannot traverse the global public Internet.</p>
+      </div>
+
+      <div class="confusion-box">
+        <h3>4. Common Confusion &amp; Traps</h3>
+        <p><strong>The 172.16.0.0/12 Boundary Trap:</strong><br>
+        Many students mistakenly assume the 172 range spans <code>172.0.0.0</code> to <code>172.255.255.255</code>. That is completely incorrect! The prefix is <code>/12</code>, meaning only octet values from <strong>16 to 31</strong> in the second octet are private! An address like <code>172.15.1.1</code> or <code>172.32.1.1</code> is a <strong>globally routable public IP</strong>, NOT a private address!</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>5. University Exam &amp; GATE Tips</h3>
+        <p>Standard multiple choice question: <em>"Which of the following is a valid private IP address?"</em><br>
+        Choices often include trick public IPs: <code>172.32.10.5</code> (Public!), <code>192.169.1.1</code> (Public!), <code>11.0.0.1</code> (Public!), and <code>172.20.10.5</code> (<strong>Private!</strong> $16 \le 20 \le 31$).</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">RFC specifications and practical guides on private address management.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc1918" target="_blank" rel="noopener noreferrer">
+            📘 RFC 1918 - Address Allocation for Private Internets
+            <small>The definitive standard establishing private IP blocks and NAT architecture.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=FTUV0t6JaDA" target="_blank" rel="noopener noreferrer">
+            🎥 Public vs Private IP Addresses Explained
+            <small>Visual explanation of why private IPs exist and how NAT bridges them to the Internet.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/rfc-1918" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on Private IP Ranges
+            <small>Multiple-choice questions testing instant recognition of public vs private IPs.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 14.13 Special IPv4 Addresses You Should Recognize -->
+    <section id="s14-special" class="section-in-uni content-section" data-chapter="14" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Special IP addresses loopback 127.0.0.1 APIPA 169.254 0.0.0.0 255.255.255.255 limited broadcast">
+      <div class="section-header">
+        <span class="section-number">14.13</span>
+        <h2>Special IPv4 Addresses You Should Recognize <button class="bookmark-btn" data-id="s14-special" data-label="Special IPv4 Addresses You Should Recognize" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>Special IPv4 Addresses You Should Recognize</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. Architectural Catalog of Reserved Blocks</h3>
+        <p>The IANA IPv4 Special-Purpose Address Registry (RFC 6890) reserves distinct IP blocks for operational, diagnostic, and routing protocol purposes. Recognizing these addresses immediately is a vital networking skill.</p>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Address / Block</th>
+              <th>RFC Standard</th>
+              <th>Designated Purpose</th>
+              <th>Forwarded by Routers?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>0.0.0.0/8</code></td>
+              <td>RFC 1122</td>
+              <td>&ldquo;This host on this network&rdquo; (used as source IP in DHCP Discover)</td>
+              <td>No</td>
+            </tr>
+            <tr>
+              <td><code>0.0.0.0/0</code></td>
+              <td>RFC 1812</td>
+              <td>Default Route in router forwarding tables (matches any destination)</td>
+              <td>Not an interface IP</td>
+            </tr>
+            <tr>
+              <td><code>127.0.0.0/8</code></td>
+              <td>RFC 1122</td>
+              <td>Loopback Diagnostics (e.g., <code>127.0.0.1</code> localhost; never hits physical wire)</td>
+              <td>No (Local OS only)</td>
+            </tr>
+            <tr>
+              <td><code>169.254.0.0/16</code></td>
+              <td>RFC 3927</td>
+              <td>Automatic Private IP Addressing (APIPA / Link-Local when DHCP fails)</td>
+              <td>No (Link-local only)</td>
+            </tr>
+            <tr>
+              <td><code>192.0.2.0/24</code> (TEST-NET-1)<br><code>198.51.100.0/24</code> (TEST-NET-2)<br><code>203.0.113.0/24</code> (TEST-NET-3)</td>
+              <td>RFC 5737</td>
+              <td>Documentation and Example Networks (safe for textbooks/manuals)</td>
+              <td>No (Non-routable)</td>
+            </tr>
+            <tr>
+              <td><code>224.0.0.0/4</code></td>
+              <td>RFC 5771</td>
+              <td>Class D Multicast (e.g., <code>224.0.0.5</code> OSPF routers, <code>224.0.0.9</code> RIPv2)</td>
+              <td>Forwarded by Multicast Routers</td>
+            </tr>
+            <tr>
+              <td><code>255.255.255.255</code></td>
+              <td>RFC 919</td>
+              <td>Limited Broadcast (all hosts on local link; broadcast to <code>FF:FF:FF:FF:FF:FF</code>)</td>
+              <td>Never forwarded across router</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Deep-Dive: What APIPA (<code>169.254.x.x</code>) Tells You</h3>
+        <p>When an operating system (Windows, macOS, Linux) boots, its DHCP client broadcasts a <code>DHCPDISCOVER</code> packet. If no DHCP server responds within a timeout window (typically 30&ndash;60 seconds), the operating system automatically assigns itself an address from the <code>169.254.0.0/16</code> block using IPv4 Link-Local addressing (RFC 3927).</p>
+        <p><strong>Troubleshooting Axiom:</strong> If a client PC displays an IP address starting with <code>169.254</code>, it proves that the local physical network card and cable are working, but the <strong>DHCP server is offline, misconfigured, or unreachable</strong>.</p>
+      </div>
+
+      <div class="ascii-box">
+CLIENT DHCP FAILURE FLOWCHART:
+[PC Boots] ===> Sends DHCPDISCOVER (Source: 0.0.0.0, Dest: 255.255.255.255)
+                    |
+           [Wait 60 Seconds...]
+                    |
+           Did DHCP Server respond?
+              /          \
+            YES           NO (DHCP Down or VLAN disconnected)
+             |             |
+     Assigned Valid IP    FALLBACK TO APIPA:
+    (e.g. 192.168.1.50)   OS picks random 169.254.X.Y/16
+                          (Can talk to local switch, CANNOT reach Internet!)
+      </div>
+
+      <div class="confusion-box">
+        <h3>3. Common Confusion: Loopback Address Space</h3>
+        <p><strong>Fallacy:</strong> "Only 127.0.0.1 is the loopback address."<br>
+        <strong>Reality:</strong> The <em>entire</em> <code>127.0.0.0/8</code> block ($16,777,216$ addresses) is reserved for loopback! You can ping <code>127.0.0.1</code>, <code>127.1.2.3</code>, or <code>127.254.254.254</code> in your command prompt, and your local TCP/IP stack will respond identically without sending a single electrical pulse to your physical network interface card.</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>4. University Exam &amp; GATE Tips</h3>
+        <p>Exam question: <em>"What is the difference between 0.0.0.0 and 255.255.255.255?"</em><br>
+        Answer: <code>0.0.0.0</code> is used as a <em>source</em> IP by a client that does not yet possess an IP address (or represents the default route in a routing table). <code>255.255.255.255</code> is used as a <em>destination</em> IP for limited broadcasting to all hosts on the local physical link.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Official IANA registry and RFC definitions of special IPv4 addresses.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc6890" target="_blank" rel="noopener noreferrer">
+            📘 RFC 6890 - Special-Purpose IP Address Registries
+            <small>The consolidated IETF and IANA master registry of all reserved IPv4 blocks.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=33K7z3vM8pY" target="_blank" rel="noopener noreferrer">
+            🎥 APIPA, Loopback, and Reserved IPv4 Explained
+            <small>Practical networking tutorial explaining when and why special addresses appear.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/special-ip-addresses" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on Special Purpose IP Addresses
+            <small>Past exam questions testing APIPA, loopback, and broadcast address properties.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 14.14 Longest Prefix Matching -->
+    <section id="s14-lpm" class="section-in-uni content-section" data-chapter="14" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Longest Prefix Match LPM routing table forwarding algorithm most specific prefix tie-breaking">
+      <div class="section-header">
+        <span class="section-number">14.14</span>
+        <h2>Longest Prefix Matching (LPM) <button class="bookmark-btn" data-id="s14-lpm" data-label="Longest Prefix Matching (LPM)" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>Longest Prefix Matching (LPM)</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p><strong>Longest Prefix Matching (LPM)</strong> is the foundational decision rule executed by IP routers during packet forwarding, dictating that when a destination IP address matches multiple overlapping route entries in the Forwarding Information Base (FIB), the router must select the route possessing the <strong>longest prefix length</strong> (the most specific subnet mask with the greatest number of matching leading bits).</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Why LPM Exists: Enabling Hierarchical Route Aggregation</h3>
+        <p>In CIDR, a regional ISP might advertise a broad summary block like <code>198.51.0.0/16</code> to the global Internet. However, one specific corporate customer located inside that block, say <code>198.51.100.0/24</code>, might be multihomed through a different backup provider. Without LPM, routers could not support specific route exceptions inside aggregated supernets.</p>
+      </div>
+
+      <div class="ascii-box">
+OVERLAPPING FORWARDING TABLE ENTRIES:
+Entry 1 (Broad Regional Summary): 198.51.0.0/16    --> Next-Hop: Interface eth0
+Entry 2 (Departmental Block):     198.51.100.0/22  --> Next-Hop: Interface eth1
+Entry 3 (Specific Corporate Host): 198.51.100.0/24  --> Next-Hop: Interface eth2
+Entry 4 (Default Route):          0.0.0.0/0        --> Next-Hop: Interface eth3
+
+Incoming Packet arrives with Destination IP: 198.51.100.45
+Evaluation:
+  Matches 0.0.0.0/0?       YES (Length = /0)
+  Matches 198.51.0.0/16?   YES (Length = /16)
+  Matches 198.51.100.0/22? YES (Length = /22)
+  Matches 198.51.100.0/24? YES (Length = /24)  <=== LONGEST PREFIX! (Most Specific)
+
+FORWARDING DECISION: Packet is switched out Interface eth2!
+      </div>
+
+      <div class="example-box">
+        <h3>3. Step-by-Step Bitwise LPM Trace</h3>
+        <p>Consider a router FIB with the following routing entries:</p>
+        <div class="table-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Route Entry</th>
+                <th>Destination Prefix</th>
+                <th>Mask (Bits)</th>
+                <th>Egress Interface</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>$R_1$</td>
+                <td><code>128.96.39.0/25</code></td>
+                <td>25 bits</td>
+                <td>Interface 0</td>
+              </tr>
+              <tr>
+                <td>$R_2$</td>
+                <td><code>128.96.39.128/25</code></td>
+                <td>25 bits</td>
+                <td>Interface 1</td>
+              </tr>
+              <tr>
+                <td>$R_3$</td>
+                <td><code>128.96.40.0/24</code></td>
+                <td>24 bits</td>
+                <td>Interface 2</td>
+              </tr>
+              <tr>
+                <td>$R_4$</td>
+                <td><code>128.96.40.0/25</code></td>
+                <td>25 bits</td>
+                <td>Interface 3</td>
+              </tr>
+              <tr>
+                <td>$R_5$</td>
+                <td><code>Default (0.0.0.0/0)</code></td>
+                <td>0 bits</td>
+                <td>Interface 4</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>Packet Forwarding Traces:</h4>
+        <ol>
+          <li><strong>Packet A arrives for <code>128.96.39.10</code>:</strong>
+            <ul>
+              <li>Bitwise AND with $/25$ mask: $10 \land 128 = 0$. Matches $R_1$ (<code>128.96.39.0/25</code>)!</li>
+              <li>Does not match $R_2$ ($128$), $R_3$, or $R_4$.</li>
+              <li>Matches default route $R_5$ (/0).</li>
+              <li>Longest matching prefix is $R_1$ (/25 > /0). <strong>Forwarded to Interface 0.</strong></li>
+            </ul>
+          </li>
+          <li><strong>Packet B arrives for <code>128.96.40.12</code>:</strong>
+            <ul>
+              <li>Matches $R_3$ (<code>128.96.40.0/24</code>) with prefix length 24.</li>
+              <li>Matches $R_4$ (<code>128.96.40.0/25</code>, range 0&ndash;127) with prefix length 25.</li>
+              <li>Both $R_3$ and $R_4$ match! But $/25 > /24$.</li>
+              <li>Longest matching prefix is $R_4$. <strong>Forwarded to Interface 3.</strong></li>
+            </ul>
+          </li>
+          <li><strong>Packet C arrives for <code>128.96.40.150</code>:</strong>
+            <ul>
+              <li>Matches $R_3$ (<code>128.96.40.0/24</code>, range 0&ndash;255).</li>
+              <li>Fails $R_4$ (/25 spans only 0&ndash;127; $150 \ge 128$).</li>
+              <li>Only $R_3$ (/24) and $R_5$ (/0) match. Longest is $R_3$. <strong>Forwarded to Interface 2.</strong></li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+
+      <div class="concept-card">
+        <h3>4. Hardware Implementation: TCAM &amp; Trie Engines</h3>
+        <p>Software linear scanning of routing tables is $O(N)$ and cannot achieve 100 Gbps line rates. High-speed routers implement LPM using:</p>
+        <ul>
+          <li><strong>Radix Tries / Patricia Tries:</strong> Tree structures where branching is determined by bit values, achieving $O(W)$ lookup time where $W=32$ bits.</li>
+          <li><strong>Ternary Content Addressable Memory (TCAM):</strong> Specialized parallel hardware that matches all 32 bits across thousands of prefixes simultaneously in a single clock cycle ($O(1)$ constant time), natively handling ternary values (<code>0</code>, <code>1</code>, and <code>Don't Care X</code>).</li>
+        </ul>
+      </div>
+
+      <div class="confusion-box">
+        <h3>5. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "If a packet matches a /24 route, the router stops searching immediately."<br>
+        <strong>Reality:</strong> False! A router must evaluate <em>all</em> matching entries to find the one with the maximum prefix length. A more specific <code>/28</code> or host route <code>/32</code> might exist further down in the table!</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>6. University Exam &amp; GATE Tips</h3>
+        <p>LPM is one of the most frequently tested topics in GATE Computer Science. When solving LPM questions: always test masks in descending order of prefix length (test /28 first, then /26, then /24, down to /0). The first match you find in descending order is automatically the longest prefix match!</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Engineering resources on TCAM architecture and Longest Prefix Match algorithms.</div>
+        <div class="resource-grid">
+          <a href="https://en.wikipedia.org/wiki/Longest_prefix_match" target="_blank" rel="noopener noreferrer">
+            📘 Longest Prefix Match Architecture
+            <small>Formal algorithmic proofs of Trie search trees and TCAM parallel lookup.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=FjBfT4XoIeI" target="_blank" rel="noopener noreferrer">
+            🎥 Longest Prefix Matching Step-by-Step Examples
+            <small>Visual explanation of routing table tie-breaking using prefix lengths.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/longest-prefix-matching" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on Longest Prefix Matching
+            <small>Over 30 past exam numerical questions on router forwarding table lookups.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 14.15 Route Aggregation (Supernetting) -->
+    <section id="s14-aggregation" class="section-in-uni content-section" data-chapter="14" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Route aggregation supernetting CIDR address summarization routing table reduction contiguous prefixes">
+      <div class="section-header">
+        <span class="section-number">14.15</span>
+        <h2>Route Aggregation (Supernetting) <button class="bookmark-btn" data-id="s14-aggregation" data-label="Route Aggregation (Supernetting)" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>Route Aggregation (Supernetting)</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. First-Principles Definition</h3>
+        <p><strong>Route Aggregation (Supernetting)</strong> is the process of combining multiple contiguous smaller network prefixes into a single, less-specific summary prefix (e.g., merging four contiguous <code>/24</code> blocks into a single <code>/22</code> supernet) to drastically reduce the size and update frequency of global BGP router forwarding tables.</p>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. The Three Mandatory Conditions for Aggregation</h3>
+        <p>Multiple IP blocks can be legally aggregated into a single supernet if and only if they satisfy three strict mathematical invariants:</p>
+        <div class="concept-grid">
+          <div class="concept-card">
+            <h4>1. Contiguity</h4>
+            <p>The network blocks must form an unbroken continuous span of IP addresses with zero gaps between them.</p>
+          </div>
+          <div class="concept-card">
+            <h4>2. Power of 2 Count</h4>
+            <p>The number of blocks being merged must be an exact power of two ($2, 4, 8, 16, 32 \dots$). You cannot aggregate 3 or 5 blocks into one clean prefix.</p>
+          </div>
+          <div class="concept-card">
+            <h4>3. Natural Boundary Alignment</h4>
+            <p>The starting address of the block must be a multiple of the total aggregated block size (the first block's prefix bits must end with binary zeros in the collapsed positions).</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ascii-box">
+FOUR CONTIGUOUS /24 NETWORKS:
+Net 1: 198.51.100.0/24  --> 11000110 . 00110011 . 011001 00 . 00000000
+Net 2: 198.51.101.0/24  --> 11000110 . 00110011 . 011001 01 . 00000000
+Net 3: 198.51.102.0/24  --> 11000110 . 00110011 . 011001 10 . 00000000
+Net 4: 198.51.103.0/24  --> 11000110 . 00110011 . 011001 11 . 00000000
+                            \---------------------------/ \--/
+                               Common 22 Leading Bits     2 bits vary (00 to 11)
+
+AGGREGATED SUPERNET ROUTE:  198.51.100.0/22
+Instead of advertising 4 separate routes, the router advertises ONE single route!
+Global Routing Table entries saved: 75% reduction!
+      </div>
+
+      <div class="example-box">
+        <h3>3. Worked Calculation: Aggregating 4 Subnets</h3>
+        <p><strong>Given:</strong> Aggregate the following four <code>/24</code> blocks into a single CIDR supernet:</p>
+        <ul>
+          <li><code>200.10.16.0/24</code></li>
+          <li><code>200.10.17.0/24</code></li>
+          <li><code>200.10.18.0/24</code></li>
+          <li><code>200.10.19.0/24</code></li>
+        </ul>
+
+        <h4>Solution:</h4>
+        <ol>
+          <li>Examine the differing octet (Octet 3):
+            <ul>
+              <li>$16 = \mathbf{000100}00_2$</li>
+              <li>$17 = \mathbf{000100}01_2$</li>
+              <li>$18 = \mathbf{000100}10_2$</li>
+              <li>$19 = \mathbf{000100}11_2$</li>
+            </ul>
+          </li>
+          <li>Count the common bits from left to right:
+            <ul>
+              <li>Octet 1: 8 common bits.</li>
+              <li>Octet 2: 8 common bits.</li>
+              <li>Octet 3: First 6 bits (<code>000100</code>) are identical across all four networks.</li>
+              <li>Total common prefix length: $8 + 8 + 6 = \mathbf{22\text{ bits}}$.</li>
+            </ul>
+          </li>
+          <li>Set all remaining bits to 0 to find the Supernet Network ID:
+            $$200.10.\mathbf{00010000}_2.0 = \mathbf{200.10.16.0/22}$$
+          </li>
+          <li><strong>Supernet Subnet Mask:</strong> $22$ ones followed by $10$ zeros = $\mathbf{255.255.252.0}$.</li>
+        </ol>
+      </div>
+
+      <div class="concept-card">
+        <h3>4. The Black-Hole Route Risk &amp; Null0 Interface</h3>
+        <p>Suppose an ISP aggregates <code>198.51.100.0/24</code>, <code>.101.0/24</code>, and <code>.102.0/24</code> into <code>198.51.100.0/22</code>, but subnet <code>.103.0/24</code> is unallocated. If packets arrive addressed to <code>198.51.103.50</code>, the aggregate route will match and pull the packet into the ISP's core, where it has nowhere to go and may loop!</p>
+        <p><strong>Remedy:</strong> Routers install a <strong>Discard / Null0 route</strong> for the supernet (<code>ip route 198.51.100.0 255.255.252.0 Null0</code>). Specific subnets override Null0 via LPM; traffic to unassigned holes hits Null0 and is silently discarded without looping.</p>
+      </div>
+
+      <div class="confusion-box">
+        <h3>5. Common Confusion &amp; Traps</h3>
+        <p><strong>The Non-Power-of-2 Trap:</strong><br>
+        If an exam asks to aggregate three subnets (e.g., <code>16.0</code>, <code>17.0</code>, <code>18.0</code>): You <strong>cannot</strong> merge them into a single prefix without either including <code>19.0</code> (which is illegal if not owned) or breaking them into <strong>two separate routes</strong> (a <code>/23</code> for <code>16.0</code> and <code>17.0</code>, plus a <code>/24</code> for <code>18.0</code>).</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>6. University Exam &amp; GATE Tips</h3>
+        <p>Quick Formula: To aggregate $2^k$ contiguous <code>/n</code> subnets, the new supernet prefix is simply $n - k$.<br>
+        Example: Aggregating 4 ($2^2$) contiguous <code>/24</code> subnets yields $24 - 2 = \mathbf{/22}$. Aggregating 8 ($2^3$) contiguous <code>/24</code> subnets yields $24 - 3 = \mathbf{/21}$.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Engineering resources on supernetting and route table optimization.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc4632#section-5" target="_blank" rel="noopener noreferrer">
+            📘 RFC 4632 Section 5 - Aggregation and its Effect on Routing
+            <small>Mathematical foundation of route summarization in BGP and interior routing.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=F_fDkJN3R4w" target="_blank" rel="noopener noreferrer">
+            🎥 Route Summarization / Supernetting Worked Problems
+            <small>Visual whiteboard instruction finding summary addresses for complex IP lists.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/route-aggregation" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on Route Aggregation
+            <small>Collection of past GATE problems calculating minimal advertised routing tables.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 14.16 IP Address vs MAC Address vs Port Number -->
+    <section id="s14-compare" class="section-in-uni content-section" data-chapter="14" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Addressing comparison IP address Layer 3 MAC address Layer 2 Port number Layer 4 scope resolution">
+      <div class="section-header">
+        <span class="section-number">14.16</span>
+        <h2>IP Address vs MAC Address vs Port Number <button class="bookmark-btn" data-id="s14-compare" data-label="IP Address vs MAC Address vs Port Number" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>IP Address vs MAC Address vs Port Number</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. Architectural Synthesis: The Three Addressing Layers</h3>
+        <p>Complete end-to-end communication across the Internet requires three distinct addressing tiers operating at different layers of the OSI stack: <strong>Layer 2 MAC Addresses</strong> (hop-by-hop local hardware delivery), <strong>Layer 3 IP Addresses</strong> (end-to-end global host routing), and <strong>Layer 4 Port Numbers</strong> (end-to-end process-to-process multiplexing).</p>
+      </div>
+
+      <div class="ascii-box">
+THE THREE LAYERS OF INTERNET ADDRESSING:
+
+Layer 4 (Transport):     PORT NUMBER (16 bits, e.g., Port 443 / 80)
+                         Selects the SPECIFIC APPLICATION PROCESS (e.g., Web Server)
+                              |
+Layer 3 (Network):       IP ADDRESS (32 bits, e.g., 142.250.190.46)
+                         Routes packet across GLOBAL INTERNET to the DESTINATION HOST
+                              |
+Layer 2 (Data Link):     MAC ADDRESS (48 bits, e.g., 00:1A:2B:3C:4D:5E)
+                         Delivers frame across LOCAL PHYSICAL LINK to NEXT ROUTER HOP
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Evaluation Dimension</th>
+              <th>Layer 2: MAC Address</th>
+              <th>Layer 3: IP Address</th>
+              <th>Layer 4: Port Number</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>OSI Protocol Layer</strong></td>
+              <td>Data Link Layer (Layer 2)</td>
+              <td>Network Layer (Layer 3)</td>
+              <td>Transport Layer (Layer 4)</td>
+            </tr>
+            <tr>
+              <td><strong>Address Length</strong></td>
+              <td>48 bits (6 octets)</td>
+              <td>32 bits (IPv4) / 128 bits (IPv6)</td>
+              <td>16 bits (2 octets)</td>
+            </tr>
+            <tr>
+              <td><strong>Addressing Hierarchy</strong></td>
+              <td>Flat (OUI Vendor + Serial)</td>
+              <td>Hierarchical (Network Prefix + Host)</td>
+              <td>Flat (Well-known, Registered, Ephemeral)</td>
+            </tr>
+            <tr>
+              <td><strong>Human Representation</strong></td>
+              <td>Hexadecimal: <code>00:14:22:01:23:45</code></td>
+              <td>Dotted-Decimal: <code>192.168.1.1</code></td>
+              <td>Decimal Integer: <code>0</code> &ndash; <code>65535</code></td>
+            </tr>
+            <tr>
+              <td><strong>Scope of Delivery</strong></td>
+              <td>Hop-by-hop (Local Link / LAN only)</td>
+              <td>Source-to-Destination (Global Internet)</td>
+              <td>End-to-End (Host Process / Socket)</td>
+            </tr>
+            <tr>
+              <td><strong>Persistence / Lifespan</strong></td>
+              <td>Permanent (Burned into NIC hardware)</td>
+              <td>Dynamic (Assigned via DHCP per network)</td>
+              <td>Ephemeral (Per TCP/UDP connection session)</td>
+            </tr>
+            <tr>
+              <td><strong>Changes in Flight?</strong></td>
+              <td><strong>YES:</strong> Rewritten at EVERY router hop</td>
+              <td><strong>NO:</strong> Preserved unchanged (unless NAT)</td>
+              <td><strong>NO:</strong> Preserved unchanged (unless NAPT)</td>
+            </tr>
+            <tr>
+              <td><strong>Binding / Resolution Protocol</strong></td>
+              <td>Address Resolution Protocol (ARP / NDP)</td>
+              <td>Domain Name System (DNS)</td>
+              <td>Operating System Socket API (Bind / Listen)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="example-box">
+        <h3>2. What Happens to Addresses as a Packet Travels</h3>
+        <p>A packet travels from Client Host A through Router $R_1$ and Router $R_2$ to Server Host B:</p>
+        <ul>
+          <li><strong>IP Addresses:</strong> Source IP ($A$) and Destination IP ($B$) remain <strong>constant</strong> across all physical links.</li>
+          <li><strong>Port Numbers:</strong> Source Port ($54321$) and Destination Port ($443$) remain <strong>constant</strong> across all physical links.</li>
+          <li><strong>MAC Addresses:</strong> Rewritten at <strong>every single hop</strong>!
+            <ul>
+              <li>Hop 1 (A &rarr; $R_1$): Source MAC = $MAC_A$, Destination MAC = $MAC_{R1\_eth0}$.</li>
+              <li>Hop 2 ($R_1$ &rarr; $R_2$): Source MAC = $MAC_{R1\_eth1}$, Destination MAC = $MAC_{R2\_eth0}$.</li>
+              <li>Hop 3 ($R_2$ &rarr; B): Source MAC = $MAC_{R2\_eth1}$, Destination MAC = $MAC_B$.</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <div class="confusion-box">
+        <h3>3. Common Confusion &amp; Traps</h3>
+        <p><strong>Fallacy:</strong> "A web browser communicates directly with a website's IP address."<br>
+        <strong>Reality:</strong> Communication terminates at a <strong>Socket</strong>, which is the 5-tuple: <code>(Protocol, Source IP, Source Port, Dest IP, Dest Port)</code>. Without the Port Number, the operating system would not know whether incoming HTTP data belongs to Google Chrome, Spotify, or a background software update!</p>
+      </div>
+
+      <div class="exam-tip">
+        <h3>4. University Exam &amp; GATE Tips</h3>
+        <p>Exam staple question: <em>"As an IP datagram moves across multiple routers, which header addresses change and which stay the same?"</em><br>
+        Answer: Data link MAC addresses change at every single router hop. IP addresses and Transport port numbers remain constant from source to destination (assuming no NAT in the path).</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Foundational cross-layer architecture tutorials and packet traces.</div>
+        <div class="resource-grid">
+          <a href="https://datatracker.ietf.org/doc/html/rfc1122" target="_blank" rel="noopener noreferrer">
+            📘 RFC 1122 - Requirements for Internet Hosts: Communication Layers
+            <small>Defines architectural boundaries between link, internet, and transport addresses.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=A_Zsm_Hn434" target="_blank" rel="noopener noreferrer">
+            🎥 IP Address vs MAC Address vs Port Number Trace
+            <small>Step-by-step visual animation tracking header transformations across router hops.</small>
+          </a>
+          <a href="https://gateoverflow.in/tag/mac-vs-ip" target="_blank" rel="noopener noreferrer">
+            📝 GATE Questions on Header Rewriting &amp; Addressing
+            <small>MCQs testing address persistence and ARP resolution across multiple hops.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 14.17 Addressing Numerical Drill -->
+    <section id="s14-drill" class="section-in-uni content-section" data-chapter="14" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Addressing numerical drills CIDR prefix calculations subnet ranges university questions">
+      <div class="section-header">
+        <span class="section-number">14.17</span>
+        <h2>Addressing Numerical Drill <button class="bookmark-btn" data-id="s14-drill" data-label="Addressing Numerical Drill" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>Addressing Numerical Drill</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>Quantitative Mastery Drill</h3>
+        <p>Work through these three rigorous numerical problems modeling typical high-weightage university end-semester and competitive engineering exam questions.</p>
+      </div>
+
+      <div class="example-box">
+        <h3>Problem 1: Complex VLSM Allocation (University 15-Mark Style)</h3>
+        <p><strong>Problem:</strong> An ISP allocates the contiguous block <code>198.51.100.0/24</code> to a startup enterprise. The company has four branch offices requiring host allocations as follows:</p>
+        <ul>
+          <li>Branch A: <strong>110 usable hosts</strong></li>
+          <li>Branch B: <strong>55 usable hosts</strong></li>
+          <li>Branch C: <strong>26 usable hosts</strong></li>
+          <li>Branch D: <strong>12 usable hosts</strong></li>
+        </ul>
+        <p>Design a Variable Length Subnet Mask (VLSM) allocation that satisfies all requirements while preserving maximum contiguous unallocated space for future growth.</p>
+
+        <h4>Solution:</h4>
+        <p><strong>Rule:</strong> Always allocate subnets in descending order of required host count!</p>
+        <ol>
+          <li><strong>Branch A (110 hosts):</strong>
+            <ul>
+              <li>$N + 2 = 110 + 2 = 112 \implies 2^h \ge 112 \implies h = 7$ bits ($2^7 = 128$).</li>
+              <li>Prefix length: $32 - 7 = \mathbf{/25}$. Mask: <code>255.255.255.128</code>. Block size = 128.</li>
+              <li>Allocated Subnet: <strong><code>198.51.100.0/25</code></strong>.</li>
+              <li>Usable Range: <code>198.51.100.1</code> to <code>198.51.100.126</code>. Broadcast: <code>198.51.100.127</code>.</li>
+              <li>Next available IP: <code>198.51.100.128</code>.</li>
+            </ul>
+          </li>
+          <li><strong>Branch B (55 hosts):</strong>
+            <ul>
+              <li>$N + 2 = 55 + 2 = 57 \implies 2^h \ge 57 \implies h = 6$ bits ($2^6 = 64$).</li>
+              <li>Prefix length: $32 - 6 = \mathbf{/26}$. Mask: <code>255.255.255.192</code>. Block size = 64.</li>
+              <li>Allocated Subnet: <strong><code>198.51.100.128/26</code></strong>.</li>
+              <li>Usable Range: <code>198.51.100.129</code> to <code>198.51.100.190</code>. Broadcast: <code>198.51.100.191</code>.</li>
+              <li>Next available IP: <code>198.51.100.192</code>.</li>
+            </ul>
+          </li>
+          <li><strong>Branch C (26 hosts):</strong>
+            <ul>
+              <li>$N + 2 = 26 + 2 = 28 \implies 2^h \ge 28 \implies h = 5$ bits ($2^5 = 32$).</li>
+              <li>Prefix length: $32 - 5 = \mathbf{/27}$. Mask: <code>255.255.255.224</code>. Block size = 32.</li>
+              <li>Allocated Subnet: <strong><code>198.51.100.192/27</code></strong>.</li>
+              <li>Usable Range: <code>198.51.100.193</code> to <code>198.51.100.222</code>. Broadcast: <code>198.51.100.223</code>.</li>
+              <li>Next available IP: <code>198.51.100.224</code>.</li>
+            </ul>
+          </li>
+          <li><strong>Branch D (12 hosts):</strong>
+            <ul>
+              <li>$N + 2 = 12 + 2 = 14 \implies 2^h \ge 14 \implies h = 4$ bits ($2^4 = 16$).</li>
+              <li>Prefix length: $32 - 4 = \mathbf{/28}$. Mask: <code>255.255.255.240</code>. Block size = 16.</li>
+              <li>Allocated Subnet: <strong><code>198.51.100.224/28</code></strong>.</li>
+              <li>Usable Range: <code>198.51.100.225</code> to <code>198.51.100.238</code>. Broadcast: <code>198.51.100.239</code>.</li>
+              <li>Next available IP: <code>198.51.100.240</code>.</li>
+            </ul>
+          </li>
+          <li><strong>Unallocated Future Growth:</strong> <code>198.51.100.240/28</code> (16 addresses remaining completely contiguous!).</li>
+        </ol>
+      </div>
+
+      <div class="example-box">
+        <h3>Problem 2: Longest Prefix Match Routing Drill (GATE Level)</h3>
+        <p><strong>Problem:</strong> A router has the following forwarding table entries:</p>
+        <div class="table-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Prefix</th>
+                <th>Next-Hop Interface</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>135.46.56.0/22</code></td>
+                <td>Interface 0</td>
+              </tr>
+              <tr>
+                <td><code>135.46.60.0/22</code></td>
+                <td>Interface 1</td>
+              </tr>
+              <tr>
+                <td><code>135.46.60.0/24</code></td>
+                <td>Interface 2</td>
+              </tr>
+              <tr>
+                <td><code>Default (0.0.0.0/0)</code></td>
+                <td>Interface 3</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Determine the egress interface for each of the following destination IP addresses:</p>
+        <ul>
+          <li><strong>IP 1:</strong> <code>135.46.57.14</code></li>
+          <li><strong>IP 2:</strong> <code>135.46.60.100</code></li>
+          <li><strong>IP 3:</strong> <code>135.46.63.10</code></li>
+          <li><strong>IP 4:</strong> <code>135.46.64.1</code></li>
+        </ul>
+
+        <h4>Solution:</h4>
+        <ul>
+          <li><strong>For IP 1 (<code>135.46.57.14</code>):</strong>
+            <code>/22</code> on Octet 3 covers increments of 4 ($2^{10-8} = 4$).
+            The block <code>135.46.56.0/22</code> spans 3rd octets from $56$ to $56 + 4 - 1 = 59$.
+            Since $57$ is in $[56, 59]$, it matches <code>135.46.56.0/22</code>. Egress: <strong>Interface 0</strong>.
+          </li>
+          <li><strong>For IP 2 (<code>135.46.60.100</code>):</strong>
+            Matches <code>135.46.60.0/22</code> (range 60&ndash;63, prefix /22).
+            Also matches <code>135.46.60.0/24</code> (range 60.0&ndash;60.255, prefix /24).
+            By Longest Prefix Match, $/24 > /22$. Egress: <strong>Interface 2</strong>.
+          </li>
+          <li><strong>For IP 3 (<code>135.46.63.10</code>):</strong>
+            Falls in the range $60 \le 63 \le 63$, so matches <code>135.46.60.0/22</code>.
+            Does <em>not</em> match <code>/24</code> (which only covers $60.0$ to $60.255$). Egress: <strong>Interface 1</strong>.
+          </li>
+          <li><strong>For IP 4 (<code>135.46.64.1</code>):</strong>
+            $64$ is outside all ranges ($56-59$ and $60-63$).
+            Matches only the default route. Egress: <strong>Interface 3</strong>.
+          </li>
+        </ul>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Engineering problem banks and worked solutions for subnetting exams.</div>
+        <div class="resource-grid">
+          <a href="https://gateoverflow.in/questions/computer-science/computer-networks/ip-addressing" target="_blank" rel="noopener noreferrer">
+            📘 GATE Overflow: IP Addressing Question Repository
+            <small>Over 100 solved numerical problems on VLSM, LPM, and subnet boundary verification.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=ZXxxG5r7e_s" target="_blank" rel="noopener noreferrer">
+            🎥 VLSM Subnetting Numerical Mastery
+            <small>Step-by-step video solving complex multi-department VLSM exam questions.</small>
+          </a>
+          <a href="https://practice.geeksforgeeks.org/explore?page=1&category=Computer%20Networks" target="_blank" rel="noopener noreferrer">
+            📝 GeeksforGeeks: IP Addressing Numerical Practice
+            <small>Interactive coding drills and timed multiple-choice questions on subnet math.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 14.18 High-Yield Traps & University Pitfalls -->
+    <section id="s14-traps" class="section-in-uni content-section" data-chapter="14" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="Exam traps subnetting pitfalls broadcast calculation off-by-one errors host count formula">
+      <div class="section-header">
+        <span class="section-number">14.18</span>
+        <h2>High-Yield Traps &amp; University Pitfalls <button class="bookmark-btn" data-id="s14-traps" data-label="High-Yield Traps &amp; University Pitfalls" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>High-Yield Traps & University Pitfalls</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. The Subnetting Pitfall Catalog</h3>
+        <p>This section documents the most frequent errors, miscalculations, and conceptual traps that cost students marks on university end-semester and competitive examinations.</p>
+      </div>
+
+      <div class="concept-grid">
+        <div class="concept-card">
+          <h4>Trap 1: The "Interesting Octet" Arithmetic Blindspot</h4>
+          <p><strong>The Trap:</strong> Calculating step sizes in the 4th octet when subnetting a <code>/19</code> prefix.<br>
+          <strong>The Reality:</strong> In a <code>/19</code>, the boundary falls in the <strong>3rd octet</strong> ($19 - 16 = 3$ subnet bits, leaving $8 - 3 = 5$ host bits in octet 3). Step size $\Delta = 2^5 = 32$ in the <em>third octet</em>, NOT the fourth!</p>
+        </div>
+
+        <div class="concept-card">
+          <h4>Trap 2: Subnetting Order in VLSM</h4>
+          <p><strong>The Trap:</strong> Subnetting in the arbitrary order given in the question text (e.g., small subnets first).<br>
+          <strong>The Reality:</strong> Always sort required sizes in <strong>strictly descending order</strong>. Allocating a <code>/28</code> at the start of a block will misalign subsequent <code>/25</code> and <code>/26</code> blocks, causing overlapping subnets.</p>
+        </div>
+
+        <div class="concept-card">
+          <h4>Trap 3: Forgetting Gateway &amp; Switch IP Overhead</h4>
+          <p><strong>The Trap:</strong> An enterprise has 30 PCs and the student assigns a <code>/27</code> (30 usable hosts).<br>
+          <strong>The Reality:</strong> In real network engineering, the router's default gateway interface requires an IP address! $30\text{ PCs} + 1\text{ Gateway} = 31$ interfaces, which exceeds a <code>/27</code> and demands a <code>/26</code> block!</p>
+        </div>
+
+        <div class="concept-card">
+          <h4>Trap 4: Directed Broadcast Assignment</h4>
+          <p><strong>The Trap:</strong> Attempting to assign IP <code>10.1.1.127/25</code> to a printer because "it does not end in .255."<br>
+          <strong>The Reality:</strong> In a <code>/25</code>, the block ends at <code>.127</code>. Since all host bits are 1, <code>10.1.1.127</code> is the directed broadcast address and cannot be assigned to any device.</p>
+        </div>
+
+        <div class="concept-card">
+          <h4>Trap 5: Classful Leading Bit Confusion</h4>
+          <p><strong>The Trap:</strong> Assuming Class C spans up to 255.<br>
+          <strong>The Reality:</strong> Class C spans strictly $192$ to $223$. $224$ to $239$ is Class D (Multicast), and $240$ to $255$ is Class E (Reserved).</p>
+        </div>
+
+        <div class="concept-card">
+          <h4>Trap 6: Point-to-Point /30 vs /31</h4>
+          <p><strong>The Trap:</strong> Using a <code>/30</code> and claiming 4 hosts.<br>
+          <strong>The Reality:</strong> A <code>/30</code> has $2^2 = 4$ total addresses, but $4 - 2 = \mathbf{2\text{ usable hosts}}$ (exactly enough for 2 router serial interfaces). RFC 3021 allows <code>/31</code> with 2 usable hosts on point-to-point links.</p>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Common Student Error</th>
+              <th>Technical Verdict</th>
+              <th>Correct Pedagogical Rule</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><em>"Subnet mask 255.255.248.0 has 20 prefix bits."</em></td>
+              <td><span style="color: #ef4444; font-weight: bold;">WRONG</span></td>
+              <td>$248 = 11111000_2$ (5 ones). Prefix length = $8 + 8 + 5 = \mathbf{/21}$, not /20 ($240$).</td>
+            </tr>
+            <tr>
+              <td><em>"172.32.1.1 is an RFC 1918 private IP address."</em></td>
+              <td><span style="color: #ef4444; font-weight: bold;">WRONG</span></td>
+              <td>RFC 1918 Class B space covers strictly $172.16.0.0$ to $172.31.255.255$. $172.32$ is public!</td>
+            </tr>
+            <tr>
+              <td><em>"Subnet Zero cannot be used in modern networks."</em></td>
+              <td><span style="color: #ef4444; font-weight: bold;">WRONG</span></td>
+              <td>Subnet zero has been 100% legal and standard since RFC 1878 (1995).</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="exam-tip">
+        <h3>Examiner's Warning: Partial Credit in Subnetting</h3>
+        <p>In subjective end-sem exams, examiners give 0 marks if the Network Address or Broadcast Address is listed in the usable host range. Always write <code>First Usable = Net + 1</code> and <code>Last Usable = Broadcast - 1</code> in separate explicit lines.</p>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Exam preparation resources and past competitive exam analysis.</div>
+        <div class="resource-grid">
+          <a href="https://gateoverflow.in/questions/computer-science/computer-networks/ip-addressing" target="_blank" rel="noopener noreferrer">
+            📘 GATE Overflow: Top 20 Most Missed IP Addressing Questions
+            <small>Curated list of tricky subnetting questions that trap most engineering students.</small>
+          </a>
+          <a href="https://www.youtube.com/watch?v=vcArZ_vVq6w" target="_blank" rel="noopener noreferrer">
+            🎥 Top 5 Subnetting Mistakes Students Make
+            <small>Video tutorial walking through edge cases in subnet boundary arithmetic.</small>
+          </a>
+          <a href="https://nptel.ac.in/courses/106105183" target="_blank" rel="noopener noreferrer">
+            📝 NPTEL Computer Networks: Internet Protocol Addressing
+            <small>IIT Kharagpur lectures covering CIDR, VLSM, and hierarchical addressing design.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 14.19 Chapter Summary, Self-Check & Study Path -->
+    <section id="s14-summary" class="section-in-uni content-section" data-chapter="14" data-part="IV" data-unit="II" data-midsem="endsem" data-exam-priority="very-high" data-search-section="IPv4 logical addressing master summary quick review cheat sheet self-check roadmap">
+      <div class="section-header">
+        <span class="section-number">14.19</span>
+        <h2>Chapter Summary, Self-Check &amp; Study Path <button class="bookmark-btn" data-id="s14-summary" data-label="Chapter Summary, Self-Check &amp; Study Path" title="Bookmark">🔖</button></h2>
+      </div>
+<div class="uni-req-banner">
+<span class="uni-req-badge">🎓 University Core &amp; GATE</span>
+<span>Syllabus Topic: <strong>Chapter Summary, Self-Check & Study Path</strong></span>
+</div>
+
+      <div class="concept-card">
+        <h3>1. Chapter Summary: Core Takeaways</h3>
+        <p>This chapter analyzed the logical addressing architecture that enables global routing across the Internet:</p>
+        <ul>
+          <li><strong>Hierarchical Addressing:</strong> Decouples physical MAC addresses from topological location, partitioning the 32-bit address into a <strong>Network Prefix</strong> (for core routing) and a <strong>Host Identifier</strong> (for local LAN delivery).</li>
+          <li><strong>CIDR ($/n$):</strong> Classless Inter-Domain Routing abolished rigid class boundaries, expressing prefix lengths as $/n$ contiguous 1-bits and enabling arbitrary block sizing.</li>
+          <li><strong>Subnet Boundaries:</strong> Every block has $2^h$ total addresses, with $2^h - 2$ usable hosts bounded by the <strong>Network ID</strong> (all host bits 0) and the <strong>Directed Broadcast Address</strong> (all host bits 1).</li>
+          <li><strong>Subnetting &amp; VLSM:</strong> Borrowing $s$ host bits creates $2^s$ subnets of $2^{h-s}$ total addresses. Allocating largest subnets first avoids address fragmentation.</li>
+          <li><strong>Router Forwarding:</strong> Line-rate routers evaluate overlapping FIB entries using <strong>Longest Prefix Matching (LPM)</strong> implemented in parallel TCAM hardware.</li>
+          <li><strong>Special Spaces:</strong> RFC 1918 private spaces (<code>10.0.0.0/8</code>, <code>172.16.0.0/12</code>, <code>192.168.0.0/16</code>), Loopback (<code>127.0.0.0/8</code>), APIPA (<code>169.254.0.0/16</code>), and Default Route (<code>0.0.0.0/0</code>).</li>
+        </ul>
+      </div>
+
+      <div class="concept-card">
+        <h3>2. Rapid Self-Check Quiz</h3>
+        <div class="concept-grid">
+          <div class="concept-card">
+            <h4>Q1: Usable Hosts</h4>
+            <p><strong>Question:</strong> How many usable hosts can be configured on a <code>/29</code> subnet?<br>
+            <strong>Answer:</strong> Host bits $h = 32 - 29 = 3$. Usable hosts = $2^3 - 2 = 8 - 2 = \mathbf{6\text{ hosts}}$.</p>
+          </div>
+          <div class="concept-card">
+            <h4>Q2: Subnet Mask Octet</h4>
+            <p><strong>Question:</strong> What is the dotted-decimal subnet mask for a <code>/21</code> prefix?<br>
+            <strong>Answer:</strong> Octet 1 = 255 (8), Octet 2 = 255 (8), Octet 3 has 5 ones: $11111000_2 = \mathbf{248}$. Mask = <code>255.255.248.0</code>.</p>
+          </div>
+          <div class="concept-card">
+            <h4>Q3: Longest Prefix Match</h4>
+            <p><strong>Question:</strong> A packet to <code>10.1.2.5</code> matches <code>10.1.0.0/16</code>, <code>10.1.2.0/24</code>, and <code>0.0.0.0/0</code>. Which route is chosen?<br>
+            <strong>Answer:</strong> <code>10.1.2.0/24</code> because $/24$ is the longest matching prefix (most specific).</p>
+          </div>
+          <div class="concept-card">
+            <h4>Q4: Private IP Check</h4>
+            <p><strong>Question:</strong> Is <code>172.30.5.1</code> a private IP address?<br>
+            <strong>Answer:</strong> YES. RFC 1918 covers <code>172.16.0.0/12</code> ($16 \le 30 \le 31$).</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <h3>3. Next Chapter Preview: IPv4 Internals &amp; Datagram Processing</h3>
+        <p>In <strong>Chapter 15: IPv4 Internals</strong>, we explore the internal packet mechanics of the Network Layer:</p>
+        <ul>
+          <li>The complete 20-to-60 byte IPv4 Header structure (Ver, IHL, ToS/DSCP, Total Length, TTL, Protocol, Checksum).</li>
+          <li>IP Fragmentation and Reassembly: Identification, Flags (DF, MF), and Fragment Offset arithmetic.</li>
+          <li>Maximum Transmission Unit (MTU) mismatches across Ethernet, PPPoE, and WAN links.</li>
+          <li>Checksum calculation and one's complement addition verification.</li>
+        </ul>
+      </div>
+
+      <div class="study-resources">
+        <div class="resources-title">📚 References &amp; Further Learning</div>
+        <div class="resources-note">Curated references and course progression links.</div>
+        <div class="resource-grid">
+          <a href="ch13-link-state-distance-vector.html">
+            📘 Chapter 13: Link-State &amp; Distance-Vector Routing
+            <small>Review routing protocols and dynamic distributed table generation.</small>
+          </a>
+          <a href="../mock-tests/index.html">
+            📝 Computer Networks Mock Tests &amp; Practice Drills
+            <small>Take timed interactive practice tests across all Network Layer concepts.</small>
+          </a>
+          <a href="../index.html">
+            🏠 MiniBook Course Overview &amp; Syllabus
+            <small>View complete syllabus map, unit progress, and mock exam schedules.</small>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+  <!-- PREV/NEXT NAV -->
+  <div class="prev-next">
+    <a href="ch13-link-state-distance-vector.html" class="nav-btn">&larr; Ch 13: Link-State &amp; Distance-Vector</a>
+    <a href="ch15-ipv4-internals.html" class="nav-btn primary">Next: Ch 15 IPv4 Internals &rarr;</a>
+  </div>
+
+</div>
+</main>
+
+<!-- FLOATING MODE PANEL -->
+<div id="mode-panel">
+  <button class="mode-btn active" data-mode="all">📚 All</button>
+  <button class="mode-btn uni-btn" data-mode="uni">🎓 Uni</button>
+  <button class="mode-btn gate-btn" data-mode="gate">⚡ GATE</button>
+  <button class="mode-btn adv-btn" data-mode="advanced">🔬 Adv</button>
+</div>
+
+<!-- TTS FLOATING PANEL -->
+<div id="tts-panel">
+  <div class="tts-controls">
+    <button class="tts-btn" id="tts-play" title="Play/Pause">▶</button>
+    <button class="tts-btn" id="tts-stop" title="Stop">⏹</button>
+    <div class="tts-speed"><span>Speed</span><input type="range" id="tts-rate" min="0.5" max="2" step="0.1" value="1"><span id="tts-rate-label">1.0x</span></div>
+  </div>
+  <div class="tts-voice"><select id="tts-voice-select"><option>Loading voices…</option></select></div>
+</div>
+
+<!-- SEARCH MODAL -->
+<div id="search-modal">
+  <div class="search-box">
+    <div class="search-input-wrap"><span class="s-icon">🔍</span><input id="search-input" type="text" placeholder="Search chapters, topics, protocols…" autocomplete="off"></div>
+    <div id="search-results"></div>
+    <div class="search-hint"><span><kbd>↵</kbd> to navigate</span><span><kbd>Esc</kbd> to close</span><span><kbd>Ctrl+K</kbd> to open</span></div>
+  </div>
+</div>
+
+<!-- MOBILE NAV -->
+<nav id="mobile-nav">
+  <button class="mobile-nav-btn" onclick="SidebarManager?.toggle()"><span class="icon">☰</span>Menu</button>
+  <a href="../index.html" class="mobile-nav-btn"><span class="icon">🏠</span>Home</a>
+  <a href="ch14-logical-addressing-ipv4.html" class="mobile-nav-btn active"><span class="icon">📖</span>Chapters</a>
+  <a href="../exams/mock-exam.html" class="mobile-nav-btn"><span class="icon">📝</span>Exams</a>
+  <button class="mobile-nav-btn" onclick="SearchManager?.open()"><span class="icon">🔍</span>Search</button>
+</nav>
+
+<div id="toast-container"></div>
+<script src="../assets/js/state.js"></script>
+<script src="../assets/js/core.js"></script>
+<script src="../assets/js/modes.js"></script>
+<script src="../assets/js/tts.js"></script>
+<script src="../assets/js/timer-settings.js"></script>
+<script src="../assets/js/timer.js"></script>
+<script src="../assets/js/timer-analytics.js"></script>
+<script src="../assets/js/timer-notifications.js"></script>
+<script src="../assets/js/timer-ui.js"></script>
+<script src="../assets/js/print.js"></script>
+<script src="../assets/js/notes.js"></script>
+<script src="../assets/js/glossary.js"></script>
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>
