@@ -33,7 +33,6 @@ Hosted on GitHub Pages → [`malikarpit.github.io/CN-minibook`](https://malikarp
 ## 🛠️ Interactive Pedagogical Tools
 
 - **Pomodoro Focus Timer:** Integrated study intervals with settings & distraction logging
-- **Text-to-Speech (TTS):** Section-by-section and global voice read aloud with speed control
 - **Notes & Highlighter:** Persistent in-page text annotations saved to local storage
 - **Bookmarking System:** Instant 1-click bookmarks with quick sidebar access
 - **Full-Text Search:** Ctrl+K search and command palette

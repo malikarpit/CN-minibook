@@ -42,9 +42,6 @@
     <button id="search-btn" class="icon-btn" title="Search (Ctrl+K)">
       <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.35-4.35"></path></svg>
     </button>
-    <button id="tts-toggle" class="icon-btn" title="Read Aloud">
-      <svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"></path></svg>
-    </button>
     <button id="print-btn" title="Print / Save as PDF (Ctrl+P)" aria-label="Print"><svg viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg><span class="print-label">PDF</span></button>
     <button id="reading-mode-btn" class="icon-btn" title="Reading Mode (F)" aria-pressed="false" aria-label="Toggle reading mode">📖</button>
     <button id="theme-toggle" class="icon-btn" title="Toggle Theme (T)"></button>
@@ -357,7 +354,11 @@ e 4$.</li>
           <p>
             Original Packet: Total Length $= 4,000$ B $\implies$ Payload $= 4,000 - 20 = \mathbf{3,980}$ Bytes. $	ext{ID} = x, 	ext{DF} = 0, 	ext{MF} = 0, 	ext{Offset} = 0$.<br/>
             Maximum Payload per Fragment on MTU 1,500 link:
-            $$	ext{Max Payload} = \left\lfloor rac{1500 - 20}{8} ightfloor 	imes 8 = \left\lfloor rac{1480}{8} ightfloor 	imes 8 = \mathbf{1,480} 	ext{ Bytes}$$
+            $$	ext{Max Payload} = \left\lfloor rac{1500 - 20}{8} 
+ight
+floor 	imes 8 = \left\lfloor rac{1480}{8} 
+ight
+floor 	imes 8 = \mathbf{1,480} 	ext{ Bytes}$$
           </p>
           <div class="table-responsive">
             <table class="exam-table">
@@ -414,7 +415,11 @@ e 4$.</li>
           <h4 class="section-title">3. Stage 2 Fragmentation: Further Splitting over MTU = 600 Link (3 Marks)</h4>
           <p>
             When Frag 1 ($1500$ B) hits MTU $= 600$:
-            $$	ext{Max Payload} = \left\lfloor rac{600 - 20}{8} ightfloor 	imes 8 = \left\lfloor 72.5 ightfloor 	imes 8 = 72 	imes 8 = \mathbf{576} 	ext{ Bytes}$$
+            $$	ext{Max Payload} = \left\lfloor rac{600 - 20}{8} 
+ight
+floor 	imes 8 = \left\lfloor 72.5 
+ight
+floor 	imes 8 = 72 	imes 8 = \mathbf{576} 	ext{ Bytes}$$
             Frag 1 ($1,480$ B payload) is partitioned into three sub-fragments:
           </p>
           <div class="table-responsive">
@@ -2926,16 +2931,6 @@ Fields NEVER changed by an intermediate router in ordinary forwarding:
   <button class="mode-btn adv-btn" data-mode="advanced">🔬 Adv</button>
 </div>
 
-<!-- TTS FLOATING PANEL -->
-<div id="tts-panel">
-  <div class="tts-controls">
-    <button class="tts-btn" id="tts-play" title="Play/Pause">▶</button>
-    <button class="tts-btn" id="tts-stop" title="Stop">⏹</button>
-    <div class="tts-speed"><span>Speed</span><input type="range" id="tts-rate" min="0.5" max="2" step="0.1" value="1"><span id="tts-rate-label">1.0x</span></div>
-  </div>
-  <div class="tts-voice"><select id="tts-voice-select"><option>Loading voices…</option></select></div>
-</div>
-
 <!-- SEARCH MODAL -->
 <div id="search-modal">
   <div class="search-box">
@@ -2958,7 +2953,6 @@ Fields NEVER changed by an intermediate router in ordinary forwarding:
 <script src="../assets/js/state.js"></script>
 <script src="../assets/js/core.js"></script>
 <script src="../assets/js/modes.js"></script>
-<script src="../assets/js/tts.js"></script>
 <script src="../assets/js/timer-settings.js"></script>
 <script src="../assets/js/timer.js"></script>
 <script src="../assets/js/timer-analytics.js"></script>

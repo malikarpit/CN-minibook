@@ -30,7 +30,6 @@ const ASSETS = [
   './assets/js/state.js',
   './assets/js/core.js',
   './assets/js/modes.js',
-  './assets/js/tts.js',
   './assets/js/print.js',
   './assets/js/notes.js',
   './assets/js/glossary.js',
