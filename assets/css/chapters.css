@@ -85,23 +85,60 @@ section[id] {
 }
 
 .content-section {
-  margin: 0 0 var(--ch-section-gap);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--em-radius-lg);
+  padding: 32px 36px;
+  margin: 0 0 36px;
   position: relative;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.28);
+  transition: border-color var(--em-motion-fast) var(--em-ease), box-shadow var(--em-motion-fast) var(--em-ease);
+}
+
+.content-section:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.38), 0 0 16px rgba(126, 196, 184, 0.08);
+}
+
+@media (max-width: 640px) {
+  .content-section {
+    padding: 22px 18px;
+    margin-bottom: 24px;
+    border-radius: var(--em-radius-md);
+  }
+}
+
+.section-heading {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 14px;
+  margin-bottom: 22px;
+  position: relative;
+}
+
+.section-heading::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 64px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-light));
+  border-radius: 2px;
 }
 
 .content-section:last-of-type { margin-bottom: 0; }
 
-/* University-core sections get a subtle structural cue, not a loud colour bar. */
+/* University-core sections get a subtle structural cue */
 .content-section[data-exam-priority="core"]::before {
   content: '';
   position: absolute;
-  top: 6px;
-  bottom: 6px;
-  left: -14px;
-  width: 2px;
-  border-radius: 2px;
+  top: 14px;
+  bottom: 14px;
+  left: 0;
+  width: 3px;
+  border-radius: 3px;
   background: var(--accent);
-  opacity: .38;
+  opacity: .75;
 }
 
 /* ─────────────────────────────────────────────────────────────────────
@@ -121,19 +158,57 @@ section[id] {
 }
 
 .prose h3 {
-  margin: var(--em-space-10) 0 var(--em-space-3);
+  margin: 2.2rem 0 0.9rem;
   color: var(--tx-primary);
-  font-size: 1.13rem;
-  font-weight: 650;
-  line-height: 1.28;
+  font-size: 1.22rem;
+  font-weight: 700;
+  line-height: 1.32;
+  padding-left: 12px;
+  border-left: 3px solid var(--accent);
+  letter-spacing: -0.01em;
 }
 
 .prose h4 {
-  margin: var(--em-space-6) 0 var(--em-space-2);
+  margin: 1.6rem 0 0.7rem;
   color: var(--tx-secondary);
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 650;
   line-height: 1.30;
+}
+
+.teacher-box {
+  margin: 1.8rem 0;
+  padding: 1.25rem 1.5rem;
+  background: rgba(62, 95, 120, 0.08);
+  border: 1px solid rgba(62, 95, 120, 0.28);
+  border-left: 4px solid var(--accent-secondary);
+  border-radius: var(--em-radius-md);
+}
+.teacher-title {
+  font-weight: 750;
+  font-size: 0.95rem;
+  color: var(--accent-secondary);
+  margin-bottom: 0.65rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.trap-box {
+  margin: 1.8rem 0;
+  padding: 1.25rem 1.5rem;
+  background: rgba(192, 150, 128, 0.08);
+  border: 1px solid rgba(192, 150, 128, 0.28);
+  border-left: 4px solid var(--danger);
+  border-radius: var(--em-radius-md);
+}
+.trap-title {
+  font-weight: 750;
+  font-size: 0.95rem;
+  color: var(--danger);
+  margin-bottom: 0.65rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .prose ul,
@@ -613,19 +688,66 @@ hr:not(.section-hr) {
 .diagram-box {
   width: 100%;
   margin: var(--em-space-8) 0;
-  padding: var(--em-space-5);
-  border: 1px solid var(--bd-default);
-  border-radius: var(--comp-radius);
-  background: var(--bg-card);
+  padding: var(--em-space-6);
+  border: 1px solid var(--border);
+  border-radius: var(--em-radius-lg);
+  background: var(--bg-surface);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.22);
+  overflow-x: auto;
+  position: relative;
+}
+
+.diagram-box:hover {
+  border-color: var(--border-hover);
+}
+
+.diagram-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.diagram-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--tx-primary);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.diagram-badge {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--em-radius-full);
+  background: var(--accent-dim);
+  color: var(--accent-light);
+  border: 1px solid var(--accent-border);
+  letter-spacing: 0.04em;
+}
+
+.diagram-svg-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 0;
   overflow-x: auto;
 }
 
-.diagram-title {
-  margin-bottom: 10px;
-  color: var(--tx-primary);
-  font-size: var(--text-xs);
-  font-weight: 750;
-  letter-spacing: .02em;
+.diagram-svg-wrap svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 
 .diagram-box pre,
@@ -638,11 +760,14 @@ hr:not(.section-hr) {
 }
 
 .figure-caption,
-.caption {
-  margin-top: 8px;
+.caption,
+.diagram-caption {
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border);
   color: var(--tx-muted);
-  font-size: var(--text-xs);
-  line-height: 1.5;
+  font-size: 0.82rem;
+  line-height: 1.55;
 }
 
 /* Mobile: figures may scroll; prose itself never becomes a 2D surface. */
